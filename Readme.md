@@ -1,46 +1,50 @@
-# Project name 
+# Monitorizare Vot - Android Kotlin 
 
-[![GitHub contributors](https://img.shields.io/github/contributors/code4romania/standard-repo-template.svg?style=for-the-badge)](https://github.com/code4romania/standard-repo-template/graphs/contributors) [![GitHub last commit](https://img.shields.io/github/last-commit/code4romania/standard-repo-template.svg?style=for-the-badge)](https://github.com/code4romania/standard-repo-template/commits/master) [![License: MPL 2.0](https://img.shields.io/badge/license-MPL%202.0-brightgreen.svg?style=for-the-badge)](https://opensource.org/licenses/MPL-2.0)
+[![GitHub contributors](https://img.shields.io/github/contributors/code4romania/mon-vot-android-kotlin.svg?style=for-the-badge)](https://github.com/code4romania/mon-vot-android-kotlin/graphs/contributors) [![GitHub last commit](https://img.shields.io/github/last-commit/code4romania/mon-vot-android-kotlin.svg?style=for-the-badge)](https://github.com/code4romania/mon-vot-android-kotlin/commits/master) [![License: MPL 2.0](https://img.shields.io/badge/license-MPL%202.0-brightgreen.svg?style=for-the-badge)](https://opensource.org/licenses/MPL-2.0)
 
-Insert bullets description of the project if available.
+[See the project live](http://monitorizarevot.ro/)
 
-[See the project live](insert_link_here)
+Monitorizare Vot is a mobile app for monitoring elections by authorized observers. They can use the app in order to offer a real-time snapshot on what is going on at polling stations and they can report on any noticeable irregularities. 
 
-Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+The NGO-s with authorized observers for monitoring elections have real time access to the data the observers are transmitting therefore they can report on how voting is evolving and they can quickly signal to the authorities where issues need to be solved. 
 
-[Contributing](#contributing) | [Built with](#built-with) | [Repos and projects](#repos-and-projects) | [Deployment](#deployment) | [Feedback](#feedback) | [License](#license) | [About Code4Ro](#about-code4ro)
+Moreover, where it is allowed, observers can also photograph and film specific situations and send the images to the NGO they belong to. 
+
+The app also has a web version, available for every citizen who wants to report on election irregularities. Monitorizare Vot was launched in 2016 and it has been used for the Romanian parliamentary elections so far, but it is available for further use, regardless of the type of elections or voting process. 
+
+[Contributing](#contributing) | [Built with](#built-with) | [Repos and projects](#repos-and-projects) | [Feedback](#feedback) | [License](#license) | [About Code4Ro](#about-code4ro)
 
 ## Contributing
 
 This project is built by amazing volunteers and you can be one of them! Here's a list of ways in [which you can contribute to this project](.github/CONTRIBUTING.MD).
 
-You can also list any pending features and planned improvements for the project here.
-
 ## Built With
 
-### Programming languages
+* Android Studio 3.6
+* Android SDK 28
+* Android SDK Build Tools 28  
+* Kotlin
+* RxJava, Retrofit2
+* Realm database
 
-### Platforms
-
-### Frontend framework
-
-### Package managers
-
-### Database technology & provider
+Swagger docs for the API are available [here](https://mv-mobile-prod.azurewebsites.net/swagger/ui/index.html).
 
 ## Repos and projects
 
-Mention all related repos and projects.
+![alt text](https://raw.githubusercontent.com/code4romania/monitorizare-vot-android/develop/MV%20solutions.png)
 
-## Deployment
+- repo for the API - https://github.com/code4romania/monitorizare-vot
+- repo for the java android app - https://github.com/code4romania/monitorizare-vot-android
+- repo for the iOS app - https://github.com/code4romania/monitorizare-vot-ios
 
-Guide users through getting your code up and running on their own system. In this section you can talk about:
-1. Installation process
-2. Software dependencies
-3. Latest releases
-4. API references
+Other related projects:
 
-Describe and show how to build your code and run the tests. 
+- https://github.com/code4romania/monitorizare-vot-votanti-client/
+- https://github.com/code4romania/monitorizare-vot-votanti-api/
+- https://github.com/code4romania/monitorizare-vot-votanti-admin
+- https://github.com/code4romania/monitorizare-vot-admin
+- https://github.com/code4romania/monitorizare-vot-ong
+- https://github.com/code4romania/monitorizare-vot-docs
 
 ## Feedback
 
@@ -49,7 +53,7 @@ Describe and show how to build your code and run the tests.
 * File a bug in GitHub Issues.
 * Email us with other feedback contact@code4.ro
 
-## License 
+## License
 
 This project is licensed under the MPL 2.0 License - see the [LICENSE](LICENSE) file for details
 

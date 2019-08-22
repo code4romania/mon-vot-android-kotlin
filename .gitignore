@@ -1,0 +1,10 @@
+
+\.gradle/
+
+\.idea/
+
+\app/build/
+
+app/app.iml
+
+Vote Monitor.iml

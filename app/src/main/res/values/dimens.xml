@@ -1,0 +1,61 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- General -->
+    <dimen name="status_bar_spacer">0dp</dimen>
+    <dimen name="input_height">50dp</dimen>
+    <dimen name="radio_button_padding">10dp</dimen>
+    <dimen name="radio_button_radius">5dp</dimen>
+    <dimen name="checkbox_radius">50dp</dimen>
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="button_width">200dp</dimen>
+    <dimen name="button_text">17sp</dimen>
+    <dimen name="button_text_embedded">15sp</dimen>
+    <dimen name="spacing_vertical">10dp</dimen>
+    <dimen name="label_text">15sp</dimen>
+    <dimen name="label_top_spacing">20dp</dimen>
+    <dimen name="label_bottom_spacing">12dp</dimen>
+    <dimen name="section_header_height">200dp</dimen>
+    <dimen name="title_height">150dp</dimen>
+
+    <!-- Menu drawer -->
+    <dimen name="menu_width">300dp</dimen>
+    <dimen name="menu_item_height">60dp</dimen>
+
+    <!-- Change branch bar -->
+    <dimen name="branch_bar_padding_vertical">10dp</dimen>
+    <dimen name="branch_bar_icon">32dp</dimen>
+    <dimen name="branch_bar_text">13sp</dimen>
+    <dimen name="branch_bar_text_spacing">10dp</dimen>
+    <dimen name="branch_bar_button_width">135dp</dimen>
+    <dimen name="branch_bar_button_height">35dp</dimen>
+    <dimen name="branch_bar_button_text">11sp</dimen>
+
+    <!-- Dark container with bottom button -->
+    <dimen name="header_text">21sp</dimen>
+    <dimen name="subheader_text">16sp</dimen>
+    <dimen name="header_margin_vertial">10dp</dimen>
+    <dimen name="icon_block_size">50dp</dimen>
+
+    <!-- Login -->
+    <dimen name="login_margin_bottom">43dp</dimen>
+    <dimen name="login_text_size">20sp</dimen>
+
+    <!-- Forms -->
+    <dimen name="form_description_text">18sp</dimen>
+    <dimen name="form_card_height">150dp</dimen>
+
+    <!-- Question -->
+    <dimen name="question_option_text">18sp</dimen>
+    <dimen name="question_option_margin">10dp</dimen>
+    <dimen name="question_overview_title">20sp</dimen>
+    <dimen name="question_overview_title_spacing">30dp</dimen>
+    <dimen name="question_overview_item_header">16sp</dimen>
+    <dimen name="question_overview_item_text">14sp</dimen>
+    <dimen name="question_card_height">200dp</dimen>
+</resources>
