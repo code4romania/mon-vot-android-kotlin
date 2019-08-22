@@ -1,0 +1,3 @@
+package ro.code4.monitorizarevot.interfaces
+
+annotation class ExcludeFromCodeCoverage
