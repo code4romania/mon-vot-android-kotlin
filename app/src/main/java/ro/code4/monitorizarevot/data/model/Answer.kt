@@ -2,8 +2,9 @@ package ro.code4.monitorizarevot.data.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import org.parceler.Parcel
 
+@Parcel(Parcel.Serialization.FIELD)
 class Answer {
     @Expose
     @SerializedName("idOptiune")

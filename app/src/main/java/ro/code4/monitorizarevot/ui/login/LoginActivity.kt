@@ -21,7 +21,11 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         super.onCreate(savedInstanceState)
 
         loginButton.setOnClickListener {
-            val user = User(phone.text.toString(), password.text.toString(), "1234")
+            val user = User(
+                phone.text.toString(),
+                password.text.toString(),
+                "1234"
+            )//TODO replace with phone uiid  Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             viewModel.login(user)
         }
 
