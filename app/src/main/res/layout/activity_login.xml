@@ -82,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_height"
                     android:hint="@string/login_phone"
+                    android:text="0742395677"
                     android:inputType="phone"
                     style="@style/InputLogin"/>
 
@@ -100,6 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_height"
                     android:hint="@string/login_password"
+                    android:text="123456"
                     android:inputType="textPassword"
                     android:imeOptions="actionDone"
                     style="@style/InputLogin"/>
@@ -107,7 +109,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:layout_margin="@dimen/nav_header_vertical_spacing"

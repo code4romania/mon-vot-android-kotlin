@@ -2,16 +2,15 @@ package ro.code4.monitorizarevot.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.plugins.RxJavaPlugins.onError
 import io.reactivex.schedulers.Schedulers
-import org.koin.core.KoinComponent
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.repositories.LoginRepository
+import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
-class LoginViewModel: ViewModel(), KoinComponent {
+class LoginViewModel : BaseViewModel() {
 
     private val loginRepository: LoginRepository by inject()
 
@@ -21,7 +20,8 @@ class LoginViewModel: ViewModel(), KoinComponent {
 
     fun login(user: User) {
         loginRepository.login(user).subscribeOn(Schedulers.io()).observeOn(
-            AndroidSchedulers.mainThread())
+            AndroidSchedulers.mainThread()
+        )
             .subscribe({
                 onSuccessfulLogin()
             }, {
