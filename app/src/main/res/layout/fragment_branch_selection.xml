@@ -54,14 +54,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/branch_county"
                 android:theme="@style/label" />
-
-            <ro.code4.monitorizarevot.widget.NoDefaultSpinner
+            <!--TODO go back to nodefault spinner-->
+            <!--            <ro.code4.monitorizarevot.widget.NoDefaultSpinner-->
+            <!--                android:id="@+id/countySpinner"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/button_height"-->
+            <!--                android:background="@drawable/background_spinner"-->
+            <!--                android:prompt="@string/spinner_choose" />-->
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/countySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:background="@drawable/background_spinner"
                 android:prompt="@string/spinner_choose" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -31,4 +31,6 @@ class County {
         const val COUNTY_NAME_FIELD = "name"
         const val BRANCHES_COUNT_FIELD = "limit"
     }
+
+    override fun toString(): String = name ?: ""
 }

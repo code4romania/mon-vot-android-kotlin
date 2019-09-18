@@ -4,12 +4,11 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.plugins.RxJavaPlugins.onError
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
-import ro.code4.monitorizarevot.helper.putToken
+import ro.code4.monitorizarevot.helper.saveToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
@@ -36,7 +35,7 @@ class LoginViewModel : BaseViewModel() {
     //TODO should check if token still available
 
     private fun onSuccessfulLogin(loginResponse: LoginResponse) {
-        sharedPreferences.putToken(loginResponse.accessToken)
+        sharedPreferences.saveToken(loginResponse.accessToken)
         loginLiveData.postValue(true)
     }
 }

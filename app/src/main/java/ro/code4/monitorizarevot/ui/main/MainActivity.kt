@@ -12,14 +12,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 
 class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
         get() = R.layout.activity_main
-    override val viewModel: MainViewModel by inject()
+    override val viewModel: MainViewModel by viewModel()
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 

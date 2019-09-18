@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
 const val ACCESS_TOKEN = "access_token"
+const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
+const val PREFS_BRANCH_NUMBER = "PREFS_BRANCH_NUMBER"
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.putString(key: String, value: String) {
     val editor = edit()
@@ -11,6 +13,18 @@ fun SharedPreferences.putString(key: String, value: String) {
     editor.apply()
 }
 
+fun SharedPreferences.putInt(key: String, value: Int) {
+    val editor = edit()
+    editor.putInt(key, value)
+    editor.apply()
+}
+
 
 fun SharedPreferences.getToken(): String? = getString(PREFS_TOKEN)
-fun SharedPreferences.putToken(token: String) = putString(PREFS_TOKEN, token)
+fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
+
+fun SharedPreferences.saveCountyCode(countyCode: String?) =
+    putString(PREFS_COUNTY_CODE, countyCode ?: "")
+
+fun SharedPreferences.saveBranchNumber(branchNumber: Int) =
+    putInt(PREFS_BRANCH_NUMBER, branchNumber)

@@ -1,16 +1,16 @@
 package ro.code4.monitorizarevot.widget
 
+
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+
 import android.widget.SpinnerAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
-import androidx.core.content.ContextCompat
-import ro.code4.monitorizarevot.R
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -25,7 +25,7 @@ import java.lang.reflect.Method
  *
  * Limitations: does not display prompt if the entry list is empty.
  */
-class NoDefaultSpinner : AppCompatSpinner {
+open class NoDefaultSpinner : AppCompatSpinner {
 
     constructor(context: Context) : super(context)
 
@@ -63,17 +63,19 @@ class NoDefaultSpinner : AppCompatSpinner {
     private fun newProxy(obj: SpinnerAdapter): SpinnerAdapter {
         return java.lang.reflect.Proxy.newProxyInstance(
             obj.javaClass.classLoader,
-            arrayOf<Class<*>>(SpinnerAdapter::class.java),
+            arrayOf(SpinnerAdapter::class.java),
             SpinnerAdapterProxy(obj)
         ) as SpinnerAdapter
     }
 
+
     /**
      * Intercepts getView() to display the prompt if position < 0
      */
-    private inner class SpinnerAdapterProxy(private val obj: SpinnerAdapter) :
+    inner class SpinnerAdapterProxy constructor(var obj: SpinnerAdapter) :
         InvocationHandler {
-        private var getView: Method? = null
+        private var getView: Method
+
 
         init {
             try {
@@ -87,12 +89,12 @@ class NoDefaultSpinner : AppCompatSpinner {
         }
 
         @Throws(Throwable::class)
-        override operator fun invoke(proxy: Any, m: Method, args: Array<Any>): Any {
+        override fun invoke(proxy: Any, m: Method, args: Array<Any>): Any {
             try {
                 return if (m == getView && (args[0] as Int) < 0)
                     getView(args[0] as Int, args[1] as View, args[2] as ViewGroup)
                 else
-                    m.invoke(obj, args)
+                    m.invoke(obj, *args)
             } catch (e: InvocationTargetException) {
                 throw e.targetException
             } catch (e: Exception) {
@@ -101,7 +103,8 @@ class NoDefaultSpinner : AppCompatSpinner {
 
         }
 
-        private fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+        @Throws(IllegalAccessException::class)
+        fun getView(position: Int, convertView: View, parent: ViewGroup): View {
 
             if (position < 0) {
                 val v = (context.getSystemService(
@@ -109,7 +112,6 @@ class NoDefaultSpinner : AppCompatSpinner {
                 ) as LayoutInflater).inflate(
                     android.R.layout.simple_spinner_item, parent, false
                 ) as TextView
-                v.setTextColor(ContextCompat.getColor(context, R.color.hint))
                 v.text = prompt
                 return v
             }

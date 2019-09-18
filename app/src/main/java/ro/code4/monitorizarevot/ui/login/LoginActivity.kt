@@ -9,6 +9,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
 
 class LoginActivity : BaseActivity<LoginViewModel>() {
@@ -31,13 +32,18 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
 
         viewModel.loggedIn().observe(this, Observer {
             Toast.makeText(this, "Yaaay", Toast.LENGTH_SHORT).show()
-            startMainActivity()
+            startBranchActivity()
         })
     }
 
     private fun startMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
+    }
+
+    private fun startBranchActivity() {
+        startActivity(Intent(this, BranchActivity::class.java))
         finish()
     }
 }

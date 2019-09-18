@@ -1,11 +1,10 @@
-package ro.code4.monitorizarevot.ui.branch.selection
+package ro.code4.monitorizarevot.ui.branch.details
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_branch_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -14,11 +13,10 @@ import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
 
-
-class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
+class BranchDetailsFragment : BaseFragment<BranchDetailsViewModel>() {
     override val layout: Int
         get() = R.layout.fragment_branch_selection
-    override val viewModel: BranchSelectionViewModel by viewModel()
+    override val viewModel: BranchDetailsViewModel by viewModel()
 
     lateinit var parentViewModel: BranchViewModel
 
@@ -32,14 +30,14 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.counties().observe(this, Observer {
-            setCountiesDropdown(it)
-        })
-        viewModel.next().observe(this, Observer {
-            parentViewModel.goToNextFragment()
-        })
-        viewModel.getCounties()
-        parentViewModel.setTitle(getString(R.string.title_branch_selection))
+//        viewModel.counties().observe(this, Observer {
+//            setCountiesDropdown(it)
+//        })
+//        viewModel.next().observe(this, Observer {
+//            parentViewModel.goToNextFragment()
+//        })
+//        viewModel.getCounties()
+        parentViewModel.setTitle(getString(R.string.title_branch_details))
 
         setContinueButton()
     }
@@ -60,7 +58,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.selectCounty(countySpinnerAdapter.getItem(position))
+//                viewModel.selectCounty(countySpinnerAdapter.getItem(position))
                 branchNumber.isEnabled = true
             }
 
@@ -72,7 +70,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
     private fun setContinueButton() {
         continueButton.setOnClickListener {
-            viewModel.validInput(branchNumber.text)
+            //            viewModel.validInput(branchNumber.text)
 
         }
     }
