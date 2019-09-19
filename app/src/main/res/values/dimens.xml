@@ -12,10 +12,10 @@
     <dimen name="radio_button_padding">10dp</dimen>
     <dimen name="radio_button_radius">5dp</dimen>
     <dimen name="checkbox_radius">50dp</dimen>
-    <dimen name="button_height">60dp</dimen>
+    <dimen name="button_height">44dp</dimen>
     <dimen name="button_width">200dp</dimen>
     <dimen name="button_text">17sp</dimen>
-    <dimen name="button_text_embedded">15sp</dimen>
+    <dimen name="button_text_embedded">14sp</dimen>
     <dimen name="spacing_vertical">10dp</dimen>
     <dimen name="label_text">15sp</dimen>
     <dimen name="label_top_spacing">20dp</dimen>

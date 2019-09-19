@@ -42,7 +42,8 @@
     </style>
 
     <style name="buttonEmbeddedCommon" parent="BaseButton">
-        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textColor">@color/textButton</item>
+        <item name="android:background">@color/buttonColor</item>
         <item name="android:textSize">@dimen/button_text_embedded</item>
     </style>
 
@@ -115,12 +116,10 @@
 
     <style name="buttonDarkTheme">
         <item name="android:colorButtonNormal">@color/backgroundDark</item>
-        <item name="android:colorAccent">@color/backgroundAccent</item>
     </style>
 
-    <style name="buttonEmbedded" parent="buttonEmbeddedCommon">
-        <item name="android:theme">@style/buttonDarkTheme</item>
-    </style>
+    <style name="buttonEmbedded" parent="buttonEmbeddedCommon"></style>
+
     <style name="InputLogin" parent="@android:style/Widget.Holo.Light.EditText">
         <item name="android:background">@drawable/background_input_login</item>
         <item name="android:textColor">@color/textPrimary</item>
