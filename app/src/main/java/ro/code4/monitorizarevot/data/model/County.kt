@@ -1,20 +1,23 @@
 package ro.code4.monitorizarevot.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
+@Entity(tableName = "county")
 @Parcel(Parcel.Serialization.FIELD)
 class County {
 
-    //    @PrimaryKey
+    @PrimaryKey
     @Expose
     @SerializedName(ID_FIELD)
     var id: Int = 0
 
     @Expose
     @SerializedName(COUNTY_CODE_FIELD)
-    var code: String? = null
+    lateinit var code: String
 
     @Expose
     @SerializedName(COUNTY_NAME_FIELD)

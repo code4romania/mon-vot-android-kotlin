@@ -18,6 +18,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
     }
     buildTypes {
         applicationVariants.all { variant ->
@@ -45,6 +55,7 @@ ext {
     butterKnifeVersion = '10.1.0'
     retrofitLibraryVersion = '2.5.0'
     koinVersion = '2.0.1'
+    roomVersion = "2.2.0-rc01"
 }
 
 dependencies {
@@ -81,4 +92,11 @@ dependencies {
 
     implementation 'org.parceler:parceler-api:1.1.12'
     kapt 'org.parceler:parceler:1.1.12'
+
+    //Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+    testImplementation "androidx.room:room-testing:$roomVersion"
 }

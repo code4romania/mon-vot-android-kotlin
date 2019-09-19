@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun String.createMultipart(name: String): MultipartBody.Part {
@@ -29,4 +31,19 @@ fun AppCompatActivity.replaceFragment(
         ft.addToBackStack(it)
     }
     ft.commit()
+}
+
+fun Calendar.updateTime(hourOfDay: Int, minute: Int) {
+    set(Calendar.HOUR_OF_DAY, hourOfDay)
+    set(Calendar.MINUTE, minute)
+}
+
+fun Calendar.getDateText(): String {
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+    return formatter.format(time)
+}
+
+fun Calendar.getTimeText(): String {
+    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.US)
+    return formatter.format(time)
 }

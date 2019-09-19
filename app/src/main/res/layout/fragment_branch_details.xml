@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin">
+
+        <include layout="@layout/widget_change_branch_bar" />
+
+        <TextView
+            style="@style/label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/branch_question_environment" />
+
+        <RadioGroup
+            android:id="@+id/environmentRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/label_top_spacing"
+            android:orientation="horizontal">
+
+            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+                android:id="@+id/urbanEnvironment"
+                style="@style/radioButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:text="@string/branch_answer_urban" />
+
+            <Space
+                android:layout_width="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent" />
+
+            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+                android:id="@+id/ruralEnvironment"
+                style="@style/radioButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:text="@string/branch_answer_rural" />
+        </RadioGroup>
+
+        <View style="@style/horizontalSeparator" />
+
+        <TextView
+            style="@style/label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/branch_question_sex" />
+
+        <RadioGroup
+            android:id="@+id/sexRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/label_top_spacing"
+            android:orientation="horizontal">
+
+            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+                android:id="@+id/maleSex"
+                style="@style/radioButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:text="@string/branch_answer_man" />
+
+            <Space
+                android:layout_width="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent" />
+
+            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+                android:id="@+id/femaleSex"
+                style="@style/radioButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:text="@string/branch_answer_woman" />
+        </RadioGroup>
+
+        <View style="@style/horizontalSeparator" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/branch_question_enter" />
+
+            <Space
+                android:layout_width="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent" />
+
+            <TextView
+                style="@style/label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/branch_question_leave" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/arrivalTime"
+                style="@style/input"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@string/hint_time" />
+
+            <Space
+                android:layout_width="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/departureTime"
+                style="@style/input"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@string/hint_time" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/continueButton"
+        style="@style/buttonEmbedded"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:text="@string/button_continue_to_forms" />
+</ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom>

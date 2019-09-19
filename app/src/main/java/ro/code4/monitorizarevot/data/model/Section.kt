@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
+//@Entity(tableName = "section")
 @Parcel(Parcel.Serialization.FIELD)
 class Section {
 

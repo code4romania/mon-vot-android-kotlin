@@ -4,8 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
+//@Entity(tableName = "answer")
 @Parcel(Parcel.Serialization.FIELD)
 class Answer {
+    //    @PrimaryKey
     @Expose
     @SerializedName("idOptiune")
     val id: Int? = null

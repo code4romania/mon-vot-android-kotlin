@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
+//@Entity(tableName = "response_answer")
 @Parcel(Parcel.Serialization.FIELD)
 class ResponseAnswer() {
 
@@ -25,15 +26,11 @@ class ResponseAnswer() {
     var branchNumber: Int = 0
 
     init {
-//        this.countyCode = Preferences.getCountyCode() //TODO
-//        this.branchNumber = Preferences.getBranchNumber()
+
     }
 
     constructor(optionId: Int?) : this() {
         this.optionId = optionId
     }
 
-    constructor(optionId: Int?, response: String) : this(optionId) {
-        this.value = response
-    }
 }

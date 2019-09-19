@@ -7,6 +7,8 @@ const val ACCESS_TOKEN = "access_token"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
 const val PREFS_BRANCH_NUMBER = "PREFS_BRANCH_NUMBER"
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
+fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
+
 fun SharedPreferences.putString(key: String, value: String) {
     val editor = edit()
     editor.putString(key, value)
@@ -26,5 +28,8 @@ fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
 fun SharedPreferences.saveCountyCode(countyCode: String?) =
     putString(PREFS_COUNTY_CODE, countyCode ?: "")
 
+fun SharedPreferences.getCountyCode(): String? = getString(PREFS_COUNTY_CODE)
 fun SharedPreferences.saveBranchNumber(branchNumber: Int) =
     putInt(PREFS_BRANCH_NUMBER, branchNumber)
+
+fun SharedPreferences.getBranchNumber(): Int = getInt(PREFS_BRANCH_NUMBER)

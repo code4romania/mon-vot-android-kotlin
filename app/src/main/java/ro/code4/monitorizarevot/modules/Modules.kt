@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -18,13 +17,14 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import ro.code4.monitorizarevot.App
 import ro.code4.monitorizarevot.BuildConfig.API_URL
 import ro.code4.monitorizarevot.BuildConfig.DEBUG
+import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
-import ro.code4.monitorizarevot.ui.branch.details.BranchDetailsViewModel
 import ro.code4.monitorizarevot.ui.branch.selection.BranchSelectionViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 val gson: Gson by lazy {
@@ -74,7 +74,7 @@ val apiModule = module {
         httpClient.build()
     }
 
-    single(named("retrofit")) {
+    single {
         Retrofit.Builder()
             .baseUrl(API_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -84,14 +84,18 @@ val apiModule = module {
             .build()
     }
     single {
-        Repository(get(named("retrofit")))
+        Repository()
     }
 }
+val dbModule = module {
+    single { AppDatabase.getDatabase(get()) }
+    single { Executors.newSingleThreadExecutor() }
+}
+
 
 val viewModelsModule = module {
     viewModel { LoginViewModel() }
     viewModel { MainViewModel() }
     viewModel { BranchViewModel() }
     viewModel { BranchSelectionViewModel() }
-    viewModel { BranchDetailsViewModel() }
 }

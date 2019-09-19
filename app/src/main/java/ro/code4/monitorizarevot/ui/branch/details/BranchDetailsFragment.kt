@@ -1,76 +1,73 @@
 package ro.code4.monitorizarevot.ui.branch.details
 
-import android.content.Context
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.fragment_branch_selection.*
-import org.koin.android.viewmodel.ext.android.getSharedViewModel
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.fragment_branch_details.*
+import kotlinx.android.synthetic.main.fragment_branch_selection.continueButton
+import kotlinx.android.synthetic.main.widget_change_branch_bar.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
+import java.util.*
 
-class BranchDetailsFragment : BaseFragment<BranchDetailsViewModel>() {
-    override val layout: Int
-        get() = R.layout.fragment_branch_selection
-    override val viewModel: BranchDetailsViewModel by viewModel()
 
-    lateinit var parentViewModel: BranchViewModel
+class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
 
-    //    lateinit var countySpinnerAdapter: CountyAdapter
-    lateinit var countySpinnerAdapter: ArrayAdapter<County>
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        parentViewModel = getSharedViewModel()
+    companion object {
+        val TAG = BranchDetailsFragment::class.java.simpleName
     }
+
+    override val layout: Int
+        get() = R.layout.fragment_branch_details
+    override val viewModel: BranchViewModel by viewModel()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.counties().observe(this, Observer {
-//            setCountiesDropdown(it)
-//        })
-//        viewModel.next().observe(this, Observer {
-//            parentViewModel.goToNextFragment()
-//        })
-//        viewModel.getCounties()
-        parentViewModel.setTitle(getString(R.string.title_branch_details))
-
+        viewModel.branchBarText().observe(this, Observer {
+            branchBarText.text = it
+        })
+        viewModel.setTitle(getString(R.string.title_branch_details))
+        viewModel.getBranchBarText()
+        branchBarButton.setOnClickListener {
+            activity?.onBackPressed() //TODO fix crash on back
+        }
+        arrivalTime.setOnClickListener {
+            showTimePicker(R.string.branch_choose_time_enter,
+                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                    viewModel.setArrivalTime(hourOfDay, minute)
+                    arrivalTime.text = viewModel.getArrivalTime()
+                })
+        }
+        departureTime.setOnClickListener {
+            showTimePicker(R.string.branch_choose_time_leave,
+                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                    viewModel.setDepartureTime(hourOfDay, minute)
+                    departureTime.text = viewModel.getDepartureTime()
+                })
+        }
         setContinueButton()
     }
 
-    private fun setCountiesDropdown(counties: List<County>) {
-//        countySpinnerAdapter = CountyAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
-        countySpinnerAdapter = ArrayAdapter<County>(
-            activity!!,
-            R.layout.support_simple_spinner_dropdown_item,
-            counties
+    private fun showTimePicker(titleId: Int, listener: TimePickerDialog.OnTimeSetListener) {
+        val now = Calendar.getInstance()
+        val timePickerDialog = TimePickerDialog(
+            activity,
+            listener, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
         )
-        countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-        countySpinner.adapter = countySpinnerAdapter
-        countySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-//                viewModel.selectCounty(countySpinnerAdapter.getItem(position))
-                branchNumber.isEnabled = true
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
-        }
+        timePickerDialog.setTitle(titleId)
+        timePickerDialog.show()
     }
 
     private fun setContinueButton() {
         continueButton.setOnClickListener {
-            //            viewModel.validInput(branchNumber.text)
+            viewModel.validateInputDetails(
+                environmentRadioGroup.checkedRadioButtonId,
+                sexRadioGroup.checkedRadioButtonId
+            )
 
         }
     }

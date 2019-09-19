@@ -3,10 +3,11 @@ package ro.code4.monitorizarevot.data.model
 import org.parceler.Parcel
 import ro.code4.monitorizarevot.data.model.response.ResponseAnswer
 
+//@Entity(tableName = "branch_question_answer")
 @Parcel(Parcel.Serialization.FIELD)
 class BranchQuestionAnswer {
 
-    //    @PrimaryKey
+    //        @PrimaryKey
     var id: String? = null
 
     var countryCode: String? = null

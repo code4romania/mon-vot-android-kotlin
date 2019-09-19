@@ -1,9 +1,13 @@
 package ro.code4.monitorizarevot.repositories
 
+import android.util.Log
 import io.reactivex.Observable
 import okhttp3.ResponseBody
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import retrofit2.Call
 import retrofit2.Retrofit
+import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
@@ -11,8 +15,10 @@ import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 
 
-class Repository(private val retrofit: Retrofit) {
+class Repository : KoinComponent {
 
+    private val retrofit: Retrofit by inject()
+    private val db: AppDatabase by inject()
     private val loginInterface: LoginInterface by lazy {
         retrofit.create(LoginInterface::class.java)
     }
@@ -22,7 +28,16 @@ class Repository(private val retrofit: Retrofit) {
 
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
 
-    fun getCounties(): Observable<List<County>> = apiInterface.getCounties()
+    fun getCounties(): Observable<List<County>> {
+        val observableApi = apiInterface.getCounties().doOnNext { list ->
+            Log.i("GAGA", "SAVED TO DB")
+            db.countyDao().save(*list.map { it }.toTypedArray())
+        }
+        val observableDb = db.countyDao().getAll().toObservable()
+
+        return Observable.concatArrayEager(observableApi, observableDb)
+    }
+
     fun getForm(formId: String): Observable<List<Section>> = apiInterface.getForm(formId)
 
     fun getFormVersion(): Observable<VersionResponse> = apiInterface.getFormVersion()

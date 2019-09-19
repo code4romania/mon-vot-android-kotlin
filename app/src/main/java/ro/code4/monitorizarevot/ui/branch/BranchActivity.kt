@@ -23,8 +23,16 @@ class BranchActivity : BaseActivity<BranchViewModel>() {
         })
         viewModel.next().observe(this, Observer {
             //            Log.i("GAGA", "YAY")
-            replaceFragment(R.id.container, BranchDetailsFragment())
+            replaceFragment(
+                R.id.container,
+                BranchDetailsFragment(),
+                tag = BranchDetailsFragment.TAG
+            )
         })
-        replaceFragment(R.id.container, BranchSelectionFragment())
+        replaceFragment(
+            R.id.container,
+            BranchSelectionFragment(),
+            tag = BranchSelectionFragment.TAG
+        )
     }
 }

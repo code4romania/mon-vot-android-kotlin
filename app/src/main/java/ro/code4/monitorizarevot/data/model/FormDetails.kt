@@ -4,9 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
+//@Entity(tableName = "form_details")
 @Parcel(Parcel.Serialization.FIELD)
 class FormDetails {
-    //    @PrimaryKey
+    //     @PrimaryKey
     @Expose
     @SerializedName("code")
     var code: String? = null

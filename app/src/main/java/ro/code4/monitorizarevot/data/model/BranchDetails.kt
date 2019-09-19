@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
+//@Entity(tableName = "branch_details")
 @Parcel(Parcel.Serialization.FIELD) //TODO Syncable
 class BranchDetails {
 
@@ -30,11 +31,11 @@ class BranchDetails {
 
     @Expose
     @SerializedName("oraSosirii")
-    var timeEnter: String? = null
+    var arrivalTime: String? = null
 
     @Expose
     @SerializedName("oraPlecarii")
-    var timeLeave: String? = null
+    var departureTime: String? = null
 
     var isSynced: Boolean = false
 
