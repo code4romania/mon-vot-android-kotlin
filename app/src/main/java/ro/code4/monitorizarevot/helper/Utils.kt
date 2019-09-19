@@ -38,7 +38,10 @@ fun Calendar.updateTime(hourOfDay: Int, minute: Int) {
     set(Calendar.MINUTE, minute)
 }
 
-fun Calendar.getDateText(): String {
+fun Calendar?.getDateText(): String? {
+    if (this == null) {
+        return null
+    }
     val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
     return formatter.format(time)
 }

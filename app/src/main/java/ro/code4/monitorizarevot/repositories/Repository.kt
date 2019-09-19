@@ -1,7 +1,8 @@
 package ro.code4.monitorizarevot.repositories
 
-import android.util.Log
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -30,12 +31,16 @@ class Repository : KoinComponent {
 
     fun getCounties(): Observable<List<County>> {
         val observableApi = apiInterface.getCounties().doOnNext { list ->
-            Log.i("GAGA", "SAVED TO DB")
             db.countyDao().save(*list.map { it }.toTypedArray())
         }
         val observableDb = db.countyDao().getAll().toObservable()
 
         return Observable.concatArrayEager(observableApi, observableDb)
+    }
+
+    fun saveBranchDetails(branchDetails: BranchDetails) {
+        db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     fun getForm(formId: String): Observable<List<Section>> = apiInterface.getForm(formId)

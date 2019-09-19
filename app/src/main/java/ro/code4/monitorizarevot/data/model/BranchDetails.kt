@@ -1,15 +1,17 @@
 package ro.code4.monitorizarevot.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-//@Entity(tableName = "branch_details")
+@Entity(tableName = "branch_details")
 @Parcel(Parcel.Serialization.FIELD) //TODO Syncable
-class BranchDetails {
+class BranchDetails() {
 
     // TODO serialized names to be translated when api is updated
-//    @PrimaryKey
+    @PrimaryKey
     @SerializedName("id")
     lateinit var id: String
 
@@ -39,28 +41,25 @@ class BranchDetails {
 
     var isSynced: Boolean = false
 
-    constructor() {
 
+    constructor(countyCode: String, branchNumber: Int) : this() {
+        this.countyCode = countyCode
+        this.branchNumber = branchNumber
+        this.id = "$countyCode$branchNumber"
     }
 
-//    constructor(countyCode: String, branchNumber: Int) {
-//        this.countyCode = countyCode
-//        this.branchNumber = branchNumber
-//        this.id = countyCode + branchNumber.toString()
-//    }
-//
-//    constructor(
-//        countyCode: String,
-//        branchNumber: Int,
-//        isUrban: Boolean,
-//        isFemale: Boolean,
-//        timeEnter: String,
-//        timeLeave: String
-//    ) : this(countyCode, branchNumber) {
-//        this.isUrban = isUrban
-//        this.isFemale = isFemale
-//        this.timeEnter = timeEnter
-//        this.timeLeave = timeLeave
-//    }
+    constructor(
+        countyCode: String,
+        branchNumber: Int,
+        isUrban: Boolean,
+        isFemale: Boolean,
+        arrivalTime: String?,
+        departureTime: String?
+    ) : this(countyCode, branchNumber) {
+        this.isUrban = isUrban
+        this.isFemale = isFemale
+        this.arrivalTime = arrivalTime
+        this.departureTime = departureTime
+    }
 
 }
