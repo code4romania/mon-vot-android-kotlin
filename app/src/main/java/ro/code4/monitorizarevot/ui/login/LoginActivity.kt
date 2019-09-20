@@ -2,7 +2,6 @@ package ro.code4.monitorizarevot.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -31,7 +30,6 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         }
 
         viewModel.loggedIn().observe(this, Observer {
-            Toast.makeText(this, "Yaaay", Toast.LENGTH_SHORT).show()
             startBranchActivity()
         })
     }

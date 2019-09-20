@@ -11,5 +11,5 @@ class VersionResponse {
     // TODO serialized names to be translated when api is updated
     @Expose
     @SerializedName("formulare")
-    val formDetailsList: List<FormDetails>? = null
+    lateinit var formDetailsList: List<FormDetails>
 }

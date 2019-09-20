@@ -1,16 +1,14 @@
 package ro.code4.monitorizarevot.ui.branch
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.koin.core.inject
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.BranchDetails
 import ro.code4.monitorizarevot.data.model.County
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.getDateText
-import ro.code4.monitorizarevot.helper.getTimeText
-import ro.code4.monitorizarevot.helper.updateTime
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.util.*
@@ -21,6 +19,7 @@ class BranchViewModel : BaseViewModel() {
     private val nextToMainLiveData = SingleLiveEvent<Boolean>()
     private val titleLiveData = MutableLiveData<String>()
     private val branchBarTextLiveData = MutableLiveData<String>()
+    private val preferences: SharedPreferences by inject()
     private val app: Application by inject()
     private val repository: Repository by inject()
     private lateinit var selectedCounty: County
@@ -64,7 +63,8 @@ class BranchViewModel : BaseViewModel() {
             arrivalTime.getDateText(),
             departureTime.getDateText()
         )
-
+        preferences.saveCountyCode(selectedCounty.code)
+        preferences.saveBranchNumber(selectedBranchNumber)
         repository.saveBranchDetails(branchDetails) //TODO research when to send to backend this info
     }
 

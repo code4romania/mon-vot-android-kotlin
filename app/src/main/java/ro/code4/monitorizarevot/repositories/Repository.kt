@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.repositories
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
@@ -43,9 +44,62 @@ class Repository : KoinComponent {
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
+    fun getForms(): Observable<List<FormDetails>> {
+
+//
+        val observableDb = db.formDetailsDao().getAll().toObservable()
+
+        val observableApi = apiInterface.getForms()
+        return Observable.zip(
+            observableDb.onErrorReturn { null },
+            observableApi.onErrorReturn { null },
+            BiFunction<List<FormDetails>?, VersionResponse?, List<FormDetails>> { dbFormDetails, response ->
+                processFormDetailsData(dbFormDetails.sortedBy { it.code }, response)
+
+            })
+
+
+//        return Observable.concatArrayEager(observableApi, observableDb)
+    }
+
+    private fun deleteFormDetails(list: List<FormDetails>) {
+        db.formDetailsDao().deleteForms(*list.map { it }.toTypedArray())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    private fun saveFormDetails(list: List<FormDetails>) {
+        db.formDetailsDao().save(*list.map { it }.toTypedArray()).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    private fun processFormDetailsData(
+        dbFormDetails: List<FormDetails>?,
+        response: VersionResponse?
+    ): List<FormDetails> {
+        if (response == null) {
+            return dbFormDetails ?: ArrayList()
+        }
+        val apiFormDetails = response.formDetailsList.sortedBy { it.code }
+        if (dbFormDetails == null) {
+            saveFormDetails(apiFormDetails)
+            return apiFormDetails
+        }
+
+        if (apiFormDetails != dbFormDetails) {
+            deleteFormDetails(dbFormDetails)
+            //TODO delete answers and other bullshits
+            saveFormDetails(apiFormDetails)
+            return apiFormDetails
+        }
+        return dbFormDetails
+
+
+    }
+
     fun getForm(formId: String): Observable<List<Section>> = apiInterface.getForm(formId)
 
-    fun getFormVersion(): Observable<VersionResponse> = apiInterface.getFormVersion()
+    fun getFormVersion(): Observable<VersionResponse> = apiInterface.getForms()
 
     fun postBranchDetails(branchDetails: BranchDetails): Call<ResponseBody> =
         apiInterface.postBranchDetails(branchDetails)

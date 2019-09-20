@@ -13,8 +13,8 @@ import ro.code4.monitorizarevot.data.model.response.VersionResponse
 
 //TODO to be translated
 interface ApiInterface {
-    @GET("/api/v1/formular/versiune")
-    fun getFormVersion(): Observable<VersionResponse>
+    @GET("/api/v1/formular")
+    fun getForms(): Observable<VersionResponse>
 
     @GET("/api/v1/sectie")
     fun getCounties(): Observable<List<County>>

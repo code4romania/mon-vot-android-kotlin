@@ -74,8 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColorHint="@color/textPrimary"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin">
+                android:paddingStart="@dimen/margin"
+                android:paddingEnd="@dimen/margin">
 
                 <EditText
                     android:id="@+id/phone"
@@ -92,8 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColorHint="@color/textPrimary"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/margin"
+                android:paddingEnd="@dimen/margin"
                 android:layout_marginBottom="@dimen/login_margin_bottom">
 
                 <EditText

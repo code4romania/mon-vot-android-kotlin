@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_forms"
-        android:name="ro.code4.monitorizarevot.ui.home.HomeFragment"
+        android:name="ro.code4.monitorizarevot.ui.forms.FormsFragment"
         android:label="@string/menu_forms"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_forms" />
 
     <fragment
         android:id="@+id/nav_change_branch"

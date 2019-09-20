@@ -49,8 +49,8 @@
 
     <style name="menuItem">
         <item name="android:background">@drawable/background_menu_item</item>
-        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingStart">@dimen/margin</item>
+        <item name="android:paddingEnd">@dimen/margin</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/textPrimary</item>
@@ -58,9 +58,9 @@
 
     <style name="menuSectionItem">
         <item name="android:background">@drawable/background_menu_item</item>
-        <item name="android:paddingTop">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/margin</item>
+        <item name="android:paddingStart">@dimen/margin</item>
+        <item name="android:paddingEnd">@dimen/margin</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>

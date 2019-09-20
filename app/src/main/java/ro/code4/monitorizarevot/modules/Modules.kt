@@ -22,6 +22,7 @@ import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
 import ro.code4.monitorizarevot.ui.branch.selection.BranchSelectionViewModel
+import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
 import java.util.concurrent.Executors
@@ -98,4 +99,5 @@ val viewModelsModule = module {
     viewModel { MainViewModel() }
     viewModel { BranchViewModel() }
     viewModel { BranchSelectionViewModel() }
+    viewModel { FormsViewModel() }
 }

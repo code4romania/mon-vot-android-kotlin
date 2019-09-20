@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "606d1724f47e3eba4300b8319ca672f2",
+    "identityHash": "478344ec0952047fcc93bcd357087802",
     "entities": [
       {
         "tableName": "county",
@@ -103,12 +103,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "form_details",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `description` TEXT NOT NULL, `formVersion` INTEGER NOT NULL, PRIMARY KEY(`code`))",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "formVersion",
+            "columnName": "formVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '606d1724f47e3eba4300b8319ca672f2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '478344ec0952047fcc93bcd357087802')"
     ]
   }
 }

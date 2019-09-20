@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="@dimen/branch_bar_icon"
+        android:layout_height="@dimen/branch_bar_icon"
+        android:contentDescription="@string/content_icon_building"
+        android:src="@drawable/ic_building" />
+
+    <TextView
+        android:id="@+id/branchBarText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginStart="@dimen/branch_bar_text_spacing"
+        android:layout_weight="1"
+        android:textColor="@color/textPrimary"
+        android:textSize="@dimen/branch_bar_text"
+        android:textStyle="bold"
+        tools:text="CJ 1234" />
 
-        <ImageView
-            android:layout_width="@dimen/branch_bar_icon"
-            android:layout_height="@dimen/branch_bar_icon"
-            android:contentDescription="@string/content_icon_building"
-            android:src="@drawable/ic_building" />
-
-        <TextView
-            android:id="@+id/branchBarText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/branch_bar_text_spacing"
-            android:layout_weight="1"
-            android:textColor="@color/textPrimary"
-            android:textSize="@dimen/branch_bar_text"
-            android:textStyle="bold"
-            tools:text="CJ 1234" />
-
-        <Button
-            android:id="@+id/branchBarButton"
-            android:layout_width="@dimen/branch_bar_button_width"
-            android:layout_height="@dimen/branch_bar_button_height"
-            android:text="@string/branch_change"
-            android:textColor="@color/textSecondary"
-            android:textSize="@dimen/branch_bar_button_text" />
-    </LinearLayout>
-</merge>
+    <Button
+        android:id="@+id/branchBarButton"
+        android:layout_width="@dimen/branch_bar_button_width"
+        android:layout_height="@dimen/branch_bar_button_height"
+        android:text="@string/branch_change"
+        android:textColor="@color/textSecondary"
+        android:textSize="@dimen/branch_bar_button_text" />
+</LinearLayout>

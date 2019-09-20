@@ -1,50 +1,39 @@
 package ro.code4.monitorizarevot.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-//@Entity(tableName = "form_details")
+@Entity(tableName = "form_details")
 @Parcel(Parcel.Serialization.FIELD)
 class FormDetails {
-    //     @PrimaryKey
+    @PrimaryKey
     @Expose
     @SerializedName("code")
-    var code: String? = null
+    lateinit var code: String
 
     @Expose
     @SerializedName("description")
-    var description: String? = null
+    lateinit var description: String
 
     @Expose
     @SerializedName("ver")
     var formVersion: Int = 0
 
-    constructor() {
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is FormDetails) {
+            return false
+        }
+        return code == other.code && formVersion == other.formVersion
 
     }
 
-    constructor(code: String, description: String, formVersion: Int) {
-        this.code = code
-        this.description = description
-        this.formVersion = formVersion
+    override fun hashCode(): Int {
+        var result = code.hashCode()
+        result = 31 * result + formVersion
+        return result
     }
-
-//    override fun equals(o: Any?): Boolean {
-//        if (this === o) return true
-//        if (o ) return false
-//
-//        val that = o as FormDetails?
-//
-//        if (formVersion != that!!.formVersion) return false
-//        if (if (code != null) code != that.code else that.code != null) return false
-//        return if (description != null) description == that.description else that.description == null
-//    }
-//
-//    fun hashCode(): Int {
-//        var result = if (code != null) code!!.hashCode() else 0
-//        result = 31 * result + if (description != null) description!!.hashCode() else 0
-//        result = 31 * result + formVersion
-//        return result
-//    }
 }
