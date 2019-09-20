@@ -2,8 +2,7 @@ package ro.code4.monitorizarevot.helper
 
 
 object Constants {
-    val GUIDE_URL =
-        "https://votcorect.ro/wp-content/uploads/2019/05/Manualul-Observatorului-FV-2019-1.pdf"
+    val GUIDE_URL = "http://monitorizare-vot-ghid.azurewebsites.net/"
     val ORGANISATION_WEB_URL = "https://code4.ro/"
     val SERVICE_CENTER_PHONE_NUMBER = "0800 080 200"
     val TIME_FORMAT = "HH:mm"
