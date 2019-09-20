@@ -14,6 +14,9 @@ import ro.code4.monitorizarevot.helper.buildInitialsTextDrawable
 
 class FormGridAdapter(private val context: Context, private val items: ArrayList<ListItem>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    lateinit var listener: OnClickListener
+
     companion object {
         const val TYPE_FORM = 0
         const val TYPE_NOTE = 1
@@ -35,13 +38,18 @@ class FormGridAdapter(private val context: Context, private val items: ArrayList
         val item = items[position]
         val pair: Pair<String, Drawable?> = when (item.type) {
             TYPE_FORM -> {
+
                 val form = item.value as FormDetails
+                holder.itemView.setOnClickListener { listener.onFormClick(form) }
                 Pair(form.description, context.buildInitialsTextDrawable(form.code))
             }
-            else -> Pair(
-                context.getString(R.string.form_notes),
-                context.getDrawable(R.drawable.ic_notes)
-            )
+            else -> {
+                holder.itemView.setOnClickListener { listener.onNoteClick() }
+                Pair(
+                    context.getString(R.string.form_notes),
+                    context.getDrawable(R.drawable.ic_notes)
+                )
+            }
 
         }
         holder.itemView.formDescription.text = pair.first
@@ -50,4 +58,8 @@ class FormGridAdapter(private val context: Context, private val items: ArrayList
 
     class ViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView)
 
+    interface OnClickListener {
+        fun onFormClick(form: FormDetails)
+        fun onNoteClick()
+    }
 }

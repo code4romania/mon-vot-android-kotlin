@@ -10,10 +10,13 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.FormGridAdapter
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.widget.SpacesItemDecoration
 
-class FormsFragment : BaseFragment<FormsViewModel>() {
+class FormsFragment : BaseFragment<FormsViewModel>(), FormGridAdapter.OnClickListener {
+
+
     override val layout: Int
         get() = R.layout.fragment_forms
     override val viewModel: FormsViewModel by viewModel()
@@ -39,9 +42,19 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
     private fun setData(list: ArrayList<ListItem>) {
         if (!::adapter.isInitialized) {
             adapter = FormGridAdapter(mContext, list)
+            adapter.listener = this
             formsGrid.adapter = adapter
         }
         //todo clear adapter when refreshing
     }
+
+    override fun onFormClick(form: FormDetails) {
+
+    }
+
+    override fun onNoteClick() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates. //go to add note
+    }
+
 
 }
