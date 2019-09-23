@@ -75,7 +75,7 @@
     <string name="branch_subtitle">în care te afli</string>
     <string name="branch_county">Județ</string>
     <string name="branch_number">Număr secție</string>
-    <string name="branch_change">Schimbă secţia</string>
+    <string name="branch_change">Schimbă</string>
     <string name="branch_question_environment">În ce mediu se află secția?</string>
     <string name="branch_answer_rural">Rural</string>
     <string name="branch_answer_urban">Urban</string>

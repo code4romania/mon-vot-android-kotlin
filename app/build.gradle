@@ -100,5 +100,5 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$roomVersion"
     testImplementation "androidx.room:room-testing:$roomVersion"
 
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
 }

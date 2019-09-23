@@ -4,25 +4,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_forms.*
 import kotlinx.android.synthetic.main.widget_change_branch_bar.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.FormGridAdapter
+import ro.code4.monitorizarevot.adapters.FormAdapter
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.helper.changeBranch
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.widget.SpacesItemDecoration
 
-class FormsFragment : BaseFragment<FormsViewModel>(), FormGridAdapter.OnClickListener {
+class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListener {
 
 
     override val layout: Int
         get() = R.layout.fragment_forms
     override val viewModel: FormsViewModel by viewModel()
-    private lateinit var adapter: FormGridAdapter
+    private lateinit var adapter: FormAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,14 +38,14 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormGridAdapter.OnClickLis
         branchBarButton.setOnClickListener {
             (activity as AppCompatActivity).changeBranch()
         }
-        formsGrid.layoutManager = GridLayoutManager(mContext, 2)
+        formsGrid.layoutManager = LinearLayoutManager(mContext)
         formsGrid.addItemDecoration(SpacesItemDecoration(mContext.resources.getDimensionPixelSize(R.dimen.small_margin)))
 
     }
 
     private fun setData(list: ArrayList<ListItem>) {
         if (!::adapter.isInitialized) {
-            adapter = FormGridAdapter(mContext, list)
+            adapter = FormAdapter(mContext, list)
             adapter.listener = this
             formsGrid.adapter = adapter
         }

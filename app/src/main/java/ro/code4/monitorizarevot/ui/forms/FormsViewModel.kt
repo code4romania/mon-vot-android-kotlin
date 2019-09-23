@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
-import ro.code4.monitorizarevot.adapters.FormGridAdapter.Companion.TYPE_FORM
-import ro.code4.monitorizarevot.adapters.FormGridAdapter.Companion.TYPE_NOTE
+import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
+import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.helper.getBranchNumber

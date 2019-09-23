@@ -9,7 +9,7 @@
     <color name="backgroundLight">#FFFFFF</color>
     <color name="backgroundAccent">#757575</color>
     <color name="textPrimary">#333E48</color>
-    <color name="textSecondary">#757575</color>
+    <color name="textSecondary">#66333E48</color>
     <color name="textButton">#81175C</color>
     <color name="textLight">#FFFFFF</color>
     <color name="buttonColor">#1281175C</color>
@@ -17,7 +17,8 @@
     <color name="inputBorder">#E7E7E7</color>
     <color name="inputBorderSelected">#757575</color>
     <color name="hint">#8C8C8C</color>
-    <color name="complete">#00C121</color>
+    <color name="completeForm">#32D23D</color>
+    <color name="incompleteForm">#F5F5F5</color>
     <color name="incomplete">#ACB4BE</color>
     <color name="ic_launcher_background">#FFCC01</color>
     <color name="grey">#EEEEEE</color>

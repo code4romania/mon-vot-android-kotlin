@@ -3,14 +3,16 @@ package ro.code4.monitorizarevot.helper
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.amulyakhare.textdrawable.TextDrawable
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -82,22 +84,40 @@ fun AppCompatActivity.callSupportCenter() {
     startActivity(callIntent)
 }
 
-fun ImageView.setFormCode(context: Context, code: String?) {
-    this.setImageDrawable(context.buildInitialsTextDrawable(code))
+fun Context.highlight(prefix: String, suffix: String? = null): CharSequence {
+    val nonHighlighted = SpannableString(prefix)
+    nonHighlighted.setSpan(
+        StyleSpan(Typeface.BOLD),
+        0,
+        prefix.length,
+        Spannable.SPAN_INCLUSIVE_INCLUSIVE
+    )
+    val builder = SpannableStringBuilder()
+    builder.append(nonHighlighted)
+    suffix?.let {
+        val highlighted = SpannableString(suffix)
+        highlighted.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.textSecondary)),
+            0,
+            suffix.length,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+        )
 
-}
+        highlighted.setSpan(
+            StyleSpan(
+                Typeface.createFromAsset(
+                    assets,
+                    "fonts/SourceSansPro-Light.ttf"
+                ).style
+            ),  //TODO make text light
+            0,
+            suffix.length,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        builder.append(highlighted)
+    }
 
-fun Context.buildInitialsTextDrawable(code: String?): Drawable {
-    val size = resources.getDimensionPixelSize(R.dimen.form_icon_size)
-    return TextDrawable.builder()
-        .beginConfig()
-        .bold()
-        .toUpperCase()
-        .width(size)
-        .height(size)
-        .fontSize(resources.getDimensionPixelSize(R.dimen.form_icon_code))
-        .useFont(Typeface.SANS_SERIF)
-        .textColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        .endConfig()
-        .buildRect(code, ContextCompat.getColor(this, android.R.color.transparent))
+
+    return builder
+
 }
