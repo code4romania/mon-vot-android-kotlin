@@ -2,7 +2,6 @@ package ro.code4.monitorizarevot.ui.branch.selection
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +19,6 @@ class BranchSelectionViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
     private val countiesLiveData = MutableLiveData<List<County>>().apply {
-        Log.i("gaga", "we get counties")
         getCounties()
     }
     private val selectionLiveData = SingleLiveEvent<Pair<County, Int>>()

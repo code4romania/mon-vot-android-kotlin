@@ -60,6 +60,16 @@ fun Calendar.getTimeText(): String {
     return formatter.format(time)
 }
 
+fun String?.getDate(): Long? {
+    if (this == null) {
+        return null
+    }
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+
+    return formatter.parse(this)?.time
+
+}
+
 fun AppCompatActivity.callSupportCenter() {
     val callIntent = Intent(Intent.ACTION_DIAL)
     callIntent.data = Uri.parse("tel:" + Constants.SERVICE_CENTER_PHONE_NUMBER)

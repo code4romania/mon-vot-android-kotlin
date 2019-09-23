@@ -38,24 +38,37 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         viewModel.setTitle(getString(R.string.title_branch_details))
         viewModel.getBranchBarText()
         branchBarButton.setOnClickListener {
-            activity?.onBackPressed() //TODO fix crash on back
+            activity?.onBackPressed()
         }
+        viewModel.departureTime().observe(this, Observer {
+            departureTime.text = it
+        })
+        viewModel.arrivalTime().observe(this, Observer {
+            arrivalTime.text = it
+        })
         arrivalTime.setOnClickListener {
             showTimePicker(R.string.branch_choose_time_enter,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                     viewModel.setArrivalTime(hourOfDay, minute)
-                    arrivalTime.text = viewModel.getArrivalTime()
                 })
         }
         departureTime.setOnClickListener {
             showTimePicker(R.string.branch_choose_time_leave,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                     viewModel.setDepartureTime(hourOfDay, minute)
-                    departureTime.text = viewModel.getDepartureTime()
                 })
         }
+        viewModel.selectedBranch().observe(this, Observer {
+            setSelection(it)
+        })
         setContinueButton()
     }
+
+    private fun setSelection(pair: Pair<Int, Int>) {
+        environmentRadioGroup.check(pair.first)
+        sexRadioGroup.check(pair.second)
+    }
+
 
     private fun showTimePicker(titleId: Int, listener: TimePickerDialog.OnTimeSetListener) {
         val now = Calendar.getInstance()

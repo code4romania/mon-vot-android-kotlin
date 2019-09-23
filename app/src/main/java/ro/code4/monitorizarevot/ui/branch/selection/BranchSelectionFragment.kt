@@ -74,7 +74,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
     private fun setCountiesDropdown(counties: List<County>) {
         if (!::countySpinnerAdapter.isInitialized) {
-//        countySpinnerAdapter = CountyAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
+//        countySpinnerAdapter = CountyAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties) //TODO FIX this
             countySpinnerAdapter =
                 ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
             countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)

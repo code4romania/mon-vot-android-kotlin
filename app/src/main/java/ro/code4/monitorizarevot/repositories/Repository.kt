@@ -44,6 +44,10 @@ class Repository : KoinComponent {
         return db.countyDao().get(countyCode).toObservable()
     }
 
+    fun getBranch(countyCode: String, branchNumber: Int): Observable<BranchDetails> {
+        return db.branchDetailsDao().get(countyCode, branchNumber).toObservable()
+    }
+
     fun saveBranchDetails(branchDetails: BranchDetails) {
         db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
@@ -112,6 +116,7 @@ class Repository : KoinComponent {
 
     fun postQuestionAnswer(responseAnswerContainer: ResponseAnswerContainer): Call<ResponseBody> =
         apiInterface.postQuestionAnswer(responseAnswerContainer)
+
 
 //    fun postNote(note: Note): Call<ResponseBody> {
 //        var body: MultipartBody.Part? = null
