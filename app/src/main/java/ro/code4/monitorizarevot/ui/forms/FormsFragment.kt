@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.forms
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_forms.*
@@ -11,6 +12,7 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.FormGridAdapter
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.helper.changeBranch
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.widget.SpacesItemDecoration
 
@@ -33,7 +35,9 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormGridAdapter.OnClickLis
         })
         viewModel.getBranchBarText()
         viewModel.getForms()
-
+        branchBarButton.setOnClickListener {
+            (activity as AppCompatActivity).changeBranch()
+        }
         formsGrid.layoutManager = GridLayoutManager(mContext, 2)
         formsGrid.addItemDecoration(SpacesItemDecoration(mContext.resources.getDimensionPixelSize(R.dimen.small_margin)))
 

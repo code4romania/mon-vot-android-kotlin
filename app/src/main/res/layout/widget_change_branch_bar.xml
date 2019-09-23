@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:background="@color/backgroundLight"
+    android:elevation="@dimen/xsmall_elevation"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin">
 
     <ImageView
-        android:layout_width="@dimen/branch_bar_icon"
-        android:layout_height="@dimen/branch_bar_icon"
+        android:id="@+id/branchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/content_icon_building"
-        android:src="@drawable/ic_building" />
+        android:src="@drawable/ic_branch"
+        app:layout_constraintBottom_toBottomOf="@id/branchBarText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/branchBarText" />
 
     <TextView
         android:id="@+id/branchBarText"
+        style="@style/Text.Branch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/branch_bar_text_spacing"
-        android:layout_weight="1"
-        android:textColor="@color/textPrimary"
-        android:textSize="@dimen/branch_bar_text"
-        android:textStyle="bold"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/branchBarButton"
+        app:layout_constraintStart_toEndOf="@id/branchIcon"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="CJ 1234" />
 
     <Button
         android:id="@+id/branchBarButton"
-        android:layout_width="@dimen/branch_bar_button_width"
-        android:layout_height="@dimen/branch_bar_button_height"
+        style="@style/Button.Link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/branch_change"
-        android:textColor="@color/textSecondary"
-        android:textSize="@dimen/branch_bar_button_text" />
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="@id/branchBarText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/branchBarText" />
+</androidx.constraintlayout.widget.ConstraintLayout>

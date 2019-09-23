@@ -6,6 +6,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="big_margin">24dp</dimen>
     <dimen name="small_margin">8dp</dimen>
+    <dimen name="xsmall_margin">4dp</dimen>
 
     <dimen name="form_icon_size">72dp</dimen>
     <!-- General -->
@@ -61,4 +62,7 @@
     <dimen name="question_overview_item_text">14sp</dimen>
     <dimen name="question_card_height">200dp</dimen>
     <dimen name="form_icon_code">72sp</dimen>
+    <dimen name="elevation">4dp</dimen>
+    <dimen name="small_elevation">2dp</dimen>
+    <dimen name="xsmall_elevation">1dp</dimen>
 </resources>

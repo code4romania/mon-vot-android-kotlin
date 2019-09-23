@@ -15,6 +15,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +41,11 @@ fun AppCompatActivity.replaceFragment(
         ft.addToBackStack(it)
     }
     ft.commit()
+}
+
+fun AppCompatActivity.changeBranch() {
+    startActivity(Intent(this, BranchActivity::class.java))
+    finishAffinity()
 }
 
 fun Calendar.updateTime(hourOfDay: Int, minute: Int) {
