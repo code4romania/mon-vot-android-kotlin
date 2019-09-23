@@ -1,145 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/widget_change_branch_bar" />
+        <include
+            android:id="@+id/changeBranchBar"
+            layout="@layout/widget_change_branch_bar" />
 
         <TextView
-            style="@style/label"
+            android:id="@+id/environmentLabel"
+            style="@style/Text.BranchSelectLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/branch_question_environment" />
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:text="@string/branch_question_environment"
+            app:layout_constraintTop_toBottomOf="@id/changeBranchBar" />
 
         <RadioGroup
             android:id="@+id/environmentRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/label_top_spacing"
-            android:orientation="horizontal">
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/environmentLabel">
 
             <ro.code4.monitorizarevot.widget.AnswerRadioButton
                 android:id="@+id/urbanEnvironment"
                 style="@style/radioButton"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin"
                 android:layout_weight="1"
                 android:text="@string/branch_answer_urban" />
 
-            <Space
-                android:layout_width="@dimen/margin"
-                android:layout_height="match_parent" />
 
             <ro.code4.monitorizarevot.widget.AnswerRadioButton
                 android:id="@+id/ruralEnvironment"
                 style="@style/radioButton"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/branch_answer_rural" />
         </RadioGroup>
 
-        <View style="@style/horizontalSeparator" />
 
         <TextView
-            style="@style/label"
+            android:id="@+id/genderLabel"
+            style="@style/Text.BranchSelectLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/branch_question_sex" />
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:text="@string/branch_question_gender"
+            app:layout_constraintTop_toBottomOf="@id/environmentRadioGroup" />
 
         <RadioGroup
-            android:id="@+id/sexRadioGroup"
+            android:id="@+id/genderRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/label_top_spacing"
-            android:orientation="horizontal">
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/genderLabel">
 
             <ro.code4.monitorizarevot.widget.AnswerRadioButton
-                android:id="@+id/maleSex"
+                android:id="@+id/maleGender"
                 style="@style/radioButton"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin"
                 android:layout_weight="1"
                 android:text="@string/branch_answer_man" />
 
-            <Space
-                android:layout_width="@dimen/margin"
-                android:layout_height="match_parent" />
 
             <ro.code4.monitorizarevot.widget.AnswerRadioButton
-                android:id="@+id/femaleSex"
+                android:id="@+id/femaleGender"
                 style="@style/radioButton"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/branch_answer_woman" />
         </RadioGroup>
 
-        <View style="@style/horizontalSeparator" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/arrivalTimeLabel"
+            style="@style/Text.BranchSelectLabel"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:text="@string/branch_question_enter"
+            app:layout_constraintEnd_toStartOf="@id/departureTimeLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/genderRadioGroup" />
 
-            <TextView
-                style="@style/label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/branch_question_enter" />
 
-            <Space
-                android:layout_width="@dimen/margin"
-                android:layout_height="match_parent" />
-
-            <TextView
-                style="@style/label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/branch_question_leave" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/departureTimeLabel"
+            style="@style/Text.BranchSelectLabel"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginEnd="@dimen/margin"
+            android:gravity="end"
+            android:text="@string/branch_question_leave"
+            app:layout_constraintBottom_toBottomOf="@id/arrivalTimeLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/arrivalTimeLabel"
+            app:layout_constraintTop_toTopOf="@id/arrivalTimeLabel" />
 
-            <TextView
-                android:id="@+id/arrivalTime"
-                style="@style/input"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="@string/hint_time" />
 
-            <Space
-                android:layout_width="@dimen/margin"
-                android:layout_height="match_parent" />
+        <TextView
 
-            <TextView
-                android:id="@+id/departureTime"
-                style="@style/input"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="@string/hint_time" />
-        </LinearLayout>
-    </LinearLayout>
+            android:id="@+id/arrivalTime"
+            style="@style/Text.Option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:hint="@string/hint_time"
+            app:layout_constraintEnd_toStartOf="@id/departureTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/arrivalTimeLabel" />
+
+
+        <TextView
+            android:id="@+id/departureTime"
+            style="@style/Text.Option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin"
+            android:hint="@string/hint_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/arrivalTime"
+            app:layout_constraintTop_toTopOf="@id/arrivalTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/continueButton"
-        style="@style/buttonEmbedded"
+        style="@style/Button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginBottom="@dimen/big_margin"
         android:text="@string/button_continue_to_forms" />
 </ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom>

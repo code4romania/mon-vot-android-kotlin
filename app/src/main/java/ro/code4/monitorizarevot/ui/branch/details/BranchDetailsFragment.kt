@@ -66,7 +66,7 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
 
     private fun setSelection(pair: Pair<Int, Int>) {
         environmentRadioGroup.check(pair.first)
-        sexRadioGroup.check(pair.second)
+        genderRadioGroup.check(pair.second)
     }
 
 
@@ -84,7 +84,7 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         continueButton.setOnClickListener {
             viewModel.validateInputDetails(
                 environmentRadioGroup.checkedRadioButtonId,
-                sexRadioGroup.checkedRadioButtonId
+                genderRadioGroup.checkedRadioButtonId
             )
 
         }

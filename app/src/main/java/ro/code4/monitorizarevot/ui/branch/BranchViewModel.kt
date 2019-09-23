@@ -58,7 +58,7 @@ class BranchViewModel : BaseViewModel() {
             .subscribe({
                 val pair = Pair(
                     if (it.isUrban) R.id.urbanEnvironment else R.id.ruralEnvironment,
-                    if (it.isFemale) R.id.femaleSex else R.id.maleSex
+                    if (it.isFemale) R.id.femaleGender else R.id.maleGender
                 )
                 selectedBranchLiveData.postValue(pair)
                 setArrivalTime(it.arrivalTime)
@@ -70,26 +70,26 @@ class BranchViewModel : BaseViewModel() {
 
     fun validateInputDetails(
         environmentId: Int,
-        sexId: Int
+        genderId: Int
     ) {
         when {
             environmentId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_branch_environment))
-            sexId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_branch_sex))
+            genderId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_branch_gender))
             !::arrival.isInitialized -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_branch_time_in))
             !checkTime() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_time_input))
             else -> {
-                persistSelection(environmentId, sexId)
+                persistSelection(environmentId, genderId)
                 nextToMainLiveData.postValue(true)
             }
         }
     }
 
-    private fun persistSelection(environmentId: Int, sexId: Int) {
+    private fun persistSelection(environmentId: Int, genderId: Int) {
         val branchDetails = BranchDetails(
             selectedCounty.code,
             selectedBranchNumber,
             environmentId == R.id.urbanEnvironment,
-            sexId == R.id.femaleSex,
+            genderId == R.id.femaleGender,
             arrival.getDateText(),
             departure.getDateText()
         )

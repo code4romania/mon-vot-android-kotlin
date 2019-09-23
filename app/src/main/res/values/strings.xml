@@ -76,7 +76,7 @@
     <string name="branch_question_environment">Choose the area of the station</string>
     <string name="branch_answer_rural">Rural</string>
     <string name="branch_answer_urban">Urban</string>
-    <string name="branch_question_sex">The president of the polling station is:</string>
+    <string name="branch_question_gender">The president of the polling station is:</string>
     <string name="branch_answer_man">Man</string>
     <string name="branch_answer_woman">Woman</string>
     <string name="branch_question_enter">Arrival time</string>
@@ -88,7 +88,7 @@
     <string name="invalid_branch_number_minus">The number of the station must be positive</string>
     <string name="invalid_branch_number_max">The maximum number for %1$s county is %2$d</string>
     <string name="invalid_branch_environment">Choose urban or rural</string>
-    <string name="invalid_branch_sex">Choose man or woman</string>
+    <string name="invalid_branch_gender">Choose man or woman</string>
     <string name="invalid_branch_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
 

@@ -5,6 +5,7 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="big_margin">24dp</dimen>
+    <dimen name="xbig_margin">32dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="xsmall_margin">4dp</dimen>
 
