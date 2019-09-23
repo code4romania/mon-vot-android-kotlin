@@ -25,7 +25,6 @@ class BranchActivity : BaseActivity<BranchViewModel>() {
         })
         viewModel.nextToMain().observe(this, Observer {
             startActivity(Intent(this, MainActivity::class.java))
-            finish()
         })
         viewModel.next().observe(this, Observer {
             replaceFragment(

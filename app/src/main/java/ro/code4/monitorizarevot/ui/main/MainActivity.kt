@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -14,6 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.callSupportCenter
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.branch.BranchActivity
 
 class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
@@ -49,6 +51,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 true
             } else {
                 when (item.itemId) {
+                    R.id.nav_change_branch -> {
+                        startActivity(Intent(this, BranchActivity::class.java))
+                        finishAffinity()
+                        true
+                    }
                     R.id.nav_call -> {
                         callSupportCenter()
                         true

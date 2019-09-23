@@ -10,6 +10,7 @@
                         android:title="@string/menu_forms" />
                     <item
                         android:id="@+id/nav_change_branch"
+                        android:checkable="false"
                         android:title="@string/menu_change_branch" />
                 </group>
             </menu>

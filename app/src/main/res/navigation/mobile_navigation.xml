@@ -11,11 +11,6 @@
         android:label="@string/menu_forms"
         tools:layout="@layout/fragment_forms" />
 
-    <fragment
-        android:id="@+id/nav_change_branch"
-        android:name="ro.code4.monitorizarevot.ui.gallery.GalleryFragment"
-        android:label="@string/menu_change_branch"
-        tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_guide"
