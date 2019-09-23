@@ -63,8 +63,6 @@ class BranchViewModel : BaseViewModel() {
             arrivalTime.getDateText(),
             departureTime.getDateText()
         )
-        preferences.saveCountyCode(selectedCounty.code)
-        preferences.saveBranchNumber(selectedBranchNumber)
         repository.saveBranchDetails(branchDetails) //TODO research when to send to backend this info
     }
 
@@ -99,6 +97,8 @@ class BranchViewModel : BaseViewModel() {
             )
             else -> {
                 selectedBranchNumber = branchNumber
+                preferences.saveCountyCode(selectedCounty.code)
+                preferences.saveBranchNumber(selectedBranchNumber)
                 nextLiveData.postValue(true)
             }
         }

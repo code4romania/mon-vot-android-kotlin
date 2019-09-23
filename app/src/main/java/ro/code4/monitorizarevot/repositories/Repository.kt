@@ -39,6 +39,11 @@ class Repository : KoinComponent {
         return Observable.concatArrayEager(observableApi, observableDb)
     }
 
+    fun getCounty(countyCode: String): Observable<County> {
+
+        return db.countyDao().get(countyCode).toObservable()
+    }
+
     fun saveBranchDetails(branchDetails: BranchDetails) {
         db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()

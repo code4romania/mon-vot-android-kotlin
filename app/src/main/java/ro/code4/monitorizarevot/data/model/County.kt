@@ -36,4 +36,11 @@ class County {
     }
 
     override fun toString(): String = name ?: ""
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is County) {
+            return false
+        }
+        return code == other.code
+    }
 }

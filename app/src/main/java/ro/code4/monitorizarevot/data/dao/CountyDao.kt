@@ -15,4 +15,7 @@ interface CountyDao {
     @Insert(onConflict = REPLACE)
     fun save(vararg counties: County)
 
+    @Query("SELECT * FROM county where code=:countyCode")
+    fun get(countyCode: String): Maybe<County>
+
 }

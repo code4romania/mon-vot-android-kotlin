@@ -35,27 +35,29 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
         parentViewModel = getSharedViewModel()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.counties().observe(this, Observer {
             setCountiesDropdown(it)
         })
-        viewModel.getCounties()
+
+        viewModel.selection().observe(this, Observer {
+            countySpinner.setSelection(countySpinnerAdapter.getPosition(it.first))
+            branchNumber.setText(it.second.toString())
+            branchNumber.setSelection(it.second.toString().length)
+            branchNumber.isEnabled = true
+        })
         parentViewModel.setTitle(getString(R.string.title_branch_selection))
-
-        setContinueButton()
-    }
-
-    private fun setCountiesDropdown(counties: List<County>) {
-//        countySpinnerAdapter = CountyAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
-        countySpinnerAdapter =
-            ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
-        countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-        countySpinner.adapter = countySpinnerAdapter
         countySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long
             ) {
@@ -67,7 +69,21 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
             }
         }
+        setContinueButton()
     }
+
+    private fun setCountiesDropdown(counties: List<County>) {
+        if (!::countySpinnerAdapter.isInitialized) {
+//        countySpinnerAdapter = CountyAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
+            countySpinnerAdapter =
+                ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
+            countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+
+        }
+        countySpinner.adapter = countySpinnerAdapter
+        viewModel.getSelection()
+    }
+
 
     private fun setContinueButton() {
         continueButton.setOnClickListener {

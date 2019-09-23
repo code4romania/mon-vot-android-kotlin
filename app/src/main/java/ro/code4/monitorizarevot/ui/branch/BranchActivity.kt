@@ -36,4 +36,6 @@ class BranchActivity : BaseActivity<BranchViewModel>() {
         })
         replaceFragment(R.id.container, BranchSelectionFragment())
     }
+
+
 }
