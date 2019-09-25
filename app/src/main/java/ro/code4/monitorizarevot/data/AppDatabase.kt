@@ -7,13 +7,11 @@ import androidx.room.RoomDatabase
 import ro.code4.monitorizarevot.data.dao.BranchDetailsDao
 import ro.code4.monitorizarevot.data.dao.CountyDao
 import ro.code4.monitorizarevot.data.dao.FormsDao
-import ro.code4.monitorizarevot.data.model.BranchDetails
-import ro.code4.monitorizarevot.data.model.County
-import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.model.*
 
 @Database(
 //    entities = [ResponseAnswer::class, BranchDetails::class, BranchQuestionAnswer::class, County::class, FormDetails::class, Section::class],
-    entities = [County::class, BranchDetails::class, FormDetails::class],
+    entities = [County::class, BranchDetails::class, FormDetails::class, Section::class, Question::class, Answer::class],
     version = 1
 )
 //@TypeConverters(DateConverter::class, ResponseAnswerConverter::class, BranchDetailsConverter::class)

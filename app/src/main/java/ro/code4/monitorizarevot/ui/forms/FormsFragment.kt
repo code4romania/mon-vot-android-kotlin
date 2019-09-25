@@ -38,8 +38,8 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListene
         branchBarButton.setOnClickListener {
             (activity as AppCompatActivity).changeBranch()
         }
-        formsGrid.layoutManager = LinearLayoutManager(mContext)
-        formsGrid.addItemDecoration(SpacesItemDecoration(mContext.resources.getDimensionPixelSize(R.dimen.small_margin)))
+        formsList.layoutManager = LinearLayoutManager(mContext)
+        formsList.addItemDecoration(SpacesItemDecoration(mContext.resources.getDimensionPixelSize(R.dimen.small_margin)))
 
     }
 
@@ -47,7 +47,7 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListene
         if (!::adapter.isInitialized) {
             adapter = FormAdapter(mContext, list)
             adapter.listener = this
-            formsGrid.adapter = adapter
+            formsList.adapter = adapter
         }
         //todo clear adapter when refreshing
     }

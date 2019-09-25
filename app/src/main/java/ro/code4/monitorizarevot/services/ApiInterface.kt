@@ -20,14 +20,15 @@ interface ApiInterface {
     fun getCounties(): Observable<List<County>>
 
 
-    @GET("/api/v1/formular")
-    fun getForm(@Query("idformular") formId: String): Observable<List<Section>>
+    @GET("/api/v1/formular/{formCode}")
+    fun getForm(@Path("formCode") formId: String): Observable<List<Section>>
 
     @POST("/api/v1/sectie")
     fun postBranchDetails(@Body branchDetails: BranchDetails): Call<ResponseBody>
 
     @POST("/api/v1/raspuns")
     fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Call<ResponseBody>
+
 
     @Multipart
     @POST("/api/v1/note/ataseaza")

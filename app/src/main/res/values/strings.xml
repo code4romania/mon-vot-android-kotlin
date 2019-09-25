@@ -121,4 +121,11 @@
     <string name="note_record_video">🔴 Record video</string>
 
     <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
+    <string name="sync_locally_saved">saved locally</string>
+    <string name="add_note_to_question">Add Note to Current Question</string>
+    <string name="add_note">Add a note</string>
+    <string name="note_submit">Submit</string>
+
+    <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
+    <string name="sync_manual">Synchronize Data Manually</string>
 </resources>

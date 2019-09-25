@@ -9,6 +9,6 @@ class ResponseAnswerContainer {
     // TODO serialized names to be translated when api is updated
     @SerializedName("raspuns")
     @Expose
-    var responseMapperList: List<QuestionAnswer>? = null
+    lateinit var responseMapperList: List<QuestionAnswer>
 }
 

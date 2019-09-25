@@ -44,6 +44,10 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="Button.Link.Purple">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/textButton</item>
+    </style>
 
     <style name="Text">
         <item name="android:textSize">14sp</item>
@@ -71,6 +75,10 @@
         <item name="android:textColorHint">@color/hint</item>
     </style>
 
+    <style name="Text.Sync">
+        <item name="android:textColor">@color/syncProgress</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 
     <style name="Text.Label">
         <item name="android:alpha">0.4</item>
@@ -79,6 +87,39 @@
     <style name="Text.Label.Small">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Label.Big">
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:alpha">0.2</item>
+    </style>
+
+
+    <style name="Text.Question">
+        <item name="android:textSize">24sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMaxTextSize">24sp</item>
+        <item name="android:lines">3</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="autoSizeStepGranularity">2sp</item>
+    </style>
+
+    <style name="Input" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/Text</item>
+        <item name="android:inputType">textCapSentences</item>
+    </style>
+
+    <style name="Input.Note">
+        <item name="android:background">@drawable/bg_note_input</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:lines">8</item>
+    </style>
+
+    <style name="MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardBackgroundColor">@color/cardColor</item>
     </style>
 
     <style name="BaseButtonCommon">
@@ -188,7 +229,7 @@
     </style>
 
     <style name="Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressTint">@color/completeForm</item>
+        <item name="android:progressTint">@color/syncComplete</item>
         <item name="android:progressBackgroundTint">@color/incompleteForm</item>
         <item name="android:progressDrawable">@drawable/complete_form_progress</item>
     </style>

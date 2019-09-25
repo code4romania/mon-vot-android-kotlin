@@ -56,14 +56,15 @@ class Repository : KoinComponent {
     fun getForms(): Observable<List<FormDetails>> {
 
 //
-        val observableDb = db.formDetailsDao().getAll().toObservable()
+        val observableDb = db.formDetailsDao().getAllForms().toObservable()
 
         val observableApi = apiInterface.getForms()
+
         return Observable.zip(
             observableDb.onErrorReturn { null },
             observableApi.onErrorReturn { null },
             BiFunction<List<FormDetails>?, VersionResponse?, List<FormDetails>> { dbFormDetails, response ->
-                processFormDetailsData(dbFormDetails.sortedBy { it.code }, response)
+                processFormDetailsData(dbFormDetails, response)
 
             })
 
@@ -77,8 +78,20 @@ class Repository : KoinComponent {
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
+    private fun deleteFormDetails(formDetails: FormDetails) {
+        db.formDetailsDao().deleteForms(formDetails)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+
     private fun saveFormDetails(list: List<FormDetails>) {
-        db.formDetailsDao().save(*list.map { it }.toTypedArray()).subscribeOn(Schedulers.io())
+        db.formDetailsDao().saveForm(*list.map { it }.toTypedArray()).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    private fun saveFormDetails(formDetails: FormDetails) {
+        db.formDetailsDao().saveForm(formDetails).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
@@ -89,20 +102,36 @@ class Repository : KoinComponent {
         if (response == null) {
             return dbFormDetails ?: ArrayList()
         }
-        val apiFormDetails = response.formDetailsList.sortedBy { it.code }
+        val apiFormDetails = response.formDetailsList
         if (dbFormDetails == null) {
             saveFormDetails(apiFormDetails)
+            apiFormDetails.forEach { getFormQuestions(it) }
             return apiFormDetails
         }
-
-        if (apiFormDetails != dbFormDetails) {
-            deleteFormDetails(dbFormDetails)
-            //TODO delete answers and other bullshits
-            saveFormDetails(apiFormDetails)
-            return apiFormDetails
+        apiFormDetails.forEach { apiForm ->
+            if (apiForm.formVersion != dbFormDetails.find { it.code == apiForm.code }?.formVersion) {
+                deleteFormDetails(apiForm)
+                //TODO delete answers and other bullshits
+                saveFormDetails(apiForm)
+                getFormQuestions(apiForm)
+            }
         }
-        return dbFormDetails
 
+        return apiFormDetails
+    }
+
+    private fun getFormQuestions(form: FormDetails) {
+        val observableApi = apiInterface.getForm(form.code).doOnNext { list ->
+            list.forEach { section ->
+                section.formCode = form.code
+                section.questions.forEach { question ->
+                    question.sectionId = section.id
+                    question.answers.forEach { answer -> answer.questionId = question.id }
+                }
+            }
+            db.formDetailsDao().save(*list.map { it }.toTypedArray())
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
 
     }
 

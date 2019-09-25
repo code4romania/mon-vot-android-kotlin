@@ -15,13 +15,16 @@
     <color name="textLight">#FFFFFF</color>
     <color name="buttonColor">#1281175C</color>
     <color name="divider">#E7E7E7</color>
-    <color name="inputBorder">#E7E7E7</color>
+    <color name="inputBorder">#DDDDDD</color>
+    <color name="inputFill">#FCFCFC</color>
     <color name="inputBorderSelected">#757575</color>
     <color name="hint">#80333E48</color>
-    <color name="completeForm">#32D23D</color>
+
     <color name="incompleteForm">#F5F5F5</color>
     <color name="incomplete">#ACB4BE</color>
     <color name="ic_launcher_background">#FFCC01</color>
     <color name="grey">#EEEEEE</color>
     <color name="errorRed">#b1000c</color>
+    <color name="syncComplete">#32D23D</color>
+    <color name="syncProgress">#F1963B</color>
 </resources>

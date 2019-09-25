@@ -1,26 +1,38 @@
 package ro.code4.monitorizarevot.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-//@Entity(tableName = "answer")
+@Entity(
+    tableName = "answer", foreignKeys = [ForeignKey(
+        entity = Question::class,
+        parentColumns = ["id"],
+        childColumns = ["question_id"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 @Parcel(Parcel.Serialization.FIELD)
 class Answer {
-    //    @PrimaryKey
+    @PrimaryKey
     @Expose
     @SerializedName("idOptiune")
-    val id: Int? = null
+    var id: Int = -1
 
     @Expose
     @SerializedName("textOptiune")
-    val text: String? = null
+    lateinit var text: String
 
     @Expose
     @SerializedName("seIntroduceText")
-    private val hasManualInput: Boolean = false
+    var hasManualInput: Boolean = false
 
-    fun hasManualInput(): Boolean {
-        return hasManualInput
-    }
+    @ColumnInfo(name = "question_id")
+    var questionId: Int = -1
+
+
 }

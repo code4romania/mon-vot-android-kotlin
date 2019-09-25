@@ -13,7 +13,7 @@
         <clip>
             <shape>
                 <corners android:radius="4dp" />
-                <solid android:color="@color/completeForm" />
+                <solid android:color="@color/syncComplete" />
             </shape>
         </clip>
     </item>
