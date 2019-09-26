@@ -63,5 +63,13 @@
             app:layout_constraintTop_toBottomOf="@+id/questionsAnswered"
             app:layout_constraintVertical_chainStyle="packed"
             tools:progress="50" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/progressGroup"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="progress,questionsAnswered"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

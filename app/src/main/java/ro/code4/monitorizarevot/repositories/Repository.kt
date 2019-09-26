@@ -36,12 +36,21 @@ class Repository : KoinComponent {
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
 
     fun getCounties(): Observable<List<County>> {
-        val observableApi = apiInterface.getCounties().doOnNext { list ->
-            db.countyDao().save(*list.map { it }.toTypedArray())
-        }
+
+        val observableApi = apiInterface.getCounties()
         val observableDb = db.countyDao().getAll().toObservable()
 
-        return Observable.concatArrayEager(observableApi, observableDb)
+        return Observable.zip(
+            observableDb.onErrorReturn { null },
+            observableApi.onErrorReturn { null },
+            BiFunction<List<County>?, List<County>?, List<County>> { dbCounties, apiCounties ->
+                if (dbCounties != apiCounties) {
+                    db.countyDao().save(*apiCounties.map { it }.toTypedArray())
+                    return@BiFunction apiCounties
+                }
+                dbCounties
+
+            })
     }
 
     fun getCounty(countyCode: String): Observable<County> {

@@ -11,4 +11,7 @@ class FormWithSections {
 
     @Relation(parentColumn = "code", entityColumn = "formCode", entity = Section::class)
     lateinit var sections: List<SectionWithQuestions>
+
+    var noAnsweredQuestions = 0
+
 }

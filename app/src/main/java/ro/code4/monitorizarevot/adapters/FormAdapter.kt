@@ -40,6 +40,17 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
             TYPE_FORM -> {
 
                 val formWithSections = item.value as FormWithSections
+                val noQuestions =
+                    formWithSections.sections.fold(0, { acc, obj -> acc + obj.questions.size })
+                holder.itemView.progress.max = noQuestions
+                holder.itemView.progress.progress =
+                    formWithSections.noAnsweredQuestions //TODO change with synced questions
+                holder.itemView.questionsAnswered.text = context.getString(
+                    R.string.no_answered_questions,
+                    formWithSections.noAnsweredQuestions,
+                    noQuestions
+                )
+                holder.itemView.progressGroup.visibility = View.VISIBLE
                 with(formWithSections.form) {
                     holder.itemView.setOnClickListener { listener.onFormClick(this) }
                     val prefix = description
@@ -50,6 +61,7 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
             }
             else -> {
                 holder.itemView.setOnClickListener { listener.onNoteClick() }
+                holder.itemView.progressGroup.visibility = View.INVISIBLE
                 Pair(
                     context.highlight(context.getString(R.string.form_notes)),
                     R.drawable.ic_form_notes

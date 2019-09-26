@@ -23,9 +23,8 @@ class FormDetails {
     @SerializedName("ver")
     var formVersion: Int = 0
 
-//    @Relation(parentColumn = "code", entityColumn = "form_code")
-@Ignore
-lateinit var sections: List<Section>
+    @Ignore
+    lateinit var sections: List<Section>
 
     override fun equals(other: Any?): Boolean {
         if (other !is FormDetails) {

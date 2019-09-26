@@ -11,6 +11,7 @@ import org.koin.core.inject
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
@@ -21,13 +22,18 @@ class FormsViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val preferences: SharedPreferences by inject()
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
+    private val answersLiveData = MutableLiveData<List<AnsweredQuestionPOJO>>()
+    private val formsWithSections = MutableLiveData<List<FormWithSections>>()
 
     init {
         repository.getAnswers(preferences.getCountyCode()!!, preferences.getBranchNumber())
             .observeForever {
+                answersLiveData.value = it
+                processList()
             }
         repository.getFormsWithQuestions().observeForever {
-            processList(it)
+            formsWithSections.value = it
+            processList()
         }
         getForms()
     }
@@ -59,11 +65,18 @@ class FormsViewModel : BaseViewModel() {
 
     }
 
-    private fun processList(list: List<FormWithSections>) {
-        val items = ArrayList<ListItem>()
-        items.addAll(list.map { ListItem(TYPE_FORM, it) })
-        items.add(ListItem(TYPE_NOTE))
-        formsLiveData.postValue(items)
+    private fun processList() {
+        formsWithSections.value?.let { list ->
+            val items = ArrayList<ListItem>()
+            val answeredQuestionsPOJOs = answersLiveData.value
+            answeredQuestionsPOJOs?.forEach { pojo ->
+                list.find { pojo.answeredQuestion.formCode == it.form.code }
+                    ?.let { it.noAnsweredQuestions++ }
+            }
+            items.addAll(list.map { ListItem(TYPE_FORM, it) })
+            items.add(ListItem(TYPE_NOTE))
+            formsLiveData.postValue(items)
+        }
     }
 
 }
