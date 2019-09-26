@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.data.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -23,7 +24,8 @@ class FormDetails {
     var formVersion: Int = 0
 
 //    @Relation(parentColumn = "code", entityColumn = "form_code")
-//    lateinit var sections: List<Section>
+@Ignore
+lateinit var sections: List<Section>
 
     override fun equals(other: Any?): Boolean {
         if (other !is FormDetails) {

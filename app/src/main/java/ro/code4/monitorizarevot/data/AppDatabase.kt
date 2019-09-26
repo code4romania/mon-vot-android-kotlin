@@ -8,10 +8,12 @@ import ro.code4.monitorizarevot.data.dao.BranchDetailsDao
 import ro.code4.monitorizarevot.data.dao.CountyDao
 import ro.code4.monitorizarevot.data.dao.FormsDao
 import ro.code4.monitorizarevot.data.model.*
+import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 @Database(
 //    entities = [ResponseAnswer::class, BranchDetails::class, BranchQuestionAnswer::class, County::class, FormDetails::class, Section::class],
-    entities = [County::class, BranchDetails::class, FormDetails::class, Section::class, Question::class, Answer::class],
+    entities = [County::class, BranchDetails::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class],
     version = 1
 )
 //@TypeConverters(DateConverter::class, ResponseAnswerConverter::class, BranchDetailsConverter::class)

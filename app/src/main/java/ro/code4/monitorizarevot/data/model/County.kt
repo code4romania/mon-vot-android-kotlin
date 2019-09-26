@@ -1,12 +1,13 @@
 package ro.code4.monitorizarevot.data.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-@Entity(tableName = "county")
+@Entity(tableName = "county", indices = [Index(value = ["code"], unique = true)])
 @Parcel(Parcel.Serialization.FIELD)
 class County {
 

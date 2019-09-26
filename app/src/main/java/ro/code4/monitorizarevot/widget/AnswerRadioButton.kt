@@ -9,13 +9,13 @@ import android.widget.RadioGroup
 import androidx.appcompat.widget.AppCompatRadioButton
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.Answer
-import ro.code4.monitorizarevot.data.model.response.ResponseAnswer
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 
 class AnswerRadioButton : AppCompatRadioButton, AnswerLayout {
 
-    override val answer: ResponseAnswer
-        get() = tag as ResponseAnswer
+    override val answer: SelectedAnswer
+        get() = tag as SelectedAnswer
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -54,7 +54,7 @@ class AnswerRadioButton : AppCompatRadioButton, AnswerLayout {
     }
 
     override fun setAnswer(answer: Answer) {
-        tag = ResponseAnswer(answer.id)
+        tag = SelectedAnswer()
         text = answer.text
     }
 

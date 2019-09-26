@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.item_form_section.view.*
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.highlight
 
 class FormAdapter(private val context: Context, private val items: ArrayList<ListItem>) :
@@ -38,11 +39,14 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
         val pair: Pair<CharSequence, Int> = when (item.type) {
             TYPE_FORM -> {
 
-                val form = item.value as FormDetails
-                holder.itemView.setOnClickListener { listener.onFormClick(form) }
-                val prefix = form.description
-                val suffix = context.getString(R.string.form_suffix, form.code)
-                Pair(context.highlight(prefix, suffix), getIcon(form.code))
+                val formWithSections = item.value as FormWithSections
+                with(formWithSections.form) {
+                    holder.itemView.setOnClickListener { listener.onFormClick(this) }
+                    val prefix = description
+                    val suffix = context.getString(R.string.form_suffix, code)
+                    Pair(context.highlight(prefix, suffix), getIcon(code))
+                }
+
             }
             else -> {
                 holder.itemView.setOnClickListener { listener.onNoteClick() }
@@ -64,6 +68,12 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
             FormCode.C.name -> R.drawable.ic_form_c
             else -> R.drawable.ic_form_notes
         }
+    }
+
+    fun refreshData(list: java.util.ArrayList<ListItem>) {
+        items.clear()
+        items.addAll(list)
+        notifyDataSetChanged()
     }
 
     class ViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView)

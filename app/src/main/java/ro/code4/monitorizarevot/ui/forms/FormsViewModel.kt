@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.forms
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,7 +11,7 @@ import org.koin.core.inject
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
 import ro.code4.monitorizarevot.adapters.helper.ListItem
-import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.repositories.Repository
@@ -20,6 +21,16 @@ class FormsViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val preferences: SharedPreferences by inject()
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
+
+    init {
+        repository.getAnswers(preferences.getCountyCode()!!, preferences.getBranchNumber())
+            .observeForever {
+            }
+        repository.getFormsWithQuestions().observeForever {
+            processList(it)
+        }
+        getForms()
+    }
 
     fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
 
@@ -35,17 +46,20 @@ class FormsViewModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun getForms() {
-        repository.getForms().subscribeOn(Schedulers.io())
+
+        repository.getForms()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                processList(it)
+                Log.i("GAGA", "yaya")
 
             }, {
                 onError(it)
             })
+
     }
 
-    private fun processList(list: List<FormDetails>) {
+    private fun processList(list: List<FormWithSections>) {
         val items = ArrayList<ListItem>()
         items.addAll(list.map { ListItem(TYPE_FORM, it) })
         items.add(ListItem(TYPE_NOTE))

@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import io.reactivex.Completable
@@ -8,6 +9,9 @@ import ro.code4.monitorizarevot.data.model.Answer
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.model.Section
+import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
+import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
+import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import java.util.*
 
 @Dao
@@ -50,5 +54,20 @@ interface FormsDao {
 
     @Insert(onConflict = REPLACE)
     fun saveAnswers(vararg answers: Answer)
+
+
+    @Insert(onConflict = REPLACE)
+    fun saveAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
+
+    @Delete
+    fun deleteAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
+
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND sectionNumber=:branchNumber ")
+    fun getAnswersFor(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>>
+
+
+    @Query("SELECT * FROM form_details")
+    fun getFormsWithSections(): LiveData<List<FormWithSections>>
+
 
 }

@@ -1,6 +1,5 @@
 package ro.code4.monitorizarevot.data.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -12,7 +11,7 @@ import org.parceler.Parcel
     tableName = "answer", foreignKeys = [ForeignKey(
         entity = Question::class,
         parentColumns = ["id"],
-        childColumns = ["question_id"],
+        childColumns = ["questionId"],
         onDelete = ForeignKey.CASCADE
     )]
 )
@@ -31,7 +30,6 @@ class Answer {
     @SerializedName("seIntroduceText")
     var hasManualInput: Boolean = false
 
-    @ColumnInfo(name = "question_id")
     var questionId: Int = -1
 
 

@@ -1,12 +1,24 @@
 package ro.code4.monitorizarevot.data.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-@Entity(tableName = "branch_details")
+@Entity(
+    tableName = "branch_details",
+    indices = [Index(value = ["countyCode", "branchNumber"], unique = true)],
+    foreignKeys = [ForeignKey(
+        entity = County::class,
+        parentColumns = ["code"],
+        childColumns = ["countyCode"],
+        onDelete = ForeignKey.CASCADE
+
+    )]
+)
 @Parcel(Parcel.Serialization.FIELD) //TODO Syncable
 class BranchDetails() {
 

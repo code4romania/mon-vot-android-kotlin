@@ -34,7 +34,6 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListene
             setData(it)
         })
         viewModel.getBranchBarText()
-        viewModel.getForms()
         branchBarButton.setOnClickListener {
             (activity as AppCompatActivity).changeBranch()
         }
@@ -48,6 +47,8 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListene
             adapter = FormAdapter(mContext, list)
             adapter.listener = this
             formsList.adapter = adapter
+        } else {
+            adapter.refreshData(list)
         }
         //todo clear adapter when refreshing
     }

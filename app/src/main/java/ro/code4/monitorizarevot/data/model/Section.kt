@@ -1,6 +1,9 @@
 package ro.code4.monitorizarevot.data.model
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
@@ -9,7 +12,7 @@ import org.parceler.Parcel
     tableName = "section", foreignKeys = [ForeignKey(
         entity = FormDetails::class,
         parentColumns = ["code"],
-        childColumns = ["form_code"],
+        childColumns = ["formCode"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
     )]
@@ -37,6 +40,5 @@ class Section {
     @Ignore
     lateinit var questions: List<Question>
 
-    @ColumnInfo(name = "form_code")
     lateinit var formCode: String
 }

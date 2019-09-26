@@ -1,5 +1,8 @@
 package ro.code4.monitorizarevot.repositories
 
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -13,6 +16,8 @@ import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
+import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
+import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 
@@ -53,9 +58,14 @@ class Repository : KoinComponent {
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
-    fun getForms(): Observable<List<FormDetails>> {
+    fun getAnswers(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>> =
+        db.formDetailsDao().getAnswersFor(countyCode, branchNumber)
 
-//
+    fun getFormsWithQuestions(): LiveData<List<FormWithSections>> =
+        db.formDetailsDao().getFormsWithSections()
+
+    fun getForms(): Observable<Unit> {
+
         val observableDb = db.formDetailsDao().getAllForms().toObservable()
 
         val observableApi = apiInterface.getForms()
@@ -63,14 +73,12 @@ class Repository : KoinComponent {
         return Observable.zip(
             observableDb.onErrorReturn { null },
             observableApi.onErrorReturn { null },
-            BiFunction<List<FormDetails>?, VersionResponse?, List<FormDetails>> { dbFormDetails, response ->
+            BiFunction<List<FormDetails>?, VersionResponse?, Unit> { dbFormDetails, response ->
                 processFormDetailsData(dbFormDetails, response)
 
             })
-
-
-//        return Observable.concatArrayEager(observableApi, observableDb)
     }
+
 
     private fun deleteFormDetails(list: List<FormDetails>) {
         db.formDetailsDao().deleteForms(*list.map { it }.toTypedArray())
@@ -85,43 +93,48 @@ class Repository : KoinComponent {
     }
 
 
+    @SuppressLint("CheckResult")
     private fun saveFormDetails(list: List<FormDetails>) {
         db.formDetailsDao().saveForm(*list.map { it }.toTypedArray()).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                list.forEach { getFormQuestions(it) }
+            }
     }
 
+    @SuppressLint("CheckResult")
     private fun saveFormDetails(formDetails: FormDetails) {
         db.formDetailsDao().saveForm(formDetails).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                getFormQuestions(formDetails)
+            }
     }
 
     private fun processFormDetailsData(
         dbFormDetails: List<FormDetails>?,
         response: VersionResponse?
-    ): List<FormDetails> {
+    ) {
         if (response == null) {
-            return dbFormDetails ?: ArrayList()
+            return
         }
         val apiFormDetails = response.formDetailsList
-        if (dbFormDetails == null) {
+        if (dbFormDetails == null || dbFormDetails.isEmpty()) {
+            Log.i("GAGA", "save form details")
             saveFormDetails(apiFormDetails)
-            apiFormDetails.forEach { getFormQuestions(it) }
-            return apiFormDetails
+            return
         }
         apiFormDetails.forEach { apiForm ->
             if (apiForm.formVersion != dbFormDetails.find { it.code == apiForm.code }?.formVersion) {
                 deleteFormDetails(apiForm)
                 //TODO delete answers and other bullshits
                 saveFormDetails(apiForm)
-                getFormQuestions(apiForm)
             }
         }
 
-        return apiFormDetails
+//    return apiFormDetails
     }
 
     private fun getFormQuestions(form: FormDetails) {
-        val observableApi = apiInterface.getForm(form.code).doOnNext { list ->
+        apiInterface.getForm(form.code).doOnNext { list ->
             list.forEach { section ->
                 section.formCode = form.code
                 section.questions.forEach { question ->

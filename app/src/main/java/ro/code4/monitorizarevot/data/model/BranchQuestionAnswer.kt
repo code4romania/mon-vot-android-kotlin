@@ -1,7 +1,7 @@
 package ro.code4.monitorizarevot.data.model
 
 import org.parceler.Parcel
-import ro.code4.monitorizarevot.data.model.response.ResponseAnswer
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 //@Entity(tableName = "branch_question_answer")
 @Parcel(Parcel.Serialization.FIELD)
@@ -14,7 +14,7 @@ class BranchQuestionAnswer {
     var branchNumber: Int = 0
     var questionId: Int = 0
     var branchDetails: BranchDetails? = null
-    val answers = ArrayList<ResponseAnswer>()
+    val answers = ArrayList<SelectedAnswer>()
 
     constructor() {
 
@@ -32,13 +32,13 @@ class BranchQuestionAnswer {
         this.questionId = questionId!!
     }
 
-    constructor(questionId: Int?, answers: List<ResponseAnswer>) : this(questionId) {
+    constructor(questionId: Int?, answers: List<SelectedAnswer>) : this(questionId) {
         this.answers.clear()
         this.answers.addAll(answers)
         this.id = countryCode + branchNumber.toString() + questionId.toString()
     }
 
-    fun setAnswers(answers: List<ResponseAnswer>) {
+    fun setAnswers(answers: List<SelectedAnswer>) {
         this.answers.clear()
         this.answers.addAll(answers)
     }
