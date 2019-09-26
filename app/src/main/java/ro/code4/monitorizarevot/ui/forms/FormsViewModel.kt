@@ -11,8 +11,10 @@ import org.koin.core.inject
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
+import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.repositories.Repository
@@ -24,6 +26,7 @@ class FormsViewModel : BaseViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val answersLiveData = MutableLiveData<List<AnsweredQuestionPOJO>>()
     private val formsWithSections = MutableLiveData<List<FormWithSections>>()
+    private val selectedFormLiveData = SingleLiveEvent<FormDetails>()
 
     init {
         repository.getAnswers(preferences.getCountyCode()!!, preferences.getBranchNumber())
@@ -39,6 +42,7 @@ class FormsViewModel : BaseViewModel() {
     }
 
     fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
+    fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
 
 
     private val branchBarTextLiveData = MutableLiveData<String>()
@@ -79,4 +83,7 @@ class FormsViewModel : BaseViewModel() {
         }
     }
 
+    fun selectForm(formDetails: FormDetails) {
+        selectedFormLiveData.postValue(formDetails)
+    }
 }

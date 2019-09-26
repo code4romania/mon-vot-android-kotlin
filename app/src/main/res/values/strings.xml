@@ -129,4 +129,5 @@
     <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
     <string name="sync_manual">Synchronize Data Manually</string>
     <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
+    <string name="section_title">Section %1$d - %2$s</string>
 </resources>

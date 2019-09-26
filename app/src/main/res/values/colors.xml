@@ -27,4 +27,5 @@
     <color name="errorRed">#b1000c</color>
     <color name="syncComplete">#32D23D</color>
     <color name="syncProgress">#F1963B</color>
+    <color name="sectionBackground">#1AA7A7A7</color>
 </resources>

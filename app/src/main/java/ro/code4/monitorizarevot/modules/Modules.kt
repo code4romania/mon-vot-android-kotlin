@@ -23,6 +23,7 @@ import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
 import ro.code4.monitorizarevot.ui.branch.selection.BranchSelectionViewModel
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
+import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
 import ro.code4.monitorizarevot.ui.guide.GuideViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
@@ -101,5 +102,6 @@ val viewModelsModule = module {
     viewModel { BranchViewModel() }
     viewModel { BranchSelectionViewModel() }
     viewModel { FormsViewModel() }
+    viewModel { QuestionsViewModel() }
     viewModel { GuideViewModel() }
 }

@@ -10,9 +10,11 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -28,17 +30,25 @@ fun String.createMultipart(name: String): MultipartBody.Part {
 }
 
 fun AppCompatActivity.replaceFragment(
-    containerId: Int,
-    newFragment: Fragment,
+    @IdRes layoutRes: Int, fragment: Fragment,
     bundle: Bundle? = null,
     tag: String? = null
 ) {
-    val ft = supportFragmentManager.beginTransaction()
+    supportFragmentManager.replaceFragment(layoutRes, fragment, bundle, tag)
+
+}
+
+fun FragmentManager.replaceFragment(
+    @IdRes layoutRes: Int, fragment: Fragment,
+    bundle: Bundle? = null,
+    tag: String? = null
+) {
+    val ft = beginTransaction()
     bundle?.let {
-        newFragment.arguments = it
+        fragment.arguments = it
     }
 
-    ft.replace(containerId, newFragment)
+    ft.replace(layoutRes, fragment)
     tag?.let {
         ft.addToBackStack(it)
     }

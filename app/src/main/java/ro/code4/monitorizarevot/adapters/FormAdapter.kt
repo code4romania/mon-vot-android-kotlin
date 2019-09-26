@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_form_section.view.*
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.helper.ViewHolder
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.highlight
@@ -87,8 +88,6 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
         items.addAll(list)
         notifyDataSetChanged()
     }
-
-    class ViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView)
 
     interface OnClickListener {
         fun onFormClick(form: FormDetails)

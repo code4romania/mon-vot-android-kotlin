@@ -129,4 +129,5 @@
 
     <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou</string>
     <string name="sync_manual">Sincronizează Datele Manual</string>
+    <string name="section_title">Secțiunea %1$d - %2$s</string>
 </resources>

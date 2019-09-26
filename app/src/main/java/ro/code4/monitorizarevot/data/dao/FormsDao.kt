@@ -12,6 +12,7 @@ import ro.code4.monitorizarevot.data.model.Section
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
+import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
 import java.util.*
 
 @Dao
@@ -68,6 +69,9 @@ interface FormsDao {
 
     @Query("SELECT * FROM form_details")
     fun getFormsWithSections(): LiveData<List<FormWithSections>>
+
+    @Query("SELECT * FROM section where formCode=:formCode")
+    fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>>
 
 
 }

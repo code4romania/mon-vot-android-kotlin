@@ -18,6 +18,7 @@ import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
+import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 
@@ -73,6 +74,8 @@ class Repository : KoinComponent {
     fun getFormsWithQuestions(): LiveData<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
 
+    fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>> =
+        db.formDetailsDao().getSectionsWithQuestions(formCode)
     fun getForms(): Observable<Unit> {
 
         val observableDb = db.formDetailsDao().getAllForms().toObservable()

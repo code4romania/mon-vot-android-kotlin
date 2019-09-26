@@ -4,25 +4,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_forms.*
 import kotlinx.android.synthetic.main.widget_change_branch_bar.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.FormAdapter
-import ro.code4.monitorizarevot.adapters.helper.ListItem
-import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.helper.changeBranch
+import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
-import ro.code4.monitorizarevot.widget.SpacesItemDecoration
 
-class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListener {
+class FormsFragment : BaseFragment<FormsViewModel>() {
 
 
     override val layout: Int
-        get() = R.layout.fragment_forms
+        get() = R.layout.fragment_main
     override val viewModel: FormsViewModel by viewModel()
-    private lateinit var adapter: FormAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,35 +25,14 @@ class FormsFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListene
             branchBarText.text = it
         })
 
-        viewModel.forms().observe(this, Observer {
-            setData(it)
-        })
+
         viewModel.getBranchBarText()
+
         branchBarButton.setOnClickListener {
             (activity as AppCompatActivity).changeBranch()
         }
-        formsList.layoutManager = LinearLayoutManager(mContext)
-        formsList.addItemDecoration(SpacesItemDecoration(mContext.resources.getDimensionPixelSize(R.dimen.small_margin)))
+        childFragmentManager.replaceFragment(R.id.content, FormsListFragment())
 
-    }
-
-    private fun setData(list: ArrayList<ListItem>) {
-        if (!::adapter.isInitialized) {
-            adapter = FormAdapter(mContext, list)
-            adapter.listener = this
-            formsList.adapter = adapter
-        } else {
-            adapter.refreshData(list)
-        }
-        //todo clear adapter when refreshing
-    }
-
-    override fun onFormClick(form: FormDetails) {
-
-    }
-
-    override fun onNoteClick() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates. //go to add note
     }
 
 

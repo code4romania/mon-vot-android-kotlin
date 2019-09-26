@@ -7,4 +7,5 @@ object Constants {
     val SERVICE_CENTER_PHONE_NUMBER = "0800 080 200"
     val TIME_FORMAT = "HH:mm"
     val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    val FORM_CODE = "form_code"
 }
