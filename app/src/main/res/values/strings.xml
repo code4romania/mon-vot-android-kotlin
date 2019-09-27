@@ -72,11 +72,11 @@
     <string name="branch_subtitle">you are in</string>
     <string name="branch_county">County/District</string>
     <string name="branch_number">Polling station number</string>
-    <string name="branch_change">Change station</string>
+    <string name="branch_change">Change</string>
     <string name="branch_question_environment">Choose the area of the station</string>
     <string name="branch_answer_rural">Rural</string>
     <string name="branch_answer_urban">Urban</string>
-    <string name="branch_question_sex">The president of the polling station is:</string>
+    <string name="branch_question_gender">The president of the polling station is:</string>
     <string name="branch_answer_man">Man</string>
     <string name="branch_answer_woman">Woman</string>
     <string name="branch_question_enter">Arrival time</string>
@@ -86,9 +86,9 @@
     <string name="invalid_branch_county">Choose the county/district</string>
     <string name="invalid_branch_number">Fill in the polling station number</string>
     <string name="invalid_branch_number_minus">The number of the station must be positive</string>
-    <string name="invalid_branch_number_max">The maximum number for %1$s county is %2$s</string>
+    <string name="invalid_branch_number_max">The maximum number for %1$s county is %2$d</string>
     <string name="invalid_branch_environment">Choose urban or rural</string>
-    <string name="invalid_branch_sex">Choose man or woman</string>
+    <string name="invalid_branch_gender">Choose man or woman</string>
     <string name="invalid_branch_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
 
@@ -119,4 +119,15 @@
     <string name="note_gallery">Load from gallery</string>
     <string name="note_take_photo">📷 Take photo</string>
     <string name="note_record_video">🔴 Record video</string>
+
+    <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
+    <string name="sync_locally_saved">saved locally</string>
+    <string name="add_note_to_question">Add Note to Current Question</string>
+    <string name="add_note">Add a note</string>
+    <string name="note_submit">Submit</string>
+
+    <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
+    <string name="sync_manual">Synchronize Data Manually</string>
+    <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
+    <string name="section_title">Section %1$d - %2$s</string>
 </resources>

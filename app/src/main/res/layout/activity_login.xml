@@ -74,8 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColorHint="@color/textPrimary"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin">
+                android:paddingStart="@dimen/margin"
+                android:paddingEnd="@dimen/margin">
 
                 <EditText
                     android:id="@+id/phone"
@@ -91,8 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColorHint="@color/textPrimary"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/margin"
+                android:paddingEnd="@dimen/margin"
                 android:layout_marginBottom="@dimen/login_margin_bottom">
 
                 <EditText
@@ -107,7 +107,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:layout_margin="@dimen/nav_header_vertical_spacing"

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_forms"
+                        android:title="@string/menu_forms" />
+                    <item
+                        android:id="@+id/nav_change_branch"
+                        android:checkable="false"
+                        android:title="@string/menu_change_branch" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="@string/support">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_guide"
+                        android:title="@string/menu_guide" />
+                    <item
+                        android:id="@+id/nav_call"
+                        android:checkable="false"
+                        android:title="@string/menu_call" />
+                </group>
+            </menu>
+        </item>
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/menu_logout" />
+    </group>
+
+
+</menu>

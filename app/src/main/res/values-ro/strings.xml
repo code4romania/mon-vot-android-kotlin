@@ -75,11 +75,11 @@
     <string name="branch_subtitle">în care te afli</string>
     <string name="branch_county">Județ</string>
     <string name="branch_number">Număr secție</string>
-    <string name="branch_change">Schimbă secţia</string>
+    <string name="branch_change">Schimbă</string>
     <string name="branch_question_environment">În ce mediu se află secția?</string>
     <string name="branch_answer_rural">Rural</string>
     <string name="branch_answer_urban">Urban</string>
-    <string name="branch_question_sex">Preşedintele secţiei este</string>
+    <string name="branch_question_gender">Preşedintele secţiei este</string>
     <string name="branch_answer_man">Bărbat</string>
     <string name="branch_answer_woman">Femeie</string>
     <string name="branch_question_enter">Ora sosirii în secţie</string>
@@ -89,9 +89,9 @@
     <string name="invalid_branch_county">Alege județul</string>
     <string name="invalid_branch_number">Introdu numărul secției</string>
     <string name="invalid_branch_number_minus">Numărul secției trebuie să fie pozitiv</string>
-    <string name="invalid_branch_number_max">Numărul maxim pentru județul %1$s este %2$s</string>
+    <string name="invalid_branch_number_max">Numărul maxim pentru județul %1$s este %2$d</string>
     <string name="invalid_branch_environment">Alege urban sau rural</string>
-    <string name="invalid_branch_sex">Alege bărbat sau femeie</string>
+    <string name="invalid_branch_gender">Alege bărbat sau femeie</string>
     <string name="invalid_branch_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
 
@@ -122,5 +122,12 @@
     <string name="note_gallery">Încarcă din galerie</string>
     <string name="note_take_photo">📷 Fotografiază</string>
     <string name="note_record_video">🔴 Înregistrează video</string>
+    <string name="sync_locally_saved">salvat local</string>
+    <string name="add_note_to_question">Adaugă Notă la Întrebarea Curentă</string>
+    <string name="add_note">Adaugă notă</string>
+    <string name="note_submit">Trimite</string>
 
+    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou</string>
+    <string name="sync_manual">Sincronizează Datele Manual</string>
+    <string name="section_title">Secțiunea %1$d - %2$s</string>
 </resources>

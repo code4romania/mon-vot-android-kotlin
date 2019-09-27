@@ -1,21 +1,25 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="big_margin">24dp</dimen>
+    <dimen name="xbig_margin">32dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="xsmall_margin">4dp</dimen>
 
+    <dimen name="form_icon_size">72dp</dimen>
     <!-- General -->
     <dimen name="status_bar_spacer">0dp</dimen>
     <dimen name="input_height">50dp</dimen>
     <dimen name="radio_button_padding">10dp</dimen>
     <dimen name="radio_button_radius">5dp</dimen>
     <dimen name="checkbox_radius">50dp</dimen>
-    <dimen name="button_height">60dp</dimen>
+    <dimen name="button_height">44dp</dimen>
     <dimen name="button_width">200dp</dimen>
     <dimen name="button_text">17sp</dimen>
-    <dimen name="button_text_embedded">15sp</dimen>
+    <dimen name="button_text_embedded">14sp</dimen>
     <dimen name="spacing_vertical">10dp</dimen>
     <dimen name="label_text">15sp</dimen>
     <dimen name="label_top_spacing">20dp</dimen>
@@ -58,4 +62,11 @@
     <dimen name="question_overview_item_header">16sp</dimen>
     <dimen name="question_overview_item_text">14sp</dimen>
     <dimen name="question_card_height">200dp</dimen>
+    <dimen name="form_icon_code">72sp</dimen>
+    <dimen name="elevation">4dp</dimen>
+    <dimen name="small_elevation">2dp</dimen>
+    <dimen name="xsmall_elevation">1dp</dimen>
+    <dimen name="progress_height">4dp</dimen>
+
+    <dimen name="sync_progress_icon_size">26dp</dimen>
 </resources>

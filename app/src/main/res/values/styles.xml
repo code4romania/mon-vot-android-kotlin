@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@color/backgroundLight</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,15 +25,210 @@
         <item name="android:colorControlHighlight">@color/colorAccent</item>
     </style>
 
+    <style name="Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/textButton</item>
+        <item name="android:maxLines">1</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:padding">@dimen/margin</item>
+        <item name="android:background">@drawable/bg_button</item>
+    </style>
+
+    <style name="Button.Link">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingTop">@dimen/xsmall_margin</item>
+        <item name="android:paddingBottom">@dimen/xsmall_margin</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Button.Link.Purple">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/textButton</item>
+    </style>
+
+    <style name="Text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+
+    </style>
+
+    <style name="Text.Title">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Text.Branch">
+        <item name="android:textStyle">bold</item>
+        <item name="android:alpha">0.5</item>
+    </style>
+
+    <style name="Text.BranchSelectLabel">
+        <item name="android:textSize">16sp</item>
+
+    </style>
+
+    <style name="Text.Option">
+        <item name="android:background">@drawable/background_input</item>
+        <item name="android:padding">@dimen/margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColorHint">@color/hint</item>
+    </style>
+
+    <style name="Text.Sync">
+        <item name="android:textColor">@color/syncProgress</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Label">
+        <item name="android:alpha">0.4</item>
+    </style>
+
+    <style name="Text.Label.Small">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Section">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="android:alpha">0.3</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Label.Big">
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:alpha">0.2</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="Text.Question">
+        <item name="android:textSize">24sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMaxTextSize">24sp</item>
+        <item name="android:lines">3</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="autoSizeStepGranularity">2sp</item>
+    </style>
+
+    <style name="Input" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/Text</item>
+        <item name="android:inputType">textCapSentences</item>
+    </style>
+
+    <style name="Input.Note">
+        <item name="android:background">@drawable/bg_note_input</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:lines">8</item>
+    </style>
+
+    <style name="MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardBackgroundColor">@color/cardColor</item>
+    </style>
+
     <style name="BaseButtonCommon">
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="buttonEmbeddedCommon" parent="BaseButtonCommon">
-        <item name="android:textColor">@color/textLight</item>
-        <item name="android:textSize">@dimen/button_text_embedded</item>
-        <item name="android:background">@color/backgroundDark</item>
+    <style name="BaseButton" parent="BaseButtonCommon">
+        <!-- Can be overriden in values-v16 and values-v21 -->
     </style>
+
+    <style name="buttonDarkCommon" parent="BaseButton">
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">@dimen/button_text</item>
+    </style>
+
+    <style name="buttonLightCommon" parent="BaseButton">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/button_text</item>
+    </style>
+
+    <style name="buttonEmbeddedCommon" parent="BaseButton">
+        <item name="android:textColor">@color/textButton</item>
+        <item name="android:background">@color/buttonColor</item>
+        <item name="android:textSize">@dimen/button_text_embedded</item>
+    </style>
+
+    <style name="menuItem">
+        <item name="android:background">@drawable/background_menu_item</item>
+        <item name="android:paddingStart">@dimen/margin</item>
+        <item name="android:paddingEnd">@dimen/margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="menuSectionItem">
+        <item name="android:background">@drawable/background_menu_item</item>
+        <item name="android:paddingTop">@dimen/margin</item>
+        <item name="android:paddingStart">@dimen/margin</item>
+        <item name="android:paddingEnd">@dimen/margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/textSecondary</item>
+    </style>
+
+    <style name="title">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/header_text</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="label">
+        <item name="android:textSize">@dimen/label_text</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:paddingTop">@dimen/label_top_spacing</item>
+        <item name="android:paddingBottom">@dimen/label_bottom_spacing</item>
+    </style>
+
+    <style name="horizontalSeparator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+
+    <style name="input">
+        <item name="android:background">@drawable/background_input</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/hint</item>
+    </style>
+
+    <style name="radioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/radio_button</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:background">@drawable/checkbox</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="buttonDarkTheme">
+        <item name="android:colorButtonNormal">@color/backgroundDark</item>
+    </style>
+
+    <style name="buttonEmbedded" parent="buttonEmbeddedCommon"></style>
 
     <style name="InputLogin" parent="@android:style/Widget.Holo.Light.EditText">
         <item name="android:background">@drawable/background_input_login</item>
@@ -42,4 +239,12 @@
         <item name="android:textSize">@dimen/login_text_size</item>
     </style>
 
+    <style name="Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressTint">@color/syncComplete</item>
+        <item name="android:progressBackgroundTint">@color/incompleteForm</item>
+        <item name="android:progressDrawable">@drawable/complete_form_progress</item>
+    </style>
+
+
+    <dimen name="medium_margin">12dp</dimen>
 </resources>
