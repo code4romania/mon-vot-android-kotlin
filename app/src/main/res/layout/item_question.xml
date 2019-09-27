@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MaterialCardView"
     android:layout_width="match_parent"
+    android:layout_marginStart="@dimen/margin"
+    android:layout_marginEnd="@dimen/margin"
+    app:cardElevation="0dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +32,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/margin"
-            android:paddingTop="@dimen/xsmall_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="B2" />

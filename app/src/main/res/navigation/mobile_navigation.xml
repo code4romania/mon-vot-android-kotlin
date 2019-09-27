@@ -9,11 +9,8 @@
         android:id="@+id/nav_forms"
         android:name="ro.code4.monitorizarevot.ui.forms.FormsFragment"
         android:label="@string/menu_forms"
-        tools:layout="@layout/fragment_forms">
-        <action
-            android:id="@+id/action_nav_forms_to_nav_questions"
-            app:destination="@id/nav_questions" />
-    </fragment>
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_forms" />
 
 
     <fragment
@@ -22,8 +19,4 @@
         android:label="@string/menu_guide"
         tools:layout="@layout/fragment_guide" />
 
-    <fragment
-        android:id="@+id/nav_questions"
-        android:name="ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment"
-        tools:layout="@layout/fragment_list" />
 </navigation>

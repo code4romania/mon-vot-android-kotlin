@@ -41,17 +41,21 @@ fun AppCompatActivity.replaceFragment(
 fun FragmentManager.replaceFragment(
     @IdRes layoutRes: Int, fragment: Fragment,
     bundle: Bundle? = null,
-    tag: String? = null
+    tag: String? = null,
+    isPrimaryNavigationFragment: Boolean = false
 ) {
     val ft = beginTransaction()
+    if (isPrimaryNavigationFragment) {
+        ft.setPrimaryNavigationFragment(fragment)
+    }
     bundle?.let {
         fragment.arguments = it
     }
-
-    ft.replace(layoutRes, fragment)
     tag?.let {
         ft.addToBackStack(it)
     }
+    ft.replace(layoutRes, fragment, tag)
+
     ft.commit()
 }
 

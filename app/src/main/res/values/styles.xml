@@ -51,6 +51,9 @@
 
     <style name="Text">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+
     </style>
 
     <style name="Text.Title">
@@ -93,12 +96,14 @@
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">sans-serif-bold</item>
         <item name="android:alpha">0.3</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Text.Label.Big">
         <item name="android:fontFamily">sans-serif-bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:alpha">0.2</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 

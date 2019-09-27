@@ -17,7 +17,9 @@ import ro.code4.monitorizarevot.widget.SpacesItemDecoration
 
 class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListener {
 
-
+    companion object {
+        val TAG = FormsListFragment::class.java.simpleName
+    }
     override val layout: Int
         get() = R.layout.fragment_forms
     override lateinit var viewModel: FormsViewModel
@@ -25,12 +27,11 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = getSharedViewModel()
+        viewModel = getSharedViewModel(from = { parentFragment!! })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.forms().observe(this, Observer {
             setData(it)
         })
@@ -43,11 +44,11 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
         if (!::adapter.isInitialized) {
             adapter = FormAdapter(mContext, list)
             adapter.listener = this
-            formsList.adapter = adapter
+
         } else {
             adapter.refreshData(list)
         }
-        //todo clear adapter when refreshing
+        formsList.adapter = adapter
     }
 
     override fun onFormClick(form: FormDetails) {

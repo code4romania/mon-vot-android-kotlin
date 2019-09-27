@@ -16,6 +16,7 @@ import ro.code4.monitorizarevot.helper.callSupportCenter
 import ro.code4.monitorizarevot.helper.changeBranch
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 
+
 class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
         get() = R.layout.activity_main
@@ -35,7 +36,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_forms,
-                R.id.nav_change_branch,
                 R.id.nav_guide
             ), drawerLayout
         )
@@ -74,4 +74,23 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+//
+//    override fun onBackPressed() {
+//        val fm = supportFragmentManager
+//        for (frag in fm.fragments) {
+//            if (frag.isVisible) {
+//                val fragFm = frag.childFragmentManager
+//                for (childFrag in fragFm.fragments) {
+//                    val childFm = childFrag.childFragmentManager
+//                    Log.i("GAGA", "backstakcentrycount ${childFm.backStackEntryCount}")
+//                    if (childFm.backStackEntryCount > 0) {
+//                        childFm.popBackStackImmediate()
+//                        return
+//                    }
+//                }
+//            }
+//        }
+//        super.onBackPressed()
+//
+//    }
 }

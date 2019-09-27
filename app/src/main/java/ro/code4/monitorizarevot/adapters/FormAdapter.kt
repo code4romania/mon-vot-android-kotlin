@@ -35,6 +35,8 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
 
     override fun getItemCount(): Int = items.size
 
+    override fun getItemViewType(position: Int): Int = items[position].type
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         val pair: Pair<CharSequence, Int> = when (item.type) {
@@ -45,10 +47,10 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
                     formWithSections.sections.fold(0, { acc, obj -> acc + obj.questions.size })
                 holder.itemView.progress.max = noQuestions
                 holder.itemView.progress.progress =
-                    formWithSections.noAnsweredQuestions //TODO change with synced questions
+                    formWithSections.getNoAnsweredQuestions() //TODO change with synced questions
                 holder.itemView.questionsAnswered.text = context.getString(
                     R.string.no_answered_questions,
-                    formWithSections.noAnsweredQuestions,
+                    formWithSections.getNoAnsweredQuestions(),
                     noQuestions
                 )
                 holder.itemView.progressGroup.visibility = View.VISIBLE

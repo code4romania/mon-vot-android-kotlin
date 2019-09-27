@@ -2,7 +2,6 @@ package ro.code4.monitorizarevot.ui.forms
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +13,6 @@ import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.repositories.Repository
@@ -26,9 +24,14 @@ class FormsViewModel : BaseViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val answersLiveData = MutableLiveData<List<AnsweredQuestionPOJO>>()
     private val formsWithSections = MutableLiveData<List<FormWithSections>>()
-    private val selectedFormLiveData = SingleLiveEvent<FormDetails>()
+    private val selectedFormLiveData = MutableLiveData<FormDetails>()
 
     init {
+
+        getForms()
+    }
+
+    private fun subscribe() {
         repository.getAnswers(preferences.getCountyCode()!!, preferences.getBranchNumber())
             .observeForever {
                 answersLiveData.value = it
@@ -38,10 +41,12 @@ class FormsViewModel : BaseViewModel() {
             formsWithSections.value = it
             processList()
         }
-        getForms()
     }
 
-    fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
+    fun forms(): LiveData<ArrayList<ListItem>> {
+        subscribe()
+        return formsLiveData
+    }
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
 
 
@@ -61,7 +66,7 @@ class FormsViewModel : BaseViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.i("GAGA", "yaya")
+
 
             }, {
                 onError(it)
@@ -75,7 +80,7 @@ class FormsViewModel : BaseViewModel() {
             val answeredQuestionsPOJOs = answersLiveData.value
             answeredQuestionsPOJOs?.forEach { pojo ->
                 list.find { pojo.answeredQuestion.formCode == it.form.code }
-                    ?.let { it.noAnsweredQuestions++ }
+                    ?.incrementNoOfAnsweredQuestions()
             }
             items.addAll(list.map { ListItem(TYPE_FORM, it) })
             items.add(ListItem(TYPE_NOTE))

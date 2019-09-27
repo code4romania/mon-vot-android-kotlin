@@ -70,6 +70,7 @@ class QuestionsAdapter(private val context: Context, private val items: ArrayLis
 
     }
 
+    override fun getItemViewType(position: Int): Int = items[position].type
 
     fun refreshData(list: ArrayList<ListItem>) {
         items.clear()
