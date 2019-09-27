@@ -107,13 +107,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
+                style="@style/Button.Black"
                 android:layout_margin="@dimen/nav_header_vertical_spacing"
                 android:text="@string/login"
                 android:layout_gravity="bottom"
-                style="@style/buttonEmbeddedCommon"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>
