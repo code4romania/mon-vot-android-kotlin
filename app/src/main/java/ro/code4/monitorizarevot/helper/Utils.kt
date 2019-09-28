@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import java.text.SimpleDateFormat
@@ -94,7 +95,7 @@ fun String?.getDate(): Long? {
 
 fun AppCompatActivity.callSupportCenter() {
     val callIntent = Intent(Intent.ACTION_DIAL)
-    callIntent.data = Uri.parse("tel:" + Constants.SERVICE_CENTER_PHONE_NUMBER)
+    callIntent.data = Uri.parse("tel:" + BuildConfig.SERVICE_CENTER_PHONE_NUMBER)
     startActivity(callIntent)
 }
 
