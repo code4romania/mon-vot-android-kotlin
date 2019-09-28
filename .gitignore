@@ -7,4 +7,13 @@
 
 app/app.iml
 
+build/
+
 Vote Monitor.iml
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
