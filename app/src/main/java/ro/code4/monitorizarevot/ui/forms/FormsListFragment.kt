@@ -1,10 +1,12 @@
 package ro.code4.monitorizarevot.ui.forms
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
@@ -12,7 +14,6 @@ import ro.code4.monitorizarevot.adapters.FormAdapter
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.ui.base.BaseFragment
-import ro.code4.monitorizarevot.widget.SpacesItemDecoration
 
 
 class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListener {
@@ -20,6 +21,7 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
     companion object {
         val TAG = FormsListFragment::class.java.simpleName
     }
+
     override val layout: Int
         get() = R.layout.fragment_forms
     override lateinit var viewModel: FormsViewModel
@@ -36,7 +38,11 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
             setData(it)
         })
         formsList.layoutManager = LinearLayoutManager(mContext)
-        formsList.addItemDecoration(SpacesItemDecoration(mContext.resources.getDimensionPixelSize(R.dimen.small_margin)))
+        formsList.addItemDecoration(
+            HorizontalDividerItemDecoration.Builder(activity)
+                .color(Color.TRANSPARENT)
+                .sizeResId(R.dimen.small_margin).build()
+        )
 
     }
 

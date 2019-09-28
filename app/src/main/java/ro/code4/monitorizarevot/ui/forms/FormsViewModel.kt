@@ -11,6 +11,7 @@ import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
 import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
@@ -25,6 +26,7 @@ class FormsViewModel : BaseViewModel() {
     private val answersLiveData = MutableLiveData<List<AnsweredQuestionPOJO>>()
     private val formsWithSections = MutableLiveData<List<FormWithSections>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
+    private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
 
     init {
 
@@ -47,7 +49,9 @@ class FormsViewModel : BaseViewModel() {
         subscribe()
         return formsLiveData
     }
+
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
+    fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
 
 
     private val branchBarTextLiveData = MutableLiveData<String>()
@@ -90,5 +94,9 @@ class FormsViewModel : BaseViewModel() {
 
     fun selectForm(formDetails: FormDetails) {
         selectedFormLiveData.postValue(formDetails)
+    }
+
+    fun selectQuestion(question: Question) {
+        selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
     }
 }

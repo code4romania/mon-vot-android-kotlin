@@ -101,4 +101,5 @@ dependencies {
     testImplementation "androidx.room:room-testing:$roomVersion"
 
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
+    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 }

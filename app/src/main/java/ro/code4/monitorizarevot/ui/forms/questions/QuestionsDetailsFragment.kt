@@ -6,32 +6,35 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_list.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.QuestionsAdapter
-import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.QuestionDetailsAdapter
 import ro.code4.monitorizarevot.data.model.FormDetails
-import ro.code4.monitorizarevot.data.model.Question
-import ro.code4.monitorizarevot.helper.Constants.FORM
+import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
+import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
-class QuestionsListFragment : BaseFragment<QuestionsViewModel>(), QuestionsAdapter.OnClickListener {
+
+class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
 
 
     override val layout: Int
         get() = R.layout.fragment_list
-    override val viewModel: QuestionsViewModel by viewModel()
+    override val viewModel: QuestionsDetailsViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
-    private lateinit var adapter: QuestionsAdapter
+    private lateinit var adapter: QuestionDetailsAdapter
 
     companion object {
-        val TAG = QuestionsListFragment::class.java.simpleName
+        val TAG = QuestionsDetailsFragment::class.java.simpleName
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         baseViewModel = getSharedViewModel(from = { parentFragment!! })
@@ -43,29 +46,27 @@ class QuestionsListFragment : BaseFragment<QuestionsViewModel>(), QuestionsAdapt
         viewModel.questions().observe(this, Observer {
             setData(it)
         })
-        viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((FORM))))
-//        viewModel.getQuestions(arguments?.getString(FORM_CODE, ""))
-        list.layoutManager = LinearLayoutManager(mContext)
+        viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((Constants.FORM))))
+        list.layoutManager = LinearLayoutManager(mContext, HORIZONTAL, false)
         list.addItemDecoration(
-            HorizontalDividerItemDecoration.Builder(activity)
+            VerticalDividerItemDecoration.Builder(activity)
                 .color(Color.TRANSPARENT)
-                .sizeResId(R.dimen.margin).build()
+                .sizeResId(R.dimen.small_margin).build()
         )
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(list)
+
 
     }
 
-    private fun setData(items: ArrayList<ListItem>) {
+    private fun setData(items: ArrayList<QuestionWithAnswers>) {
         if (!::adapter.isInitialized) {
-            adapter = QuestionsAdapter(mContext, items)
-            adapter.listener = this
+            adapter = QuestionDetailsAdapter(mContext, items)
+//            adapter.listener = this
             list.adapter = adapter
         } else {
             adapter.refreshData(items)
         }
-    }
-
-    override fun onQuestionClick(question: Question) {
-        baseViewModel.selectQuestion(question)
     }
 
 

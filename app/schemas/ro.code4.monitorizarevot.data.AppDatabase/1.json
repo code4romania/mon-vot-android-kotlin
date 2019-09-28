@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ac6254b8089a721f8b60ecf0d7d8cca7",
+    "identityHash": "fc91fbf3368914ce62fb528c72d921d0",
     "entities": [
       {
         "tableName": "county",
@@ -219,7 +219,7 @@
       },
       {
         "tableName": "question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `code` TEXT NOT NULL, `typeId` INTEGER NOT NULL, `sectionId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`sectionId`) REFERENCES `section`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `code` TEXT NOT NULL, `questionType` INTEGER NOT NULL, `sectionId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`sectionId`) REFERENCES `section`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -240,8 +240,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "typeId",
-            "columnName": "typeId",
+            "fieldPath": "questionType",
+            "columnName": "questionType",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -491,7 +491,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ac6254b8089a721f8b60ecf0d7d8cca7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fc91fbf3368914ce62fb528c72d921d0')"
     ]
   }
 }

@@ -9,10 +9,12 @@ import kotlinx.android.synthetic.main.widget_change_branch_bar.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.helper.Constants.FORM_CODE
+import ro.code4.monitorizarevot.helper.Constants.FORM
+import ro.code4.monitorizarevot.helper.Constants.QUESTION
 import ro.code4.monitorizarevot.helper.changeBranch
 import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
+import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
 
 class FormsFragment : BaseFragment<FormsViewModel>() {
@@ -39,8 +41,19 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 QuestionsListFragment(),
-                bundleOf(Pair(FORM_CODE, Parcels.wrap(it))),
+                bundleOf(Pair(FORM, Parcels.wrap(it))),
                 QuestionsListFragment.TAG
+            )
+        })
+        viewModel.selectedQuestion().observe(this, Observer {
+            childFragmentManager.replaceFragment(
+                R.id.content,
+                QuestionsDetailsFragment(),
+                bundleOf(
+                    Pair(FORM, Parcels.wrap(it.first)),
+                    Pair(QUESTION, Parcels.wrap(it.second))
+                ),
+                QuestionsDetailsFragment.TAG
             )
         })
         viewModel.getBranchBarText()

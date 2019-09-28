@@ -57,14 +57,14 @@
             app:layout_constraintTop_toBottomOf="@id/questionCode"
             tools:text="Sectia de votare este accesibila persoanelor cu dizabilitati" />
 
-        <RadioGroup
-            android:id="@+id/answersRadioGroup"
+        <LinearLayout
+            android:id="@+id/answersLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/big_margin"
             android:layout_marginEnd="@dimen/margin"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/question" />
 
         <Button
@@ -80,6 +80,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/answersRadioGroup" />
+            app:layout_constraintTop_toBottomOf="@id/answersLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

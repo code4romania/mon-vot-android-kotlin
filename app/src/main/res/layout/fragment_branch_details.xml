@@ -35,9 +35,9 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/environmentLabel">
 
-            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/urbanEnvironment"
-                style="@style/radioButton"
+                style="@style/RadioButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin"
@@ -45,9 +45,9 @@
                 android:text="@string/branch_answer_urban" />
 
 
-            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/ruralEnvironment"
-                style="@style/radioButton"
+                style="@style/RadioButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -76,9 +76,9 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/genderLabel">
 
-            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/maleGender"
-                style="@style/radioButton"
+                style="@style/RadioButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin"
@@ -86,9 +86,9 @@
                 android:text="@string/branch_answer_man" />
 
 
-            <ro.code4.monitorizarevot.widget.AnswerRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/femaleGender"
-                style="@style/radioButton"
+                style="@style/RadioButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

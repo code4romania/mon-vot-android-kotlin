@@ -36,7 +36,7 @@ class Question {
 
     @Expose
     @SerializedName("idTipIntrebare") //1  single choice, 2 raspuns cu text, 3 multiple choice si raspuns liber 0 multiple choice
-    var typeId: Int = 1
+    var questionType: Int = 0
 
     @Expose
     @SerializedName("raspunsuriDisponibile")
