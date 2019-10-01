@@ -31,6 +31,16 @@ android {
         }
     }
 
+    signingConfigs {
+        fastlane {
+            storeFile file(getKey("keystore", "storeFile"))
+            keyAlias getKey("keystore", "keyAlias")
+            keyPassword getKey("keystore", "keyPassword")
+            storePassword getKey("keystore", "storePassword")
+        }
+
+    }
+
     buildTypes {
         applicationVariants.all { variant ->
             variant.buildConfigField "String", "API_URL", "\"" + getKey(variant.buildType.name, "apiUrl") + "\""
@@ -45,6 +55,7 @@ android {
 
         release {
             minifyEnabled false
+            signingConfig signingConfigs.fastlane
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
