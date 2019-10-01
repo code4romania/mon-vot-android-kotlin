@@ -69,4 +69,5 @@
     <dimen name="progress_height">4dp</dimen>
 
     <dimen name="sync_progress_icon_size">26dp</dimen>
+    <dimen name="sync_icon_size">16dp</dimen>
 </resources>

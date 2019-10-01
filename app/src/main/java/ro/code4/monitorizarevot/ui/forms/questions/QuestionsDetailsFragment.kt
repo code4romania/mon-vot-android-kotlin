@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import kotlinx.android.synthetic.main.fragment_question_details.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
@@ -14,6 +15,7 @@ import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.QuestionDetailsAdapter
 import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.addOnLayoutChangeListenerForGalleryEffect
@@ -30,6 +32,10 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
     override val viewModel: QuestionsDetailsViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
     private lateinit var adapter: QuestionDetailsAdapter
+    private var currentPosition: Int = 0
+    private val layoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(mContext, HORIZONTAL, false)
+    }
 
     companion object {
         val TAG = QuestionsDetailsFragment::class.java.simpleName
@@ -44,33 +50,54 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.questions().observe(this, Observer {
+            nextQuestionBtn.isEnabled = true
+            previousQuestionBtn.isEnabled = false
             setData(it)
         })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((Constants.FORM))))
-        list.layoutManager = LinearLayoutManager(mContext, HORIZONTAL, false)
-//        list.addItemDecoration(
-//            VerticalDividerItemDecoration.Builder(activity)
-//                .color(Color.TRANSPARENT)
-//                .sizeResId(R.dimen.small_margin).build()
-//        )
+        list.layoutManager = layoutManager
+
         list.addOnScrollListenerForGalleryEffect()
         list.addOnLayoutChangeListenerForGalleryEffect()
 
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
+        nextQuestionBtn.setOnClickListener {
+            if (currentPosition < adapter.itemCount) {
+                currentPosition++
+            }
+            list.smoothScrollToPosition(currentPosition)
+        }
+        previousQuestionBtn.setOnClickListener {
+            if (currentPosition > 0) {
+                currentPosition--
+            }
+            list.smoothScrollToPosition(currentPosition)
+        }
 
+        list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    currentPosition = layoutManager.findFirstVisibleItemPosition()
+
+                }
+            }
+        })
 
     }
 
     private fun setData(items: ArrayList<QuestionWithAnswers>) {
         if (!::adapter.isInitialized) {
             adapter = QuestionDetailsAdapter(mContext, items)
-//            adapter.listener = this
             list.adapter = adapter
+            currentPosition = items.indexOfFirst {
+                it.question.id == Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))).id
+            }
+            list.smoothScrollToPosition(currentPosition)
         } else {
             adapter.refreshData(items)
         }
     }
-
 
 }

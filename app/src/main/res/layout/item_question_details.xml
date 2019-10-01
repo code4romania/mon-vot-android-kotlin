@@ -16,11 +16,12 @@
 
             <ImageView
                 android:id="@+id/syncIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/sync_icon_size"
+                android:layout_height="@dimen/sync_icon_size"
                 android:layout_marginTop="@dimen/margin"
                 android:layout_marginEnd="@dimen/margin"
                 android:adjustViewBounds="true"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_synced" />
@@ -32,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/xsmall_margin"
                 android:text="@string/sync_locally_saved"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/syncIcon"
                 app:layout_constraintEnd_toStartOf="@id/syncIcon"
                 app:layout_constraintTop_toTopOf="@id/syncIcon"
