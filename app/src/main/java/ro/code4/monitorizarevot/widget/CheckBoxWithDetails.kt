@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.widget_checkbox_details.view.*
 import ro.code4.monitorizarevot.R
 
 class CheckBoxWithDetails : LinearLayout, Checkable {
-    private val onCheckedChangeListener =
+    private val toggleEditTextVisibility =
         CompoundButton.OnCheckedChangeListener { _, _ -> updateVisibility() }
 
     private fun updateVisibility() {
@@ -61,14 +61,20 @@ class CheckBoxWithDetails : LinearLayout, Checkable {
     }
 
     private fun init() {
-        LayoutInflater.from(context).inflate(R.layout.widget_radio_button_details, this, true)
+        LayoutInflater.from(context).inflate(R.layout.widget_checkbox_details, this, true)
 
         orientation = VERTICAL
-        answerCheckBox.setOnCheckedChangeListener(onCheckedChangeListener)
+        answerCheckBox.setOnCheckedChangeListener(toggleEditTextVisibility)
     }
 
     fun setText(text: String) {
         answerCheckBox.text = text
     }
 
+    fun setCheckedChangedListener(checkedChangedListener: CompoundButton.OnCheckedChangeListener) {
+        answerCheckBox.setOnCheckedChangeListener { p0, p1 ->
+            toggleEditTextVisibility.onCheckedChanged(p0, p1)
+            checkedChangedListener.onCheckedChanged(p0, p1)
+        }
+    }
 }

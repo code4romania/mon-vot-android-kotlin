@@ -73,5 +73,12 @@ interface FormsDao {
     @Query("SELECT * FROM section where formCode=:formCode")
     fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>>
 
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode")
+    fun getAnswersForForm(
+        countyCode: String?,
+        branchNumber: Int,
+        formCode: String
+    ): LiveData<List<AnsweredQuestionPOJO>>
+
 
 }

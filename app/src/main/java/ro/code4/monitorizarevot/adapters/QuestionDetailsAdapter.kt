@@ -4,9 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Checkable
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.LinearLayout.VERTICAL
-import android.widget.RadioGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatRadioButton
@@ -16,6 +17,7 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ViewHolder
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
+import ro.code4.monitorizarevot.widget.AnswerRadioGroup
 import ro.code4.monitorizarevot.widget.CheckBoxWithDetails
 import ro.code4.monitorizarevot.widget.RadioButtonWithDetails
 
@@ -44,13 +46,14 @@ class QuestionDetailsAdapter(
         setHasStableIds(true)
     }
 
+    override fun getItemId(position: Int): Long = items[position].question.id.toLong()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view =
             LayoutInflater.from(context).inflate(R.layout.item_question_details, parent, false)
 
         when (viewType) {
             TYPE_SINGLE_CHOICE, TYPE_SINGLE_CHOICE_DETAILS -> {
-                val radioGroup = RadioGroup(context)
+                val radioGroup = AnswerRadioGroup(context)
                 radioGroup.orientation = VERTICAL
                 radioGroup.id = R.id.answersRadioGroup
                 view.findViewById<LinearLayout>(R.id.answersLayout).addView(radioGroup)
@@ -77,10 +80,19 @@ class QuestionDetailsAdapter(
     }
 
     private fun setupSingleChoice(holder: RecyclerView.ViewHolder, item: QuestionWithAnswers) {
+        holder.itemView.answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
+            .removeAllViews()
         item.answers.forEach {
+            val checkedChangedListener =
+                CompoundButton.OnCheckedChangeListener { p0, p1 ->
+                    it.selected = p1
+                    holder.itemView.answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
+                        .onCheckedChanged(p0, p1)
+                }
             val view: View = if (it.hasManualInput) {
                 RadioButtonWithDetails(context).apply {
                     setText(it.text)
+                    setCheckedChangedListener(checkedChangedListener)
                 }
             } else {
                 AppCompatRadioButton(
@@ -89,27 +101,36 @@ class QuestionDetailsAdapter(
                     0
                 ).apply {
                     text = it.text
+                    setOnCheckedChangeListener(checkedChangedListener)
                 }
 
             }
+            (view as Checkable).isChecked = it.selected
             view.tag = it.id
-            holder.itemView.findViewById<RadioGroup>(R.id.answersRadioGroup)
+            holder.itemView.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                 .addView(view, params)
         }
     }
 
     private fun setupMultiChoice(holder: RecyclerView.ViewHolder, item: QuestionWithAnswers) {
-
+        holder.itemView.answersLayout.removeAllViews()
         item.answers.forEach {
+            val checkedChangedListener =
+                CompoundButton.OnCheckedChangeListener { _, p1 ->
+                    it.selected = p1
+                }
             val view: View = if (it.hasManualInput) {
                 CheckBoxWithDetails(context).apply {
                     setText(it.text)
+                    setCheckedChangedListener(checkedChangedListener)
                 }
             } else {
                 AppCompatCheckBox(ContextThemeWrapper(context, R.style.CheckBox), null, 0).apply {
                     text = it.text
+                    setOnCheckedChangeListener(checkedChangedListener)
                 }
             }
+            (view as Checkable).isChecked = it.selected
             view.tag = it.id
             holder.itemView.answersLayout.addView(view, params)
 

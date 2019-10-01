@@ -6,80 +6,85 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/syncIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_synced" />
-
-        <TextView
-            android:id="@+id/syncText"
-            style="@style/Text.Sync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/xsmall_margin"
-            android:text="@string/sync_locally_saved"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/syncIcon"
-            app:layout_constraintEnd_toStartOf="@id/syncIcon"
-            app:layout_constraintTop_toTopOf="@id/syncIcon"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/questionCode"
-            style="@style/Text.Label.Big"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:paddingTop="@dimen/xsmall_margin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/syncIcon"
-            tools:text="B2" />
-
-        <TextView
-            android:id="@+id/question"
-            style="@style/Text.Question"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:layout_marginBottom="@dimen/margin"
-            app:layout_constraintTop_toBottomOf="@id/questionCode"
-            tools:text="Sectia de votare este accesibila persoanelor cu dizabilitati" />
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/answersLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginTop="@dimen/big_margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/question" />
+            <ImageView
+                android:id="@+id/syncIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:adjustViewBounds="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_synced" />
 
-        <Button
-            android:id="@+id/addNoteButton"
-            style="@style/Button.Link.Purple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xsmall_margin"
-            android:layout_marginBottom="@dimen/small_margin"
-            android:drawableStart="@drawable/ic_add_note"
-            android:drawablePadding="@dimen/margin"
-            android:text="@string/add_note_to_question"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/answersLayout" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/syncText"
+                style="@style/Text.Sync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/xsmall_margin"
+                android:text="@string/sync_locally_saved"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/syncIcon"
+                app:layout_constraintEnd_toStartOf="@id/syncIcon"
+                app:layout_constraintTop_toTopOf="@id/syncIcon"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/questionCode"
+                style="@style/Text.Label.Big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                android:paddingTop="@dimen/xsmall_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/syncIcon"
+                tools:text="B2" />
+
+            <TextView
+                android:id="@+id/question"
+                style="@style/Text.Question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintTop_toBottomOf="@id/questionCode"
+                tools:text="Sectia de votare este accesibila persoanelor cu dizabilitati" />
+
+            <LinearLayout
+                android:id="@+id/answersLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginTop="@dimen/big_margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/question" />
+
+            <Button
+                android:id="@+id/addNoteButton"
+                style="@style/Button.Link.Purple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/xsmall_margin"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:drawableStart="@drawable/ic_add_note"
+                android:drawablePadding="@dimen/margin"
+                android:text="@string/add_note_to_question"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/answersLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </com.google.android.material.card.MaterialCardView>

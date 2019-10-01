@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.data.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -33,4 +34,6 @@ class Answer {
     var questionId: Int = -1
 
 
+    @Ignore
+    var selected = false
 }

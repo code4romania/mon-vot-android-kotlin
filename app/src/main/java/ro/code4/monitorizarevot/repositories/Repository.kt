@@ -171,6 +171,14 @@ class Repository : KoinComponent {
     fun postQuestionAnswer(responseAnswerContainer: ResponseAnswerContainer): Call<ResponseBody> =
         apiInterface.postQuestionAnswer(responseAnswerContainer)
 
+    fun getAnswersForForm(
+        countyCode: String?,
+        branchNumber: Int,
+        formCode: String
+    ): LiveData<List<AnsweredQuestionPOJO>> {
+        return db.formDetailsDao().getAnswersForForm(countyCode, branchNumber, formCode)
+    }
+
 
 //    fun postNote(note: Note): Call<ResponseBody> {
 //        var body: MultipartBody.Part? = null

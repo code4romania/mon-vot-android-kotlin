@@ -14,7 +14,7 @@ import ro.code4.monitorizarevot.R
 
 
 class RadioButtonWithDetails : LinearLayout, Checkable {
-    private val onCheckedChangeListener =
+    private val toggleEditTextVisibility =
         CompoundButton.OnCheckedChangeListener { _, _ -> updateVisibility() }
 
     private fun updateVisibility() {
@@ -63,13 +63,25 @@ class RadioButtonWithDetails : LinearLayout, Checkable {
 
     private fun init() {
         LayoutInflater.from(context).inflate(R.layout.widget_radio_button_details, this, true)
-
         orientation = VERTICAL
-        answerRadioButton.setOnCheckedChangeListener(onCheckedChangeListener)
+        answerRadioButton.setOnCheckedChangeListener(toggleEditTextVisibility)
     }
 
     fun setText(text: String) {
         answerRadioButton.text = text
+    }
+
+    override fun setTag(tag: Any?) {
+        answerRadioButton.tag = tag
+    }
+
+
+    override fun getTag(): Any = answerRadioButton.tag
+    fun setCheckedChangedListener(checkedChangedListener: CompoundButton.OnCheckedChangeListener) {
+        answerRadioButton.setOnCheckedChangeListener { p0, p1 ->
+            toggleEditTextVisibility.onCheckedChanged(p0, p1)
+            checkedChangedListener.onCheckedChanged(p0, p1)
+        }
     }
 
 }

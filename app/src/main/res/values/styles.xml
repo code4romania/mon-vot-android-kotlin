@@ -116,6 +116,7 @@
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMaxTextSize">24sp</item>
         <item name="android:lines">3</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-bold</item>
         <item name="autoSizeStepGranularity">2sp</item>
     </style>
