@@ -11,6 +11,8 @@ build/
 
 Vote Monitor.iml
 
+google-services.json
+
 # fastlane
 fastlane/report.xml
 fastlane/Preview.html
