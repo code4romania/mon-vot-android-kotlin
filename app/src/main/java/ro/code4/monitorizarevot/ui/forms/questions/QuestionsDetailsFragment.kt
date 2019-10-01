@@ -82,19 +82,23 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     currentPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
                     Log.i("gaga", "the new current position $currentPosition")
-                    when (currentPosition) {
-                        0 -> previousQuestionBtn.visibility = View.GONE
-                        adapter.itemCount - 1 -> nextQuestionBtn.visibility = View.GONE
-                        else -> {
-                            previousQuestionBtn.visibility = View.VISIBLE
-                            nextQuestionBtn.visibility = View.VISIBLE
-                        }
-                    }
+                    setVisibilityOnButtons()
 
                 }
             }
         })
 
+    }
+
+    private fun setVisibilityOnButtons() {
+        when (currentPosition) {
+            0 -> previousQuestionBtn.visibility = View.GONE
+            adapter.itemCount - 1 -> nextQuestionBtn.visibility = View.GONE
+            else -> {
+                previousQuestionBtn.visibility = View.VISIBLE
+                nextQuestionBtn.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun setData(items: ArrayList<QuestionWithAnswers>) {
@@ -104,7 +108,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
             currentPosition = items.indexOfFirst {
                 it.question.id == Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))).id
             }
-            list.smoothScrollToPosition(currentPosition)
+            layoutManager.scrollToPosition(currentPosition)
+            setVisibilityOnButtons()
         } else {
             adapter.refreshData(items)
         }
