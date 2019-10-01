@@ -5,10 +5,7 @@ import com.sylversky.fontreplacer.FontReplacer
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import ro.code4.monitorizarevot.modules.apiModule
-import ro.code4.monitorizarevot.modules.appModule
-import ro.code4.monitorizarevot.modules.dbModule
-import ro.code4.monitorizarevot.modules.viewModelsModule
+import ro.code4.monitorizarevot.modules.*
 
 class App : Application() {
 
@@ -23,7 +20,7 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(listOf(appModule, apiModule, dbModule, viewModelsModule))
+            modules(listOf(appModule, apiModule, dbModule, viewModelsModule, analyticsModule))
         }
     }
 
