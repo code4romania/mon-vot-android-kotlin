@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.forms.questions
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,8 +51,6 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.questions().observe(this, Observer {
-            nextQuestionBtn.isEnabled = true
-            previousQuestionBtn.isEnabled = false
             setData(it)
         })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((Constants.FORM))))
@@ -63,23 +62,34 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
         nextQuestionBtn.setOnClickListener {
-            if (currentPosition < adapter.itemCount) {
-                currentPosition++
+            if (currentPosition < adapter.itemCount - 1) {
+
+                Log.i("gaga", "scroll to ${currentPosition + 1}")
+                list.smoothScrollToPosition(currentPosition + 1)
             }
-            list.smoothScrollToPosition(currentPosition)
         }
         previousQuestionBtn.setOnClickListener {
+
             if (currentPosition > 0) {
-                currentPosition--
+                Log.i("gaga", "scroll to ${currentPosition - 1}")
+                list.smoothScrollToPosition(currentPosition - 1)
             }
-            list.smoothScrollToPosition(currentPosition)
         }
 
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    currentPosition = layoutManager.findFirstVisibleItemPosition()
+                    currentPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    Log.i("gaga", "the new current position $currentPosition")
+                    when (currentPosition) {
+                        0 -> previousQuestionBtn.visibility = View.GONE
+                        adapter.itemCount - 1 -> nextQuestionBtn.visibility = View.GONE
+                        else -> {
+                            previousQuestionBtn.visibility = View.VISIBLE
+                            nextQuestionBtn.visibility = View.VISIBLE
+                        }
+                    }
 
                 }
             }
