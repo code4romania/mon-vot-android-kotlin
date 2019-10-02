@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.widget
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -82,6 +83,11 @@ class RadioButtonWithDetails : LinearLayout, Checkable {
             toggleEditTextVisibility.onCheckedChanged(p0, p1)
             checkedChangedListener.onCheckedChanged(p0, p1)
         }
+    }
+
+
+    fun setTextChangedListener(textChangedListener: TextWatcher) {
+        answerDetails.addTextChangedListener(textChangedListener)
     }
 
 }

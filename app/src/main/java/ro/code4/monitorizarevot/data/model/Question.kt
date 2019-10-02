@@ -45,4 +45,9 @@ class Question {
     lateinit var answers: List<Answer>
 
     lateinit var sectionId: String
+
+    @Ignore
+    var savedLocally = false
+    @Ignore
+    var synced = false
 }

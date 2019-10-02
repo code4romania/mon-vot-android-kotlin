@@ -2,7 +2,6 @@ package ro.code4.monitorizarevot.ui.forms.questions
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,29 +61,35 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
         nextQuestionBtn.setOnClickListener {
-            if (currentPosition < adapter.itemCount - 1) {
-
-                Log.i("gaga", "scroll to ${currentPosition + 1}")
+            if (currentPosition < adapter.itemCount - 1) {//todo check if you can remove this, in theory the button shouldn't be visible when currentPosition ==  adapter.itemCount - 1
                 list.smoothScrollToPosition(currentPosition + 1)
             }
         }
         previousQuestionBtn.setOnClickListener {
 
-            if (currentPosition > 0) {
-                Log.i("gaga", "scroll to ${currentPosition - 1}")
+            if (currentPosition > 0) { //todo check if you can remove this, in theory the button shouldn't be visible when currentPosition == 0
                 list.smoothScrollToPosition(currentPosition - 1)
             }
         }
 
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var x = 0
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
                     currentPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
-                    Log.i("gaga", "the new current position $currentPosition")
+                    if (currentPosition > 0) {
+                        viewModel.saveAnswer(adapter.getItem(currentPosition - x))
+                    }
                     setVisibilityOnButtons()
 
                 }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                x = if (dx > 0) 1 else -1
             }
         })
 

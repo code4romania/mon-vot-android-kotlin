@@ -10,6 +10,7 @@ import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.model.Section
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
@@ -79,6 +80,23 @@ interface FormsDao {
         branchNumber: Int,
         formCode: String
     ): LiveData<List<AnsweredQuestionPOJO>>
+
+    @Transaction
+    fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
+        insertAnsweredQuestion(answeredQuestion)
+        insertAnswers(*answers.map { it }.toTypedArray())
+        answeredQuestion.savedLocally = true
+        updateAnsweredQuestion(answeredQuestion)
+    }
+
+    @Insert(onConflict = REPLACE)
+    fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion)
+
+    @Update
+    fun updateAnsweredQuestion(answeredQuestion: AnsweredQuestion)
+
+    @Insert(onConflict = REPLACE)
+    fun insertAnswers(vararg answers: SelectedAnswer)
 
 
 }

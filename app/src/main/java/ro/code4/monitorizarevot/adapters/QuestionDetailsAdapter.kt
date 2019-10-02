@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.adapters
 
 import android.content.Context
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ViewHolder
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
+import ro.code4.monitorizarevot.helper.TextWatcherDelegate
 import ro.code4.monitorizarevot.widget.AnswerRadioGroup
 import ro.code4.monitorizarevot.widget.CheckBoxWithDetails
 import ro.code4.monitorizarevot.widget.RadioButtonWithDetails
@@ -89,9 +91,15 @@ class QuestionDetailsAdapter(
                     holder.itemView.answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                         .onCheckedChanged(p0, p1)
                 }
+            val textWatcher = object : TextWatcher by TextWatcherDelegate {
+                override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                    it.value = p0.toString()
+                }
+            }
             val view: View = if (it.hasManualInput) {
                 RadioButtonWithDetails(context).apply {
                     setText(it.text)
+                    setTextChangedListener(textWatcher)
                     setCheckedChangedListener(checkedChangedListener)
                 }
             } else {
@@ -119,9 +127,15 @@ class QuestionDetailsAdapter(
                 CompoundButton.OnCheckedChangeListener { _, p1 ->
                     it.selected = p1
                 }
+            val textWatcher = object : TextWatcher by TextWatcherDelegate {
+                override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                    it.value = p0.toString()
+                }
+            }
             val view: View = if (it.hasManualInput) {
                 CheckBoxWithDetails(context).apply {
                     setText(it.text)
+                    setTextChangedListener(textWatcher)
                     setCheckedChangedListener(checkedChangedListener)
                 }
             } else {
@@ -137,6 +151,7 @@ class QuestionDetailsAdapter(
         }
     }
 
+
     override fun getItemViewType(position: Int): Int = items[position].question.questionType
 
     fun refreshData(list: ArrayList<QuestionWithAnswers>) {
@@ -144,6 +159,8 @@ class QuestionDetailsAdapter(
         items.addAll(list)
         notifyDataSetChanged()
     }
+
+    fun getItem(position: Int): QuestionWithAnswers = items[position]
 
     interface OnClickListener {
         fun onQuestionClick(question: Question)

@@ -36,4 +36,6 @@ class Answer {
 
     @Ignore
     var selected = false
+    @Ignore
+    var value: String? = null
 }

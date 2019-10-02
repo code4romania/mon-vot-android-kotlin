@@ -1,7 +1,6 @@
 package ro.code4.monitorizarevot.repositories
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,6 +13,8 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
+import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
@@ -76,6 +77,7 @@ class Repository : KoinComponent {
 
     fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>> =
         db.formDetailsDao().getSectionsWithQuestions(formCode)
+
     fun getForms(): Observable<Unit> {
 
         val observableDb = db.formDetailsDao().getAllForms().toObservable()
@@ -130,7 +132,6 @@ class Repository : KoinComponent {
         }
         val apiFormDetails = response.formDetailsList
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
-            Log.i("GAGA", "save form details")
             saveFormDetails(apiFormDetails)
             return
         }
@@ -177,6 +178,13 @@ class Repository : KoinComponent {
         formCode: String
     ): LiveData<List<AnsweredQuestionPOJO>> {
         return db.formDetailsDao().getAnswersForForm(countyCode, branchNumber, formCode)
+    }
+
+    fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
+        Observable.create<Any> {
+            db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
 
