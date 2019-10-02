@@ -37,11 +37,10 @@ class QuestionsDetailsViewModel : BaseViewModel() {
         zipLiveData(
             repository.getSectionsWithQuestions(formCode),
             repository.getAnswersForForm(countyCode, branchNumber, formCode)
-        )
-            .observeForever {
-                processList(it.first, it.second)
+        ).observeForever {
+            processList(it.first, it.second)
 
-            }
+        }
 
     }
 

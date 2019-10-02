@@ -46,8 +46,7 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
                 val noQuestions =
                     formWithSections.sections.fold(0, { acc, obj -> acc + obj.questions.size })
                 holder.itemView.progress.max = noQuestions
-                holder.itemView.progress.progress =
-                    formWithSections.getNoAnsweredQuestions() //TODO change with synced questions
+                holder.itemView.progress.progress = formWithSections.getNoAnsweredQuestions()
                 holder.itemView.questionsAnswered.text = context.getString(
                     R.string.no_answered_questions,
                     formWithSections.getNoAnsweredQuestions(),

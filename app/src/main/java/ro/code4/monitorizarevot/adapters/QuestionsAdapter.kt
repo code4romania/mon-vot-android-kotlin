@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_question.view.*
@@ -43,6 +44,12 @@ class QuestionsAdapter(private val context: Context, private val items: ArrayLis
 
                 val questionWithAnswers = item.value as QuestionWithAnswers
                 with(questionWithAnswers.question) {
+                    if (savedLocally || synced) {
+                        holder.itemView.syncIcon.visibility = View.VISIBLE
+                        holder.itemView.syncIcon.setImageResource(if (synced) R.drawable.ic_synced else R.drawable.ic_sync_progress)
+                    } else {
+                        holder.itemView.syncIcon.visibility = View.INVISIBLE
+                    }
                     holder.itemView.questionCode.text = code
                     holder.itemView.question.text = text
                     holder.itemView.setOnClickListener {

@@ -58,10 +58,10 @@ class QuestionsListFragment : BaseFragment<QuestionsViewModel>(), QuestionsAdapt
         if (!::adapter.isInitialized) {
             adapter = QuestionsAdapter(mContext, items)
             adapter.listener = this
-            list.adapter = adapter
         } else {
             adapter.refreshData(items)
         }
+        list.adapter = adapter
     }
 
     override fun onQuestionClick(question: Question) {
