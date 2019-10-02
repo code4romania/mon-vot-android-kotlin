@@ -9,6 +9,7 @@ import ro.code4.monitorizarevot.data.model.BranchDetails
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.data.model.ResponseAnswerContainer
 import ro.code4.monitorizarevot.data.model.Section
+import ro.code4.monitorizarevot.data.model.response.SyncResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 
 //TODO to be translated
@@ -27,7 +28,7 @@ interface ApiInterface {
     fun postBranchDetails(@Body branchDetails: BranchDetails): Call<ResponseBody>
 
     @POST("/api/v1/raspuns")
-    fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Call<ResponseBody>
+    fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<SyncResponse>
 
 
     @Multipart

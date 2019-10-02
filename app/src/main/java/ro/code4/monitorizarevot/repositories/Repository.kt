@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.repositories
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,6 +17,7 @@ import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
+import ro.code4.monitorizarevot.data.model.response.SyncResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
@@ -25,6 +27,11 @@ import ro.code4.monitorizarevot.services.LoginInterface
 
 
 class Repository : KoinComponent {
+
+    companion object {
+        @JvmStatic
+        val TAG = Repository::class.java.simpleName
+    }
 
     private val retrofit: Retrofit by inject()
     private val db: AppDatabase by inject()
@@ -169,9 +176,6 @@ class Repository : KoinComponent {
         apiInterface.postBranchDetails(branchDetails)
 
 
-    fun postQuestionAnswer(responseAnswerContainer: ResponseAnswerContainer): Call<ResponseBody> =
-        apiInterface.postQuestionAnswer(responseAnswerContainer)
-
     fun getAnswersForForm(
         countyCode: String?,
         branchNumber: Int,
@@ -181,12 +185,39 @@ class Repository : KoinComponent {
     }
 
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
-        Observable.create<Any> {
+        Observable.create<Unit> {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
+    @SuppressLint("CheckResult")
+    fun syncAnswers(countyCode: String, branchNumber: Int, formCode: String) {
+        db.formDetailsDao().getNotSyncedAnswersForForm(countyCode, branchNumber, formCode)
+            .toObservable()
+            .subscribeOn(Schedulers.io()).flatMap {
+                syncAnswers(it)
+            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
+                if (it.isCompletedSuccessfully) {
+                    Observable.create<Unit> {
+                        db.formDetailsDao()
+                            .updateAnsweredQuestions(countyCode, branchNumber, formCode)
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()
+                }
+            }, {
+                Log.i(TAG, it.message ?: "Error on synchronizing data")
+            })
+    }
+
+    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<SyncResponse> {
+        val responseAnswerContainer = ResponseAnswerContainer()
+        responseAnswerContainer.responseMapperList = list.map {
+            it.answeredQuestion.options = it.selectedAnswers
+            return@map it.answeredQuestion
+        }
+        return apiInterface.postQuestionAnswer(responseAnswerContainer)
+    }
 
 //    fun postNote(note: Note): Call<ResponseBody> {
 //        var body: MultipartBody.Part? = null

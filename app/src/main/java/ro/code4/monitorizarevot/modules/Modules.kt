@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 
 val gson: Gson by lazy {
     val gsonBuilder = GsonBuilder()
-    gsonBuilder.create()
+    gsonBuilder.excludeFieldsWithoutExposeAnnotation().create()
 }
 val appModule = module {
     single { App.instance }

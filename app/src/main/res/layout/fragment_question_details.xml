@@ -6,9 +6,12 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:id="@+id/root"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:paddingStart="@dimen/small_margin"
-    android:paddingEnd="@dimen/small_margin"
     android:paddingTop="@dimen/margin"
+    android:paddingEnd="@dimen/small_margin"
     android:paddingBottom="@dimen/margin">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,14 +31,14 @@
         style="@style/Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/question_previous"
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:paddingStart="@dimen/small_margin"
+        android:paddingEnd="@dimen/small_margin"
+        android:text="@string/question_previous"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nextQuestionBtn"
-        android:paddingEnd="@dimen/small_margin"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
@@ -45,8 +48,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
-        android:text="@string/question_next"
         android:layout_marginEnd="@dimen/small_margin"
+        android:text="@string/question_next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/previousQuestionBtn" />

@@ -53,7 +53,11 @@ class CheckBoxWithDetails : LinearLayout, Checkable {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int, @Suppress("UNUSED_PARAMETER") defStyleRes: Int
+    ) : super(
         context,
         attrs,
         defStyleAttr
@@ -81,5 +85,11 @@ class CheckBoxWithDetails : LinearLayout, Checkable {
 
     fun setTextChangedListener(textChangedListener: TextWatcher) {
         answerDetails.addTextChangedListener(textChangedListener)
+    }
+
+    fun setValue(value: String?) {
+        value?.let {
+            answerDetails.setText(it)
+        }
     }
 }

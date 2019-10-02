@@ -32,10 +32,10 @@ class SelectedAnswer() {
     @SerializedName("value")
     var value: String? = null
 
-    @SerializedName("codJudet")
+    //    @SerializedName("codJudet")
     lateinit var countyCode: String
 
-    @SerializedName("numarSectie")
+    //    @SerializedName("numarSectie")
     var branchNumber: Int = 0
 
     lateinit var questionId: String

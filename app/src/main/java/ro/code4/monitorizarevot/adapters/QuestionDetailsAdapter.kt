@@ -115,6 +115,7 @@ class QuestionDetailsAdapter(
             val view: View = if (it.hasManualInput) {
                 RadioButtonWithDetails(context).apply {
                     setText(it.text)
+                    setValue(it.value)
                     setTextChangedListener(textWatcher)
                     setCheckedChangedListener(checkedChangedListener)
                 }
@@ -153,6 +154,7 @@ class QuestionDetailsAdapter(
                     setText(it.text)
                     setTextChangedListener(textWatcher)
                     setCheckedChangedListener(checkedChangedListener)
+                    setValue(it.value)
                 }
             } else {
                 AppCompatCheckBox(ContextThemeWrapper(context, R.style.CheckBox), null, 0).apply {

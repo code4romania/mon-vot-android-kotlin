@@ -61,12 +61,13 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
         nextQuestionBtn.setOnClickListener {
+            root.requestFocus()
             if (currentPosition < adapter.itemCount - 1) {//todo check if you can remove this, in theory the button shouldn't be visible when currentPosition ==  adapter.itemCount - 1
                 list.smoothScrollToPosition(currentPosition + 1)
             }
         }
         previousQuestionBtn.setOnClickListener {
-
+            root.requestFocus()
             if (currentPosition > 0) { //todo check if you can remove this, in theory the button shouldn't be visible when currentPosition == 0
                 list.smoothScrollToPosition(currentPosition - 1)
             }
@@ -120,4 +121,9 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         }
     }
 
+    override fun onPause() {
+        viewModel.syncData()
+        super.onPause()
+
+    }
 }

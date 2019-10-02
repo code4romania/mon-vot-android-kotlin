@@ -93,11 +93,15 @@ class QuestionsDetailsViewModel : BaseViewModel() {
                     countyCode,
                     branchNumber,
                     answeredQuestion.id,
-                    if (it.hasManualInput) it.text else null
+                    if (it.hasManualInput) it.value else null
                 )
             }
             repository.saveAnsweredQuestion(answeredQuestion, list)
         }
+    }
+
+    fun syncData() {
+        repository.syncAnswers(countyCode, branchNumber, selectedFormCode)
     }
 
 }

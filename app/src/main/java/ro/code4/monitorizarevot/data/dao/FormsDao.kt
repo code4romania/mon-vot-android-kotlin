@@ -81,6 +81,14 @@ interface FormsDao {
         formCode: String
     ): LiveData<List<AnsweredQuestionPOJO>>
 
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode AND synced=:synced")
+    fun getNotSyncedAnswersForForm(
+        countyCode: String?,
+        branchNumber: Int,
+        formCode: String,
+        synced: Boolean = false
+    ): Maybe<List<AnsweredQuestionPOJO>>
+
     @Transaction
     fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
         insertAnsweredQuestion(answeredQuestion)
@@ -93,10 +101,18 @@ interface FormsDao {
     fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion)
 
     @Update
-    fun updateAnsweredQuestion(answeredQuestion: AnsweredQuestion)
+    fun updateAnsweredQuestion(vararg answeredQuestion: AnsweredQuestion)
 
     @Insert(onConflict = REPLACE)
     fun insertAnswers(vararg answers: SelectedAnswer)
+
+    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode")
+    fun updateAnsweredQuestions(
+        countyCode: String,
+        branchNumber: Int,
+        formCode: String,
+        synced: Boolean = true
+    )
 
 
 }
