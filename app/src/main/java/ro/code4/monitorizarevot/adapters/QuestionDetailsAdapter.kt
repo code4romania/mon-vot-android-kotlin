@@ -75,6 +75,22 @@ class QuestionDetailsAdapter(
             TYPE_SINGLE_CHOICE, TYPE_SINGLE_CHOICE_DETAILS -> setupSingleChoice(holder, item)
         }
         with(item.question) {
+            when {
+                synced -> {
+                    holder.itemView.syncIcon.visibility = View.VISIBLE
+                    holder.itemView.syncIcon.setImageResource(R.drawable.ic_synced)
+                    holder.itemView.syncText.visibility = View.INVISIBLE
+                }
+                savedLocally && !synced -> {
+                    holder.itemView.syncIcon.visibility = View.VISIBLE
+                    holder.itemView.syncText.visibility = View.VISIBLE
+                    holder.itemView.syncIcon.setImageResource(R.drawable.ic_sync_progress)
+                }
+                else -> {
+                    holder.itemView.syncIcon.visibility = View.INVISIBLE
+                    holder.itemView.syncText.visibility = View.INVISIBLE
+                }
+            }
             holder.itemView.questionCode.text = code
             holder.itemView.question.text = text
         }

@@ -52,13 +52,19 @@ class QuestionsDetailsViewModel : BaseViewModel() {
         sections.forEach { sectionWithQuestion ->
             sectionWithQuestion.questions.forEach { questionWithAnswers ->
                 questionWithAnswers.answers.forEach { answer ->
-                    val selectedAnswer =
+                    val answeredQuestion =
                         answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }
-                            ?.selectedAnswers?.find { it.optionId == answer.id }
-                    if (selectedAnswer != null) {
-                        answer.selected = true
-                        if (answer.hasManualInput) {
-                            answer.value = selectedAnswer.value ?: ""
+                    answeredQuestion?.also { savedQuestion ->
+                        val selectedAnswer =
+                            savedQuestion.selectedAnswers.find { it.optionId == answer.id }
+                        questionWithAnswers.question.savedLocally =
+                            savedQuestion.answeredQuestion.savedLocally
+                        questionWithAnswers.question.synced = savedQuestion.answeredQuestion.synced
+                        if (selectedAnswer != null) {
+                            answer.selected = true
+                            if (answer.hasManualInput) {
+                                answer.value = selectedAnswer.value ?: ""
+                            }
                         }
                     }
                 }
