@@ -89,6 +89,9 @@ interface FormsDao {
         synced: Boolean = false
     ): Maybe<List<AnsweredQuestionPOJO>>
 
+    @Query("SELECT * FROM answered_question WHERE  synced=:synced")
+    fun getNotSyncedAnswers(synced: Boolean = false): Maybe<List<AnsweredQuestionPOJO>>
+
     @Transaction
     fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
         insertAnsweredQuestion(answeredQuestion)

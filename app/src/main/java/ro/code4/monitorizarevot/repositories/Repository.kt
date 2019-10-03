@@ -217,6 +217,28 @@ class Repository : KoinComponent {
         return apiInterface.postQuestionAnswer(responseAnswerContainer)
     }
 
+    @SuppressLint("CheckResult")
+    fun syncAnswers() {
+        lateinit var answers: List<AnsweredQuestionPOJO>
+        db.formDetailsDao().getNotSyncedAnswers()
+            .toObservable()
+            .subscribeOn(Schedulers.io()).flatMap {
+                answers = it
+                syncAnswers(it)
+            }.observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->
+                if (response.isCompletedSuccessfully) {
+                    answers.forEach { item -> item.answeredQuestion.synced = true }
+                    Observable.create<Unit> {
+                        db.formDetailsDao()
+                            .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()
+                }
+            }, {
+                Log.i(TAG, it.message ?: "Error on synchronizing data")
+            })
+    }
+
 //    fun postNote(note: Note): Call<ResponseBody> {
 //        var body: MultipartBody.Part? = null
 //        var questionId = 0

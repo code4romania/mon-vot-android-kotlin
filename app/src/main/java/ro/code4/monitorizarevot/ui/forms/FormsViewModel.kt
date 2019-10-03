@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.forms
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,6 +28,7 @@ class FormsViewModel : BaseViewModel() {
     private val formsWithSections = MutableLiveData<List<FormWithSections>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
+    private val syncVisibilityLiveData = MutableLiveData<Int>()
 
     init {
 
@@ -38,6 +40,7 @@ class FormsViewModel : BaseViewModel() {
             .observeForever {
                 answersLiveData.value = it
                 processList()
+                syncVisibilityLiveData.postValue(if (it.any { item -> !item.answeredQuestion.synced }) View.VISIBLE else View.GONE)
             }
         repository.getFormsWithQuestions().observeForever {
             formsWithSections.value = it
@@ -98,5 +101,11 @@ class FormsViewModel : BaseViewModel() {
 
     fun selectQuestion(question: Question) {
         selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
+    }
+
+    fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData
+
+    fun sync() {
+        repository.syncAnswers()
     }
 }

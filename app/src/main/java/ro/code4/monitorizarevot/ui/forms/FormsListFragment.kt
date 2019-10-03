@@ -37,6 +37,12 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
         viewModel.forms().observe(this, Observer {
             setData(it)
         })
+        viewModel.syncVisibility().observe(this, Observer {
+            syncGroup.visibility = it
+        })
+        syncButton.setOnClickListener {
+            viewModel.sync()
+        }
         formsList.layoutManager = LinearLayoutManager(mContext)
         formsList.addItemDecoration(
             HorizontalDividerItemDecoration.Builder(activity)
