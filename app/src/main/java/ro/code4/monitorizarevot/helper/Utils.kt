@@ -204,7 +204,7 @@ fun RecyclerView.addOnScrollListenerForGalleryEffect() {
             val padding = (width - width) / 2
             for (j in 0 until childCount) {
                 val v = recyclerView.getChildAt(j)
-                //往左 从 padding 到 -(v.getWidth()-padding) 的过程中，由大到小
+                //Left from padding to -(v.getWidth()-padding), from big to small
                 var rate = 0f
 
                 if (v.left <= padding) {
@@ -218,7 +218,7 @@ fun RecyclerView.addOnScrollListenerForGalleryEffect() {
                     v.alpha = 1 - rate * 0.1f
 
                 } else {
-                    //往右 从 padding 到 recyclerView.getWidth()-padding 的过程中，由大到小
+                    //From right to padding to recyclerView.getWidth()-padding, from large to small
                     if (v.left <= recyclerView.width - padding) {
                         rate = (recyclerView.width - padding - v.left) * 1f / v.width
                     }
