@@ -81,6 +81,7 @@
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_height"
+                    android:text="0742395677"
                     android:hint="@string/login_phone"
                     android:inputType="phone"
                     style="@style/InputLogin"/>
@@ -100,6 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_height"
                     android:hint="@string/login_password"
+                    android:text="123456"
                     android:inputType="textPassword"
                     android:imeOptions="actionDone"
                     style="@style/InputLogin"/>
