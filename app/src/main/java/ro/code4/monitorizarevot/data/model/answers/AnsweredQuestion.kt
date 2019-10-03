@@ -24,8 +24,7 @@ import ro.code4.monitorizarevot.data.model.Question
         ForeignKey(
             entity = BranchDetails::class,
             parentColumns = ["countyCode", "branchNumber"],
-            childColumns = ["countyCode", "sectionNumber"],
-            onDelete = ForeignKey.CASCADE
+            childColumns = ["countyCode", "sectionNumber"]
         )], indices = [Index(value = ["countyCode", "sectionNumber", "id"], unique = true)]
 )
 class AnsweredQuestion() {
@@ -52,18 +51,19 @@ class AnsweredQuestion() {
     @SerializedName("optiuni")
     lateinit var options: List<SelectedAnswer>
 
+    var savedLocally = false
+    var synced = false
+
     constructor(
         questionId: Int,
         countyCode: String,
         branchNumber: Int,
-        formCode: String,
-        answers: List<SelectedAnswer>
+        formCode: String
     ) : this() {
         this.id = "$countyCode$branchNumber$formCode$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
         this.sectionNumber = branchNumber
-        this.options = answers
         this.formCode = formCode
     }
 

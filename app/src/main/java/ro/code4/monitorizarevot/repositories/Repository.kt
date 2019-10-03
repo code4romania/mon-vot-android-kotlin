@@ -14,7 +14,10 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
+import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
+import ro.code4.monitorizarevot.data.model.response.SyncResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
@@ -24,6 +27,11 @@ import ro.code4.monitorizarevot.services.LoginInterface
 
 
 class Repository : KoinComponent {
+
+    companion object {
+        @JvmStatic
+        val TAG = Repository::class.java.simpleName
+    }
 
     private val retrofit: Retrofit by inject()
     private val db: AppDatabase by inject()
@@ -76,6 +84,7 @@ class Repository : KoinComponent {
 
     fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>> =
         db.formDetailsDao().getSectionsWithQuestions(formCode)
+
     fun getForms(): Observable<Unit> {
 
         val observableDb = db.formDetailsDao().getAllForms().toObservable()
@@ -130,7 +139,6 @@ class Repository : KoinComponent {
         }
         val apiFormDetails = response.formDetailsList
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
-            Log.i("GAGA", "save form details")
             saveFormDetails(apiFormDetails)
             return
         }
@@ -141,8 +149,6 @@ class Repository : KoinComponent {
                 saveFormDetails(apiForm)
             }
         }
-
-//    return apiFormDetails
     }
 
     private fun getFormQuestions(form: FormDetails) {
@@ -168,9 +174,70 @@ class Repository : KoinComponent {
         apiInterface.postBranchDetails(branchDetails)
 
 
-    fun postQuestionAnswer(responseAnswerContainer: ResponseAnswerContainer): Call<ResponseBody> =
-        apiInterface.postQuestionAnswer(responseAnswerContainer)
+    fun getAnswersForForm(
+        countyCode: String?,
+        branchNumber: Int,
+        formCode: String
+    ): LiveData<List<AnsweredQuestionPOJO>> {
+        return db.formDetailsDao().getAnswersForForm(countyCode, branchNumber, formCode)
+    }
 
+    fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
+        Observable.create<Unit> {
+            db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    @SuppressLint("CheckResult")
+    fun syncAnswers(countyCode: String, branchNumber: Int, formCode: String) {
+        db.formDetailsDao().getNotSyncedAnswersForForm(countyCode, branchNumber, formCode)
+            .toObservable()
+            .subscribeOn(Schedulers.io()).flatMap {
+                syncAnswers(it)
+            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
+                if (it.isCompletedSuccessfully) {
+                    Observable.create<Unit> {
+                        db.formDetailsDao()
+                            .updateAnsweredQuestions(countyCode, branchNumber, formCode)
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()
+                }
+            }, {
+                Log.i(TAG, it.message ?: "Error on synchronizing data")
+            })
+    }
+
+    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<SyncResponse> {
+        val responseAnswerContainer = ResponseAnswerContainer()
+        responseAnswerContainer.responseMapperList = list.map {
+            it.answeredQuestion.options = it.selectedAnswers
+            return@map it.answeredQuestion
+        }
+        return apiInterface.postQuestionAnswer(responseAnswerContainer)
+    }
+
+    @SuppressLint("CheckResult")
+    fun syncAnswers() {
+        lateinit var answers: List<AnsweredQuestionPOJO>
+        db.formDetailsDao().getNotSyncedAnswers()
+            .toObservable()
+            .subscribeOn(Schedulers.io()).flatMap {
+                answers = it
+                syncAnswers(it)
+            }.observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->
+                if (response.isCompletedSuccessfully) {
+                    answers.forEach { item -> item.answeredQuestion.synced = true }
+                    Observable.create<Unit> {
+                        db.formDetailsDao()
+                            .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()
+                }
+            }, {
+                Log.i(TAG, it.message ?: "Error on synchronizing data")
+            })
+    }
 
 //    fun postNote(note: Note): Call<ResponseBody> {
 //        var body: MultipartBody.Part? = null

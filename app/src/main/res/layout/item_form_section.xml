@@ -2,8 +2,8 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     style="@style/MaterialCardView"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,8 +22,8 @@
             tools:src="@drawable/ic_form_notes" />
 
         <TextView
-            style="@style/Text.Title"
             android:id="@+id/formDescription"
+            style="@style/Text.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
@@ -63,13 +63,5 @@
             app:layout_constraintTop_toBottomOf="@+id/questionsAnswered"
             app:layout_constraintVertical_chainStyle="packed"
             tools:progress="50" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/progressGroup"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="invisible"
-            app:constraint_referenced_ids="progress,questionsAnswered"
-            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

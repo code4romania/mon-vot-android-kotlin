@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ac6254b8089a721f8b60ecf0d7d8cca7",
+    "identityHash": "52c83ad58fcbc2e50818b5210dbbe23d",
     "entities": [
       {
         "tableName": "county",
@@ -219,7 +219,7 @@
       },
       {
         "tableName": "question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `code` TEXT NOT NULL, `typeId` INTEGER NOT NULL, `sectionId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`sectionId`) REFERENCES `section`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `code` TEXT NOT NULL, `questionType` INTEGER NOT NULL, `sectionId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`sectionId`) REFERENCES `section`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -240,8 +240,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "typeId",
-            "columnName": "typeId",
+            "fieldPath": "questionType",
+            "columnName": "questionType",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -325,7 +325,7 @@
       },
       {
         "tableName": "answered_question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formCode` TEXT NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `sectionNumber` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `sectionNumber`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formCode` TEXT NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `sectionNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `sectionNumber`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -354,6 +354,18 @@
           {
             "fieldPath": "sectionNumber",
             "columnName": "sectionNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "savedLocally",
+            "columnName": "savedLocally",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "synced",
+            "columnName": "synced",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -401,7 +413,7 @@
           },
           {
             "table": "branch_details",
-            "onDelete": "CASCADE",
+            "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
               "countyCode",
@@ -491,7 +503,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ac6254b8089a721f8b60ecf0d7d8cca7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52c83ad58fcbc2e50818b5210dbbe23d')"
     ]
   }
 }

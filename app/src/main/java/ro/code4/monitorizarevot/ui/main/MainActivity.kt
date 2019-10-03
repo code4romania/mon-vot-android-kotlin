@@ -74,23 +74,5 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-//
-//    override fun onBackPressed() {
-//        val fm = supportFragmentManager
-//        for (frag in fm.fragments) {
-//            if (frag.isVisible) {
-//                val fragFm = frag.childFragmentManager
-//                for (childFrag in fragFm.fragments) {
-//                    val childFm = childFrag.childFragmentManager
-//                    Log.i("GAGA", "backstakcentrycount ${childFm.backStackEntryCount}")
-//                    if (childFm.backStackEntryCount > 0) {
-//                        childFm.popBackStackImmediate()
-//                        return
-//                    }
-//                }
-//            }
-//        }
-//        super.onBackPressed()
-//
-//    }
+
 }
