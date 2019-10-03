@@ -76,20 +76,25 @@ fun Calendar?.getDateText(): String? {
     if (this == null) {
         return null
     }
-    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault())
     return formatter.format(time)
 }
 
 fun Calendar.getTimeText(): String {
-    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault())
     return formatter.format(time)
+}
+
+fun Date.formatDate(): String {
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT_SIMPLE, Locale.getDefault())
+    return formatter.format(this)
 }
 
 fun String?.getDate(): Long? {
     if (this == null) {
         return null
     }
-    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault())
 
     return formatter.parse(this)?.time
 

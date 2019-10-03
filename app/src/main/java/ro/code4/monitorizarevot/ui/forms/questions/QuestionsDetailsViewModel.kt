@@ -21,7 +21,7 @@ class QuestionsDetailsViewModel : BaseViewModel() {
     private val preferences: SharedPreferences by inject()
     private val questionsLiveData = MutableLiveData<ArrayList<QuestionWithAnswers>>()
     private lateinit var selectedFormCode: String
-    private lateinit var countyCode: String
+    private var countyCode: String
     private var branchNumber: Int = -1
 
     fun questions(): LiveData<ArrayList<QuestionWithAnswers>> = questionsLiveData

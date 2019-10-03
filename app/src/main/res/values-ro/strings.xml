@@ -125,6 +125,7 @@
     <string name="sync_locally_saved">salvat local</string>
     <string name="add_note_to_question">Adaugă Notă la Întrebarea Curentă</string>
     <string name="add_note">Adaugă notă</string>
+    <string name="notes_history">Istoricul notelor</string>
     <string name="note_submit">Trimite</string>
 
     <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou</string>

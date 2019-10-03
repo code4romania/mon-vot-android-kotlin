@@ -44,7 +44,7 @@ class QuestionsListFragment : BaseFragment<QuestionsViewModel>(), QuestionsAdapt
             setData(it)
         })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((FORM))))
-//        viewModel.getQuestions(arguments?.getString(FORM_CODE, ""))
+
         list.layoutManager = LinearLayoutManager(mContext)
         list.addItemDecoration(
             HorizontalDividerItemDecoration.Builder(activity)

@@ -7,6 +7,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -22,8 +25,10 @@ import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
+import java.io.File
 
 
 class Repository : KoinComponent {
@@ -239,26 +244,47 @@ class Repository : KoinComponent {
             })
     }
 
-//    fun postNote(note: Note): Call<ResponseBody> {
-//        var body: MultipartBody.Part? = null
-//        var questionId = 0
-//        note.uriPath?.let {
-//            val file = File(it)
-//
-//            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-//            body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-//
-//        }
-//        note.questionId?.let {
-//            questionId = 0
-//        }
-//
-//
-//        return apiInterface.postNote(
-//            body, Preferences.getCountyCode().createMultipart("CodJudet"),
-//            Preferences.getBranchNumber().createMultipart("NumarSectie"),
-//            questionId.toString().createMultipart("IdIntrebare"),
-//            note.description.createMultipart("TextNota")
-//        )
-//    }
+    fun getNotes(
+        countyCode: String,
+        branchNumber: Int,
+        selectedQuestion: Question?
+    ): LiveData<List<Note>> {
+        return if (selectedQuestion == null) {
+            db.noteDao().getNotes(countyCode, branchNumber)
+        } else {
+            db.noteDao().getNotesForQuestion(countyCode, branchNumber, selectedQuestion.id)
+        }
+    }
+
+    fun saveNote(note: Note): Observable<ResponseBody> =
+        db.noteDao().save(note).toObservable().flatMap {
+            note.id = it
+            postNote(note)
+        }.doOnNext {
+            note.synced = true
+            db.noteDao().updateNote(note)
+        }
+
+    private fun postNote(note: Note): Observable<ResponseBody> {
+        var body: MultipartBody.Part? = null
+        var questionId = 0
+        note.uriPath?.let {
+            val file = File(it)
+
+            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        }
+        note.questionId?.let {
+            questionId = 0
+        }
+
+
+        return apiInterface.postNote(
+            body, note.countyCode.createMultipart("CodJudet"),
+            note.branchNumber.toString().createMultipart("NumarSectie"),
+            questionId.toString().createMultipart("IdIntrebare"),
+            note.description.createMultipart("TextNota")
+        )
+    }
 }

@@ -29,6 +29,7 @@ class FormsViewModel : BaseViewModel() {
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MutableLiveData<Int>()
+    private val navigateToNotesLiveData = MutableLiveData<Question?>()
 
     init {
 
@@ -55,7 +56,7 @@ class FormsViewModel : BaseViewModel() {
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
-
+    fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
 
     private val branchBarTextLiveData = MutableLiveData<String>()
 
@@ -108,4 +109,9 @@ class FormsViewModel : BaseViewModel() {
     fun sync() {
         repository.syncAnswers()
     }
+
+    fun selectedNotes(question: Question? = null) {
+        navigateToNotesLiveData.postValue(question)
+    }
+
 }

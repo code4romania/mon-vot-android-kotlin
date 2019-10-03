@@ -119,6 +119,7 @@
     <string name="note_gallery">Load from gallery</string>
     <string name="note_take_photo">📷 Take photo</string>
     <string name="note_record_video">🔴 Record video</string>
+    <string name="notes_history">Notes history</string>
 
     <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
     <string name="sync_locally_saved">saved locally</string>

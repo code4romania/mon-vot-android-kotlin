@@ -40,6 +40,7 @@
         <item name="android:textColor">@color/textLight</item>
         <item name="android:background">@drawable/bg_button_dark</item>
     </style>
+
     <style name="Button.Link">
         <item name="android:textAllCaps">true</item>
         <item name="android:background">@null</item>
@@ -63,6 +64,11 @@
     <style name="Text.Title">
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Text.Date">
+        <item name="android:textStyle">bold</item>
+        <item name="android:alpha">0.2</item>
     </style>
 
     <style name="Text.Branch">
@@ -131,6 +137,13 @@
         <item name="android:textColorHint">@color/hint</item>
         <item name="android:inputType">textMultiLine|textCapSentences</item>
         <item name="android:lines">8</item>
+        <item name="android:maxLines">8</item>
+        <item name="android:minLines">8</item>
+        <item name="android:gravity">top</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:overScrollMode">always</item>
+        <item name="android:scrollbarStyle">insideInset</item>
     </style>
 
     <style name="MaterialCardView" parent="Widget.MaterialComponents.CardView">
@@ -175,7 +188,6 @@
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">@dimen/question_option_text</item>
     </style>
-
 
 
     <style name="InputLogin" parent="@android:style/Widget.Holo.Light.EditText">
