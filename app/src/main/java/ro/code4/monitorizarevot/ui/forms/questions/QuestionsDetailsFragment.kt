@@ -122,6 +122,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
     }
 
     override fun onPause() {
+        viewModel.saveAnswer(adapter.getItem(currentPosition))
         viewModel.syncData()
         super.onPause()
 
