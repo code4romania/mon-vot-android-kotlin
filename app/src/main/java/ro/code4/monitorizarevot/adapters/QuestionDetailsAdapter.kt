@@ -93,6 +93,9 @@ class QuestionDetailsAdapter(
             }
             holder.itemView.questionCode.text = code
             holder.itemView.question.text = text
+            holder.itemView.addNoteButton.setOnClickListener {
+                listener.addNoteFor(this)
+            }
         }
 
     }
@@ -181,6 +184,6 @@ class QuestionDetailsAdapter(
     fun getItem(position: Int): QuestionWithAnswers = items[position]
 
     interface OnClickListener {
-        fun onQuestionClick(question: Question)
+        fun addNoteFor(question: Question)
     }
 }
