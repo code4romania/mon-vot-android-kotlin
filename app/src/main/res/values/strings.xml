@@ -112,13 +112,13 @@
     <string name="note_title">Add a message</string>
     <string name="note_description">Your message</string>
     <string name="note_description_hint">Type here</string>
-    <string name="note_photo">Add photo/video</string>
+    <string name="note_media">Add photo or video</string>
     <string name="note_saved">Note saved</string>
     <string name="invalid_note">Add a description or choose a file</string>
     <string name="error_permission_external_storage">We need your permission to select a resource</string>
     <string name="note_gallery">Load from gallery</string>
-    <string name="note_take_photo">📷 Take photo</string>
-    <string name="note_record_video">🔴 Record video</string>
+    <string name="note_photo">Take photo</string>
+    <string name="note_video">Record video</string>
     <string name="notes_history">Notes history</string>
 
     <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
@@ -131,4 +131,6 @@
     <string name="sync_manual">Synchronize Data Manually</string>
     <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
     <string name="section_title">Section %1$d - %2$s</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="file_manager_missing">Please install a file manager.</string>
 </resources>

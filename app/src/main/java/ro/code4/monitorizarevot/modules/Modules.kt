@@ -97,7 +97,6 @@ val dbModule = module {
     single { Executors.newSingleThreadExecutor() }
 }
 
-
 val viewModelsModule = module {
     viewModel { LoginViewModel() }
     viewModel { MainViewModel() }

@@ -23,6 +23,7 @@ class NoteViewModel : BaseViewModel() {
     private var countyCode: String
     private var branchNumber: Int = -1
     private val notesLiveData = MutableLiveData<ArrayList<ListItem>>()
+    private val uriLiveData = MutableLiveData<String>()
 
     init {
         countyCode = preferences.getCountyCode()!!
