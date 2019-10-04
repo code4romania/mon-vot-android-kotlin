@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
@@ -257,8 +258,8 @@ class Repository : KoinComponent {
     }
 
     fun saveNote(note: Note): Observable<ResponseBody> =
-        db.noteDao().save(note).toObservable().flatMap {
-            note.id = it
+        Single.fromCallable { db.noteDao().save(note) }.toObservable().flatMap {
+            note.id = it[0].toInt()
             postNote(note)
         }.doOnNext {
             note.synced = true

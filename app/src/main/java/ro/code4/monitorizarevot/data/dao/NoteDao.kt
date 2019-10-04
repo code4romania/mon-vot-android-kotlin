@@ -3,13 +3,12 @@ package ro.code4.monitorizarevot.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import ro.code4.monitorizarevot.data.model.Note
 
 @Dao
 interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(vararg note: Note): Maybe<Int>
+    fun save(vararg note: Note): List<Long>
 
     @Update
     fun updateNote(vararg note: Note): Completable

@@ -22,10 +22,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notesList"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
             android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/xbig_margin"
             app:layout_constraintTop_toBottomOf="@id/editNoteLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

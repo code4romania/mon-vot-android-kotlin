@@ -1,15 +1,18 @@
 package ro.code4.monitorizarevot.ui.notes
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_note.*
 import kotlinx.android.synthetic.main.layout_edit_note.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
+import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.NoteAdapter
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.Question
@@ -26,7 +29,12 @@ class NoteFragment : BaseFragment<NoteViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        notesList.layoutManager = LinearLayoutManager(activity)
+        notesList.layoutManager = LinearLayoutManager(mContext)
+        notesList.addItemDecoration(
+            HorizontalDividerItemDecoration.Builder(mContext)
+                .color(Color.TRANSPARENT)
+                .sizeResId(R.dimen.small_margin).build()
+        )
         viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
         viewModel.notes().observe(this, Observer {
             setData(it)
@@ -47,7 +55,7 @@ class NoteFragment : BaseFragment<NoteViewModel>() {
             }
         })
         submitButton.setOnClickListener {
-            viewModel.submit(noteInput.text)
+            viewModel.submit(noteInput.text.toString())
         }
 
     }
