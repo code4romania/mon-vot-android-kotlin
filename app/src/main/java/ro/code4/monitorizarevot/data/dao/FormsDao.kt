@@ -42,7 +42,7 @@ interface FormsDao {
         })
         saveQuestions(*questions.map { it }.toTypedArray())
         val answers = questions.fold(ArrayList<Answer>(), { list, question ->
-            list.addAll(question.answers)
+            list.addAll(question.optionsToQuestions)
             list
         })
         saveAnswers(*answers.map { it }.toTypedArray())

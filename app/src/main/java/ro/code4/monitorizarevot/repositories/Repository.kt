@@ -137,7 +137,7 @@ class Repository : KoinComponent {
         if (response == null) {
             return
         }
-        val apiFormDetails = response.formDetailsList
+        val apiFormDetails = response.formVersions
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
@@ -156,8 +156,8 @@ class Repository : KoinComponent {
             list.forEach { section ->
                 section.formCode = form.code
                 section.questions.forEach { question ->
-                    question.sectionId = section.id
-                    question.answers.forEach { answer -> answer.questionId = question.id }
+                    question.sectionId = section.uniqueId
+                    question.optionsToQuestions.forEach { answer -> answer.questionId = question.id }
                 }
             }
             db.formDetailsDao().save(*list.map { it }.toTypedArray())

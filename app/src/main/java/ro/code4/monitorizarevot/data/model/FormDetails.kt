@@ -12,11 +12,9 @@ import org.parceler.Parcel
 class FormDetails {
     @PrimaryKey
     @Expose
-    @SerializedName("code")
     lateinit var code: String
 
     @Expose
-    @SerializedName("description")
     lateinit var description: String
 
     @Expose

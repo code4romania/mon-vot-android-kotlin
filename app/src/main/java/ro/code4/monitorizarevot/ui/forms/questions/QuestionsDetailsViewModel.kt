@@ -56,13 +56,13 @@ class QuestionsDetailsViewModel : BaseViewModel() {
                         answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }
                     answeredQuestion?.also { savedQuestion ->
                         val selectedAnswer =
-                            savedQuestion.selectedAnswers.find { it.optionId == answer.id }
+                            savedQuestion.selectedAnswers.find { it.optionId == answer.idOption }
                         questionWithAnswers.question.savedLocally =
                             savedQuestion.answeredQuestion.savedLocally
                         questionWithAnswers.question.synced = savedQuestion.answeredQuestion.synced
                         if (selectedAnswer != null) {
                             answer.selected = true
-                            if (answer.hasManualInput) {
+                            if (answer.isFreeText) {
                                 answer.value = selectedAnswer.value ?: ""
                             }
                         }
@@ -89,11 +89,11 @@ class QuestionsDetailsViewModel : BaseViewModel() {
             )
             val list = answers.map {
                 SelectedAnswer(
-                    it.id,
+                    it.idOption,
                     countyCode,
                     branchNumber,
                     answeredQuestion.id,
-                    if (it.hasManualInput) it.value else null
+                    if (it.isFreeText) it.value else null
                 )
             }
             repository.saveAnsweredQuestion(answeredQuestion, list)

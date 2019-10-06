@@ -5,7 +5,6 @@ import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
 @Entity(
@@ -20,22 +19,17 @@ import org.parceler.Parcel
 @Parcel(Parcel.Serialization.FIELD)
 class Section {
 
-    // TODO serialized names to be translated when api is updated
     @PrimaryKey
     @Expose
-    @SerializedName("idSectiune")
-    lateinit var id: String
+    lateinit var uniqueId: String
 
     @Expose
-    @SerializedName("codSectiune")
     var code: String? = null
 
     @Expose
-    @SerializedName("descriere")
     var description: String? = null
 
     @Expose
-    @SerializedName("intrebari")
 //    @Relation(parentColumn = "id", entityColumn = "section_id")
     @Ignore
     lateinit var questions: List<Question>

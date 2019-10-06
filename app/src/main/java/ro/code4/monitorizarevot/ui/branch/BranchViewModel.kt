@@ -118,11 +118,11 @@ class BranchViewModel : BaseViewModel() {
             branchNumber <= 0 -> messageIdToastLiveData.postValue(
                 app.getString(R.string.invalid_branch_number_minus)
             )
-            branchNumber > selectedCounty.branchesCount -> messageIdToastLiveData.postValue(
+            branchNumber > selectedCounty.limit -> messageIdToastLiveData.postValue(
                 app.getString(
                     R.string.invalid_branch_number_max,
                     selectedCounty.name,
-                    selectedCounty.branchesCount
+                    selectedCounty.limit
                 )
             )
             else -> {

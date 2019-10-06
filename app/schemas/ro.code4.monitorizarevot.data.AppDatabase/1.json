@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "52c83ad58fcbc2e50818b5210dbbe23d",
+    "identityHash": "9980e9b5dd5cc3773f5a7444194352e8",
     "entities": [
       {
         "tableName": "county",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `code` TEXT NOT NULL, `name` TEXT, `branchesCount` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `code` TEXT NOT NULL, `name` TEXT, `limit` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,8 +27,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "branchesCount",
-            "columnName": "branchesCount",
+            "fieldPath": "limit",
+            "columnName": "limit",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -169,11 +169,11 @@
       },
       {
         "tableName": "section",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `code` TEXT, `description` TEXT, `formCode` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uniqueId` TEXT NOT NULL, `code` TEXT, `description` TEXT, `formCode` TEXT NOT NULL, PRIMARY KEY(`uniqueId`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "uniqueId",
+            "columnName": "uniqueId",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -198,7 +198,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "uniqueId"
           ],
           "autoGenerate": false
         },
@@ -219,7 +219,7 @@
       },
       {
         "tableName": "question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `code` TEXT NOT NULL, `questionType` INTEGER NOT NULL, `sectionId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`sectionId`) REFERENCES `section`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `code` TEXT NOT NULL, `questionType` INTEGER NOT NULL, `sectionId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`sectionId`) REFERENCES `section`(`uniqueId`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -268,18 +268,18 @@
               "sectionId"
             ],
             "referencedColumns": [
-              "id"
+              "uniqueId"
             ]
           }
         ]
       },
       {
         "tableName": "answer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `hasManualInput` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOption` INTEGER NOT NULL, `text` TEXT NOT NULL, `isFreeText` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, PRIMARY KEY(`idOption`), FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "idOption",
+            "columnName": "idOption",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -290,8 +290,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "hasManualInput",
-            "columnName": "hasManualInput",
+            "fieldPath": "isFreeText",
+            "columnName": "isFreeText",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -304,7 +304,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "idOption"
           ],
           "autoGenerate": false
         },
@@ -428,7 +428,7 @@
       },
       {
         "tableName": "selected_answer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `branchNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `branchNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `sectionNumber`, `id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `branchNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `branchNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `sectionNumber`, `id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "optionId",
@@ -479,7 +479,7 @@
               "optionId"
             ],
             "referencedColumns": [
-              "id"
+              "idOption"
             ]
           },
           {
@@ -503,7 +503,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52c83ad58fcbc2e50818b5210dbbe23d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9980e9b5dd5cc3773f5a7444194352e8')"
     ]
   }
 }
