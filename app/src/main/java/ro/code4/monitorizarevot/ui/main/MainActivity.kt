@@ -1,5 +1,7 @@
 package ro.code4.monitorizarevot.ui.main
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -10,11 +12,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.callSupportCenter
 import ro.code4.monitorizarevot.helper.changeBranch
+import ro.code4.monitorizarevot.helper.deleteToken
+import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.login.LoginActivity
 
 
 class MainActivity : BaseActivity<MainViewModel>() {
@@ -23,6 +29,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override val viewModel: MainViewModel by viewModel()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val sharedPreferences: SharedPreferences by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +66,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         true
                     }
                     R.id.nav_logout -> {
+                        logoutUser()
                         true
 
                     }
@@ -70,9 +78,19 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun logoutUser() {
+        sharedPreferences.deleteToken()
+        openLogin()
+    }
+
+    private fun openLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 }
