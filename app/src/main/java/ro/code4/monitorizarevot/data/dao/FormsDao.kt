@@ -10,6 +10,7 @@ import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.model.Section
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
+import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
@@ -72,6 +73,49 @@ interface FormsDao {
 
     @Query("SELECT * FROM section where formCode=:formCode")
     fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>>
+
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode")
+    fun getAnswersForForm(
+        countyCode: String?,
+        branchNumber: Int,
+        formCode: String
+    ): LiveData<List<AnsweredQuestionPOJO>>
+
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode AND synced=:synced")
+    fun getNotSyncedAnswersForForm(
+        countyCode: String?,
+        branchNumber: Int,
+        formCode: String,
+        synced: Boolean = false
+    ): Maybe<List<AnsweredQuestionPOJO>>
+
+    @Query("SELECT * FROM answered_question WHERE  synced=:synced")
+    fun getNotSyncedAnswers(synced: Boolean = false): Maybe<List<AnsweredQuestionPOJO>>
+
+    @Transaction
+    fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
+        insertAnsweredQuestion(answeredQuestion)
+        insertAnswers(*answers.map { it }.toTypedArray())
+        answeredQuestion.savedLocally = true
+        updateAnsweredQuestion(answeredQuestion)
+    }
+
+    @Insert(onConflict = REPLACE)
+    fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion)
+
+    @Update
+    fun updateAnsweredQuestion(vararg answeredQuestion: AnsweredQuestion)
+
+    @Insert(onConflict = REPLACE)
+    fun insertAnswers(vararg answers: SelectedAnswer)
+
+    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode")
+    fun updateAnsweredQuestions(
+        countyCode: String,
+        branchNumber: Int,
+        formCode: String,
+        synced: Boolean = true
+    )
 
 
 }

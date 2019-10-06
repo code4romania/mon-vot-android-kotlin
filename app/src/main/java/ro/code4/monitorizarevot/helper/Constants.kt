@@ -2,7 +2,8 @@ package ro.code4.monitorizarevot.helper
 
 
 object Constants {
-    val TIME_FORMAT = "HH:mm"
-    val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
-    val FORM_CODE = "form_code"
+    const val TIME_FORMAT = "HH:mm"
+    const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const val FORM = "form"
+    const val QUESTION = "question"
 }
