@@ -28,6 +28,7 @@ import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
 import ro.code4.monitorizarevot.ui.guide.GuideViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
+import ro.code4.monitorizarevot.ui.splashscreen.SplashscreenViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -106,4 +107,5 @@ val viewModelsModule = module {
     viewModel { QuestionsViewModel() }
     viewModel { QuestionsDetailsViewModel() }
     viewModel { GuideViewModel() }
+    viewModel { SplashscreenViewModel() }
 }
