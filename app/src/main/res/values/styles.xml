@@ -159,6 +159,14 @@
         <item name="android:textColor">@color/textSecondary</item>
     </style>
 
+    <style name="NavigationMenuItem">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/navigationMenuItemText</item>
+    </style>
 
     <style name="RadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:background">@drawable/radio_button</item>

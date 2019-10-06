@@ -58,14 +58,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         callSupportCenter()
                         true
                     }
-                    R.id.nav_logout -> {
-                        true
-
-                    }
                     else -> false
 
                 }
             }
+        }
+        navLogout.setOnClickListener {
+            // TODO logout
         }
 
     }
