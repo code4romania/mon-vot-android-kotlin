@@ -27,6 +27,7 @@
 
     <!-- General -->
     <string name="developed_by">app developed by</string>
+    <string name="switch_language">Switch to Romanian</string>
     <string name="please_wait">Please wait…</string>
     <string name="button_continue">Continue</string>
     <string name="button_continue_to_forms">Continue to forms</string>

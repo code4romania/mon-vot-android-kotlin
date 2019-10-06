@@ -3,6 +3,9 @@ package ro.code4.monitorizarevot.helper
 import android.content.SharedPreferences
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
+const val PREFS_LANGUAGE_KEY = "PREFS_LANGUAGE"
+const val PREFS_LANGUAGE_EN = "en"
+const val PREFS_LANGUAGE_RO = "ro"
 const val ACCESS_TOKEN = "access_token"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
 const val PREFS_BRANCH_NUMBER = "PREFS_BRANCH_NUMBER"
@@ -24,6 +27,14 @@ fun SharedPreferences.putInt(key: String, value: Int) {
 
 fun SharedPreferences.getToken(): String? = getString(PREFS_TOKEN)
 fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
+
+fun SharedPreferences.getLanguage(): String =
+    getString(PREFS_LANGUAGE_KEY) ?: PREFS_LANGUAGE_RO
+
+fun SharedPreferences.switchLanguage() {
+    val lang = if (getLanguage() == PREFS_LANGUAGE_RO) PREFS_LANGUAGE_EN else PREFS_LANGUAGE_RO
+    putString(PREFS_LANGUAGE_KEY, lang)
+}
 
 fun SharedPreferences.saveCountyCode(countyCode: String?) =
     putString(PREFS_COUNTY_CODE, countyCode ?: "")

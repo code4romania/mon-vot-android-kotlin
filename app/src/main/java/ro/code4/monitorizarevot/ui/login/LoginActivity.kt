@@ -29,6 +29,10 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             viewModel.login(user)
         }
 
+        switchLanguageButton.setOnClickListener {
+            switchLanguage()
+        }
+
         viewModel.loggedIn().observe(this, Observer {
             startBranchActivity()
         })
