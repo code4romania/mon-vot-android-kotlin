@@ -120,8 +120,8 @@
     <string name="invalid_note">Introdu o descriere sau alege un fişier</string>
     <string name="error_permission_external_storage">Permisiunea este necesară pentru a putea selecta o resursă</string>
     <string name="note_gallery">Încarcă din galerie</string>
-    <string name="note_photo">📷 Fotografiază</string>
-    <string name="note_video">🔴 Înregistrează video</string>
+    <string name="note_photo">Fotografiază</string>
+    <string name="note_video">Înregistrează video</string>
     <string name="sync_locally_saved">salvat local</string>
     <string name="add_note_to_question">Adaugă Notă la Întrebarea Curentă</string>
     <string name="add_note">Adaugă notă</string>
