@@ -30,7 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo_code4"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"
+                android:layout_marginRight="@dimen/margin"/>
         </LinearLayout>
     </FrameLayout>
 
