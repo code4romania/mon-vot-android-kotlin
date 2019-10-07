@@ -335,6 +335,15 @@ fun Fragment.takeVideo(): File? {
 
 }
 
+fun <T> LiveData<T>.observeOnce(observer: androidx.lifecycle.Observer<T>) {
+    observeForever(object : androidx.lifecycle.Observer<T> {
+        override fun onChanged(t: T) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
+}
+
 fun Context.createMediaFile(name: String, folder: String): File {
     val storageDir = File(getExternalFilesDir(folder), getString(R.string.app_name))
     if (!storageDir.exists()) {

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
@@ -16,10 +17,7 @@ import ro.code4.monitorizarevot.adapters.NoteAdapter.Companion.TYPE_SECTION
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
-import ro.code4.monitorizarevot.helper.FileUtils
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.getBranchNumber
-import ro.code4.monitorizarevot.helper.getCountyCode
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.io.File
@@ -35,6 +33,11 @@ class NoteViewModel : BaseViewModel() {
     private val fileNameLiveData = MutableLiveData<String>()
     private val submitCompletedLiveData = SingleLiveEvent<Boolean>()
     private var noteFile: File? = null
+    private val listObserver =
+        Observer<List<Note>> { list ->
+            processList(list)
+        }
+
 
     companion object {
         @JvmStatic
@@ -52,9 +55,7 @@ class NoteViewModel : BaseViewModel() {
     private var selectedQuestion: Question? = null
     fun setData(question: Question?) {
         selectedQuestion = question
-        repository.getNotes(countyCode, branchNumber, selectedQuestion).observeForever {
-            processList(it)
-        }
+        repository.getNotes(countyCode, branchNumber, selectedQuestion).observeOnce(listObserver)
     }
 
     private fun processList(notes: List<Note>) {
