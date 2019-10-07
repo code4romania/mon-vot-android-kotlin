@@ -11,6 +11,8 @@ build/
 
 Vote Monitor.iml
 
+local.properties
+
 # fastlane
 fastlane/report.xml
 fastlane/Preview.html
