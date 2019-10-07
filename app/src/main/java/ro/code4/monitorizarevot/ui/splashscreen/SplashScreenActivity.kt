@@ -11,12 +11,12 @@ import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
 
-class SplashscreenActivity: BaseActivity<SplashscreenViewModel>()  {
+class SplashScreenActivity: BaseActivity<SplashScreenViewModel>()  {
     private val sharedPreferences: SharedPreferences by inject()
 
     override val layout: Int
-        get() = R.layout.activity_splashscreen
-    override val viewModel: SplashscreenViewModel by viewModel()
+        get() = R.layout.activity_splash_screen
+    override val viewModel: SplashScreenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
