@@ -71,6 +71,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:labelFor="@+id/branchNumber"
                 android:text="@string/branch_number"
                 android:theme="@style/Text.Label" />
 
