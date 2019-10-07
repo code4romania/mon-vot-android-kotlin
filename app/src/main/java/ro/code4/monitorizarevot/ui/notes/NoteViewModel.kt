@@ -76,13 +76,14 @@ class NoteViewModel : BaseViewModel() {
         note.description = text
         note.uriPath = noteFile?.absolutePath
         repository.saveNote(note).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).doFinally {
-                //Writing to database is successful and we don't really need the result of the network call
-                submitCompletedLiveData.postValue(true)
-            }.subscribe({},
+            .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                {},
                 {
                     Log.d(TAG, it.toString())
                 })
+        //Writing to database is successful and we don't really need the result of the network call
+        submitCompletedLiveData.postValue(true)
+
     }
 
     fun getMediaFromGallery(uri: Uri?) {

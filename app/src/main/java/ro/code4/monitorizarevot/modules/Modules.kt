@@ -57,11 +57,9 @@ val apiModule = module {
     }
 
     single {
-        if (!DEBUG) {
-            return@single null
-        }
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level =
+            if (!DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
         interceptor
     }
 

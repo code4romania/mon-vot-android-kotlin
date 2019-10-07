@@ -17,6 +17,7 @@ import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
+import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
@@ -30,18 +31,27 @@ class FormsViewModel : BaseViewModel() {
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MutableLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
+    private var countyCode: String
+    private var branchNumber: Int = -1
 
     init {
 
         getForms()
+        countyCode = preferences.getCountyCode()!!
+        branchNumber = preferences.getBranchNumber()
     }
 
     private fun subscribe() {
-        repository.getAnswers(preferences.getCountyCode()!!, preferences.getBranchNumber())
+        zipLiveData(
+            repository.getNotSyncedQuestions(),
+            repository.getNotSyncedNotes()
+        ).observeForever {
+            syncVisibilityLiveData.postValue(if (it.first + it.second != 0) View.VISIBLE else View.GONE)
+        }
+        repository.getAnswers(countyCode, branchNumber)
             .observeForever {
                 answersLiveData.value = it
                 processList()
-                syncVisibilityLiveData.postValue(if (it.any { item -> !item.answeredQuestion.synced }) View.VISIBLE else View.GONE)
             }
         repository.getFormsWithQuestions().observeForever {
             formsWithSections.value = it
@@ -73,10 +83,7 @@ class FormsViewModel : BaseViewModel() {
         repository.getForms()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-
-            }, {
+            .subscribe({}, {
                 onError(it)
             })
 
@@ -107,7 +114,7 @@ class FormsViewModel : BaseViewModel() {
     fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData
 
     fun sync() {
-        repository.syncAnswers()
+        repository.syncData()
     }
 
     fun selectedNotes(question: Question? = null) {

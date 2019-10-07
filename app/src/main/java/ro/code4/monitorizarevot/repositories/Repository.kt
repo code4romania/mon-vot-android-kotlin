@@ -197,7 +197,7 @@ class Repository : KoinComponent {
 
     @SuppressLint("CheckResult")
     fun syncAnswers(countyCode: String, branchNumber: Int, formCode: String) {
-        db.formDetailsDao().getNotSyncedAnswersForForm(countyCode, branchNumber, formCode)
+        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, branchNumber, formCode)
             .toObservable()
             .subscribeOn(Schedulers.io()).flatMap {
                 syncAnswers(it)
@@ -226,7 +226,7 @@ class Repository : KoinComponent {
     @SuppressLint("CheckResult")
     fun syncAnswers() {
         lateinit var answers: List<AnsweredQuestionPOJO>
-        db.formDetailsDao().getNotSyncedAnswers()
+        db.formDetailsDao().getNotSyncedQuestions()
             .toObservable()
             .subscribeOn(Schedulers.io()).flatMap {
                 answers = it
@@ -245,6 +245,8 @@ class Repository : KoinComponent {
             })
     }
 
+    fun getNotSyncedQuestions(): LiveData<Int> = db.formDetailsDao().getCountOfNotSyncedQuestions()
+
     fun getNotes(
         countyCode: String,
         branchNumber: Int,
@@ -257,13 +259,12 @@ class Repository : KoinComponent {
         }
     }
 
+    fun getNotSyncedNotes(): LiveData<Int> = db.noteDao().getCountOfNotSyncedNotes()
+
     fun saveNote(note: Note): Observable<ResponseBody> =
         Single.fromCallable { db.noteDao().save(note) }.toObservable().flatMap {
             note.id = it[0].toInt()
             postNote(note)
-        }.doOnNext {
-            note.synced = true
-            db.noteDao().updateNote(note)
         }
 
     private fun postNote(note: Note): Observable<ResponseBody> {
@@ -285,6 +286,28 @@ class Repository : KoinComponent {
             note.branchNumber.toString().createMultipart("NumarSectie"),
             questionId.toString().createMultipart("IdIntrebare"),
             note.description.createMultipart("TextNota")
-        )
+        ).doOnNext {
+            note.synced = true
+            db.noteDao().updateNote(note)
+        }
     }
+
+    @SuppressLint("CheckResult")
+    fun syncNotes() {
+        db.noteDao().getNotSyncedNotes()
+            .flatMap { Observable.fromIterable(it) }.flatMap {
+                postNote(it)
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {
+                Log.i(TAG, it.localizedMessage ?: "")
+            })
+    }
+
+    fun syncData() {
+        syncAnswers()
+        syncNotes()
+    }
+
 }
