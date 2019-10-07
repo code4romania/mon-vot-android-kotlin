@@ -61,7 +61,6 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
             addMediaButton.visibility = View.GONE
         })
         viewModel.submitCompleted().observe(this, Observer {
-            //TODO dismiss loader
             activity?.onBackPressed()
         })
         noteInput.setOnTouchListener { view, motionEvent ->
@@ -83,7 +82,6 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
             checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         submitButton.setOnClickListener {
-            // TODO show loader
             viewModel.submit(noteInput.text.toString())
 
         }
