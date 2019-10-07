@@ -11,7 +11,7 @@ import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
 
-class SplashScreenActivity: BaseActivity<SplashScreenViewModel>()  {
+class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
     private val sharedPreferences: SharedPreferences by inject()
 
     override val layout: Int
@@ -20,23 +20,15 @@ class SplashScreenActivity: BaseActivity<SplashScreenViewModel>()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val intent: Intent
 
         // Check if user is logged in or not
         if (sharedPreferences.getToken() != null) {
-            startMainActivity()
+            intent = Intent(this, MainActivity::class.java)
         } else {
-            startLoginActivity()
+            intent = Intent(this, LoginActivity::class.java)
         }
-    }
 
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun startLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
