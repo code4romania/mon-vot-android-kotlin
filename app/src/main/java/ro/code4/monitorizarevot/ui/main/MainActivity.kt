@@ -88,7 +88,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private fun openLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish()
+        finishAffinity()
     }
 
 }
