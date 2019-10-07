@@ -299,7 +299,7 @@ fun Fragment.openGallery() {
     }
 }
 
-fun Fragment.openCamera(action: String, fileName: String, folder: String, requestCode: Int) {
+fun Fragment.openCamera(action: String, fileName: String, folder: String, requestCode: Int): File? {
     val intent = Intent(action)
     if (intent.resolveActivity(activity!!.packageManager) != null) {
         val file = activity?.createMediaFile(fileName, folder)
@@ -310,13 +310,14 @@ fun Fragment.openCamera(action: String, fileName: String, folder: String, reques
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
             }
             startActivityForResult(intent, requestCode)
-
+            return file
         }
     }
+    return null
 }
 
-fun Fragment.takePicture() {
-    openCamera(
+fun Fragment.takePicture(): File? {
+    return openCamera(
         MediaStore.ACTION_IMAGE_CAPTURE,
         "IMG_${Calendar.getInstance().timeInMillis}.jpg",
         Environment.DIRECTORY_PICTURES,
@@ -324,8 +325,8 @@ fun Fragment.takePicture() {
     )
 }
 
-fun Fragment.takeVideo() {
-    openCamera(
+fun Fragment.takeVideo(): File? {
+    return openCamera(
         MediaStore.ACTION_VIDEO_CAPTURE,
         "VID_${Calendar.getInstance().timeInMillis}.mp4",
         Environment.DIRECTORY_MOVIES,

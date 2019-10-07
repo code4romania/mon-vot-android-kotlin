@@ -55,6 +55,14 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         viewModel.notes().observe(this, Observer {
             setData(it)
         })
+        viewModel.fileName().observe(this, Observer {
+            filenameText.text = it
+            filenameText.visibility = View.VISIBLE
+            addMediaButton.visibility = View.GONE
+        })
+        viewModel.submitCompleted().observe(this, Observer {
+            activity?.onBackPressed()
+        })
         noteInput.setOnTouchListener { view, motionEvent ->
             if (view == noteInput) {
                 view.parent.requestDisallowInterceptTouchEvent(true)
@@ -78,6 +86,7 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun checkPermissions(permission: String) {
         permissionManager.checkPermissions(permission, listener = this)
     }
@@ -89,8 +98,14 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.note_gallery -> openGallery()
-                R.id.note_photo -> takePicture()
-                R.id.note_video -> takeVideo()
+                R.id.note_photo -> {
+                    val file = takePicture()
+                    viewModel.addFile(file)
+                }
+                R.id.note_video -> {
+                    val file = takeVideo()
+                    viewModel.addFile(file)
+                }
             }
             true
         }
@@ -108,16 +123,13 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && data != null) {
             when (requestCode) {
-                REQUEST_CODE_RECORD_VIDEO -> {
-
-                }
-                REQUEST_CODE_TAKE_PHOTO -> {
-
+                REQUEST_CODE_RECORD_VIDEO, REQUEST_CODE_TAKE_PHOTO -> {
+                    viewModel.addMediaToGallery()
                 }
                 REQUEST_CODE_GALLERY -> {
-
+                    viewModel.getMediaFromGallery(data.data)
                 }
             }
         }

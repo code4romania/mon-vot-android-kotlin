@@ -271,7 +271,6 @@ class Repository : KoinComponent {
         var questionId = 0
         note.uriPath?.let {
             val file = File(it)
-
             val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 

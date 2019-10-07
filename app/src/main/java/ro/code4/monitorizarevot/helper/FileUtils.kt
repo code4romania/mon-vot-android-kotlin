@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.DatabaseUtils
 import android.net.Uri
-import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
@@ -91,7 +90,7 @@ object FileUtils {
             val type = split[0]
 
             if ("primary".equals(type, ignoreCase = true)) {
-                return Environment.getExternalStorageDirectory() + "/" + split[1]
+                return "${context.getExternalFilesDir(null)}/${split[1]}"
             }
 
             // TODO handle non-primary volumes
