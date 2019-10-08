@@ -79,7 +79,7 @@
             android:autofillHints="username,phone"
             android:hint="@string/login_phone"
             android:inputType="phone"
-            android:text="0722222222"
+            android:text="@string/test_phone_number"
             tools:targetApi="o" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -103,7 +103,7 @@
             android:hint="@string/login_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:text="123456"
+            android:text="@string/test_password"
             tools:targetApi="o" />
 
     </com.google.android.material.textfield.TextInputLayout>
