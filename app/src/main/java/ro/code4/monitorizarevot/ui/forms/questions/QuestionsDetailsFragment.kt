@@ -62,7 +62,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
 
         list.addOnScrollListenerForGalleryEffect()
         list.addOnLayoutChangeListenerForGalleryEffect()
-
+        list.itemAnimator = null
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
         nextQuestionBtn.setOnClickListener {
