@@ -11,6 +11,10 @@ static def getKey(String env, String key) {
     return props[key]
 }
 
+androidExtensions {
+    experimental true
+}
+
 android {
     compileSdkVersion 29
 
@@ -86,6 +90,7 @@ ext {
     roomVersion = '2.2.0-rc01'
     firebaseVersion = '17.0.1'
     crashlyticsVersion = '2.10.1'
+    adapterDelegatesVersion = "4.2.0"
 }
 
 dependencies {
@@ -136,6 +141,8 @@ dependencies {
 
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+
+    implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
