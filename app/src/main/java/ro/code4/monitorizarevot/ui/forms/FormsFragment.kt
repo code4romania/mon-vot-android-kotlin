@@ -16,6 +16,7 @@ import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
+import ro.code4.monitorizarevot.ui.notes.NoteFragment
 
 class FormsFragment : BaseFragment<FormsViewModel>() {
 
@@ -52,6 +53,16 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
                 bundleOf(
                     Pair(FORM, Parcels.wrap(it.first)),
                     Pair(QUESTION, Parcels.wrap(it.second))
+                ),
+                QuestionsDetailsFragment.TAG
+            )
+        })
+        viewModel.navigateToNotes().observe(this, Observer {
+            childFragmentManager.replaceFragment(
+                R.id.content,
+                NoteFragment(),
+                bundleOf(
+                    Pair(QUESTION, Parcels.wrap(it))
                 ),
                 QuestionsDetailsFragment.TAG
             )

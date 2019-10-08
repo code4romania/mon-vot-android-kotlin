@@ -2,8 +2,9 @@ package ro.code4.monitorizarevot.data.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
+import java.util.*
 
 @Entity(
     tableName = "note", foreignKeys = [ForeignKey(
@@ -11,19 +12,27 @@ import com.google.gson.annotations.Expose
         parentColumns = ["id"],
         childColumns = ["questionId"],
         onDelete = ForeignKey.CASCADE
-    )]
+    ), ForeignKey(
+        entity = BranchDetails::class,
+        parentColumns = ["countyCode", "branchNumber"],
+        childColumns = ["countyCode", "branchNumber"]
+    )], indices = [Index(value = ["countyCode", "branchNumber", "questionId"], unique = false)]
 )
 class Note {
     @PrimaryKey(autoGenerate = true)
-    private var id: Int = 0
+    var id: Int = 0
 
-    @Expose
     var uriPath: String? = null
 
-    @Expose
-    var description: String? = null
+    lateinit var description: String
 
-    @Expose
     var questionId: Int? = null
+
+    var date: Date = Date()
+
+    lateinit var countyCode: String
+    var branchNumber = 0
+
+    var synced = false
 
 }

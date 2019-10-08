@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
@@ -12,6 +14,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
@@ -21,8 +24,12 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ro.code4.monitorizarevot.BuildConfig
+import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
+import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.interfaces.ExcludeFromCodeCoverage
 import ro.code4.monitorizarevot.ui.branch.BranchActivity
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,20 +83,25 @@ fun Calendar?.getDateText(): String? {
     if (this == null) {
         return null
     }
-    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault())
     return formatter.format(time)
 }
 
 fun Calendar.getTimeText(): String {
-    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault())
     return formatter.format(time)
+}
+
+fun Date.formatDate(): String {
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT_SIMPLE, Locale.getDefault())
+    return formatter.format(this)
 }
 
 fun String?.getDate(): Long? {
     if (this == null) {
         return null
     }
-    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault())
 
     return formatter.parse(this)?.time
 
@@ -270,4 +282,73 @@ val TextWatcherDelegate = object : TextWatcher {
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+}
+
+
+fun Fragment.openGallery() {
+    val intent = Intent(Intent.ACTION_GET_CONTENT)
+    intent.type = "image/*"
+    val extraMime = arrayOf("image/*", "video/*")
+    intent.putExtra(Intent.EXTRA_MIME_TYPES, extraMime)
+    intent.addCategory(Intent.CATEGORY_OPENABLE)
+    intent.resolveActivity(activity!!.packageManager)?.also {
+        startActivityForResult(
+            Intent.createChooser(intent, getString(R.string.select_photo)),
+            Constants.REQUEST_CODE_GALLERY
+        )
+    }
+}
+
+fun Fragment.openCamera(action: String, fileName: String, folder: String, requestCode: Int): File? {
+    val intent = Intent(action)
+    if (intent.resolveActivity(activity!!.packageManager) != null) {
+        val file = activity?.createMediaFile(fileName, folder)
+        if (file != null) {
+            val uri = FileProvider.getUriForFile(activity!!, activity!!.packageName, file)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+            if (action == MediaStore.ACTION_VIDEO_CAPTURE) {
+                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
+            }
+            startActivityForResult(intent, requestCode)
+            return file
+        }
+    }
+    return null
+}
+
+fun Fragment.takePicture(): File? {
+    return openCamera(
+        MediaStore.ACTION_IMAGE_CAPTURE,
+        "IMG_${Calendar.getInstance().timeInMillis}.jpg",
+        Environment.DIRECTORY_PICTURES,
+        REQUEST_CODE_TAKE_PHOTO
+    )
+}
+
+fun Fragment.takeVideo(): File? {
+    return openCamera(
+        MediaStore.ACTION_VIDEO_CAPTURE,
+        "VID_${Calendar.getInstance().timeInMillis}.mp4",
+        Environment.DIRECTORY_MOVIES,
+        REQUEST_CODE_RECORD_VIDEO
+    )
+
+}
+
+fun <T> LiveData<T>.observeOnce(observer: androidx.lifecycle.Observer<T>) {
+    observeForever(object : androidx.lifecycle.Observer<T> {
+        override fun onChanged(t: T) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
+}
+
+fun Context.createMediaFile(name: String, folder: String): File {
+    val storageDir = File(getExternalFilesDir(folder), getString(R.string.app_name))
+    if (!storageDir.exists()) {
+        storageDir.mkdirs()    // result ignored
+    }
+
+    return File(storageDir, name)
 }

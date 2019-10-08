@@ -68,7 +68,7 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
     }
 
     override fun onNoteClick() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates. //go to add note
+        viewModel.selectedNotes()
     }
 
 
