@@ -107,6 +107,7 @@ class QuestionDetailsAdapter constructor(
         item.answers?.forEach {
             val checkedChangedListener =
                 CompoundButton.OnCheckedChangeListener { p0, p1 ->
+                    item.question.synced = it.selected == p1 && item.question.synced
                     it.selected = p1
                     holder.itemView.answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                         .onCheckedChanged(p0, p1)
@@ -146,6 +147,7 @@ class QuestionDetailsAdapter constructor(
         item.answers?.forEach {
             val checkedChangedListener =
                 CompoundButton.OnCheckedChangeListener { _, p1 ->
+                    item.question.synced = it.selected == p1 && item.question.synced
                     it.selected = p1
                 }
             val textWatcher = object : TextWatcher by TextWatcherDelegate {
