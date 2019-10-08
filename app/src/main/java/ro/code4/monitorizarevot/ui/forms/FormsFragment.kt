@@ -74,8 +74,7 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
         }
         childFragmentManager.replaceFragment(
             R.id.content,
-            FormsListFragment(),
-            tag = FormsListFragment.TAG
+            FormsListFragment()
         )
 
     }

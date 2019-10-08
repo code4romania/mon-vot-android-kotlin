@@ -45,16 +45,15 @@ class FormAdapter(private val context: Context, private val items: ArrayList<Lis
                 val formWithSections = item.value as FormWithSections
                 val noQuestions =
                     formWithSections.sections.fold(0, { acc, obj -> acc + obj.questions.size })
-                val noAnsweredQuestions = formWithSections.getNoAnsweredQuestions()
                 holder.itemView.progress.max = noQuestions
-                holder.itemView.progress.progress = noAnsweredQuestions
+                holder.itemView.progress.progress = formWithSections.noAnsweredQuestions
                 holder.itemView.questionsAnswered.text = context.getString(
                     R.string.no_answered_questions,
-                    noAnsweredQuestions,
+                    formWithSections.noAnsweredQuestions,
                     noQuestions
                 )
                 holder.itemView.progress.visibility =
-                    if (noAnsweredQuestions == 0) View.INVISIBLE else View.VISIBLE
+                    if (formWithSections.noAnsweredQuestions == 0) View.INVISIBLE else View.VISIBLE
                 holder.itemView.questionsAnswered.visibility = View.VISIBLE
                 with(formWithSections.form) {
                     holder.itemView.setOnClickListener { listener.onFormClick(this) }

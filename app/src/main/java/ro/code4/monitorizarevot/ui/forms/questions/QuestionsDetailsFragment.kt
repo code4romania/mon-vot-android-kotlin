@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.forms.questions
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
     private lateinit var adapter: QuestionDetailsAdapter
     private var currentPosition: Int = 0
     private lateinit var layoutManager: LinearLayoutManager
+    private var recyclerViewState: Parcelable? = null
+
     companion object {
         val TAG = QuestionsDetailsFragment::class.java.simpleName
     }
@@ -59,7 +62,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
 
         list.addOnScrollListenerForGalleryEffect()
         list.addOnLayoutChangeListenerForGalleryEffect()
-
+        list.itemAnimator = null
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
         nextQuestionBtn.setOnClickListener {
@@ -76,24 +79,26 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         }
 
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var x = 0
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-
-                    currentPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
-                    if (currentPosition > 0) {
-                        viewModel.saveAnswer(adapter.getItem(currentPosition - x))
+                    snapHelper.findSnapView(layoutManager)?.also {
+                        val oldPos = currentPosition
+                        currentPosition = layoutManager.getPosition(it)
+                        val (start, end) = if (oldPos < currentPosition) {
+                            Pair(oldPos, currentPosition - 1)
+                        } else {
+                            Pair(currentPosition + 1, oldPos)
+                        }
+                        for (pos in start..end)
+                            viewModel.saveAnswer(adapter.getItem(pos))
                     }
                     setVisibilityOnButtons()
-
                 }
+
+
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                x = if (dx > 0) 1 else -1
-            }
         })
 
     }
@@ -119,9 +124,14 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
             layoutManager.scrollToPosition(currentPosition)
             setVisibilityOnButtons()
         } else {
-            adapter.refreshData(items)
+            recyclerViewState = list.layoutManager?.onSaveInstanceState()
+            adapter.submitList(items)
         }
+
         list.adapter = adapter
+        recyclerViewState?.let {
+            list.layoutManager?.onRestoreInstanceState(it)
+        }
     }
 
     override fun onPause() {
@@ -129,5 +139,10 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         viewModel.syncData()
         super.onPause()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setVisibilityOnButtons()
     }
 }
