@@ -156,27 +156,6 @@
         <item name="cardBackgroundColor">@color/cardColor</item>
     </style>
 
-
-    <style name="menuItem">
-        <item name="android:background">@drawable/background_menu_item</item>
-        <item name="android:paddingStart">@dimen/margin</item>
-        <item name="android:paddingEnd">@dimen/margin</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/textPrimary</item>
-    </style>
-
-    <style name="menuSectionItem">
-        <item name="android:background">@drawable/background_menu_item</item>
-        <item name="android:paddingTop">@dimen/margin</item>
-        <item name="android:paddingStart">@dimen/margin</item>
-        <item name="android:paddingEnd">@dimen/margin</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/textSecondary</item>
-    </style>
-
     <style name="NavigationMenuItem">
         <item name="android:background">?android:selectableItemBackground</item>
         <item name="android:clickable">true</item>
