@@ -79,25 +79,26 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         }
 
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var x = 0
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-
                     snapHelper.findSnapView(layoutManager)?.also {
+                        val oldPos = currentPosition
                         currentPosition = layoutManager.getPosition(it)
-
+                        val (start, end) = if (oldPos < currentPosition) {
+                            Pair(oldPos, currentPosition - 1)
+                        } else {
+                            Pair(currentPosition + 1, oldPos)
+                        }
+                        for (pos in start..end)
+                            viewModel.saveAnswer(adapter.getItem(pos))
                     }
-                    viewModel.saveAnswer(adapter.getItem(currentPosition - x))
                     setVisibilityOnButtons()
-
                 }
+
+
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                x = if (dx > 0) 1 else -1
-            }
         })
 
     }
