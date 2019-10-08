@@ -51,7 +51,7 @@ class QuestionsDetailsViewModel : BaseViewModel() {
         val list = ArrayList<QuestionWithAnswers>()
         sections.forEach { sectionWithQuestion ->
             sectionWithQuestion.questions.forEach { questionWithAnswers ->
-                questionWithAnswers.answers.forEach { answer ->
+                questionWithAnswers.answers?.forEach { answer ->
                     val answeredQuestion =
                         answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }
                     answeredQuestion?.also { savedQuestion ->
@@ -79,24 +79,28 @@ class QuestionsDetailsViewModel : BaseViewModel() {
     }
 
     fun saveAnswer(questionWithAnswers: QuestionWithAnswers) {
-        val answers = questionWithAnswers.answers.filter { it.selected }
-        if (answers.isNotEmpty()) {
-            val answeredQuestion = AnsweredQuestion(
-                questionWithAnswers.question.id,
-                countyCode,
-                branchNumber,
-                selectedFormCode
-            )
-            val list = answers.map {
-                SelectedAnswer(
-                    it.id,
+        if (questionWithAnswers.question.synced) {
+            return
+        }
+        questionWithAnswers.answers?.filter { it.selected }?.also {
+            if (it.isNotEmpty()) {
+                val answeredQuestion = AnsweredQuestion(
+                    questionWithAnswers.question.id,
                     countyCode,
                     branchNumber,
-                    answeredQuestion.id,
-                    if (it.hasManualInput) it.value else null
+                    selectedFormCode
                 )
+                val list = it.map { answer ->
+                    SelectedAnswer(
+                        answer.id,
+                        countyCode,
+                        branchNumber,
+                        answeredQuestion.id,
+                        if (answer.hasManualInput) answer.value else null
+                    )
+                }
+                repository.saveAnsweredQuestion(answeredQuestion, list)
             }
-            repository.saveAnsweredQuestion(answeredQuestion, list)
         }
     }
 

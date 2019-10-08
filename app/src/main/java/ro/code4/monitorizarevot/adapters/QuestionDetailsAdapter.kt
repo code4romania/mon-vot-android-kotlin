@@ -12,6 +12,7 @@ import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_question_details.view.*
 import ro.code4.monitorizarevot.R
@@ -24,10 +25,10 @@ import ro.code4.monitorizarevot.widget.CheckBoxWithDetails
 import ro.code4.monitorizarevot.widget.RadioButtonWithDetails
 
 
-class QuestionDetailsAdapter(
+class QuestionDetailsAdapter constructor(
     private val context: Context,
     private val items: ArrayList<QuestionWithAnswers>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<QuestionWithAnswers, ViewHolder>(QuestionWithAnswers.DIFF_CALLBACK) {
 
     private var params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -49,7 +50,7 @@ class QuestionDetailsAdapter(
     }
 
     override fun getItemId(position: Int): Long = items[position].question.id.toLong()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(context).inflate(R.layout.item_question_details, parent, false)
 
@@ -67,7 +68,7 @@ class QuestionDetailsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
 
         when (getItemViewType(position)) {
@@ -103,7 +104,7 @@ class QuestionDetailsAdapter(
     private fun setupSingleChoice(holder: RecyclerView.ViewHolder, item: QuestionWithAnswers) {
         holder.itemView.answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
             .removeAllViews()
-        item.answers.forEach {
+        item.answers?.forEach {
             val checkedChangedListener =
                 CompoundButton.OnCheckedChangeListener { p0, p1 ->
                     it.selected = p1
@@ -142,7 +143,7 @@ class QuestionDetailsAdapter(
 
     private fun setupMultiChoice(holder: RecyclerView.ViewHolder, item: QuestionWithAnswers) {
         holder.itemView.answersLayout.removeAllViews()
-        item.answers.forEach {
+        item.answers?.forEach {
             val checkedChangedListener =
                 CompoundButton.OnCheckedChangeListener { _, p1 ->
                     it.selected = p1
@@ -175,13 +176,7 @@ class QuestionDetailsAdapter(
 
     override fun getItemViewType(position: Int): Int = items[position].question.questionType
 
-    fun refreshData(list: ArrayList<QuestionWithAnswers>) {
-        items.clear()
-        items.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    fun getItem(position: Int): QuestionWithAnswers = items[position]
+    public override fun getItem(position: Int): QuestionWithAnswers = items[position]
 
     interface OnClickListener {
         fun addNoteFor(question: Question)

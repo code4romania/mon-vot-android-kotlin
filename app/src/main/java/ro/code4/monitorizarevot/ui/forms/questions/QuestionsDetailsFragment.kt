@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.forms.questions
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
     private lateinit var adapter: QuestionDetailsAdapter
     private var currentPosition: Int = 0
     private lateinit var layoutManager: LinearLayoutManager
+    private var recyclerViewState: Parcelable? = null
+
     companion object {
         val TAG = QuestionsDetailsFragment::class.java.simpleName
     }
@@ -81,10 +84,11 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
 
-                    currentPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
-                    if (currentPosition > 0) {
-                        viewModel.saveAnswer(adapter.getItem(currentPosition - x))
+                    snapHelper.findSnapView(layoutManager)?.also {
+                        currentPosition = layoutManager.getPosition(it)
+
                     }
+                    viewModel.saveAnswer(adapter.getItem(currentPosition - x))
                     setVisibilityOnButtons()
 
                 }
@@ -119,9 +123,14 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
             layoutManager.scrollToPosition(currentPosition)
             setVisibilityOnButtons()
         } else {
-            adapter.refreshData(items)
+            recyclerViewState = list.layoutManager?.onSaveInstanceState()
+            adapter.submitList(items)
         }
+
         list.adapter = adapter
+        recyclerViewState?.let {
+            list.layoutManager?.onRestoreInstanceState(it)
+        }
     }
 
     override fun onPause() {
@@ -129,5 +138,10 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         viewModel.syncData()
         super.onPause()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setVisibilityOnButtons()
     }
 }
