@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.modules
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -36,6 +37,7 @@ val gson: Gson by lazy {
     val gsonBuilder = GsonBuilder()
     gsonBuilder.excludeFieldsWithoutExposeAnnotation().create()
 }
+
 val appModule = module {
     single { App.instance }
 }
@@ -90,6 +92,7 @@ val apiModule = module {
         Repository()
     }
 }
+
 val dbModule = module {
     single { AppDatabase.getDatabase(get()) }
     single { Executors.newSingleThreadExecutor() }
@@ -105,4 +108,8 @@ val viewModelsModule = module {
     viewModel { QuestionsDetailsViewModel() }
     viewModel { NoteViewModel() }
     viewModel { GuideViewModel() }
+}
+
+val analyticsModule = module {
+    single { FirebaseAnalytics.getInstance(get()) }
 }

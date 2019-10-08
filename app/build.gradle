@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+// TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
+//apply plugin: 'io.fabric'
 
 static def getKey(String env, String key) {
     Properties props = new Properties()
@@ -11,6 +13,7 @@ static def getKey(String env, String key) {
 
 android {
     compileSdkVersion 29
+
     defaultConfig {
         applicationId "ro.code4.monitorizarevot"
         minSdkVersion 21
@@ -29,6 +32,17 @@ android {
             }
         }
     }
+
+    signingConfigs {
+        fastlane {
+            storeFile file(getKey("keystore", "storeFile"))
+            keyAlias getKey("keystore", "keyAlias")
+            keyPassword getKey("keystore", "keyPassword")
+            storePassword getKey("keystore", "storePassword")
+        }
+
+    }
+
     buildTypes {
         applicationVariants.all { variant ->
             variant.buildConfigField "String", "API_URL", "\"" + getKey(variant.buildType.name, "apiUrl") + "\""
@@ -41,15 +55,25 @@ android {
             tasks["compile${productFlavor}${buildType}UnitTestSources"].dependsOn(tasks["merge${productFlavor}${buildType}Assets"])
         }
 
+        debug {
+            minifyEnabled false
+            manifestPlaceholders = [enableCrashReporting:"false"]
+        }
+
         release {
             minifyEnabled false
+            signingConfig signingConfigs.fastlane
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [enableCrashReporting:"true"]
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion = '29.0.2'
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -59,7 +83,9 @@ ext {
     butterKnifeVersion = '10.1.0'
     retrofitLibraryVersion = '2.5.0'
     koinVersion = '2.0.1'
-    roomVersion = "2.2.0-rc01"
+    roomVersion = '2.2.0-rc01'
+    firebaseVersion = '17.0.1'
+    crashlyticsVersion = '2.10.1'
 }
 
 dependencies {
@@ -86,6 +112,10 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:$retrofitLibraryVersion"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.1.1'
 
+    // Firebase
+    implementation "com.google.firebase:firebase-analytics:$firebaseVersion"
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
+
     //koin injection
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
@@ -107,3 +137,6 @@ dependencies {
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 }
+
+// TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
+// apply plugin: 'com.google.gms.google-services'
