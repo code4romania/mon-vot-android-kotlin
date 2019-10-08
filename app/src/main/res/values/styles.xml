@@ -10,7 +10,7 @@
         <item name="android:windowBackground">@color/backgroundLight</item>
         <item name="primaryTextColor">@color/textPrimary</item>
         <item name="buttonTextColor">@color/purple</item>
-        <item name="buttonColor">@color/buttonBgColor</item>
+        <item name="buttonColor">@color/bg_button_normal</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -48,7 +48,7 @@
 
     <style name="Button.Black">
         <item name="android:textColor">?attr/buttonTextColor</item>
-        <item name="android:background">@drawable/bg_button_dark</item>
+        <item name="android:background">@drawable/bg_button_dark_selector</item>
     </style>
 
     <style name="Button.Link">
