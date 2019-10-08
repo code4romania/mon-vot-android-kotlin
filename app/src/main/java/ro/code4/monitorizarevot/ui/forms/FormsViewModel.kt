@@ -48,14 +48,11 @@ class FormsViewModel : BaseViewModel() {
         ).observeForever {
             syncVisibilityLiveData.postValue(if (it.first + it.second != 0) View.VISIBLE else View.GONE)
         }
-        repository.getAnswers(countyCode, branchNumber)
-            .observeForever {
-                answersLiveData.value = it
-                processList()
-            }
-        repository.getFormsWithQuestions().observeForever {
-            formsWithSections.value = it
-            processList()
+        zipLiveData(
+            repository.getAnswers(countyCode, branchNumber),
+            repository.getFormsWithQuestions()
+        ).observeForever {
+            processList(it.first, it.second)
         }
     }
 
@@ -89,18 +86,16 @@ class FormsViewModel : BaseViewModel() {
 
     }
 
-    private fun processList() {
-        formsWithSections.value?.let { list ->
-            val items = ArrayList<ListItem>()
-            val answeredQuestionsPOJOs = answersLiveData.value
-            answeredQuestionsPOJOs?.forEach { pojo ->
-                list.find { pojo.answeredQuestion.formCode == it.form.code }
-                    ?.incrementNoOfAnsweredQuestions()
-            }
-            items.addAll(list.map { ListItem(TYPE_FORM, it) })
-            items.add(ListItem(TYPE_NOTE))
-            formsLiveData.postValue(items)
+    private fun processList(answers: List<AnsweredQuestionPOJO>, forms: List<FormWithSections>) {
+        val items = ArrayList<ListItem>()
+        forms.forEach { formWithSections ->
+            formWithSections.noAnsweredQuestions =
+                answers.count { it.answeredQuestion.formCode == formWithSections.form.code }
         }
+        items.addAll(forms.map { ListItem(TYPE_FORM, it) })
+        items.add(ListItem(TYPE_NOTE))
+        formsLiveData.postValue(items)
+
     }
 
     fun selectForm(formDetails: FormDetails) {
