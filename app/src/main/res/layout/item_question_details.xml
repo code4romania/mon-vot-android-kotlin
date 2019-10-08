@@ -80,7 +80,6 @@
                 android:layout_marginTop="@dimen/xsmall_margin"
                 android:layout_marginBottom="@dimen/small_margin"
                 android:drawableStart="@drawable/ic_add_note"
-                android:drawablePadding="@dimen/margin"
                 android:text="@string/add_note_to_question"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

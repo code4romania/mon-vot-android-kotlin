@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.branch.BranchActivity
-import ro.code4.monitorizarevot.ui.main.MainActivity
 
 class LoginActivity : BaseActivity<LoginViewModel>() {
 
@@ -28,16 +28,10 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             )//TODO replace with phone uiid  Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             viewModel.login(user)
         }
-
+        appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
         viewModel.loggedIn().observe(this, Observer {
             startBranchActivity()
         })
-    }
-
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     private fun startBranchActivity() {

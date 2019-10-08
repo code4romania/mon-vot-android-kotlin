@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "52c83ad58fcbc2e50818b5210dbbe23d",
+    "identityHash": "5af29f99efb0111fa6e04a4b6a6feed5",
     "entities": [
       {
         "tableName": "county",
@@ -498,12 +498,110 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "note",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uriPath` TEXT, `description` TEXT NOT NULL, `questionId` INTEGER, `date` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `synced` INTEGER NOT NULL, FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `branchNumber`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uriPath",
+            "columnName": "uriPath",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionId",
+            "columnName": "questionId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countyCode",
+            "columnName": "countyCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "branchNumber",
+            "columnName": "branchNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "synced",
+            "columnName": "synced",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_note_countyCode_branchNumber_questionId",
+            "unique": false,
+            "columnNames": [
+              "countyCode",
+              "branchNumber",
+              "questionId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_note_countyCode_branchNumber_questionId` ON `${TABLE_NAME}` (`countyCode`, `branchNumber`, `questionId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "question",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "questionId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "branch_details",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "countyCode",
+              "branchNumber"
+            ],
+            "referencedColumns": [
+              "countyCode",
+              "branchNumber"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52c83ad58fcbc2e50818b5210dbbe23d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5af29f99efb0111fa6e04a4b6a6feed5')"
     ]
   }
 }

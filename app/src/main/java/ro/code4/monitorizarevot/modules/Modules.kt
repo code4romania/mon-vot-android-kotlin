@@ -28,6 +28,7 @@ import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
 import ro.code4.monitorizarevot.ui.guide.GuideViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
+import ro.code4.monitorizarevot.ui.notes.NoteViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -56,11 +57,9 @@ val apiModule = module {
     }
 
     single {
-        if (!DEBUG) {
-            return@single null
-        }
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level =
+            if (!DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
         interceptor
     }
 
@@ -96,7 +95,6 @@ val dbModule = module {
     single { Executors.newSingleThreadExecutor() }
 }
 
-
 val viewModelsModule = module {
     viewModel { LoginViewModel() }
     viewModel { MainViewModel() }
@@ -105,5 +103,6 @@ val viewModelsModule = module {
     viewModel { FormsViewModel() }
     viewModel { QuestionsViewModel() }
     viewModel { QuestionsDetailsViewModel() }
+    viewModel { NoteViewModel() }
     viewModel { GuideViewModel() }
 }

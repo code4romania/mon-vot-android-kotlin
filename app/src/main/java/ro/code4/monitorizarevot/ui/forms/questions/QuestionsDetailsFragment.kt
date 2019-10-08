@@ -24,7 +24,11 @@ import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 
-class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
+class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
+    QuestionDetailsAdapter.OnClickListener {
+    override fun addNoteFor(question: Question) {
+        baseViewModel.selectedNotes(question)
+    }
 
 
     override val layout: Int
@@ -33,10 +37,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
     private lateinit var baseViewModel: FormsViewModel
     private lateinit var adapter: QuestionDetailsAdapter
     private var currentPosition: Int = 0
-    private val layoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(mContext, HORIZONTAL, false)
-    }
-
+    private lateinit var layoutManager: LinearLayoutManager
     companion object {
         val TAG = QuestionsDetailsFragment::class.java.simpleName
     }
@@ -53,6 +54,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
             setData(it)
         })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((Constants.FORM))))
+        layoutManager = LinearLayoutManager(mContext, HORIZONTAL, false)
         list.layoutManager = layoutManager
 
         list.addOnScrollListenerForGalleryEffect()
@@ -110,7 +112,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
     private fun setData(items: ArrayList<QuestionWithAnswers>) {
         if (!::adapter.isInitialized) {
             adapter = QuestionDetailsAdapter(mContext, items)
-            list.adapter = adapter
+            adapter.listener = this
             currentPosition = items.indexOfFirst {
                 it.question.id == Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))).id
             }
@@ -119,6 +121,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
         } else {
             adapter.refreshData(items)
         }
+        list.adapter = adapter
     }
 
     override fun onPause() {
