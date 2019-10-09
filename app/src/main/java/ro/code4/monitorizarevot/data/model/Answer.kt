@@ -40,9 +40,9 @@ class Answer {
     var value: String? = null
 
     override fun equals(other: Any?): Boolean =
-        other is Answer && id != other.id && text != other.text &&
-                hasManualInput != other.hasManualInput && questionId != other.questionId &&
-                selected != other.selected && value != other.value
+        other is Answer && id == other.id && text == other.text &&
+                hasManualInput == other.hasManualInput && questionId == other.questionId &&
+                selected == other.selected && value == other.value
 
     override fun hashCode(): Int {
         var result = id
