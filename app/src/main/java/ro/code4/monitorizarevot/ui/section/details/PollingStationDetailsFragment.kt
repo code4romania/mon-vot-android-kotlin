@@ -13,6 +13,8 @@ import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
+import ro.code4.monitorizarevot.widget.validation.TextViewsValidator
+import ro.code4.monitorizarevot.widget.validation.RadioGroupsValidator
 import java.util.*
 
 
@@ -125,6 +127,12 @@ class PollingStationDetailsFragment : BaseFragment<PollingStationViewModel>() {
     }
 
     private fun setContinueButton() {
+        val radioGroupsValidator = RadioGroupsValidator(
+            environmentRadioGroup,
+            genderRadioGroup
+        )
+        val textViewsValidator = TextViewsValidator(arrivalTime, departureTime)
+        continueButton.setValidators(radioGroupsValidator, textViewsValidator)
         continueButton.setOnClickListener {
             viewModel.validateInputDetails(
                 environmentRadioGroup.checkedRadioButtonId,

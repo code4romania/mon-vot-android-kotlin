@@ -125,7 +125,6 @@
 
 
         <TextView
-
             android:id="@+id/arrivalTime"
             style="@style/Text.Option"
             android:layout_width="0dp"
@@ -151,7 +150,7 @@
             app:layout_constraintTop_toTopOf="@id/arrivalTime" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <ro.code4.monitorizarevot.widget.validation.ViewsValidationButton
         android:id="@+id/continueButton"
         style="@style/Button"
         android:layout_width="match_parent"
