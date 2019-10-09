@@ -43,7 +43,7 @@
         <item name="android:maxLines">1</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="android:padding">@dimen/margin</item>
-        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:background">@drawable/bg_button_selector</item>
     </style>
 
     <style name="Button.Black">
