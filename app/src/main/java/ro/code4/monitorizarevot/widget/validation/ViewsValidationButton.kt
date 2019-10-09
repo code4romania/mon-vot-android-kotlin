@@ -13,6 +13,7 @@ class ViewsValidationButton @JvmOverloads constructor(
 
     fun setValidators(vararg onChangeValidators: OnChangeValidator) {
         this.onChangeValidators = onChangeValidators.toList()
+        validateViews()
         onChangeValidators.forEach {
             it.onChangeListener = {
                 validateViews()
