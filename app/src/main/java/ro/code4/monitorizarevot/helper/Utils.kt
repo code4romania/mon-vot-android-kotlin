@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.helper
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -351,4 +352,9 @@ fun Context.createMediaFile(name: String, folder: String): File {
     }
 
     return File(storageDir, name)
+}
+
+fun Activity.startActivityWithoutTrace(activity: Class<*>) {
+    startActivity(Intent(this, activity))
+    finishAffinity()
 }
