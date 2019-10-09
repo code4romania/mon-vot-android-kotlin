@@ -82,7 +82,7 @@ interface FormsDao {
     ): LiveData<List<AnsweredQuestionPOJO>>
 
     @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND sectionNumber=:branchNumber AND formCode=:formCode AND synced=:synced")
-    fun getNotSyncedAnswersForForm(
+    fun getNotSyncedQuestionsForForm(
         countyCode: String?,
         branchNumber: Int,
         formCode: String,
@@ -90,7 +90,7 @@ interface FormsDao {
     ): Maybe<List<AnsweredQuestionPOJO>>
 
     @Query("SELECT * FROM answered_question WHERE  synced=:synced")
-    fun getNotSyncedAnswers(synced: Boolean = false): Maybe<List<AnsweredQuestionPOJO>>
+    fun getNotSyncedQuestions(synced: Boolean = false): Maybe<List<AnsweredQuestionPOJO>>
 
     @Transaction
     fun insertAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
@@ -117,5 +117,7 @@ interface FormsDao {
         synced: Boolean = true
     )
 
+    @Query("SELECT COUNT(*) FROM answered_question WHERE  synced=:synced")
+    fun getCountOfNotSyncedQuestions(synced: Boolean = false): LiveData<Int>
 
 }

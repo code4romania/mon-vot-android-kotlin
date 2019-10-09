@@ -115,19 +115,22 @@
     <string name="note_title">Adaugă notă</string>
     <string name="note_description">Mesajul tău</string>
     <string name="note_description_hint">Scrie aici</string>
-    <string name="note_photo">Adaugă foto/video</string>
+    <string name="note_media">Adaugă foto/video</string>
     <string name="note_saved">Notă salvată</string>
     <string name="invalid_note">Introdu o descriere sau alege un fişier</string>
     <string name="error_permission_external_storage">Permisiunea este necesară pentru a putea selecta o resursă</string>
     <string name="note_gallery">Încarcă din galerie</string>
-    <string name="note_take_photo">📷 Fotografiază</string>
-    <string name="note_record_video">🔴 Înregistrează video</string>
+    <string name="note_photo">Fotografiază</string>
+    <string name="note_video">Înregistrează video</string>
     <string name="sync_locally_saved">salvat local</string>
     <string name="add_note_to_question">Adaugă Notă la Întrebarea Curentă</string>
     <string name="add_note">Adaugă notă</string>
+    <string name="notes_history">Istoricul notelor</string>
     <string name="note_submit">Trimite</string>
 
     <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou</string>
     <string name="sync_manual">Sincronizează Datele Manual</string>
     <string name="section_title">Secțiunea %1$d - %2$s</string>
+    <string name="select_photo">Selectează fotografia</string>
+    <string name="file_manager_missing">Te rugăm să instalezi un manager de fișiere.</string>
 </resources>
