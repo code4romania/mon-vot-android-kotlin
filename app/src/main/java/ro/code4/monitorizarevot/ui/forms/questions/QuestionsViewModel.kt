@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.koin.core.inject
+import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.QuestionListItem
 import ro.code4.monitorizarevot.adapters.helper.SectionListItem
@@ -49,7 +50,7 @@ class QuestionsViewModel : BaseViewModel() {
     ) {
         val list = ArrayList<ListItem>()
         sections.forEachIndexed { index, sectionWithQuestion ->
-            list.add(SectionListItem(index + 1, sectionWithQuestion.section))
+            list.add(SectionListItem(R.string.section_title, index + 1, sectionWithQuestion.section.description ?: ""))
             list.addAll(sectionWithQuestion.questions.map { questionWithAnswers ->
                 val answeredQuestion =
                     answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }

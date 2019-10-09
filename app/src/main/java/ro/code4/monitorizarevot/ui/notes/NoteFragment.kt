@@ -21,8 +21,7 @@ import kotlinx.android.synthetic.main.layout_edit_note.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.NoteAdapter
-import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.NoteDelegationAdapter
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
@@ -36,7 +35,7 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
     override val layout: Int
         get() = R.layout.fragment_note
     override val viewModel: NoteViewModel by viewModel()
-    lateinit var adapter: NoteAdapter
+    private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,6 +45,7 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         notesList.layoutManager = LinearLayoutManager(mContext)
+        notesList.adapter = noteAdapter
         notesList.addItemDecoration(
             HorizontalDividerItemDecoration.Builder(mContext)
                 .color(Color.TRANSPARENT)
@@ -53,7 +53,7 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         )
         viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
         viewModel.notes().observe(this, Observer {
-            setData(it)
+            noteAdapter.items = it
         })
         viewModel.fileName().observe(this, Observer {
             filenameText.text = it
@@ -113,13 +113,6 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         val menuHelper = MenuPopupHelper(mContext, popup.menu as MenuBuilder, addMediaButton)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()
-    }
-
-    private fun setData(items: ArrayList<ListItem>) {
-        if (!::adapter.isInitialized) {
-            adapter = NoteAdapter(mContext, items)
-        }
-        notesList.adapter = adapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

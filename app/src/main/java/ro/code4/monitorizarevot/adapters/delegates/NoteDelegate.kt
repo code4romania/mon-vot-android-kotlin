@@ -6,22 +6,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_form_section.*
+import kotlinx.android.synthetic.main.item_note.*
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
-import ro.code4.monitorizarevot.helper.highlight
+import ro.code4.monitorizarevot.helper.formatDate
 
 class NoteDelegate(
-    private val clickListener: () -> Unit
 ) : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDelegate.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_form_section, parent, false),
-            clickListener
+            LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
         )
 
-    override fun isForViewType(item: ListItem, items: MutableList<ListItem>, position: Int): Boolean =
+    override fun isForViewType(
+        item: ListItem,
+        items: MutableList<ListItem>,
+        position: Int
+    ): Boolean =
         item is NoteListItem
 
     override fun onBindViewHolder(
@@ -29,24 +31,21 @@ class NoteDelegate(
         holder: ViewHolder,
         payloads: MutableList<Any>
     ) {
-        holder.bind()
+        holder.bind(item)
     }
 
-    class ViewHolder(override val containerView: View, clickListener: () -> Unit) :
+    class ViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
+        private lateinit var item: NoteListItem
 
-        init {
-            containerView.setOnClickListener { clickListener() }
-        }
+        fun bind(noteListItem: NoteListItem) {
+            item = noteListItem
 
-        fun bind() {
-            progress.visibility = View.INVISIBLE
-            questionsAnswered.visibility = View.INVISIBLE
-            with(formDescription) {
-                text = context.highlight(context.getString(R.string.form_notes))
+            with(item.note) {
+                noteText.text = description
+                noteDate.text = date.formatDate()
             }
-            formIcon.setImageResource(R.drawable.ic_form_notes)
         }
     }
 }

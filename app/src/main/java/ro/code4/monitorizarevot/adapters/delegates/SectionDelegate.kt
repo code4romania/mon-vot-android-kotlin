@@ -41,7 +41,7 @@ class SectionDelegate(
             item = sectionListItem
 
             sectionName.text = sectionName.context.getString(
-                R.string.section_title, item.index, item.section.description
+                item.titleResourceId, *item.formatArgs
             )
         }
     }

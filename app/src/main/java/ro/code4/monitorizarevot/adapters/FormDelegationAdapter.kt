@@ -3,7 +3,7 @@ package ro.code4.monitorizarevot.adapters
 import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import ro.code4.monitorizarevot.adapters.delegates.FormDelegate
-import ro.code4.monitorizarevot.adapters.delegates.NoteDelegate
+import ro.code4.monitorizarevot.adapters.delegates.AddNoteDelegate
 import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
@@ -16,7 +16,7 @@ class FormDelegationAdapter(
     init {
         delegatesManager
             .addDelegate(FormDelegate(formClickListener))
-            .addDelegate(NoteDelegate(noteClickListener))
+            .addDelegate(AddNoteDelegate(noteClickListener))
     }
 
     companion object {

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
+import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
 import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
@@ -93,7 +94,7 @@ class FormsViewModel : BaseViewModel() {
                 answers.count { it.answeredQuestion.formCode == formWithSections.form.code }
         }
         items.addAll(forms.map { FormListItem(it) })
-        items.add(NoteListItem())
+        items.add(AddNoteListItem())
         formsLiveData.postValue(items)
     }
 
