@@ -100,7 +100,7 @@
             android:hint="@string/login_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:text="123456" />
+            android:text="1234" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

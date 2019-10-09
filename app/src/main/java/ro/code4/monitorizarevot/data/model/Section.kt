@@ -40,11 +40,11 @@ class Section {
             return false
         }
 
-        return id == other.id && code == other.code && description == other.description
+        return uniqueId == other.uniqueId && code == other.code && description == other.description
     }
 
     override fun hashCode(): Int {
-        var result = id.hashCode()
+        var result = uniqueId.hashCode()
         result = 31 * result + (code?.hashCode() ?: 0)
         result = 31 * result + (description?.hashCode() ?: 0)
         return result

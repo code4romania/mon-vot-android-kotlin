@@ -12,7 +12,6 @@ import ro.code4.monitorizarevot.data.model.Section
 import ro.code4.monitorizarevot.data.model.response.SyncResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 
-//TODO to be translated
 interface ApiInterface {
     @GET("/api/v1/form")
     fun getForms(): Observable<VersionResponse>
@@ -26,12 +25,11 @@ interface ApiInterface {
     @POST("/api/v1/sectie")
     fun postBranchDetails(@Body branchDetails: BranchDetails): Call<ResponseBody>
 
-    @POST("/api/v1/raspuns")
+    @POST("/api/v1/answers")
     fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<SyncResponse>
 
-
     @Multipart
-    @POST("/api/v1/note/ataseaza")
+    @POST("/api/v2/note/upload")
     fun postNote(
         @Part file: MultipartBody.Part?,
         @Part countyCode: MultipartBody.Part,

@@ -216,7 +216,7 @@ class Repository : KoinComponent {
 
     private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<SyncResponse> {
         val responseAnswerContainer = ResponseAnswerContainer()
-        responseAnswerContainer.responseMapperList = list.map {
+        responseAnswerContainer.answers = list.map {
             it.answeredQuestion.options = it.selectedAnswers
             return@map it.answeredQuestion
         }
@@ -282,10 +282,10 @@ class Repository : KoinComponent {
 
 
         return apiInterface.postNote(
-            body, note.countyCode.createMultipart("CodJudet"),
-            note.branchNumber.toString().createMultipart("NumarSectie"),
-            questionId.toString().createMultipart("IdIntrebare"),
-            note.description.createMultipart("TextNota")
+            body, note.countyCode.createMultipart("CountyCode"),
+            note.branchNumber.toString().createMultipart("PollingStattionNumber"),
+            questionId.toString().createMultipart("QuestionId"),
+            note.description.createMultipart("Text")
         ).doOnNext {
             note.synced = true
             db.noteDao().updateNote(note)

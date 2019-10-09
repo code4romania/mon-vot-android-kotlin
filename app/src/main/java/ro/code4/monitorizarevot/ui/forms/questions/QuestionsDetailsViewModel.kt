@@ -92,11 +92,11 @@ class QuestionsDetailsViewModel : BaseViewModel() {
                 )
                 val list = it.map { answer ->
                     SelectedAnswer(
-                        answer.id,
+                        answer.idOption,
                         countyCode,
                         branchNumber,
                         answeredQuestion.id,
-                        if (answer.hasManualInput) answer.value else null
+                        if (answer.isFreeText) answer.value else null
                     )
                 }
                 repository.saveAnsweredQuestion(answeredQuestion, list)

@@ -35,16 +35,13 @@ class AnsweredQuestion() {
     lateinit var formCode: String
     // TODO serialized names to be translated when api is updated
     @Expose
-    @SerializedName("idIntrebare")
     var questionId: Int = -1
 
     @Expose
-    @SerializedName("codJudet")
     lateinit var countyCode: String
 
     @Expose
-    @SerializedName("numarSectie")
-    var sectionNumber: Int = -1
+    var pollingStation: Int = -1
 
     @Ignore
     @Expose
@@ -63,7 +60,7 @@ class AnsweredQuestion() {
         this.id = "$countyCode$branchNumber$formCode$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
-        this.sectionNumber = branchNumber
+        this.pollingStation = branchNumber
         this.formCode = formCode
     }
 
