@@ -8,9 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
-import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
-import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
+import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
+import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
@@ -92,10 +93,9 @@ class FormsViewModel : BaseViewModel() {
             formWithSections.noAnsweredQuestions =
                 answers.count { it.answeredQuestion.formCode == formWithSections.form.code }
         }
-        items.addAll(forms.map { ListItem(TYPE_FORM, it) })
-        items.add(ListItem(TYPE_NOTE))
+        items.addAll(forms.map { FormListItem(it) })
+        items.add(AddNoteListItem())
         formsLiveData.postValue(items)
-
     }
 
     fun selectForm(formDetails: FormDetails) {

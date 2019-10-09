@@ -12,12 +12,17 @@ import androidx.lifecycle.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
-import ro.code4.monitorizarevot.adapters.NoteAdapter.Companion.TYPE_NOTE
-import ro.code4.monitorizarevot.adapters.NoteAdapter.Companion.TYPE_SECTION
+import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.helper.NoteListItem
+import ro.code4.monitorizarevot.adapters.helper.SectionListItem
 import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
-import ro.code4.monitorizarevot.helper.*
+import ro.code4.monitorizarevot.helper.FileUtils
+import ro.code4.monitorizarevot.helper.SingleLiveEvent
+import ro.code4.monitorizarevot.helper.getBranchNumber
+import ro.code4.monitorizarevot.helper.getCountyCode
+import ro.code4.monitorizarevot.helper.observeOnce
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.io.File
@@ -61,8 +66,8 @@ class NoteViewModel : BaseViewModel() {
     private fun processList(notes: List<Note>) {
         if (notes.isNotEmpty()) {
             val list = ArrayList<ListItem>(notes.size + 1)
-            list.add(ListItem(TYPE_SECTION, ro.code4.monitorizarevot.R.string.notes_history))
-            list.addAll(notes.map { ListItem(TYPE_NOTE, it) })
+            list.add(SectionListItem(R.string.notes_history))
+            list.addAll(notes.map { NoteListItem(it) })
             notesLiveData.postValue(list)
         }
     }
