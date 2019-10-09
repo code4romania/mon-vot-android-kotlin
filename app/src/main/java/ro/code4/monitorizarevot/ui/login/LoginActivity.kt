@@ -11,6 +11,7 @@ import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
+import ro.code4.monitorizarevot.widget.validation.TextViewsValidator
 
 class LoginActivity : BaseActivity<LoginViewModel>() {
 
@@ -23,6 +24,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
+        loginButton.setValidators(TextViewsValidator(phone, password))
         clickListenersSetup()
         loginUserObservable()
     }
