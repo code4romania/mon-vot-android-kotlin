@@ -133,4 +133,16 @@
     <string name="section_title">Secțiunea %1$d - %2$s</string>
     <string name="select_photo">Selectează fotografia</string>
     <string name="file_manager_missing">Te rugăm să instalezi un manager de fișiere.</string>
+
+    <!--    Onboarding-->
+    <string name="onboarding_next">Continuă</string>
+    <string name="onboarding_back">Înapoi</string>
+    <string name="onboarding_to_app">Spre aplicație</string>
+    <string name="onboarding_title_1">Alege-ți secția de votare</string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>PASUL 1:</b><br/>Menționează secția de votare în care te afli, alegând județul și numărul acesteia.<br/><br/><b>PASUL 2:</b><br/>Adaugă câteva detalii (mediul urban/rural, detalii despre președintele de secție, ora sosirii). Nu-ți face griji, poți să modifici informațiile mai târziu.</html>]]></string>
+    <string name="onboarding_title_2">Compleatează formularele</string>
+    <string name="onboarding_description_2"><![CDATA[<html>Pentru a detecta problemele, îți punem la dispoziție câteva formulare cu regulile standard ale unei secții de votare.<br/>În fiecare formular poți semnala dacă anumite proceduri au fost urmate sau nu.</html>]]></string>
+    <string name="onboarding_title_3">Adaugă note</string>
+    <string name="onboarding_description_3"><![CDATA[<html>Ai observat o problemă care nu apare în formular? Folosește butonul de ‘<b>Adaugă notă</b>’, scrie un mesaj și/sau anexează o imagine.</html>]]></string>
+
 </resources>

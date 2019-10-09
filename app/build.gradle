@@ -31,6 +31,7 @@ android {
                         "room.expandProjection": "true"]
             }
         }
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -136,6 +137,8 @@ dependencies {
 
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
