@@ -35,4 +35,22 @@ class Note {
 
     var synced = false
 
+    override fun equals(other: Any?): Boolean =
+        other is Note
+                && other.id == id
+                && other.uriPath == uriPath
+                && other.questionId == questionId
+                && other.date == date
+                && other.branchNumber == branchNumber
+                && other.synced == synced
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + (uriPath?.hashCode() ?: 0)
+        result = 31 * result + (questionId ?: 0)
+        result = 31 * result + date.hashCode()
+        result = 31 * result + branchNumber
+        result = 31 * result + synced.hashCode()
+        return result
+    }
 }

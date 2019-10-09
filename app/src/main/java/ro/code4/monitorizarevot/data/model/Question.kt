@@ -68,5 +68,4 @@ class Question {
         return result
     }
 
-
 }
