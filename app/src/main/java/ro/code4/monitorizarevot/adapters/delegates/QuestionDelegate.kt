@@ -56,7 +56,7 @@ class QuestionDelegate(
                     syncIcon.visibility = View.INVISIBLE
                 }
                 questionCode.text = code
-                question.text = text
+                questionText.text = text
             }
         }
     }
