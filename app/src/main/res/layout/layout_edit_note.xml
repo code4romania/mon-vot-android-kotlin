@@ -61,7 +61,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/filenameText" />
 
-        <Button
+        <ro.code4.monitorizarevot.widget.validation.ViewsValidationButton
             android:id="@+id/submitButton"
             style="@style/Button"
             android:layout_width="match_parent"

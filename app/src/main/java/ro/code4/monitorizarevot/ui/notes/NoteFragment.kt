@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.view.menu.MenuBuilder
@@ -30,6 +29,7 @@ import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
+import ro.code4.monitorizarevot.widget.validation.TextViewsValidator
 
 class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.PermissionListener {
 
@@ -81,15 +81,11 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
             }
             false
         }
-
-        noteInput.addTextChangedListener(object : TextWatcher by TextWatcherDelegate {
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                submitButton.isEnabled = !p0.isNullOrEmpty()
-            }
-        })
         addMediaButton.setOnClickListener {
             checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
+
+        submitButton.setValidators(TextViewsValidator(noteInput))
         submitButton.setOnClickListener {
             viewModel.submit(noteInput.text.toString())
 
