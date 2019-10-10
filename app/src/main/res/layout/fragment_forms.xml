@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:scrollbars="none"
             app:layout_constraintTop_toTopOf="parent"
-
+            tools:listitem="@layout/item_form_section"
+            tools:itemCount="7"
             />
 
         <ImageView
@@ -32,7 +33,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/formsList"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/syncInfo"

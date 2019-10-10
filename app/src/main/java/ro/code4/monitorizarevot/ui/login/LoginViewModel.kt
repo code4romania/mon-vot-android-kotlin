@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.User
@@ -19,17 +20,21 @@ class LoginViewModel : BaseViewModel() {
 
     private val loginLiveData = MutableLiveData<Boolean>()
 
+    private val disposable = CompositeDisposable()
+
     fun loggedIn(): LiveData<Boolean> = loginLiveData
 
     fun login(user: User) {
-        loginRepository.login(user).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                onSuccessfulLogin(it)
-            }, {
-                onError(it)
+        disposable.add(
+            loginRepository.login(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onSuccessfulLogin, this::onError)
+        )
+    }
 
-            })
+    override fun onCleared() {
+        disposable.clear()
     }
 
     //TODO should check if token still available
