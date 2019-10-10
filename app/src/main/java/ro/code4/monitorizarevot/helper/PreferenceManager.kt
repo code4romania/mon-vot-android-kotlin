@@ -6,6 +6,7 @@ const val PREFS_TOKEN = "PREFS_TOKEN"
 const val ACCESS_TOKEN = "access_token"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
 const val PREFS_BRANCH_NUMBER = "PREFS_BRANCH_NUMBER"
+const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
 
@@ -21,6 +22,11 @@ fun SharedPreferences.putInt(key: String, value: Int) {
     editor.apply()
 }
 
+fun SharedPreferences.putBoolean(key: String, value: Boolean = true) {
+    val editor = edit()
+    editor.putBoolean(key, value)
+    editor.apply()
+}
 
 fun SharedPreferences.getToken(): String? = getString(PREFS_TOKEN)
 fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
@@ -33,3 +39,6 @@ fun SharedPreferences.saveBranchNumber(branchNumber: Int) =
     putInt(PREFS_BRANCH_NUMBER, branchNumber)
 
 fun SharedPreferences.getBranchNumber(): Int = getInt(PREFS_BRANCH_NUMBER)
+
+fun SharedPreferences.hasCompletedOnboarding() = getBoolean(ONBOARDING_COMPLETED, false)
+fun SharedPreferences.completedOnboarding() = putBoolean(ONBOARDING_COMPLETED)

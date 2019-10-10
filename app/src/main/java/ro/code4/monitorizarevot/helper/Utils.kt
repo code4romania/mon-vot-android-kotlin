@@ -1,9 +1,11 @@
 package ro.code4.monitorizarevot.helper
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -351,4 +353,17 @@ fun Context.createMediaFile(name: String, folder: String): File {
     }
 
     return File(storageDir, name)
+}
+
+fun Activity.startActivityWithoutTrace(activity: Class<*>) {
+    startActivity(Intent(this, activity))
+    finishAffinity()
+}
+
+fun String.toHtml(): Spanned? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT)
+    } else {
+        Html.fromHtml(this)
+    }
 }
