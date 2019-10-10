@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
@@ -44,15 +45,16 @@ class Repository : KoinComponent {
 
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
 
-    fun getCounties(): Observable<List<County>> {
+    fun getCounties(): Single<List<County>> {
 
         val observableApi = apiInterface.getCounties()
-        val observableDb = db.countyDao().getAll().toObservable()
+        val observableDb = db.countyDao().getAll().take(1).single(emptyList())
 
-        return Observable.zip(
-            observableDb.onErrorReturn { null },
-            observableApi.onErrorReturn { null },
-            BiFunction<List<County>?, List<County>?, List<County>> { dbCounties, apiCounties ->
+        return Single.zip(
+            observableDb,
+            observableApi,
+            BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
+                //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
                 if (dbCounties != apiCounties) {
                     db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                     return@BiFunction apiCounties
