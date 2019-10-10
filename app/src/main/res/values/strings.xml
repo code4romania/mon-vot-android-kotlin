@@ -113,13 +113,14 @@
     <string name="note_title">Add a message</string>
     <string name="note_description">Your message</string>
     <string name="note_description_hint">Type here</string>
-    <string name="note_photo">Add photo/video</string>
+    <string name="note_media">Add photo or video</string>
     <string name="note_saved">Note saved</string>
     <string name="invalid_note">Add a description or choose a file</string>
     <string name="error_permission_external_storage">We need your permission to select a resource</string>
     <string name="note_gallery">Load from gallery</string>
-    <string name="note_take_photo">📷 Take photo</string>
-    <string name="note_record_video">🔴 Record video</string>
+    <string name="note_photo">Take photo</string>
+    <string name="note_video">Record video</string>
+    <string name="notes_history">Notes history</string>
 
     <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
     <string name="sync_locally_saved">saved locally</string>
@@ -131,4 +132,17 @@
     <string name="sync_manual">Synchronize Data Manually</string>
     <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
     <string name="section_title">Section %1$d - %2$s</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="file_manager_missing">Please install a file manager.</string>
+
+    <!--Onboarding-->
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_to_app">Go to app</string>
+    <string name="onboarding_title_1">Pick your voting station</string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Mention the voting station you are in, choosing the county and it’s number.<br/><br/><b>STEP 2:</b><br/>Add some details (urban/ rural area, details about the section president, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
+    <string name="onboarding_title_2">Fill in the forms</string>
+    <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a voting station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
+    <string name="onboarding_title_3">Add notes</string>
+    <string name="onboarding_description_3"><![CDATA[<html>Did you notice any problem that does not appear in the form? Use the ‘<b>Add note</b>’ button, write a message and/or attach a picture.</html>]]></string>
 </resources>

@@ -38,4 +38,19 @@ class Answer {
     var selected = false
     @Ignore
     var value: String? = null
+
+    override fun equals(other: Any?): Boolean =
+        other is Answer && id == other.id && text == other.text &&
+                hasManualInput == other.hasManualInput && questionId == other.questionId &&
+                selected == other.selected && value == other.value
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + text.hashCode()
+        result = 31 * result + hasManualInput.hashCode()
+        result = 31 * result + questionId
+        result = 31 * result + selected.hashCode()
+        result = 31 * result + (value?.hashCode() ?: 0)
+        return result
+    }
 }

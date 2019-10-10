@@ -10,13 +10,11 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.FormAdapter
-import ro.code4.monitorizarevot.adapters.helper.ListItem
-import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.adapters.FormDelegationAdapter
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 
 
-class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickListener {
+class FormsListFragment : BaseFragment<FormsViewModel>() {
 
     companion object {
         val TAG = FormsListFragment::class.java.simpleName
@@ -25,7 +23,13 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
     override val layout: Int
         get() = R.layout.fragment_forms
     override lateinit var viewModel: FormsViewModel
-    private lateinit var adapter: FormAdapter
+    private val formAdapter: FormDelegationAdapter by lazy {
+        FormDelegationAdapter(
+            viewModel::selectForm
+        ) {
+            viewModel.selectedNotes()
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,7 +39,7 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.forms().observe(this, Observer {
-            setData(it)
+            formAdapter.items = ArrayList(it)
         })
         viewModel.syncVisibility().observe(this, Observer {
             syncGroup.visibility = it
@@ -43,33 +47,15 @@ class FormsListFragment : BaseFragment<FormsViewModel>(), FormAdapter.OnClickLis
         syncButton.setOnClickListener {
             viewModel.sync()
         }
-        formsList.layoutManager = LinearLayoutManager(mContext)
-        formsList.addItemDecoration(
-            HorizontalDividerItemDecoration.Builder(activity)
-                .color(Color.TRANSPARENT)
-                .sizeResId(R.dimen.small_margin).build()
-        )
-
-    }
-
-    private fun setData(list: ArrayList<ListItem>) {
-        if (!::adapter.isInitialized) {
-            adapter = FormAdapter(mContext, list)
-            adapter.listener = this
-
-        } else {
-            adapter.refreshData(list)
+        formsList.apply {
+            layoutManager = LinearLayoutManager(mContext)
+            adapter = formAdapter
+            addItemDecoration(
+                HorizontalDividerItemDecoration.Builder(activity)
+                    .color(Color.TRANSPARENT)
+                    .sizeResId(R.dimen.small_margin).build()
+            )
         }
-        formsList.adapter = adapter
+
     }
-
-    override fun onFormClick(form: FormDetails) {
-        viewModel.selectForm(form)
-    }
-
-    override fun onNoteClick() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates. //go to add note
-    }
-
-
 }
