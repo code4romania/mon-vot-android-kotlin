@@ -70,6 +70,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:padding">@dimen/margin</item>
         <item name="android:textColor">?attr/colorAccent</item>
+        <item name="autoSizeTextType">none</item>
     </style>
 
     <style name="Text">

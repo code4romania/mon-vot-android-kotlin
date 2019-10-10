@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.item_onboarding.view.*
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
 import ro.code4.monitorizarevot.adapters.helper.ViewHolder
+import ro.code4.monitorizarevot.helper.toHtml
 
 
 class OnboardingAdapter(
@@ -31,7 +32,8 @@ class OnboardingAdapter(
 
         with(screens[position]) {
             holder.itemView.titleOnboarding.text = context.getString(titleResId)
-            holder.itemView.descriptionOnboarding.text = context.getString(descriptionResId)
+            holder.itemView.descriptionOnboarding.text =
+                context.getString(descriptionResId).toHtml()
             holder.itemView.icOnboarding.setImageResource(imageResId)
         }
 
@@ -42,7 +44,7 @@ class OnboardingAdapter(
 
     override fun getCount(): Int = screens.size
 
-    override fun isViewFromObject(view: View, obj: Any): Boolean = view === obj as View
+    override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj as View
 
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

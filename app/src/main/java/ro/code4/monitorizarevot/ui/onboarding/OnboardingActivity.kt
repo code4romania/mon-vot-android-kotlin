@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.ui.onboarding
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_onboarding.*
@@ -46,7 +47,18 @@ class OnboardingActivity : BaseActivity<OnboardingViewModel>() {
                     currentPage = position
                 }
                 val lastIdx = onboardingAdapter.count - 1
-//            btnOnBoardingSkip.text = if (lastIdx == currentPage && lastIdx == position) getString(R.string.onboarding_final_finish) else getString(R.string.onboarding_finish)
+                val (nextButtonTextResId, backButtonVisibility) = when {
+                    currentPage == 0 -> Pair(R.string.onboarding_next, View.GONE)
+                    lastIdx == currentPage && lastIdx == position -> Pair(
+                        R.string.onboarding_to_app,
+                        View.VISIBLE
+                    )
+                    else -> Pair(R.string.onboarding_next, View.VISIBLE)
+                }
+                nextButton.text = getString(nextButtonTextResId)
+                nextButton.requestLayout()
+                backButton.visibility = backButtonVisibility
+
             }
 
             override fun onPageScrollStateChanged(state: Int) = Unit
