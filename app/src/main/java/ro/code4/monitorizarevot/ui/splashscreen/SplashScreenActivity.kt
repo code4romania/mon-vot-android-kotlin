@@ -1,10 +1,8 @@
 package ro.code4.monitorizarevot.ui.splashscreen
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseActivity
@@ -20,17 +18,18 @@ class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val tokenObserver = Observer<String?> { tokenValue ->
+        viewModel.loginLiveData().observe(this, Observer { isLoggedIn ->
             val intent: Intent
-            when (tokenValue) {
-                null -> intent = Intent(this, MainActivity::class.java)
-                else -> intent = Intent(this, LoginActivity::class.java)
+            if (isLoggedIn == true) {
+                intent = Intent(this, MainActivity::class.java)
+            } else {
+                intent = Intent(this, LoginActivity::class.java)
             }
 
             startActivity(intent)
             finish()
-        }
+        })
 
-        viewModel.tokenLiveData.observe(this, tokenObserver)
+        viewModel.checkLogin()
     }
 }
