@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="10dp"
     android:shape="rectangle">
-    <!-- you can use any color you want I used here gray color-->
-    <solid android:color="@color/buttonColor" />
+
+    <solid android:color="?attr/buttonColor" />
     <corners android:radius="4dp" />
 </shape>

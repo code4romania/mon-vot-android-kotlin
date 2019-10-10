@@ -39,6 +39,6 @@ interface ApiInterface {
         @Part branchNumber: MultipartBody.Part,
         @Part questionId: MultipartBody.Part,
         @Part description: MultipartBody.Part
-    ): Call<ResponseBody>
+    ): Observable<ResponseBody>
 
 }

@@ -41,4 +41,20 @@ class Section {
     lateinit var questions: List<Question>
 
     lateinit var formCode: String
+    override fun equals(other: Any?): Boolean {
+        if (other !is Section) {
+            return false
+        }
+
+        return id == other.id && code == other.code && description == other.description
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + (code?.hashCode() ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        return result
+    }
+
+
 }

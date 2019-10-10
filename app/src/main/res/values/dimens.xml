@@ -6,8 +6,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="big_margin">24dp</dimen>
     <dimen name="xbig_margin">32dp</dimen>
+    <dimen name="xxbig_margin">48dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="xsmall_margin">4dp</dimen>
+    <dimen name="xxsmall_margin">2dp</dimen>
 
     <dimen name="form_icon_size">72dp</dimen>
     <!-- General -->
@@ -47,8 +49,7 @@
     <dimen name="icon_block_size">50dp</dimen>
 
     <!-- Login -->
-    <dimen name="login_margin_bottom">43dp</dimen>
-    <dimen name="login_text_size">20sp</dimen>
+    <dimen name="login_text_size">16sp</dimen>
 
     <!-- Forms -->
     <dimen name="form_description_text">18sp</dimen>
