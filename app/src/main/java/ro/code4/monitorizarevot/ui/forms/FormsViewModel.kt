@@ -8,15 +8,17 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
-import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_FORM
-import ro.code4.monitorizarevot.adapters.FormAdapter.Companion.TYPE_NOTE
+import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
+import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
+import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
@@ -29,22 +31,29 @@ class FormsViewModel : BaseViewModel() {
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MutableLiveData<Int>()
+    private val navigateToNotesLiveData = MutableLiveData<Question?>()
+    private var countyCode: String
+    private var branchNumber: Int = -1
 
     init {
 
         getForms()
+        countyCode = preferences.getCountyCode()!!
+        branchNumber = preferences.getBranchNumber()
     }
 
     private fun subscribe() {
-        repository.getAnswers(preferences.getCountyCode()!!, preferences.getBranchNumber())
-            .observeForever {
-                answersLiveData.value = it
-                processList()
-                syncVisibilityLiveData.postValue(if (it.any { item -> !item.answeredQuestion.synced }) View.VISIBLE else View.GONE)
-            }
-        repository.getFormsWithQuestions().observeForever {
-            formsWithSections.value = it
-            processList()
+        zipLiveData(
+            repository.getNotSyncedQuestions(),
+            repository.getNotSyncedNotes()
+        ).observeForever {
+            syncVisibilityLiveData.postValue(if (it.first + it.second != 0) View.VISIBLE else View.GONE)
+        }
+        zipLiveData(
+            repository.getAnswers(countyCode, branchNumber),
+            repository.getFormsWithQuestions()
+        ).observeForever {
+            processList(it.first, it.second)
         }
     }
 
@@ -55,7 +64,7 @@ class FormsViewModel : BaseViewModel() {
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
-
+    fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
 
     private val branchBarTextLiveData = MutableLiveData<String>()
 
@@ -72,27 +81,21 @@ class FormsViewModel : BaseViewModel() {
         repository.getForms()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-
-            }, {
+            .subscribe({}, {
                 onError(it)
             })
 
     }
 
-    private fun processList() {
-        formsWithSections.value?.let { list ->
-            val items = ArrayList<ListItem>()
-            val answeredQuestionsPOJOs = answersLiveData.value
-            answeredQuestionsPOJOs?.forEach { pojo ->
-                list.find { pojo.answeredQuestion.formCode == it.form.code }
-                    ?.incrementNoOfAnsweredQuestions()
-            }
-            items.addAll(list.map { ListItem(TYPE_FORM, it) })
-            items.add(ListItem(TYPE_NOTE))
-            formsLiveData.postValue(items)
+    private fun processList(answers: List<AnsweredQuestionPOJO>, forms: List<FormWithSections>) {
+        val items = ArrayList<ListItem>()
+        forms.forEach { formWithSections ->
+            formWithSections.noAnsweredQuestions =
+                answers.count { it.answeredQuestion.formCode == formWithSections.form.code }
         }
+        items.addAll(forms.map { FormListItem(it) })
+        items.add(AddNoteListItem())
+        formsLiveData.postValue(items)
     }
 
     fun selectForm(formDetails: FormDetails) {
@@ -106,6 +109,11 @@ class FormsViewModel : BaseViewModel() {
     fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData
 
     fun sync() {
-        repository.syncAnswers()
+        repository.syncData()
     }
+
+    fun selectedNotes(question: Question? = null) {
+        navigateToNotesLiveData.postValue(question)
+    }
+
 }

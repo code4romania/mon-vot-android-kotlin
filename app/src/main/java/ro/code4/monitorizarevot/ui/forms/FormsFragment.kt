@@ -16,6 +16,7 @@ import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
+import ro.code4.monitorizarevot.ui.notes.NoteFragment
 
 class FormsFragment : BaseFragment<FormsViewModel>() {
 
@@ -56,6 +57,16 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
                 QuestionsDetailsFragment.TAG
             )
         })
+        viewModel.navigateToNotes().observe(this, Observer {
+            childFragmentManager.replaceFragment(
+                R.id.content,
+                NoteFragment(),
+                bundleOf(
+                    Pair(QUESTION, Parcels.wrap(it))
+                ),
+                QuestionsDetailsFragment.TAG
+            )
+        })
         viewModel.getBranchBarText()
 
         branchBarButton.setOnClickListener {
@@ -63,8 +74,7 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
         }
         childFragmentManager.replaceFragment(
             R.id.content,
-            FormsListFragment(),
-            tag = FormsListFragment.TAG
+            FormsListFragment()
         )
 
     }

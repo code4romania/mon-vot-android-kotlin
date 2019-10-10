@@ -20,6 +20,7 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:adjustViewBounds="true"
+            android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_synced" />
@@ -37,7 +38,7 @@
             tools:text="B2" />
 
         <TextView
-            android:id="@+id/question"
+            android:id="@+id/questionText"
             style="@style/Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

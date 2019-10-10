@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/note_gallery"
+        android:icon="@drawable/ic_note_gallery"
+        android:title="@string/note_gallery" />
+    <item
+        android:id="@+id/note_photo"
+        android:icon="@drawable/ic_note_photo"
+        android:title="@string/note_photo" />
+    <item
+        android:id="@+id/note_video"
+        android:icon="@drawable/ic_note_video"
+        android:title="@string/note_video" />
+</menu>

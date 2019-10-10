@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.modules
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -28,6 +29,8 @@ import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
 import ro.code4.monitorizarevot.ui.guide.GuideViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
+import ro.code4.monitorizarevot.ui.notes.NoteViewModel
+import ro.code4.monitorizarevot.ui.onboarding.OnboardingViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -35,6 +38,7 @@ val gson: Gson by lazy {
     val gsonBuilder = GsonBuilder()
     gsonBuilder.excludeFieldsWithoutExposeAnnotation().create()
 }
+
 val appModule = module {
     single { App.instance }
 }
@@ -56,11 +60,9 @@ val apiModule = module {
     }
 
     single {
-        if (!DEBUG) {
-            return@single null
-        }
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level =
+            if (!DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
         interceptor
     }
 
@@ -91,19 +93,25 @@ val apiModule = module {
         Repository()
     }
 }
+
 val dbModule = module {
     single { AppDatabase.getDatabase(get()) }
     single { Executors.newSingleThreadExecutor() }
 }
 
-
 val viewModelsModule = module {
     viewModel { LoginViewModel() }
+    viewModel { OnboardingViewModel() }
     viewModel { MainViewModel() }
     viewModel { BranchViewModel() }
     viewModel { BranchSelectionViewModel() }
     viewModel { FormsViewModel() }
     viewModel { QuestionsViewModel() }
     viewModel { QuestionsDetailsViewModel() }
+    viewModel { NoteViewModel() }
     viewModel { GuideViewModel() }
+}
+
+val analyticsModule = module {
+    single { FirebaseAnalytics.getInstance(get()) }
 }
