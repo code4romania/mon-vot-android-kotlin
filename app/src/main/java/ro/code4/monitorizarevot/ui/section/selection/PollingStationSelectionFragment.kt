@@ -13,7 +13,8 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
-
+import ro.code4.monitorizarevot.widget.validation.SpinnersValidator
+import ro.code4.monitorizarevot.widget.validation.TextViewsValidator
 
 class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionViewModel>() {
 
@@ -112,6 +113,10 @@ class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionView
 
 
     private fun setContinueButton() {
+        continueButton.setValidators(
+            SpinnersValidator(countySpinner),
+            TextViewsValidator(pollingStationNumber)
+        )
         continueButton.setOnClickListener {
             parentViewModel.validPollingStationInput(pollingStationNumber.text)
         }

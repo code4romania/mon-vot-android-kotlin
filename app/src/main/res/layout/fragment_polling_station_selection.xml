@@ -102,7 +102,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <ro.code4.monitorizarevot.widget.validation.ViewsValidationButton
         android:id="@+id/continueButton"
         style="@style/Button"
         android:layout_width="match_parent"
