@@ -26,8 +26,6 @@ class LoginViewModel : BaseViewModel() {
     fun onboarding(): LiveData<Void> = onboardingLiveData
     private val disposable = CompositeDisposable()
 
-    fun loggedIn(): LiveData<Boolean> = loginLiveData
-
     fun login(user: User) {
         disposable.add(
             loginRepository.login(user)
