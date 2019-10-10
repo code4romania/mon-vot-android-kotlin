@@ -9,7 +9,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.OnboardingAdapter
 import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
+import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.branch.BranchActivity
 
 class OnboardingActivity : BaseActivity<OnboardingViewModel>() {
     override val layout: Int
@@ -21,6 +23,17 @@ class OnboardingActivity : BaseActivity<OnboardingViewModel>() {
         viewModel.onboarding().observe(this, Observer {
             setData(it)
         })
+        backButton.setOnClickListener {
+            onboardingViewPager.setCurrentItem(onboardingViewPager.currentItem - 1, true)
+        }
+        nextButton.setOnClickListener {
+            if (onboardingViewPager.currentItem == onboardingAdapter.count - 1) {
+                viewModel.onboardingCompleted()
+                startActivityWithoutTrace(BranchActivity::class.java)
+            } else {
+                onboardingViewPager.setCurrentItem(onboardingViewPager.currentItem + 1, true)
+            }
+        }
     }
 
     private fun setData(screens: ArrayList<OnboardingScreen>) {
