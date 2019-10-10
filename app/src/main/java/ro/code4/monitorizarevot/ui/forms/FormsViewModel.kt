@@ -11,7 +11,6 @@ import org.koin.core.inject
 import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
 import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
-import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
@@ -26,14 +25,16 @@ class FormsViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val preferences: SharedPreferences by inject()
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
-    private val answersLiveData = MutableLiveData<List<AnsweredQuestionPOJO>>()
-    private val formsWithSections = MutableLiveData<List<FormWithSections>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MutableLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
+    private val titleLiveData = MutableLiveData<String>()
     private var countyCode: String
     private var branchNumber: Int = -1
+
+    fun title(): LiveData<String> = titleLiveData
+    fun setTitle(title: String) = titleLiveData.postValue(title)
 
     init {
 

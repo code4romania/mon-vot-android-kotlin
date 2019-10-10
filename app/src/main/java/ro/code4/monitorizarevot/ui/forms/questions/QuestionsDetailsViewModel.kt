@@ -20,10 +20,13 @@ class QuestionsDetailsViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val preferences: SharedPreferences by inject()
     private val questionsLiveData = MutableLiveData<ArrayList<QuestionWithAnswers>>()
+    private val titleLiveData = MutableLiveData<String>()
+
     private lateinit var selectedFormCode: String
     private var countyCode: String
     private var branchNumber: Int = -1
 
+    fun title(): LiveData<String> = titleLiveData
     fun questions(): LiveData<ArrayList<QuestionWithAnswers>> = questionsLiveData
 
     init {
@@ -76,6 +79,7 @@ class QuestionsDetailsViewModel : BaseViewModel() {
 
     fun setData(formDetails: FormDetails) {
         getQuestions(formDetails.code)
+        titleLiveData.postValue(formDetails.description)
     }
 
     fun saveAnswer(questionWithAnswers: QuestionWithAnswers) {

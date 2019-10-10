@@ -44,6 +44,9 @@ class FormsListFragment : BaseFragment<FormsViewModel>() {
         viewModel.syncVisibility().observe(this, Observer {
             syncGroup.visibility = it
         })
+
+        viewModel.setTitle(getString(R.string.title_forms_list))
+
         syncButton.setOnClickListener {
             viewModel.sync()
         }

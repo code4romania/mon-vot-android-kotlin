@@ -44,6 +44,9 @@ class QuestionsListFragment : BaseFragment<QuestionsViewModel>() {
         viewModel.questions().observe(this, Observer {
             questionAdapter.items = it
         })
+        viewModel.title().observe(this, Observer {
+            baseViewModel.setTitle(it)
+        })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((FORM))))
 
         list.layoutManager = LinearLayoutManager(mContext)
