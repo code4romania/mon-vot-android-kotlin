@@ -60,7 +60,7 @@ class BranchSelectionViewModel : BaseViewModel() {
             val selectedCountyIndex = counties.indexOfFirst { it.code == countyCode }
             countiesLiveData.postValue(countyNames)
 
-            if (selectedCountyIndex > 0) {
+            if (selectedCountyIndex >= 0) {
                 selectionLiveData.postValue(Pair(selectedCountyIndex, branchNumber))
             }
         }
