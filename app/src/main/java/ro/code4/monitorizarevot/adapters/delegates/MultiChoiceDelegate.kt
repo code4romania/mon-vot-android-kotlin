@@ -44,7 +44,7 @@ class MultiChoiceDelegate(
         holder: ViewHolder,
         payloads: MutableList<Any>
     ) {
-        holder.bind(item)
+        holder.bind(item.questionWithAnswers)
     }
 
     class ViewHolder(
@@ -67,12 +67,14 @@ class MultiChoiceDelegate(
             addNoteButton.setOnClickListener { clickListener(questionWithAnswers.question) }
         }
 
-        fun bind(item: MultiChoiceListItem) {
-            questionWithAnswers = item.questionWithAnswers
+        fun bind(item: QuestionWithAnswers) {
+            questionWithAnswers = item
 
             questionWithAnswers.answers?.forEach {
                 val checkedChangedListener =
                     CompoundButton.OnCheckedChangeListener { _, p1 ->
+                        questionWithAnswers.question.savedLocally =
+                            it.selected == p1 && questionWithAnswers.question.savedLocally
                         questionWithAnswers.question.synced =
                             it.selected == p1 && questionWithAnswers.question.synced
                         it.selected = p1

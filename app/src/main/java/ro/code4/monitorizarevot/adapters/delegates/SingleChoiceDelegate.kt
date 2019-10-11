@@ -54,7 +54,7 @@ class SingleChoiceDelegate(
         holder: ViewHolder,
         payloads: MutableList<Any>
     ) {
-        holder.bind(item)
+        holder.bind(item.questionWithAnswers)
     }
 
     class ViewHolder(
@@ -77,10 +77,10 @@ class SingleChoiceDelegate(
             addNoteButton.setOnClickListener { clickListener(questionWithAnswers.question) }
         }
 
-        fun bind(item: SingleChoiceListItem) {
-            questionWithAnswers = item.questionWithAnswers
+        fun bind(item: QuestionWithAnswers) {
+            questionWithAnswers = item
 
-            answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
+            containerView.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                 .removeAllViews()
             questionWithAnswers.answers?.forEach {
                 val checkedChangedListener =
@@ -118,7 +118,7 @@ class SingleChoiceDelegate(
                 }
                 (view as Checkable).isChecked = it.selected
                 view.tag = it.id
-                answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
+                containerView.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                     .addView(view, params)
             }
 
