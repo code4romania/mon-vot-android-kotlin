@@ -36,7 +36,7 @@
     <!-- Button -->
     <color name="bg_button_normal">#1281175C</color>
     <color name="bg_button_tapped">#2481175C</color>
-    <color name="bg_button_disabled">#0F81175C</color>
+    <color name="bg_button_disabled">#0A81175C</color>
     <color name="bg_button_dark_normal">@color/black</color>
     <color name="bg_button_dark_disabled">#CCCCCC</color>
 </resources>
