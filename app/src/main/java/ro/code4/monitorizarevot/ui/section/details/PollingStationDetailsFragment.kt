@@ -131,7 +131,7 @@ class PollingStationDetailsFragment : BaseFragment<PollingStationViewModel>() {
             environmentRadioGroup,
             genderRadioGroup
         )
-        val textViewsValidator = TextViewsValidator(arrivalTime, departureTime)
+        val textViewsValidator = TextViewsValidator(arrivalTime)
         continueButton.setValidators(radioGroupsValidator, textViewsValidator)
         continueButton.setOnClickListener {
             viewModel.validateInputDetails(
