@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.ui.forms.questions
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,10 +15,11 @@ import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.QuestionDetailsAdapter
+import ro.code4.monitorizarevot.adapters.QuestionDetailsDelegationAdapter
+import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
-import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.addOnLayoutChangeListenerForGalleryEffect
 import ro.code4.monitorizarevot.helper.addOnScrollListenerForGalleryEffect
@@ -25,18 +27,15 @@ import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 
-class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
-    QuestionDetailsAdapter.OnClickListener {
-    override fun addNoteFor(question: Question) {
-        baseViewModel.selectedNotes(question)
-    }
-
+class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>() {
 
     override val layout: Int
         get() = R.layout.fragment_question_details
     override val viewModel: QuestionsDetailsViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
-    private lateinit var adapter: QuestionDetailsAdapter
+    private val questionDetailsAdapter: QuestionDetailsDelegationAdapter by lazy {
+        QuestionDetailsDelegationAdapter(baseViewModel::selectedNotes)
+    }
     private var currentPosition: Int = 0
     private lateinit var layoutManager: LinearLayoutManager
     private var recyclerViewState: Parcelable? = null
@@ -53,7 +52,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.questions().observe(this, Observer {
+        viewModel.questions().observe(this, Observer { it ->
+            Log.i("gaga", "new list")
             setData(it)
         })
 
@@ -63,16 +63,42 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
 
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((Constants.FORM))))
         layoutManager = LinearLayoutManager(mContext, HORIZONTAL, false)
-        list.layoutManager = layoutManager
-
-        list.addOnScrollListenerForGalleryEffect()
-        list.addOnLayoutChangeListenerForGalleryEffect()
-        list.itemAnimator = null
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(list)
+        with(list) {
+            layoutManager = this@QuestionsDetailsFragment.layoutManager
+            addOnScrollListenerForGalleryEffect()
+            addOnLayoutChangeListenerForGalleryEffect()
+            itemAnimator = null
+            adapter = questionDetailsAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        snapHelper.findSnapView(layoutManager)?.also {
+                            val oldPos = currentPosition
+                            currentPosition =
+                                this@QuestionsDetailsFragment.layoutManager.getPosition(it)
+                            val (start, end) = if (oldPos < currentPosition) {
+                                Pair(oldPos, currentPosition - 1)
+                            } else {
+                                Pair(currentPosition + 1, oldPos)
+                            }
+                            for (pos in start..end) {
+                                Log.i("gaga", "$currentPosition $pos")
+                                viewModel.saveAnswer(questionDetailsAdapter.getItem(pos))
+                            }
+                        }
+                        setVisibilityOnButtons()
+                    }
+                }
+
+            })
+        }
+
         nextQuestionBtn.setOnClickListener {
             root.requestFocus()
-            if (currentPosition < adapter.itemCount - 1) {//todo check if you can remove this, in theory the button shouldn't be visible when currentPosition ==  adapter.itemCount - 1
+            if (currentPosition < questionDetailsAdapter.itemCount - 1) {//todo check if you can remove this, in theory the button shouldn't be visible when currentPosition ==  adapter.itemCount - 1
                 list.smoothScrollToPosition(currentPosition + 1)
             }
         }
@@ -83,35 +109,36 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
             }
         }
 
-        list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    snapHelper.findSnapView(layoutManager)?.also {
-                        val oldPos = currentPosition
-                        currentPosition = layoutManager.getPosition(it)
-                        val (start, end) = if (oldPos < currentPosition) {
-                            Pair(oldPos, currentPosition - 1)
-                        } else {
-                            Pair(currentPosition + 1, oldPos)
-                        }
-                        for (pos in start..end)
-                            viewModel.saveAnswer(adapter.getItem(pos))
-                    }
-                    setVisibilityOnButtons()
-                }
+    }
 
+    private fun setData(items: ArrayList<ListItem>) {
+        val questions = items.map { it as QuestionDetailsListItem }
+        val oldCount = questionDetailsAdapter.itemCount
 
+        if (oldCount == 0) {
+            questionDetailsAdapter.items = questions
+            currentPosition = questions.indexOfFirst {
+                it.questionWithAnswers.question.id == Parcels.unwrap<Question>(
+                    arguments?.getParcelable(
+                        (Constants.QUESTION)
+                    )
+                ).id
             }
-
-        })
-
+            layoutManager.scrollToPosition(currentPosition)
+            setVisibilityOnButtons()
+        } else {
+            recyclerViewState = list.layoutManager?.onSaveInstanceState()
+            questionDetailsAdapter.items = questions
+        }
+        recyclerViewState?.let {
+            list.layoutManager?.onRestoreInstanceState(it)
+        }
     }
 
     private fun setVisibilityOnButtons() {
         when (currentPosition) {
             0 -> previousQuestionBtn.visibility = View.GONE
-            adapter.itemCount - 1 -> nextQuestionBtn.visibility = View.GONE
+            questionDetailsAdapter.itemCount - 1 -> nextQuestionBtn.visibility = View.GONE
             else -> {
                 previousQuestionBtn.visibility = View.VISIBLE
                 nextQuestionBtn.visibility = View.VISIBLE
@@ -119,28 +146,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         }
     }
 
-    private fun setData(items: ArrayList<QuestionWithAnswers>) {
-        if (!::adapter.isInitialized) {
-            adapter = QuestionDetailsAdapter(mContext, items)
-            adapter.listener = this
-            currentPosition = items.indexOfFirst {
-                it.question.id == Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))).id
-            }
-            layoutManager.scrollToPosition(currentPosition)
-            setVisibilityOnButtons()
-        } else {
-            recyclerViewState = list.layoutManager?.onSaveInstanceState()
-            adapter.submitList(items)
-        }
-
-        list.adapter = adapter
-        recyclerViewState?.let {
-            list.layoutManager?.onRestoreInstanceState(it)
-        }
-    }
-
     override fun onPause() {
-        viewModel.saveAnswer(adapter.getItem(currentPosition))
+        viewModel.saveAnswer(questionDetailsAdapter.getItem(currentPosition))
         viewModel.syncData()
         super.onPause()
 

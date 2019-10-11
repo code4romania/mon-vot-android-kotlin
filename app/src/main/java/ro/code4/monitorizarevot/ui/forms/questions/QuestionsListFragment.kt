@@ -49,13 +49,15 @@ class QuestionsListFragment : BaseFragment<QuestionsViewModel>() {
         })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((FORM))))
 
-        list.layoutManager = LinearLayoutManager(mContext)
-        list.adapter = questionAdapter
-        list.addItemDecoration(
-            HorizontalDividerItemDecoration.Builder(activity)
-                .color(Color.TRANSPARENT)
-                .sizeResId(R.dimen.margin).build()
-        )
+        with(list) {
+            layoutManager = LinearLayoutManager(mContext)
+            adapter = questionAdapter
+            addItemDecoration(
+                HorizontalDividerItemDecoration.Builder(activity)
+                    .color(Color.TRANSPARENT)
+                    .sizeResId(R.dimen.margin).build()
+            )
+        }
 
     }
 
