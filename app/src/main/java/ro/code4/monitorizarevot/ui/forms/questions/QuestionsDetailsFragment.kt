@@ -15,9 +15,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.QuestionDetailsAdapter
+import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
-import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.addOnLayoutChangeListenerForGalleryEffect
 import ro.code4.monitorizarevot.helper.addOnScrollListenerForGalleryEffect
@@ -53,8 +53,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.questions().observe(this, Observer {
-            setData(it)
+        viewModel.questions().observe(this, Observer { list ->
+            setData(ArrayList(list.map { it as QuestionDetailsListItem }))
         })
 
         viewModel.title().observe(this, Observer {
@@ -100,8 +100,6 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
                     }
                     setVisibilityOnButtons()
                 }
-
-
             }
 
         })
@@ -119,12 +117,16 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         }
     }
 
-    private fun setData(items: ArrayList<QuestionWithAnswers>) {
+    private fun setData(items: ArrayList<QuestionDetailsListItem>) {
         if (!::adapter.isInitialized) {
             adapter = QuestionDetailsAdapter(mContext, items)
             adapter.listener = this
             currentPosition = items.indexOfFirst {
-                it.question.id == Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))).id
+                it.questionWithAnswers.question.id == Parcels.unwrap<Question>(
+                    arguments?.getParcelable(
+                        (Constants.QUESTION)
+                    )
+                ).id
             }
             layoutManager.scrollToPosition(currentPosition)
             setVisibilityOnButtons()
