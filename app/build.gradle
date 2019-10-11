@@ -38,6 +38,10 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
     signingConfigs {
         fastlane {
             storeFile file(getKey("keystore", "storeFile"))
@@ -143,7 +147,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
-    testImplementation "androidx.room:room-testing:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
