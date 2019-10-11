@@ -1101,21 +1101,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.string.title_form` appears to be unused"
-        errorLine1="    &lt;string name=&quot;title_form&quot;>Form %1$s&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="49"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="52"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.string.title_note` appears to be unused"
         errorLine1="    &lt;string name=&quot;title_note&quot;>Add a message&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~">
