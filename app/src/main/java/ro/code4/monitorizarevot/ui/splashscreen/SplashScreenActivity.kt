@@ -1,10 +1,10 @@
 package ro.code4.monitorizarevot.ui.splashscreen
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
@@ -19,17 +19,14 @@ class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
         super.onCreate(savedInstanceState)
 
         viewModel.loginLiveData().observe(this, Observer { isLoggedIn ->
-            val intent: Intent
+            val activity: Class<*>
             if (isLoggedIn == true) {
-                intent = Intent(this, MainActivity::class.java)
+                activity = MainActivity::class.java
             } else {
-                intent = Intent(this, LoginActivity::class.java)
+                activity = LoginActivity::class.java
             }
 
-            startActivity(intent)
-            finish()
+            startActivityWithoutTrace(activity)
         })
-
-        viewModel.checkLogin()
     }
 }

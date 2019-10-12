@@ -13,11 +13,12 @@ class SplashScreenViewModel: BaseViewModel() {
 
     fun loginLiveData(): LiveData<Boolean?> = loginLiveData
 
+    init {
+        checkLogin()
+    }
+
     fun checkLogin() {
-        if (sharedPreferences.getToken() != null) {
-            loginLiveData.postValue(true)
-        } else {
-            loginLiveData.postValue(false)
-        }
+        val isLoggedIn = sharedPreferences.getToken() != null
+        loginLiveData.postValue(isLoggedIn)
     }
 }

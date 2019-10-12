@@ -1,7 +1,7 @@
 package ro.code4.monitorizarevot.ui.main
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,6 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.callSupportCenter
 import ro.code4.monitorizarevot.helper.changeBranch
+import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 
@@ -65,24 +66,19 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 }
             }
         }
+
         navLogout.setOnClickListener {
-            logoutUser()
+            viewModel.logout()
         }
+
+        viewModel.onLogoutLiveData().observe(this, Observer {
+            if (it) {
+                startActivityWithoutTrace(LoginActivity::class.java)
+            }
+        } )
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    private fun logoutUser() {
-        viewModel.logout()
-        openLogin()
-    }
-
-    private fun openLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finishAffinity()
-    }
-
 }
