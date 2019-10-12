@@ -16,6 +16,7 @@ import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
+import ro.code4.monitorizarevot.ui.main.MainActivity
 import ro.code4.monitorizarevot.ui.notes.NoteFragment
 
 class FormsFragment : BaseFragment<FormsViewModel>() {
@@ -36,6 +37,10 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.branchBarText().observe(this, Observer {
             branchBarText.text = it
+        })
+
+        viewModel.title().observe(this, Observer {
+            (activity as MainActivity)?.setTitle(it)
         })
 
         viewModel.selectedForm().observe(this, Observer {

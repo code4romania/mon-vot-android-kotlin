@@ -81,4 +81,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    fun setTitle(title: String) {
+        supportActionBar?.title = title
+    }
+
 }
