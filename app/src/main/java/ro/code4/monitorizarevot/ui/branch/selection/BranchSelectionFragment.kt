@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_branch_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
@@ -13,9 +14,12 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
+import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
 class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
+
+    private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
 
     companion object {
         val TAG = BranchSelectionFragment::class.java.simpleName
@@ -44,7 +48,21 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.counties().observe(this, Observer {
-            setCountiesDropdown(it)
+            it.handle(
+                onSuccess = { counties ->
+                    progressDialog.dismiss()
+                    counties?.run(::setCountiesDropdown)
+                },
+                onFailure = {
+                    progressDialog.dismiss()
+                    // TODO: Show some message for the user know what happened
+                },
+                onLoading = {
+                    activity?.run {
+                        progressDialog.show(supportFragmentManager, ProgressDialogFragment.tag)
+                    }
+                }
+            )
         })
 
         viewModel.selection().observe(this, Observer {
