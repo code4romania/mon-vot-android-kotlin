@@ -31,6 +31,7 @@
     <!-- General -->
     <string name="developed_by">aplicație dezvoltată de</string>
     <string name="please_wait">Vă rugăm așteptaţi…</string>
+    <string name="loading_label">Loading…</string>
     <string name="button_continue">Continuă</string>
     <string name="button_continue_to_forms">Continuă către formulare</string>
     <string name="button_send">Trimite</string>

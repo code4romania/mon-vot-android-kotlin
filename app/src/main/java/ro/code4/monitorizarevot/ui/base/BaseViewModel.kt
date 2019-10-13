@@ -9,7 +9,5 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
     val messageIdToastLiveData = SingleLiveEvent<String>()
 
     fun messageToast(): LiveData<String> = messageIdToastLiveData
-    fun onError(throwable: Throwable) {
-        //TODO handle request errors
-    }
+    open fun onError(throwable: Throwable) = Unit
 }
