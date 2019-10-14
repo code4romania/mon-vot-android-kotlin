@@ -14,7 +14,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import retrofit2.Call
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
@@ -81,6 +80,7 @@ class Repository : KoinComponent {
     fun getBranchInfo(countyCode: String, branchNumber: Int): Observable<BranchDetailsInfo> {
         return db.branchDetailsDao().getBranchInfo(countyCode, branchNumber).toObservable()
     }
+
     fun saveBranchDetails(branchDetails: BranchDetails) {
         db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
@@ -180,8 +180,11 @@ class Repository : KoinComponent {
 
     fun getFormVersion(): Observable<VersionResponse> = apiInterface.getForms()
 
-    fun postBranchDetails(branchDetails: BranchDetails): Call<ResponseBody> =
-        apiInterface.postBranchDetails(branchDetails)
+    fun postBranchDetails(branchDetails: BranchDetails): Observable<ResponseBody> =
+        apiInterface.postBranchDetails(branchDetails).doOnNext {
+            branchDetails.synced = true
+            db.branchDetailsDao().updateBranchDetails(branchDetails)
+        }
 
 
     fun getAnswersForForm(
@@ -309,9 +312,23 @@ class Repository : KoinComponent {
             })
     }
 
+    private fun syncBranchDetails() {
+        db.branchDetailsDao().getNotSyncedBranches().flatMap { Observable.fromIterable(it) }
+            .flatMap {
+                postBranchDetails(it)
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {
+                Log.i(TAG, it.localizedMessage ?: "")
+            })
+    }
+
     fun syncData() {
         syncAnswers()
         syncNotes()
+        syncBranchDetails()
     }
+
 
 }

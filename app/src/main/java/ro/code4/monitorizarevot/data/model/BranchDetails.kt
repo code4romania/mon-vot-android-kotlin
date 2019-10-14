@@ -51,7 +51,7 @@ class BranchDetails() {
     @SerializedName("oraPlecarii")
     var departureTime: String? = null
 
-    var isSynced: Boolean = false
+    var synced: Boolean = false
 
 
     constructor(countyCode: String, branchNumber: Int) : this() {

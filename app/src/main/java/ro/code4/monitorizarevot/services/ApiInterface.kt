@@ -3,7 +3,6 @@ package ro.code4.monitorizarevot.services
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.*
 import ro.code4.monitorizarevot.data.model.BranchDetails
 import ro.code4.monitorizarevot.data.model.County
@@ -25,7 +24,7 @@ interface ApiInterface {
     fun getForm(@Path("formCode") formId: String): Observable<List<Section>>
 
     @POST("/api/v1/sectie")
-    fun postBranchDetails(@Body branchDetails: BranchDetails): Call<ResponseBody>
+    fun postBranchDetails(@Body branchDetails: BranchDetails): Observable<ResponseBody>
 
     @POST("/api/v1/raspuns")
     fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<SyncResponse>
