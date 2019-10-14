@@ -90,6 +90,7 @@
     <string name="invalid_branch_gender">Choose man or woman</string>
     <string name="invalid_branch_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
+    <string name="branch_details">Polling station %1$d %2$s</string>
 
     <!-- Forms list -->
     <string name="form_notes">Add a message</string>

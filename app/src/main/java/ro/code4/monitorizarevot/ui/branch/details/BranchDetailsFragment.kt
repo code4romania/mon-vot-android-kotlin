@@ -32,7 +32,7 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.branchBarText().observe(this, Observer {
+        viewModel.branchDetails().observe(this, Observer {
             branchBarText.text = it
         })
         viewModel.setTitle(getString(R.string.title_branch_details))

@@ -21,7 +21,7 @@ class BranchViewModel : BaseViewModel() {
     private val nextLiveData = SingleLiveEvent<Boolean>()
     private val nextToMainLiveData = SingleLiveEvent<Boolean>()
     private val titleLiveData = MutableLiveData<String>()
-    private val branchBarTextLiveData = MutableLiveData<String>()
+    private val branchDetailsLiveData = MutableLiveData<String>()
     private val arrivalTimeLiveData = MutableLiveData<String>()
     private val departureTimeLiveData = MutableLiveData<String>()
     private val selectedBranchLiveData = MutableLiveData<Pair<Int, Int>>()
@@ -43,10 +43,16 @@ class BranchViewModel : BaseViewModel() {
     fun departureTime(): LiveData<String> = departureTimeLiveData
     fun selectedBranch(): LiveData<Pair<Int, Int>> = selectedBranchLiveData
 
-    fun branchBarText(): LiveData<String> = branchBarTextLiveData
+    fun branchDetails(): LiveData<String> = branchDetailsLiveData
 
     fun getBranchBarText() {
-        branchBarTextLiveData.postValue("${selectedCounty.code} $selectedBranchNumber")
+        branchDetailsLiveData.postValue(
+            app.getString(
+                R.string.branch_details,
+                selectedBranchNumber,
+                selectedCounty.name
+            )
+        )
         getSelectedBranch()
     }
 

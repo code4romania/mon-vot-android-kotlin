@@ -35,12 +35,12 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.branchBarText().observe(this, Observer {
-            branchBarText.text = it
+        viewModel.branchDetails().observe(this, Observer {
+            branchBarText.text = getString(R.string.branch_details, it.branchNumber, it.countyName)
         })
 
         viewModel.title().observe(this, Observer {
-            (activity as MainActivity)?.setTitle(it)
+            (activity as MainActivity).setTitle(it)
         })
 
         viewModel.selectedForm().observe(this, Observer {
@@ -72,7 +72,6 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
                 QuestionsDetailsFragment.TAG
             )
         })
-        viewModel.getBranchBarText()
 
         branchBarButton.setOnClickListener {
             (activity as AppCompatActivity).changeBranch()

@@ -24,6 +24,7 @@ import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.data.model.response.SyncResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
+import ro.code4.monitorizarevot.data.pojo.BranchDetailsInfo
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
 import ro.code4.monitorizarevot.helper.createMultipart
@@ -77,6 +78,9 @@ class Repository : KoinComponent {
         return db.branchDetailsDao().get(countyCode, branchNumber).toObservable()
     }
 
+    fun getBranchInfo(countyCode: String, branchNumber: Int): Observable<BranchDetailsInfo> {
+        return db.branchDetailsDao().getBranchInfo(countyCode, branchNumber).toObservable()
+    }
     fun saveBranchDetails(branchDetails: BranchDetails) {
         db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()

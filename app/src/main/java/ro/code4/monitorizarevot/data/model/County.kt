@@ -22,7 +22,7 @@ class County {
 
     @Expose
     @SerializedName(COUNTY_NAME_FIELD)
-    var name: String? = null
+    lateinit var name: String
 
     @Expose
     @SerializedName(BRANCHES_COUNT_FIELD)

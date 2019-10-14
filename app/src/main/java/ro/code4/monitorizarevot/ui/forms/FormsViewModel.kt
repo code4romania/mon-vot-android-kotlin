@@ -14,6 +14,7 @@ import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
+import ro.code4.monitorizarevot.data.pojo.BranchDetailsInfo
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
@@ -30,6 +31,7 @@ class FormsViewModel : BaseViewModel() {
     private val syncVisibilityLiveData = MutableLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
     private val titleLiveData = MutableLiveData<String>()
+    private val branchDetailsLiveData = MutableLiveData<BranchDetailsInfo>()
     private var countyCode: String
     private var branchNumber: Int = -1
 
@@ -41,6 +43,7 @@ class FormsViewModel : BaseViewModel() {
         getForms()
         countyCode = preferences.getCountyCode()!!
         branchNumber = preferences.getBranchNumber()
+        getBranchBarText()
     }
 
     private fun subscribe() {
@@ -67,13 +70,17 @@ class FormsViewModel : BaseViewModel() {
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
 
-    private val branchBarTextLiveData = MutableLiveData<String>()
+    fun branchDetails(): MutableLiveData<BranchDetailsInfo> = branchDetailsLiveData
 
+    private fun getBranchBarText() {
+        repository.getBranchInfo(countyCode, branchNumber).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                branchDetailsLiveData.postValue(it)
+            }, {
+                onError(it)
+            })
 
-    fun branchBarText(): LiveData<String> = branchBarTextLiveData
-
-    fun getBranchBarText() {
-        branchBarTextLiveData.postValue("${preferences.getCountyCode()} ${preferences.getBranchNumber()}") //todo
     }
 
     @SuppressLint("CheckResult")
