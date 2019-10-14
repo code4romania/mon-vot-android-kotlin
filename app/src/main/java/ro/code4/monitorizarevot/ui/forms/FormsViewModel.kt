@@ -14,8 +14,6 @@ import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.BranchDetailsInfo
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
-import ro.code4.monitorizarevot.helper.getBranchNumber
-import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
@@ -25,9 +23,11 @@ class FormsViewModel : BaseFormViewModel() {
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MutableLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
+    private val branchDetailsLiveData = MutableLiveData<BranchDetailsInfo>()
 
     init {
         getForms()
+        getBranchBarText()
     }
 
     private fun subscribe() {
@@ -53,14 +53,17 @@ class FormsViewModel : BaseFormViewModel() {
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
+    fun branchDetails(): LiveData<BranchDetailsInfo> = branchDetailsLiveData
 
-    private val branchBarTextLiveData = MutableLiveData<String>()
+    private fun getBranchBarText() {
+        repository.getBranchInfo(countyCode, branchNumber).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                branchDetailsLiveData.postValue(it)
+            }, {
+                onError(it)
+            })
 
-
-    fun branchBarText(): LiveData<String> = branchBarTextLiveData
-
-    fun getBranchBarText() {
-        branchBarTextLiveData.postValue("${preferences.getCountyCode()} ${preferences.getBranchNumber()}") //todo
     }
 
     @SuppressLint("CheckResult")

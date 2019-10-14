@@ -10,8 +10,6 @@ import kotlinx.android.synthetic.main.fragment_branch_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.adapters.CountyAdapter
-import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
 

@@ -72,10 +72,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
         }
 
         viewModel.onLogoutLiveData().observe(this, Observer {
-            if (it) {
-                startActivityWithoutTrace(LoginActivity::class.java)
-            }
-        } )
+            startActivityWithoutTrace(LoginActivity::class.java)
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {

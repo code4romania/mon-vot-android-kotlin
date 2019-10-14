@@ -29,7 +29,7 @@ class NoteViewModel : BaseFormViewModel() {
     private val app: Application by inject()
     private val notesLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val fileNameLiveData = MutableLiveData<String>()
-    private val submitCompletedLiveData = SingleLiveEvent<Boolean>()
+    private val submitCompletedLiveData = SingleLiveEvent<Void>()
     private var noteFile: File? = null
     private val listObserver =
         Observer<List<Note>> { list ->
@@ -44,7 +44,7 @@ class NoteViewModel : BaseFormViewModel() {
 
     fun notes(): LiveData<ArrayList<ListItem>> = notesLiveData
     fun fileName(): LiveData<String> = fileNameLiveData
-    fun submitCompleted(): LiveData<Boolean> = submitCompletedLiveData
+    fun submitCompleted(): SingleLiveEvent<Void> = submitCompletedLiveData
     private var selectedQuestion: Question? = null
     fun setData(question: Question?) {
         selectedQuestion = question
@@ -75,7 +75,7 @@ class NoteViewModel : BaseFormViewModel() {
                     Log.d(TAG, it.toString())
                 })
         //Writing to database is successful and we don't really need the result of the network call
-        submitCompletedLiveData.postValue(true)
+        submitCompletedLiveData.call()
 
     }
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "59310389c07fa0d0de95ab8fd41c8f9f",
+    "identityHash": "a7d6422e678d5af8f123095184677b50",
     "entities": [
       {
         "tableName": "county",
@@ -53,7 +53,7 @@
       },
       {
         "tableName": "branch_details",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `isUrban` INTEGER NOT NULL, `isFemale` INTEGER NOT NULL, `arrivalTime` TEXT, `departureTime` TEXT, `isSynced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`countyCode`) REFERENCES `county`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `isUrban` INTEGER NOT NULL, `isFemale` INTEGER NOT NULL, `arrivalTime` TEXT, `departureTime` TEXT, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`countyCode`) REFERENCES `county`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -98,8 +98,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "isSynced",
-            "columnName": "isSynced",
+            "fieldPath": "synced",
+            "columnName": "synced",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -601,7 +601,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59310389c07fa0d0de95ab8fd41c8f9f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7d6422e678d5af8f123095184677b50')"
     ]
   }
 }

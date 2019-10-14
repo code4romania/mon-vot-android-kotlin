@@ -1,7 +1,6 @@
 package ro.code4.monitorizarevot.data.dao
 
 import androidx.room.*
-import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import ro.code4.monitorizarevot.data.model.BranchDetails
@@ -10,7 +9,7 @@ import ro.code4.monitorizarevot.data.pojo.BranchDetailsInfo
 @Dao
 interface BranchDetailsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(branchDetails: BranchDetails): Completable
+    fun save(branchDetails: BranchDetails)
 
     @Update
     fun updateBranchDetails(branchDetails: BranchDetails)

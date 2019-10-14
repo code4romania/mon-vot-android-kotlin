@@ -39,8 +39,6 @@ class LoginViewModel : BaseViewModel() {
         disposable.clear()
     }
 
-    //TODO should check if token still available
-
     private fun onSuccessfulLogin(loginResponse: LoginResponse) {
         sharedPreferences.saveToken(loginResponse.accessToken)
         if (sharedPreferences.hasCompletedOnboarding()) {

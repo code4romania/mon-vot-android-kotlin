@@ -9,16 +9,15 @@ import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
 class SplashScreenViewModel: BaseViewModel() {
     private val sharedPreferences: SharedPreferences by inject()
-    private val loginLiveData = SingleLiveEvent<Boolean?>()
+    private val loginLiveData = SingleLiveEvent<Boolean>()
 
-    fun loginLiveData(): LiveData<Boolean?> = loginLiveData
+    fun loginLiveData(): LiveData<Boolean> = loginLiveData
 
     init {
         checkLogin()
     }
 
-    fun checkLogin() {
-        val isLoggedIn = sharedPreferences.getToken() != null
-        loginLiveData.postValue(isLoggedIn)
+    private fun checkLogin() {
+        loginLiveData.postValue(sharedPreferences.getToken() != null)
     }
 }

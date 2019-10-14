@@ -18,8 +18,8 @@ import java.util.*
 
 
 class BranchViewModel : BaseViewModel() {
-    private val nextLiveData = SingleLiveEvent<Boolean>()
-    private val nextToMainLiveData = SingleLiveEvent<Boolean>()
+    private val nextLiveData = SingleLiveEvent<Void>()
+    private val nextToMainLiveData = SingleLiveEvent<Void>()
     private val titleLiveData = MutableLiveData<String>()
     private val branchDetailsLiveData = MutableLiveData<String>()
     private val arrivalTimeLiveData = MutableLiveData<String>()
@@ -33,8 +33,8 @@ class BranchViewModel : BaseViewModel() {
     private var selectedBranchNumber: Int = -1
     private lateinit var arrival: Calendar
     private var departure: Calendar? = null
-    fun next(): LiveData<Boolean> = nextLiveData
-    fun nextToMain(): LiveData<Boolean> = nextToMainLiveData
+    fun next(): SingleLiveEvent<Void> = nextLiveData
+    fun nextToMain(): SingleLiveEvent<Void> = nextToMainLiveData
 
     fun title(): LiveData<String> = titleLiveData
     fun setTitle(title: String) = titleLiveData.postValue(title)
@@ -85,7 +85,7 @@ class BranchViewModel : BaseViewModel() {
             !checkTime() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_time_input))
             else -> {
                 persistSelection(environmentId, genderId)
-                nextToMainLiveData.postValue(true)
+                nextToMainLiveData.call()
             }
         }
     }
@@ -99,7 +99,7 @@ class BranchViewModel : BaseViewModel() {
             arrival.getDateText(),
             departure.getDateText()
         )
-        repository.saveBranchDetails(branchDetails) //TODO research when to send to backend this info
+        repository.saveBranchDetails(branchDetails)
     }
 
     private fun checkTime(): Boolean {
@@ -135,7 +135,7 @@ class BranchViewModel : BaseViewModel() {
                 selectedBranchNumber = branchNumber
                 preferences.saveCountyCode(selectedCounty.code)
                 preferences.saveBranchNumber(selectedBranchNumber)
-                nextLiveData.postValue(true)
+                nextLiveData.call()
             }
         }
     }

@@ -83,9 +83,18 @@ class Repository : KoinComponent {
     }
 
     fun saveBranchDetails(branchDetails: BranchDetails) {
-        db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
+        Single.fromCallable { db.branchDetailsDao().save(branchDetails) }.toObservable().flatMap {
+            postBranchDetails(branchDetails)
+        }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
+
+    private fun postBranchDetails(branchDetails: BranchDetails): Observable<ResponseBody> =
+        apiInterface.postBranchDetails(branchDetails).doOnNext {
+            branchDetails.synced = true
+            db.branchDetailsDao().updateBranchDetails(branchDetails)
+        }
+
 
     fun getAnswers(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>> =
         db.formDetailsDao().getAnswersFor(countyCode, branchNumber)
@@ -176,17 +185,6 @@ class Repository : KoinComponent {
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
 
     }
-
-    fun getForm(formId: String): Observable<List<Section>> = apiInterface.getForm(formId)
-
-    fun getFormVersion(): Observable<VersionResponse> = apiInterface.getForms()
-
-    fun postBranchDetails(branchDetails: BranchDetails): Observable<ResponseBody> =
-        apiInterface.postBranchDetails(branchDetails).doOnNext {
-            branchDetails.synced = true
-            db.branchDetailsDao().updateBranchDetails(branchDetails)
-        }
-
 
     fun getAnswersForForm(
         countyCode: String?,
