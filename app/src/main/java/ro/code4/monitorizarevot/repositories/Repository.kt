@@ -69,11 +69,6 @@ class Repository : KoinComponent {
             })
     }
 
-    fun getCounty(countyCode: String): Observable<County> {
-
-        return db.countyDao().get(countyCode).toObservable()
-    }
-
     fun getBranch(countyCode: String, branchNumber: Int): Observable<BranchDetails> {
         return db.branchDetailsDao().get(countyCode, branchNumber).toObservable()
     }
@@ -95,6 +90,8 @@ class Repository : KoinComponent {
             db.branchDetailsDao().updateBranchDetails(branchDetails)
         }
 
+    fun getNotSyncedBranchDetails(): LiveData<Int> =
+        db.branchDetailsDao().getCountOfNotSyncedBranchDetails()
 
     fun getAnswers(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>> =
         db.formDetailsDao().getAnswersFor(countyCode, branchNumber)
@@ -118,13 +115,6 @@ class Repository : KoinComponent {
                 processFormDetailsData(dbFormDetails, response)
 
             })
-    }
-
-
-    private fun deleteFormDetails(list: List<FormDetails>) {
-        db.formDetailsDao().deleteForms(*list.map { it }.toTypedArray())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     private fun deleteFormDetails(formDetails: FormDetails) {
@@ -311,6 +301,7 @@ class Repository : KoinComponent {
             })
     }
 
+    @SuppressLint("CheckResult")
     private fun syncBranchDetails() {
         db.branchDetailsDao().getNotSyncedBranches().flatMap { Observable.fromIterable(it) }
             .flatMap {

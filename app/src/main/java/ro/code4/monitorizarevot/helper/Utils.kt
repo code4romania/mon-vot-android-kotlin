@@ -36,6 +36,7 @@ import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 fun String.createMultipart(name: String): MultipartBody.Part {
@@ -183,6 +184,21 @@ fun <A, B> zipLiveData(a: LiveData<A>, b: LiveData<B>): LiveData<Pair<A, B>> {
     }
 }
 
+fun <T> zipLiveData(vararg a: LiveData<T>): LiveData<ArrayList<T>> {
+    return MediatorLiveData<ArrayList<T>>().apply {
+        val zippedObjects = ArrayList<T>()
+        a.forEach {
+            addSource(it) { item ->
+                if (!zippedObjects.contains(item)) {
+                    zippedObjects.add(item)
+                }
+                value = zippedObjects
+            }
+
+        }
+    }
+}
+
 fun RecyclerView.getCenterXChildPosition(): Int {
     val childCount = childCount
     if (childCount > 0) {
@@ -200,10 +216,10 @@ fun RecyclerView.isChildInCenterX(view: View): Boolean {
     val childCount = childCount
     val lvLocationOnScreen = IntArray(2)
     val vLocationOnScreen = IntArray(2)
-    getLocationOnScreen(lvLocationOnScreen);
-    val middleX = lvLocationOnScreen[0] + width / 2;
+    getLocationOnScreen(lvLocationOnScreen)
+    val middleX = lvLocationOnScreen[0] + width / 2
     if (childCount > 0) {
-        view.getLocationOnScreen(vLocationOnScreen);
+        view.getLocationOnScreen(vLocationOnScreen)
         if (vLocationOnScreen[0] <= middleX && vLocationOnScreen[0] + view.width >= middleX) {
             return true;
         }

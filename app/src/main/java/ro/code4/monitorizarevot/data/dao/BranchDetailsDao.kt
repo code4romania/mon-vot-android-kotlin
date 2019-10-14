@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -22,4 +23,7 @@ interface BranchDetailsDao {
 
     @Query("SELECT * FROM branch_details WHERE synced=:synced")
     fun getNotSyncedBranches(synced: Boolean = false): Observable<List<BranchDetails>>
+
+    @Query("SELECT COUNT(*) FROM branch_details WHERE synced =:synced")
+    fun getCountOfNotSyncedBranchDetails(synced: Boolean = false): LiveData<Int>
 }

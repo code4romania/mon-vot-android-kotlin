@@ -33,9 +33,15 @@ class FormsViewModel : BaseFormViewModel() {
     private fun subscribe() {
         zipLiveData(
             repository.getNotSyncedQuestions(),
-            repository.getNotSyncedNotes()
+            repository.getNotSyncedNotes(),
+            repository.getNotSyncedBranchDetails()
         ).observeForever {
-            syncVisibilityLiveData.postValue(if (it.first + it.second != 0) View.VISIBLE else View.GONE)
+            syncVisibilityLiveData.postValue(
+                if (it.fold(
+                        0,
+                        { acc, obj -> acc + obj }) != 0
+                ) View.VISIBLE else View.GONE
+            )
         }
         zipLiveData(
             repository.getAnswers(countyCode, branchNumber),
@@ -56,25 +62,31 @@ class FormsViewModel : BaseFormViewModel() {
     fun branchDetails(): LiveData<BranchDetailsInfo> = branchDetailsLiveData
 
     private fun getBranchBarText() {
-        repository.getBranchInfo(countyCode, branchNumber).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                branchDetailsLiveData.postValue(it)
-            }, {
-                onError(it)
-            })
+        disposables.add(
+            repository.getBranchInfo(
+                countyCode,
+                branchNumber
+            ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    branchDetailsLiveData.postValue(it)
+                }, {
+                    onError(it)
+                })
+        )
 
     }
 
     @SuppressLint("CheckResult")
     fun getForms() {
-
-        repository.getForms()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {
-                onError(it)
-            })
+        disposables.add(
+            repository.getForms()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, {
+                    onError(it)
+                })
+        )
 
     }
 
