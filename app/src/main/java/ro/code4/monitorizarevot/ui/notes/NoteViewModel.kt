@@ -3,7 +3,6 @@ package ro.code4.monitorizarevot.ui.notes
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -20,20 +19,14 @@ import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.FileUtils
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.getBranchNumber
-import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.helper.observeOnce
-import ro.code4.monitorizarevot.repositories.Repository
-import ro.code4.monitorizarevot.ui.base.BaseViewModel
+import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 import java.io.File
 
 
-class NoteViewModel : BaseViewModel() {
-    private val repository: Repository by inject()
-    private val preferences: SharedPreferences by inject()
+class NoteViewModel : BaseFormViewModel() {
+
     private val app: Application by inject()
-    private var countyCode: String
-    private var branchNumber: Int = -1
     private val notesLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val fileNameLiveData = MutableLiveData<String>()
     private val submitCompletedLiveData = SingleLiveEvent<Boolean>()
@@ -47,11 +40,6 @@ class NoteViewModel : BaseViewModel() {
     companion object {
         @JvmStatic
         val TAG = NoteViewModel::class.java.simpleName
-    }
-
-    init {
-        countyCode = preferences.getCountyCode()!!
-        branchNumber = preferences.getBranchNumber()
     }
 
     fun notes(): LiveData<ArrayList<ListItem>> = notesLiveData

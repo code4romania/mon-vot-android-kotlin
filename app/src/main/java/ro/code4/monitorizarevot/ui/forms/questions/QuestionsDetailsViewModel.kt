@@ -2,11 +2,11 @@ package ro.code4.monitorizarevot.ui.forms.questions
 
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.MultiChoiceListItem
+import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
 import ro.code4.monitorizarevot.adapters.helper.SingleChoiceListItem
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
-import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
 import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE
 import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE_DETAILS
@@ -52,28 +52,30 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
         questionsLiveData.postValue(list)
     }
 
-    fun saveAnswer(questionWithAnswers: QuestionWithAnswers) {
-        if (questionWithAnswers.question.synced) {
-            return
-        }
-        questionWithAnswers.answers?.filter { it.selected }?.also {
-            if (it.isNotEmpty()) {
-                val answeredQuestion = AnsweredQuestion(
-                    questionWithAnswers.question.id,
-                    countyCode,
-                    branchNumber,
-                    selectedFormCode
-                )
-                val list = it.map { answer ->
-                    SelectedAnswer(
-                        answer.id,
+    fun saveAnswer(listItem: QuestionDetailsListItem) {
+        with(listItem.questionWithAnswers) {
+            if (question.synced) {
+                return
+            }
+            answers?.filter { it.selected }?.also {
+                if (it.isNotEmpty()) {
+                    val answeredQuestion = AnsweredQuestion(
+                        question.id,
                         countyCode,
                         branchNumber,
-                        answeredQuestion.id,
-                        if (answer.hasManualInput) answer.value else null
+                        selectedFormCode
                     )
+                    val list = it.map { answer ->
+                        SelectedAnswer(
+                            answer.id,
+                            countyCode,
+                            branchNumber,
+                            answeredQuestion.id,
+                            if (answer.hasManualInput) answer.value else null
+                        )
+                    }
+                    repository.saveAnsweredQuestion(answeredQuestion, list)
                 }
-                repository.saveAnsweredQuestion(answeredQuestion, list)
             }
         }
     }

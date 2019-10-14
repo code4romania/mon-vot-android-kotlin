@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.services
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -17,7 +18,7 @@ interface ApiInterface {
     fun getForms(): Observable<VersionResponse>
 
     @GET("/api/v1/sectie")
-    fun getCounties(): Observable<List<County>>
+    fun getCounties(): Single<List<County>>
 
 
     @GET("/api/v1/formular/{formCode}")
