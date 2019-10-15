@@ -6,14 +6,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
-open class PermissionManager(private val activity: Activity, private val fragment: Fragment?) {
+internal class PermissionManager(private val activity: Activity, private val fragment: Fragment?) {
 
     companion object {
         @JvmStatic
         val PERMISSION_REQUEST = 320
     }
 
-    fun hasPermissions(vararg permissionString: String): Boolean = permissionString.all {
+    private fun hasPermissions(vararg permissionString: String): Boolean = permissionString.all {
         ContextCompat.checkSelfPermission(
             activity,
             it
@@ -26,7 +26,6 @@ open class PermissionManager(private val activity: Activity, private val fragmen
             it
         ) == PackageManager.PERMISSION_DENIED
     }
-
 
     fun checkPermissions(vararg permissionString: String, listener: PermissionListener) {
         if (hasPermissions(*permissionString)) {
@@ -50,12 +49,7 @@ open class PermissionManager(private val activity: Activity, private val fragmen
         }
     }
 
-    fun requestPermissions(vararg permissionString: String) {
-        ActivityCompat.requestPermissions(activity, permissionString, PERMISSION_REQUEST)
-    }
-
-
-    fun checkShouldShowRequestPermissionsRationale(vararg permissionString: String): Boolean {
+    private fun checkShouldShowRequestPermissionsRationale(vararg permissionString: String): Boolean {
         return permissionString.any {
             ActivityCompat.shouldShowRequestPermissionRationale(
                 activity,

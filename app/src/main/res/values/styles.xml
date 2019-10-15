@@ -231,6 +231,10 @@
         <item name="android:progressDrawable">@drawable/complete_form_progress</item>
     </style>
 
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/colorPrimary</item>
+    </style>
+
 
     <dimen name="medium_margin">12dp</dimen>
 </resources>

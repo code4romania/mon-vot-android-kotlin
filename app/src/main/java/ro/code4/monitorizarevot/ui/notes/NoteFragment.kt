@@ -3,10 +3,13 @@ package ro.code4.monitorizarevot.ui.notes
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
@@ -39,6 +42,7 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
     private lateinit var baseViewModel: FormsViewModel
     private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
     private lateinit var permissionManager: PermissionManager
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         permissionManager = PermissionManager(activity!!, this)
@@ -92,7 +96,6 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         }
         submitButton.setOnClickListener {
             viewModel.submit(noteInput.text.toString())
-
         }
     }
 
@@ -147,6 +150,25 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         vararg allPermissions: String,
         permissionsDenied: List<String>
     ) {
-        //todo show explanation
+        activity?.let {
+            AlertDialog.Builder(it, R.style.AlertDialog)
+                .setTitle(R.string.permission_denied_title)
+                .setMessage(R.string.permission_denied_msg)
+                .setPositiveButton(R.string.permission_denied_settings_button) { _, _ ->
+                    openAppSettings()
+                }
+                .show()
+        }
+    }
+
+    private fun openAppSettings() {
+        activity?.apply {
+            startActivity(
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", packageName, null)
+                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_HISTORY)
+            )
+        }
     }
 }

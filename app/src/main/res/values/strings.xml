@@ -143,4 +143,10 @@
     <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a voting station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
     <string name="onboarding_title_3">Add notes</string>
     <string name="onboarding_description_3"><![CDATA[<html>Did you notice any problem that does not appear in the form? Use the ‘<b>Add note</b>’ button, write a message and/or attach a picture.</html>]]></string>
+
+    <!-- region Permissions-->
+    <string name="permission_denied_title">Permission needed</string>
+    <string name="permission_denied_msg">For using this function you have to change the app permissions. Please open the Settings menu and grant access to the requested permissions.</string>
+    <string name="permission_denied_settings_button">Settings</string>
+    <!-- endregion-->
 </resources>

@@ -144,4 +144,10 @@
     <string name="onboarding_title_3">Adaugă note</string>
     <string name="onboarding_description_3"><![CDATA[<html>Ai observat o problemă care nu apare în formular? Folosește butonul de ‘<b>Adaugă notă</b>’, scrie un mesaj și/sau anexează o imagine.</html>]]></string>
 
+    <!-- region Permissions-->
+    <string name="permission_denied_title">Permisiune necesară</string>
+    <string name="permission_denied_msg">Pentru a utiliza această funcție, trebuie să modificați permisiunile aplicației. Vă rugăm să deschideți meniul Setări și să acordați acces la permisiunile solicitate.</string>
+    <string name="permission_denied_settings_button">Setări</string>
+    <!-- endregion-->
+
 </resources>
