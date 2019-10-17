@@ -24,8 +24,8 @@ import ro.code4.monitorizarevot.data.model.Question
         ForeignKey(
             entity = BranchDetails::class,
             parentColumns = ["countyCode", "branchNumber"],
-            childColumns = ["countyCode", "sectionNumber"]
-        )], indices = [Index(value = ["countyCode", "sectionNumber", "id"], unique = true)]
+            childColumns = ["countyCode", "pollingStation"]
+        )], indices = [Index(value = ["countyCode", "pollingStation", "id"], unique = true)]
 )
 class AnsweredQuestion() {
     @PrimaryKey

@@ -14,7 +14,7 @@ import ro.code4.monitorizarevot.data.model.Answer
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = AnsweredQuestion::class,
-        parentColumns = ["countyCode", "sectionNumber", "id"],
+        parentColumns = ["countyCode", "pollingStation", "id"],
         childColumns = ["countyCode", "branchNumber", "questionId"],
         onDelete = ForeignKey.CASCADE
     )],

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5af29f99efb0111fa6e04a4b6a6feed5",
+    "identityHash": "3c0eae4bc4bb541793f3d2aba4a9250c",
     "entities": [
       {
         "tableName": "county",
@@ -325,7 +325,7 @@
       },
       {
         "tableName": "answered_question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formCode` TEXT NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `sectionNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `sectionNumber`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formCode` TEXT NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `pollingStation` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStation`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -352,8 +352,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "sectionNumber",
-            "columnName": "sectionNumber",
+            "fieldPath": "pollingStation",
+            "columnName": "pollingStation",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -378,14 +378,14 @@
         },
         "indices": [
           {
-            "name": "index_answered_question_countyCode_sectionNumber_id",
+            "name": "index_answered_question_countyCode_pollingStation_id",
             "unique": true,
             "columnNames": [
               "countyCode",
-              "sectionNumber",
+              "pollingStation",
               "id"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_answered_question_countyCode_sectionNumber_id` ON `${TABLE_NAME}` (`countyCode`, `sectionNumber`, `id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_answered_question_countyCode_pollingStation_id` ON `${TABLE_NAME}` (`countyCode`, `pollingStation`, `id`)"
           }
         ],
         "foreignKeys": [
@@ -417,7 +417,7 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "countyCode",
-              "sectionNumber"
+              "pollingStation"
             ],
             "referencedColumns": [
               "countyCode",
@@ -428,7 +428,7 @@
       },
       {
         "tableName": "selected_answer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `branchNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `branchNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `sectionNumber`, `id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `branchNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `branchNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `branchNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `pollingStation`, `id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "optionId",
@@ -493,7 +493,7 @@
             ],
             "referencedColumns": [
               "countyCode",
-              "sectionNumber",
+              "pollingStation",
               "id"
             ]
           }
@@ -601,7 +601,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5af29f99efb0111fa6e04a4b6a6feed5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c0eae4bc4bb541793f3d2aba4a9250c')"
     ]
   }
 }
