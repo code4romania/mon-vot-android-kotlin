@@ -35,6 +35,7 @@ android {
                         "room.expandProjection": "true"]
             }
         }
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -72,6 +73,12 @@ android {
         }
     }
 
+    lintOptions {
+        baseline file("lint-baseline.xml")
+        warningsAsErrors true
+        abortOnError true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -84,7 +91,6 @@ android {
 }
 
 ext {
-    butterKnifeVersion = '10.1.0'
     retrofitLibraryVersion = '2.5.0'
     koinVersion = '2.0.1'
     roomVersion = '2.2.0-rc01'
@@ -141,6 +147,8 @@ dependencies {
 
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
 
     implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
 }

@@ -12,13 +12,19 @@ import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_question_details.view.*
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
 import ro.code4.monitorizarevot.adapters.helper.ViewHolder
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
+import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE
+import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE_DETAILS
+import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE
+import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE_DETAILS
 import ro.code4.monitorizarevot.helper.TextWatcherDelegate
 import ro.code4.monitorizarevot.widget.AnswerRadioGroup
 import ro.code4.monitorizarevot.widget.CheckBoxWithDetails
@@ -27,8 +33,9 @@ import ro.code4.monitorizarevot.widget.RadioButtonWithDetails
 
 class QuestionDetailsAdapter constructor(
     private val context: Context,
-    private val items: ArrayList<QuestionWithAnswers>
-) : ListAdapter<QuestionWithAnswers, ViewHolder>(QuestionWithAnswers.DIFF_CALLBACK) {
+    private val items: ArrayList<QuestionDetailsListItem>
+) : ListAdapter<QuestionDetailsListItem, ViewHolder>(DIFF_CALLBACK) {
+
 
     private var params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -39,17 +46,31 @@ class QuestionDetailsAdapter constructor(
     lateinit var listener: OnClickListener
 
     companion object {
-        const val TYPE_MULTI_CHOICE = 0
-        const val TYPE_SINGLE_CHOICE = 1
-        const val TYPE_SINGLE_CHOICE_DETAILS = 2
-        const val TYPE_MULTI_CHOICE_DETAILS = 3
+        @JvmStatic
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<QuestionDetailsListItem>() {
+            override fun areItemsTheSame(
+                oldItem: QuestionDetailsListItem,
+                newItem: QuestionDetailsListItem
+            ): Boolean =
+                oldItem.questionWithAnswers.question.id == newItem.questionWithAnswers.question.id
+
+
+            override fun areContentsTheSame(
+                oldItem: QuestionDetailsListItem,
+                newItem: QuestionDetailsListItem
+            ): Boolean =
+                oldItem.questionWithAnswers == newItem.questionWithAnswers
+
+        }
     }
 
     init {
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int): Long = items[position].question.id.toLong()
+    override fun getItemId(position: Int): Long =
+        items[position].questionWithAnswers.question.id.toLong()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(context).inflate(R.layout.item_question_details, parent, false)
@@ -72,10 +93,16 @@ class QuestionDetailsAdapter constructor(
         val item = items[position]
 
         when (getItemViewType(position)) {
-            TYPE_MULTI_CHOICE, TYPE_MULTI_CHOICE_DETAILS -> setupMultiChoice(holder, item)
-            TYPE_SINGLE_CHOICE, TYPE_SINGLE_CHOICE_DETAILS -> setupSingleChoice(holder, item)
+            TYPE_MULTI_CHOICE, TYPE_MULTI_CHOICE_DETAILS -> setupMultiChoice(
+                holder,
+                item.questionWithAnswers
+            )
+            TYPE_SINGLE_CHOICE, TYPE_SINGLE_CHOICE_DETAILS -> setupSingleChoice(
+                holder,
+                item.questionWithAnswers
+            )
         }
-        with(item.question) {
+        with(item.questionWithAnswers.question) {
             when {
                 synced -> {
                     holder.itemView.syncIcon.visibility = View.VISIBLE
@@ -176,9 +203,10 @@ class QuestionDetailsAdapter constructor(
     }
 
 
-    override fun getItemViewType(position: Int): Int = items[position].question.questionType
+    override fun getItemViewType(position: Int): Int =
+        items[position].questionWithAnswers.question.questionType
 
-    public override fun getItem(position: Int): QuestionWithAnswers = items[position]
+    public override fun getItem(position: Int): QuestionDetailsListItem = items[position]
 
     interface OnClickListener {
         fun addNoteFor(question: Question)

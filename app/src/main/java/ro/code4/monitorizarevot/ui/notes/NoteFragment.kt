@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_note.*
 import kotlinx.android.synthetic.main.layout_edit_note.*
+import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
@@ -28,18 +29,20 @@ import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.ui.base.BaseFragment
+import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.PermissionListener {
-
 
     override val layout: Int
         get() = R.layout.fragment_note
     override val viewModel: NoteViewModel by viewModel()
+    private lateinit var baseViewModel: FormsViewModel
     private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {
         super.onAttach(context)
         permissionManager = PermissionManager(activity!!, this)
+        baseViewModel = getSharedViewModel(from = { parentFragment!! })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,6 +54,10 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
                 .color(Color.TRANSPARENT)
                 .sizeResId(R.dimen.small_margin).build()
         )
+        viewModel.title().observe(this, Observer {
+            baseViewModel.setTitle(it)
+        })
+
         viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
         viewModel.notes().observe(this, Observer {
             noteAdapter.items = it
@@ -63,6 +70,8 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         viewModel.submitCompleted().observe(this, Observer {
             activity?.onBackPressed()
         })
+
+        viewModel.setTitle(getString(R.string.title_note))
         noteInput.setOnTouchListener { view, motionEvent ->
             if (view == noteInput) {
                 view.parent.requestDisallowInterceptTouchEvent(true)

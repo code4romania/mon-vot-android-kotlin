@@ -1,54 +1,25 @@
 package ro.code4.monitorizarevot.ui.forms.questions
 
-import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import org.koin.core.inject
-import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.adapters.helper.ListItem
+import ro.code4.monitorizarevot.adapters.helper.MultiChoiceListItem
+import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
+import ro.code4.monitorizarevot.adapters.helper.SingleChoiceListItem
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
-import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
-import ro.code4.monitorizarevot.helper.getBranchNumber
-import ro.code4.monitorizarevot.helper.getCountyCode
-import ro.code4.monitorizarevot.helper.zipLiveData
-import ro.code4.monitorizarevot.repositories.Repository
-import ro.code4.monitorizarevot.ui.base.BaseViewModel
+import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE
+import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE_DETAILS
+import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE
+import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE_DETAILS
 
-class QuestionsDetailsViewModel : BaseViewModel() {
-    private val repository: Repository by inject()
-    private val preferences: SharedPreferences by inject()
-    private val questionsLiveData = MutableLiveData<ArrayList<QuestionWithAnswers>>()
-    private lateinit var selectedFormCode: String
-    private var countyCode: String
-    private var branchNumber: Int = -1
+class QuestionsDetailsViewModel : BaseQuestionViewModel() {
 
-    fun questions(): LiveData<ArrayList<QuestionWithAnswers>> = questionsLiveData
-
-    init {
-        countyCode = preferences.getCountyCode()!!
-        branchNumber = preferences.getBranchNumber()
-    }
-
-    private fun getQuestions(formCode: String) {
-
-        selectedFormCode = formCode
-        zipLiveData(
-            repository.getSectionsWithQuestions(formCode),
-            repository.getAnswersForForm(countyCode, branchNumber, formCode)
-        ).observeForever {
-            processList(it.first, it.second)
-
-        }
-
-    }
-
-    private fun processList(
+    override fun processList(
         sections: List<SectionWithQuestions>,
         answersForForm: List<AnsweredQuestionPOJO>
     ) {
-        val list = ArrayList<QuestionWithAnswers>()
+        val list = ArrayList<ListItem>()
         sections.forEach { sectionWithQuestion ->
             sectionWithQuestion.questions.forEach { questionWithAnswers ->
                 questionWithAnswers.answers?.forEach { answer ->
@@ -68,38 +39,43 @@ class QuestionsDetailsViewModel : BaseViewModel() {
                         }
                     }
                 }
+                when (questionWithAnswers.question.questionType) {
+                    TYPE_SINGLE_CHOICE, TYPE_SINGLE_CHOICE_DETAILS -> list.add(
+                        SingleChoiceListItem(questionWithAnswers)
+                    )
+                    TYPE_MULTI_CHOICE, TYPE_MULTI_CHOICE_DETAILS -> list.add(
+                        MultiChoiceListItem(questionWithAnswers)
+                    )
+                }
             }
-            list.addAll(sectionWithQuestion.questions)
         }
         questionsLiveData.postValue(list)
     }
 
-    fun setData(formDetails: FormDetails) {
-        getQuestions(formDetails.code)
-    }
-
-    fun saveAnswer(questionWithAnswers: QuestionWithAnswers) {
-        if (questionWithAnswers.question.synced) {
-            return
-        }
-        questionWithAnswers.answers?.filter { it.selected }?.also {
-            if (it.isNotEmpty()) {
-                val answeredQuestion = AnsweredQuestion(
-                    questionWithAnswers.question.id,
-                    countyCode,
-                    branchNumber,
-                    selectedFormCode
-                )
-                val list = it.map { answer ->
-                    SelectedAnswer(
-                        answer.idOption,
+    fun saveAnswer(listItem: QuestionDetailsListItem) {
+        with(listItem.questionWithAnswers) {
+            if (question.synced) {
+                return
+            }
+            answers?.filter { it.selected }?.also {
+                if (it.isNotEmpty()) {
+                    val answeredQuestion = AnsweredQuestion(
+                        question.id,
                         countyCode,
                         branchNumber,
-                        answeredQuestion.id,
-                        if (answer.isFreeText) answer.value else null
+                        selectedFormCode
                     )
+                    val list = it.map { answer ->
+                        SelectedAnswer(
+                            answer.id,
+                            countyCode,
+                            branchNumber,
+                            answeredQuestion.id,
+                            if (answer.hasManualInput) answer.value else null
+                        )
+                    }
+                    repository.saveAnsweredQuestion(answeredQuestion, list)
                 }
-                repository.saveAnsweredQuestion(answeredQuestion, list)
             }
         }
     }

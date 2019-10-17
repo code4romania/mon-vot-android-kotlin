@@ -21,3 +21,4 @@ fastlane/test_output
 fastlane/readme.md
 
 /local.properties
+/.DS_Store

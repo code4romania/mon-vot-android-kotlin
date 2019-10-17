@@ -1,17 +1,14 @@
 package ro.code4.monitorizarevot.ui.forms
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.koin.core.inject
 import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
 import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
-import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
@@ -19,27 +16,17 @@ import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.helper.zipLiveData
-import ro.code4.monitorizarevot.repositories.Repository
-import ro.code4.monitorizarevot.ui.base.BaseViewModel
+import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
-class FormsViewModel : BaseViewModel() {
-    private val repository: Repository by inject()
-    private val preferences: SharedPreferences by inject()
+class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
-    private val answersLiveData = MutableLiveData<List<AnsweredQuestionPOJO>>()
-    private val formsWithSections = MutableLiveData<List<FormWithSections>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MutableLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
-    private var countyCode: String
-    private var branchNumber: Int = -1
 
     init {
-
         getForms()
-        countyCode = preferences.getCountyCode()!!
-        branchNumber = preferences.getBranchNumber()
     }
 
     private fun subscribe() {

@@ -76,9 +76,11 @@
             style="@style/InputLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="username,phone"
             android:hint="@string/login_phone"
             android:inputType="phone"
-            android:text="0722222222" />
+            android:text="@string/test_phone_number"
+            tools:targetApi="o" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,10 +99,12 @@
             style="@style/InputLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="password"
             android:hint="@string/login_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:text="1234" />
+            android:text="@string/test_password"
+            tools:targetApi="o" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
