@@ -12,7 +12,7 @@ import ro.code4.monitorizarevot.data.model.Question
         ForeignKey(
             entity = FormDetails::class,
             parentColumns = ["code"],
-            childColumns = ["formCode"],
+            childColumns = ["formId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -24,16 +24,16 @@ import ro.code4.monitorizarevot.data.model.Question
         ForeignKey(
             entity = BranchDetails::class,
             parentColumns = ["countyCode", "branchNumber"],
-            childColumns = ["countyCode", "pollingStation"]
-        )], indices = [Index(value = ["countyCode", "pollingStation", "id"], unique = true)]
+            childColumns = ["countyCode", "pollingStationNumber"]
+        )], indices = [Index(value = ["countyCode", "pollingStationNumber", "id"], unique = true)]
 )
 class AnsweredQuestion() {
     @PrimaryKey
     lateinit var id: String
+
     @Expose
-    @SerializedName("codFormular")
-    lateinit var formCode: String
-    // TODO serialized names to be translated when api is updated
+    lateinit var formId: String
+
     @Expose
     var questionId: Int = -1
 
@@ -41,11 +41,10 @@ class AnsweredQuestion() {
     lateinit var countyCode: String
 
     @Expose
-    var pollingStation: Int = -1
+    var pollingStationNumber: Int = -1
 
     @Ignore
     @Expose
-    @SerializedName("optiuni")
     lateinit var options: List<SelectedAnswer>
 
     var savedLocally = false
@@ -60,8 +59,8 @@ class AnsweredQuestion() {
         this.id = "$countyCode$branchNumber$formCode$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
-        this.pollingStation = branchNumber
-        this.formCode = formCode
+        this.pollingStationNumber = branchNumber
+        this.formId = formCode
     }
 
 }

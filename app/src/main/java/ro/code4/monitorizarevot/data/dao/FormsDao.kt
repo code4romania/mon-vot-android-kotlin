@@ -64,7 +64,7 @@ interface FormsDao {
     @Delete
     fun deleteAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStation=:branchNumber ")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber ")
     fun getAnswersFor(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>>
 
 
@@ -74,14 +74,14 @@ interface FormsDao {
     @Query("SELECT * FROM section where formCode=:formCode")
     fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStation=:branchNumber AND formCode=:formCode")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formCode")
     fun getAnswersForForm(
         countyCode: String?,
         branchNumber: Int,
         formCode: String
     ): LiveData<List<AnsweredQuestionPOJO>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStation=:branchNumber AND formCode=:formCode AND synced=:synced")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formCode AND synced=:synced")
     fun getNotSyncedQuestionsForForm(
         countyCode: String?,
         branchNumber: Int,
@@ -109,7 +109,7 @@ interface FormsDao {
     @Insert(onConflict = REPLACE)
     fun insertAnswers(vararg answers: SelectedAnswer)
 
-    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStation=:branchNumber AND formCode=:formCode")
+    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formCode")
     fun updateAnsweredQuestions(
         countyCode: String,
         branchNumber: Int,

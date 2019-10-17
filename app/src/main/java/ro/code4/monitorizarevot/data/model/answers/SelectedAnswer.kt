@@ -14,7 +14,7 @@ import ro.code4.monitorizarevot.data.model.Answer
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = AnsweredQuestion::class,
-        parentColumns = ["countyCode", "pollingStation", "id"],
+        parentColumns = ["countyCode", "pollingStationNumber", "id"],
         childColumns = ["countyCode", "branchNumber", "questionId"],
         onDelete = ForeignKey.CASCADE
     )],
@@ -25,11 +25,9 @@ class SelectedAnswer() {
     //TODO update fields to English names - to check names if influenced by backend
 
     @Expose
-    @SerializedName("idOptiune")
     var optionId: Int = -1
 
     @Expose
-    @SerializedName("value")
     var value: String? = null
 
     //    @SerializedName("codJudet")
