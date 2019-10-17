@@ -18,7 +18,7 @@ interface ApiInterface {
     fun getForms(): Observable<VersionResponse>
 
     @GET("/api/v1/polling-station")
-    fun getCounties(): Observable<List<County>>
+    fun getCounties(): Single<List<County>>
 
     @GET("/api/v1/form/{formCode}")
     fun getForm(@Path("formCode") formId: String): Observable<List<Section>>
