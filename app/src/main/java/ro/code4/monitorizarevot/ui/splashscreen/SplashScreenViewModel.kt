@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import org.koin.core.inject
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
+import ro.code4.monitorizarevot.helper.getCountyCode
 import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
@@ -18,7 +19,7 @@ class SplashScreenViewModel: BaseViewModel() {
     }
 
     fun checkLogin() {
-        val isLoggedIn = sharedPreferences.getToken() != null
+        val isLoggedIn = sharedPreferences.getToken() != null && sharedPreferences.getCountyCode() != null
         loginLiveData.postValue(isLoggedIn)
     }
 }
