@@ -1,8 +1,6 @@
 package ro.code4.monitorizarevot.ui.login
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
@@ -12,8 +10,6 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
-import ro.code4.monitorizarevot.ui.branch.BranchActivity
-import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 class LoginActivity : BaseActivity<LoginViewModel>() {
@@ -28,7 +24,12 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         super.onCreate(savedInstanceState)
         appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
         clickListenersSetup()
-        observablesSetup()
+        loginUserObservable()
+    }
+
+    override fun onDestroy() {
+        if (progressDialog.isResumed) progressDialog.dismissAllowingStateLoss()
+        super.onDestroy()
     }
 
     private fun clickListenersSetup() {
@@ -42,17 +43,12 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         }
     }
 
-    private fun observablesSetup() {
-        loginUserObservable()
-        onboardingObservable()
-    }
-
     private fun loginUserObservable() {
         viewModel.loggedIn().observe(this, Observer {
             it.handle(
-                onSuccess = {
+                onSuccess = { activity ->
                     progressDialog.dismiss()
-                    startActivityWithoutTrace(BranchActivity::class.java)
+                    activity?.let(::startActivityWithoutTrace)
                 },
                 onFailure = {
                     // TODO: Handle errors to show personalized messages for each one
@@ -61,26 +57,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         .show()
                 },
                 onLoading = {
-                    progressDialog.show(supportFragmentManager, ProgressDialogFragment.tag)
-                }
-            )
-        })
-    }
-
-    private fun onboardingObservable() {
-        viewModel.onboarding().observe(this, Observer {
-            it.handle(
-                onSuccess = {
-                    progressDialog.dismiss()
-                    startActivityWithoutTrace(OnboardingActivity::class.java)
-                },
-                onFailure = {
-                    progressDialog.dismiss()
-                    Snackbar.make(loginButton, "Something went wrong!", Snackbar.LENGTH_SHORT)
-                        .show()
-                },
-                onLoading = {
-                    progressDialog.show(supportFragmentManager, ProgressDialogFragment.tag)
+                    progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
                 }
             )
         })

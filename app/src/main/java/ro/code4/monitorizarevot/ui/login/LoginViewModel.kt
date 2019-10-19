@@ -1,7 +1,7 @@
 package ro.code4.monitorizarevot.ui.login
 
+import android.app.Activity
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,17 +15,17 @@ import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
 import ro.code4.monitorizarevot.helper.saveToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
+import ro.code4.monitorizarevot.ui.branch.BranchActivity
+import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
 
 class LoginViewModel : BaseViewModel() {
 
     private val loginRepository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
 
-    private val loginLiveData = SingleLiveEvent<Result<Void>>()
-    private val onboardingLiveData = SingleLiveEvent<Result<Void>>()
+    private val loginLiveData = SingleLiveEvent<Result<Class<*>>>()
 
-    fun loggedIn(): LiveData<Result<Void>> = loginLiveData
-    fun onboarding(): LiveData<Result<Void>> = onboardingLiveData
+    fun loggedIn(): LiveData<Result<Class<*>>> = loginLiveData
     private val disposable = CompositeDisposable()
 
     fun login(user: User) {
@@ -46,9 +46,9 @@ class LoginViewModel : BaseViewModel() {
     private fun onSuccessfulLogin(loginResponse: LoginResponse) {
         sharedPreferences.saveToken(loginResponse.accessToken)
         if (sharedPreferences.hasCompletedOnboarding()) {
-            loginLiveData.postValue(Result.Success())
+            loginLiveData.postValue(Result.Success(BranchActivity::class.java))
         } else {
-            onboardingLiveData.postValue(Result.Success())
+            loginLiveData.postValue(Result.Success(OnboardingActivity::class.java))
         }
     }
 

@@ -44,6 +44,11 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
         retainInstance = true
     }
 
+    override fun onDestroyView() {
+        if (progressDialog.isResumed) progressDialog.dismissAllowingStateLoss()
+        super.onDestroyView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -59,7 +64,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
                 },
                 onLoading = {
                     activity?.run {
-                        progressDialog.show(supportFragmentManager, ProgressDialogFragment.tag)
+                        progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
                     }
                 }
             )

@@ -21,7 +21,7 @@ class ProgressDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val tag = "ProgressDialogFragment"
+        val TAG = ProgressDialogFragment::class.java.simpleName
     }
 
 }
