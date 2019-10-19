@@ -31,6 +31,7 @@ import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
 import ro.code4.monitorizarevot.ui.notes.NoteViewModel
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingViewModel
+import ro.code4.monitorizarevot.ui.splashscreen.SplashScreenViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -110,6 +111,7 @@ val viewModelsModule = module {
     viewModel { QuestionsDetailsViewModel() }
     viewModel { NoteViewModel() }
     viewModel { GuideViewModel() }
+    viewModel { SplashScreenViewModel() }
 }
 
 val analyticsModule = module {

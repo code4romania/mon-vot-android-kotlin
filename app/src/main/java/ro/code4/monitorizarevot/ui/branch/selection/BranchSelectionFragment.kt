@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_branch_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -32,7 +30,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
     lateinit var parentViewModel: BranchViewModel
 
     //    lateinit var countySpinnerAdapter: CountyAdapter
-    lateinit var countySpinnerAdapter: ArrayAdapter<County>
+    lateinit var countySpinnerAdapter: ArrayAdapter<String>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,15 +40,10 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-    }
 
-    override fun onDestroyView() {
-        if (progressDialog.isResumed) progressDialog.dismissAllowingStateLoss()
-        super.onDestroyView()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        countySpinnerAdapter =
+            ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, mutableListOf())
+        countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
 
         viewModel.counties().observe(this, Observer {
             it.handle(
@@ -71,12 +64,23 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
         })
 
         viewModel.selection().observe(this, Observer {
-            countySpinner.setSelection(countySpinnerAdapter.getPosition(it.first))
+            countySpinner.setSelection(it.first)
             branchNumber.setText(it.second.toString())
             branchNumber.setSelection(it.second.toString().length)
             branchNumber.isEnabled = true
         })
+    }
+
+    override fun onDestroyView() {
+        if (progressDialog.isResumed) progressDialog.dismissAllowingStateLoss()
+        super.onDestroyView()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         parentViewModel.setTitle(getString(R.string.title_branch_selection))
+        countySpinner.adapter = countySpinnerAdapter
         countySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -84,8 +88,11 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
                 position: Int,
                 id: Long
             ) {
-                parentViewModel.selectCounty(countySpinnerAdapter.getItem(position))
-                branchNumber.isEnabled = true
+                val county = viewModel.getSelectedCounty(position)
+                county?.let {
+                    parentViewModel.selectCounty(it)
+                }
+                branchNumber.isEnabled = county != null
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -93,18 +100,13 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
             }
         }
         setContinueButton()
+        viewModel.getCounties()
     }
 
-    private fun setCountiesDropdown(counties: List<County>) {
-        if (!::countySpinnerAdapter.isInitialized) {
-//        countySpinnerAdapter = CountyAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties) //TODO FIX this
-            countySpinnerAdapter =
-                ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, counties)
-            countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-
-        }
-        countySpinner.adapter = countySpinnerAdapter
-        viewModel.getSelection()
+    private fun setCountiesDropdown(counties: List<String>) {
+        countySpinnerAdapter.clear()
+        countySpinnerAdapter.addAll(counties)
+        countySpinnerAdapter.notifyDataSetChanged()
     }
 
 

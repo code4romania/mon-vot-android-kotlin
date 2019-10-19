@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import ro.code4.monitorizarevot.data.model.County
 
 @Dao
 interface CountyDao {
     @Query("SELECT * FROM county")
-    fun getAll(): Maybe<List<County>>
+    fun getAll(): Observable<List<County>>
 
     @Insert(onConflict = REPLACE)
     fun save(vararg counties: County)
