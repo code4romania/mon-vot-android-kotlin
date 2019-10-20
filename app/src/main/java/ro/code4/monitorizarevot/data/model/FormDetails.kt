@@ -12,6 +12,9 @@ import org.parceler.Parcel
 class FormDetails {
     @PrimaryKey
     @Expose
+    var id: Int = -1
+
+    @Expose
     lateinit var code: String
 
     @Expose
@@ -25,16 +28,24 @@ class FormDetails {
     lateinit var sections: List<Section>
 
     override fun equals(other: Any?): Boolean {
-        if (other !is FormDetails) {
-            return false
-        }
-        return code == other.code && formVersion == other.formVersion
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
+        other as FormDetails
+
+        if (id != other.id) return false
+        if (code != other.code) return false
+        if (formVersion != other.formVersion) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        var result = code.hashCode()
+        var result = id
+        result = 31 * result + code.hashCode()
         result = 31 * result + formVersion
         return result
     }
+
+
 }

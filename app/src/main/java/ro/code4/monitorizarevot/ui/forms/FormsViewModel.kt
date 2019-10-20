@@ -78,7 +78,7 @@ class FormsViewModel : BaseFormViewModel() {
         val items = ArrayList<ListItem>()
         forms.forEach { formWithSections ->
             formWithSections.noAnsweredQuestions =
-                answers.count { it.answeredQuestion.formId == formWithSections.form.code }
+                answers.count { it.answeredQuestion.formId == formWithSections.form.id }
         }
         items.addAll(forms.map { FormListItem(it) })
         items.add(AddNoteListItem())

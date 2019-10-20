@@ -13,16 +13,16 @@ abstract class BaseQuestionViewModel : BaseFormViewModel() {
 
     val questionsLiveData = MutableLiveData<ArrayList<ListItem>>()
 
-    lateinit var selectedFormCode: String
+    var selectedFormId: Int = -1
 
     fun questions(): LiveData<ArrayList<ListItem>> = questionsLiveData
 
-    private fun getQuestions(formCode: String) {
+    private fun getQuestions(formId: Int) {
 
-        selectedFormCode = formCode
+        selectedFormId = formId
         zipLiveData(
-            repository.getSectionsWithQuestions(formCode),
-            repository.getAnswersForForm(countyCode, branchNumber, formCode)
+            repository.getSectionsWithQuestions(formId),
+            repository.getAnswersForForm(countyCode, branchNumber, formId)
         ).observeForever {
             processList(it.first, it.second)
 
@@ -36,7 +36,7 @@ abstract class BaseQuestionViewModel : BaseFormViewModel() {
     )
 
     fun setData(formDetails: FormDetails) {
-        getQuestions(formDetails.code)
+        getQuestions(formDetails.id)
         setTitle(formDetails.description)
     }
 

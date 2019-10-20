@@ -11,7 +11,7 @@ class FormWithSections {
     @Embedded
     lateinit var form: FormDetails
 
-    @Relation(parentColumn = "code", entityColumn = "formCode", entity = Section::class)
+    @Relation(parentColumn = "code", entityColumn = "formId", entity = Section::class)
     lateinit var sections: List<SectionWithQuestions>
 
     @Ignore

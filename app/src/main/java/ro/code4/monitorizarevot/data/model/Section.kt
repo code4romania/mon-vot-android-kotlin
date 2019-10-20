@@ -10,8 +10,8 @@ import org.parceler.Parcel
 @Entity(
     tableName = "section", foreignKeys = [ForeignKey(
         entity = FormDetails::class,
-        parentColumns = ["code"],
-        childColumns = ["formCode"],
+        parentColumns = ["id"],
+        childColumns = ["formId"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
     )]
@@ -34,7 +34,8 @@ class Section {
     @Ignore
     lateinit var questions: List<Question>
 
-    lateinit var formCode: String
+    var formId: Int = -1
+
     override fun equals(other: Any?): Boolean {
         if (other !is Section) {
             return false

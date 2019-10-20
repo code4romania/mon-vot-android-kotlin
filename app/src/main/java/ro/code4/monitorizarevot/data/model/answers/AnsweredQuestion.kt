@@ -11,7 +11,7 @@ import ro.code4.monitorizarevot.data.model.Question
     tableName = "answered_question", foreignKeys = [
         ForeignKey(
             entity = FormDetails::class,
-            parentColumns = ["code"],
+            parentColumns = ["id"],
             childColumns = ["formId"],
             onDelete = ForeignKey.CASCADE
         ),
@@ -32,7 +32,7 @@ class AnsweredQuestion() {
     lateinit var id: String
 
     @Expose
-    lateinit var formId: String
+    var formId: Int = -1
 
     @Expose
     var questionId: Int = -1
@@ -54,13 +54,13 @@ class AnsweredQuestion() {
         questionId: Int,
         countyCode: String,
         branchNumber: Int,
-        formCode: String
+        formId: Int
     ) : this() {
-        this.id = "$countyCode$branchNumber$formCode$questionId"
+        this.id = "$countyCode$branchNumber$formId$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
         this.pollingStationNumber = branchNumber
-        this.formId = formCode
+        this.formId = formId
     }
 
 }

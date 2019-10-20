@@ -27,11 +27,11 @@ interface FormsDao {
     @Delete
     fun deleteForms(vararg forms: FormDetails): Completable
 
-    @Query("SELECT * FROM section WHERE code=:formCode")
-    fun getSectionsByCode(formCode: String): Maybe<List<Section>>
+    @Query("SELECT * FROM section WHERE code=:formId")
+    fun getSectionsByCode(formId: Int): Maybe<List<Section>>
 
-    @Query("DELETE FROM section WHERE code=:formCode")
-    fun deleteSectionsByCode(formCode: String): Completable
+    @Query("DELETE FROM section WHERE code=:formId")
+    fun deleteSectionsByCode(formId: Int): Completable
 
     @Transaction
     fun save(vararg sections: Section) {
@@ -71,21 +71,21 @@ interface FormsDao {
     @Query("SELECT * FROM form_details")
     fun getFormsWithSections(): LiveData<List<FormWithSections>>
 
-    @Query("SELECT * FROM section where formCode=:formCode")
-    fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>>
+    @Query("SELECT * FROM section where formId=:formId")
+    fun getSectionsWithQuestions(formId: Int): LiveData<List<SectionWithQuestions>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formCode")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formId")
     fun getAnswersForForm(
         countyCode: String?,
         branchNumber: Int,
-        formCode: String
+        formId: Int
     ): LiveData<List<AnsweredQuestionPOJO>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formCode AND synced=:synced")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formId AND synced=:synced")
     fun getNotSyncedQuestionsForForm(
         countyCode: String?,
         branchNumber: Int,
-        formCode: String,
+        formId: Int,
         synced: Boolean = false
     ): Maybe<List<AnsweredQuestionPOJO>>
 
@@ -109,11 +109,11 @@ interface FormsDao {
     @Insert(onConflict = REPLACE)
     fun insertAnswers(vararg answers: SelectedAnswer)
 
-    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formCode")
+    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formId")
     fun updateAnsweredQuestions(
         countyCode: String,
         branchNumber: Int,
-        formCode: String,
+        formId: Int,
         synced: Boolean = true
     )
 

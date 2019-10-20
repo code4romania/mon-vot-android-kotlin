@@ -20,8 +20,8 @@ interface ApiInterface {
     @GET("/api/v1/polling-station")
     fun getCounties(): Single<List<County>>
 
-    @GET("/api/v1/form/{formCode}")
-    fun getForm(@Path("formCode") formId: String): Observable<List<Section>>
+    @GET("/api/v1/form/{formId}")
+    fun getForm(@Path("formId") formId: Int): Observable<List<Section>>
 
     @POST("/api/v1/sectie")
     fun postBranchDetails(@Body branchDetails: BranchDetails): Call<ResponseBody>

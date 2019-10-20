@@ -63,7 +63,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         question.id,
                         countyCode,
                         branchNumber,
-                        selectedFormCode
+                        selectedFormId
                     )
                     val list = it.map { answer ->
                         SelectedAnswer(
@@ -81,7 +81,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
     }
 
     fun syncData() {
-        repository.syncAnswers(countyCode, branchNumber, selectedFormCode)
+        repository.syncAnswers(countyCode, branchNumber, selectedFormId)
     }
 
 }

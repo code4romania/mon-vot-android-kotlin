@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8d0baf7f0ccbc1b0aa45562fcd09d7df",
+    "identityHash": "ffae636f17d6effabe52917f783a00e4",
     "entities": [
       {
         "tableName": "county",
@@ -137,8 +137,14 @@
       },
       {
         "tableName": "form_details",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `description` TEXT NOT NULL, `formVersion` INTEGER NOT NULL, PRIMARY KEY(`code`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `code` TEXT NOT NULL, `description` TEXT NOT NULL, `formVersion` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "code",
             "columnName": "code",
@@ -160,7 +166,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "code"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -169,7 +175,7 @@
       },
       {
         "tableName": "section",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uniqueId` TEXT NOT NULL, `code` TEXT, `description` TEXT, `formCode` TEXT NOT NULL, PRIMARY KEY(`uniqueId`), FOREIGN KEY(`formCode`) REFERENCES `form_details`(`code`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uniqueId` TEXT NOT NULL, `code` TEXT, `description` TEXT, `formId` INTEGER NOT NULL, PRIMARY KEY(`uniqueId`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uniqueId",
@@ -190,9 +196,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "formCode",
-            "columnName": "formCode",
-            "affinity": "TEXT",
+            "fieldPath": "formId",
+            "columnName": "formId",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -209,10 +215,10 @@
             "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
-              "formCode"
+              "formId"
             ],
             "referencedColumns": [
-              "code"
+              "id"
             ]
           }
         ]
@@ -325,7 +331,7 @@
       },
       {
         "tableName": "answered_question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formId` TEXT NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStationNumber`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formId` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStationNumber`) REFERENCES `branch_details`(`countyCode`, `branchNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -336,7 +342,7 @@
           {
             "fieldPath": "formId",
             "columnName": "formId",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -397,7 +403,7 @@
               "formId"
             ],
             "referencedColumns": [
-              "code"
+              "id"
             ]
           },
           {
@@ -601,7 +607,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8d0baf7f0ccbc1b0aa45562fcd09d7df')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ffae636f17d6effabe52917f783a00e4')"
     ]
   }
 }
