@@ -12,9 +12,12 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.branch.BranchViewModel
+import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
 class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
+
+    private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
 
     companion object {
         val TAG = BranchSelectionFragment::class.java.simpleName
@@ -42,7 +45,21 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
 
         viewModel.counties().observe(this, Observer {
-            setCountiesDropdown(it)
+            it.handle(
+                onSuccess = { counties ->
+                    progressDialog.dismiss()
+                    counties?.run(::setCountiesDropdown)
+                },
+                onFailure = {
+                    progressDialog.dismiss()
+                    // TODO: Show some message for the user know what happened
+                },
+                onLoading = {
+                    activity?.run {
+                        progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+                    }
+                }
+            )
         })
 
         viewModel.selection().observe(this, Observer {
@@ -51,6 +68,11 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
             branchNumber.setSelection(it.second.toString().length)
             branchNumber.isEnabled = true
         })
+    }
+
+    override fun onDestroyView() {
+        if (progressDialog.isResumed) progressDialog.dismissAllowingStateLoss()
+        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
