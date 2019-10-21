@@ -28,6 +28,7 @@
     <!-- General -->
     <string name="developed_by">app developed by</string>
     <string name="please_wait">Please wait…</string>
+    <string name="loading_label">Loading…</string>
     <string name="button_continue">Continue</string>
     <string name="button_continue_to_forms">Continue to forms</string>
     <string name="button_send">Send</string>

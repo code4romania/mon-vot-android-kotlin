@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.County
+import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.getBranchNumber
 import ro.code4.monitorizarevot.helper.getCountyCode
@@ -19,17 +20,18 @@ import ro.code4.monitorizarevot.ui.base.BaseViewModel
 class BranchSelectionViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
-    private val countiesLiveData = MutableLiveData<List<String>>()
+    private val countiesLiveData = MutableLiveData<Result<List<String>>>()
 
     private val selectionLiveData = SingleLiveEvent<Pair<Int, Int>>()
 
-    fun counties(): LiveData<List<String>> = countiesLiveData
+    fun counties(): LiveData<Result<List<String>>> = countiesLiveData
     fun selection(): LiveData<Pair<Int, Int>> = selectionLiveData
 
     private val counties: MutableList<County> = mutableListOf()
     private var hadSelectedCounty = false
 
     fun getCounties() {
+        countiesLiveData.postValue(Result.Loading)
         if (counties.isNotEmpty()) {
             updateCounties()
             return
@@ -54,11 +56,11 @@ class BranchSelectionViewModel : BaseViewModel() {
         val countyNames = counties.map { it.name.orEmpty() }
 
         if (countyCode.isNullOrBlank()) {
-            countiesLiveData.postValue(listOf("") + countyNames)
+            countiesLiveData.postValue(Result.Success(listOf("") + countyNames))
         } else {
             hadSelectedCounty = true
             val selectedCountyIndex = counties.indexOfFirst { it.code == countyCode }
-            countiesLiveData.postValue(countyNames)
+            countiesLiveData.postValue(Result.Success(countyNames))
 
             if (selectedCountyIndex >= 0) {
                 selectionLiveData.postValue(Pair(selectedCountyIndex, branchNumber))
@@ -69,4 +71,11 @@ class BranchSelectionViewModel : BaseViewModel() {
     fun getSelectedCounty(position: Int): County? {
         return counties.getOrNull(if (hadSelectedCounty) position else position - 1)
     }
+
+    override fun onError(throwable: Throwable) {
+        // TODO: Handle errors to show a specific message for each one
+        countiesLiveData.postValue(Result.Failure(throwable))
+    }
+
+
 }
