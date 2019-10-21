@@ -81,7 +81,9 @@
     <string name="branch_answer_woman">Woman</string>
     <string name="branch_question_enter">Arrival time</string>
     <string name="branch_question_leave">Departure time</string>
+    <string name="branch_choose_date_enter">Choose the date of your arrival</string>
     <string name="branch_choose_time_enter">Choose the time of your arrival</string>
+    <string name="branch_choose_date_leave">Choose the date of your departure</string>
     <string name="branch_choose_time_leave">Choose the time of your departure</string>
     <string name="invalid_branch_county">Choose the county/district</string>
     <string name="invalid_branch_number">Fill in the polling station number</string>

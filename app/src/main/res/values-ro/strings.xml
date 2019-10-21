@@ -84,7 +84,9 @@
     <string name="branch_answer_woman">Femeie</string>
     <string name="branch_question_enter">Ora sosirii în secţie</string>
     <string name="branch_question_leave">Ora plecării din secţie</string>
+    <string name="branch_choose_date_enter">Alege data sosirii</string>
     <string name="branch_choose_time_enter">Alege ora sosirii</string>
+    <string name="branch_choose_date_leave">Alege data plecării</string>
     <string name="branch_choose_time_leave">Alege ora plecării</string>
     <string name="invalid_branch_county">Alege județul</string>
     <string name="invalid_branch_number">Introdu numărul secției</string>

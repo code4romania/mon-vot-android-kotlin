@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.branch.details
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
@@ -47,15 +48,35 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
             arrivalTime.text = it
         })
         arrivalTime.setOnClickListener {
-            showTimePicker(R.string.branch_choose_time_enter,
-                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    viewModel.setArrivalTime(hourOfDay, minute)
+            showDatePicker(
+                R.string.branch_choose_date_enter,
+                R.string.branch_choose_time_enter,
+                object : DateTimeListener {
+                    override fun onDateTimeChanged(
+                        year: Int,
+                        month: Int,
+                        dayOfMonth: Int,
+                        hourOfDay: Int,
+                        minute: Int
+                    ) {
+                        viewModel.setArrivalTime(year, month, dayOfMonth, hourOfDay, minute)
+                    }
                 })
         }
         departureTime.setOnClickListener {
-            showTimePicker(R.string.branch_choose_time_leave,
-                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    viewModel.setDepartureTime(hourOfDay, minute)
+            showDatePicker(
+                R.string.branch_choose_date_leave,
+                R.string.branch_choose_time_leave,
+                object : DateTimeListener {
+                    override fun onDateTimeChanged(
+                        year: Int,
+                        month: Int,
+                        dayOfMonth: Int,
+                        hourOfDay: Int,
+                        minute: Int
+                    ) {
+                        viewModel.setDepartureTime(year, month, dayOfMonth, hourOfDay, minute)
+                    }
                 })
         }
         viewModel.selectedBranch().observe(this, Observer {
@@ -69,12 +90,31 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         genderRadioGroup.check(pair.second)
     }
 
+    private fun showDatePicker(dateTitleId: Int, timeTitleId: Int, listener: DateTimeListener) {
+        val now = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            activity!!,
+            DatePickerDialog.OnDateSetListener { _, year, month, day ->
+                showTimePicker(timeTitleId, year, month, day, listener)
+            }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.setTitle(dateTitleId)
+        datePickerDialog.show()
+    }
 
-    private fun showTimePicker(titleId: Int, listener: TimePickerDialog.OnTimeSetListener) {
+    private fun showTimePicker(
+        titleId: Int,
+        year: Int,
+        month: Int,
+        day: Int,
+        listener: DateTimeListener
+    ) {
         val now = Calendar.getInstance()
         val timePickerDialog = TimePickerDialog(
             activity,
-            listener, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
+            TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                listener.onDateTimeChanged(year, month, day, hour, minute)
+            }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
         )
         timePickerDialog.setTitle(titleId)
         timePickerDialog.show()
@@ -88,5 +128,9 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
             )
 
         }
+    }
+
+    interface DateTimeListener {
+        fun onDateTimeChanged(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int)
     }
 }

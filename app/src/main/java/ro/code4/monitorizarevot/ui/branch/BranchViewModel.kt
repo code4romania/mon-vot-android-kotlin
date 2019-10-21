@@ -150,9 +150,9 @@ class BranchViewModel : BaseViewModel() {
     }
 
 
-    fun setArrivalTime(hourOfDay: Int, minute: Int) {
+    fun setArrivalTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
         arrival = Calendar.getInstance()
-        arrival.updateTime(hourOfDay, minute)
+        arrival.updateTime(year, month, dayOfMonth, hourOfDay, minute)
         arrivalTimeLiveData.postValue(arrival.getTimeText())
     }
 
@@ -174,9 +174,9 @@ class BranchViewModel : BaseViewModel() {
         }
     }
 
-    fun setDepartureTime(hourOfDay: Int, minute: Int) {
+    fun setDepartureTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
         departure = Calendar.getInstance()
-        departure?.updateTime(hourOfDay, minute)
+        departure?.updateTime(year, month, dayOfMonth, hourOfDay, minute)
         departureTimeLiveData.postValue(departure?.getTimeText())
     }
 

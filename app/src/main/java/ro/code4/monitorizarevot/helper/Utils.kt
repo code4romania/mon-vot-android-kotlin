@@ -79,7 +79,10 @@ fun AppCompatActivity.changeBranch() {
     finishAffinity()
 }
 
-fun Calendar.updateTime(hourOfDay: Int, minute: Int) {
+fun Calendar.updateTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
+    set(Calendar.YEAR, year)
+    set(Calendar.MONTH, month)
+    set(Calendar.DAY_OF_MONTH, dayOfMonth)
     set(Calendar.HOUR_OF_DAY, hourOfDay)
     set(Calendar.MINUTE, minute)
 }
@@ -93,7 +96,7 @@ fun Calendar?.getDateText(): String? {
 }
 
 fun Calendar.getTimeText(): String {
-    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault())
+    val formatter = SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.getDefault())
     return formatter.format(time)
 }
 
