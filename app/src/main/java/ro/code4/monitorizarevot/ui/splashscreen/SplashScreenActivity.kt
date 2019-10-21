@@ -10,7 +10,7 @@ import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
 
-class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
+class SplashScreenActivity : BaseActivity<SplashScreenViewModel>() {
 
     override val layout: Int
         get() = R.layout.activity_splash_screen
@@ -20,14 +20,10 @@ class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
         super.onCreate(savedInstanceState)
 
         viewModel.loginLiveData().observe(this, Observer { loginStatus ->
-            val activity: Class<*> = if (loginStatus.isLoggedIn) {
-                if (loginStatus.isBranchConfigCompleted) {
-                    MainActivity::class.java
-                } else {
-                    BranchActivity::class.java
-                }
-            } else {
-                LoginActivity::class.java
+            val activity: Class<*> = when {
+                loginStatus.isLoggedIn && loginStatus.isBranchConfigCompleted -> MainActivity::class.java
+                loginStatus.isLoggedIn -> BranchActivity::class.java
+                else -> LoginActivity::class.java
             }
 
             startActivityWithoutTrace(activity)
