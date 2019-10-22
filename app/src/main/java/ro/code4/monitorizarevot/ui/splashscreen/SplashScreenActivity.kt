@@ -6,10 +6,11 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
 
-class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
+class SplashScreenActivity : BaseActivity<SplashScreenViewModel>() {
 
     override val layout: Int
         get() = R.layout.activity_splash_screen
@@ -18,12 +19,11 @@ class SplashScreenActivity: BaseActivity<SplashScreenViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.loginLiveData().observe(this, Observer { isLoggedIn ->
-            val activity: Class<*>
-            if (isLoggedIn == true) {
-                activity = MainActivity::class.java
-            } else {
-                activity = LoginActivity::class.java
+        viewModel.loginLiveData().observe(this, Observer { loginStatus ->
+            val activity: Class<*> = when {
+                loginStatus.isLoggedIn && loginStatus.isBranchConfigCompleted -> MainActivity::class.java
+                loginStatus.isLoggedIn -> BranchActivity::class.java
+                else -> LoginActivity::class.java
             }
 
             startActivityWithoutTrace(activity)

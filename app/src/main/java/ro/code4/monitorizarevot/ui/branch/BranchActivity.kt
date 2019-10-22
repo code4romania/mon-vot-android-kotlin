@@ -1,12 +1,12 @@
 package ro.code4.monitorizarevot.ui.branch
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_branch.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.replaceFragment
+import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.branch.details.BranchDetailsFragment
 import ro.code4.monitorizarevot.ui.branch.selection.BranchSelectionFragment
@@ -24,7 +24,7 @@ class BranchActivity : BaseActivity<BranchViewModel>() {
             title = it
         })
         viewModel.nextToMain().observe(this, Observer {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivityWithoutTrace(MainActivity::class.java)
         })
         viewModel.next().observe(this, Observer {
             replaceFragment(

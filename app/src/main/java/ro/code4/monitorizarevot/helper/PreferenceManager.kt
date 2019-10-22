@@ -7,6 +7,8 @@ const val ACCESS_TOKEN = "access_token"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
 const val PREFS_BRANCH_NUMBER = "PREFS_BRANCH_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
+const val BRANCH_CONFIG_COMPLETED = "BRANCH_CONFIG_COMPLETED"
+
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
 
@@ -40,6 +42,9 @@ fun SharedPreferences.saveBranchNumber(branchNumber: Int) =
     putInt(PREFS_BRANCH_NUMBER, branchNumber)
 
 fun SharedPreferences.getBranchNumber(): Int = getInt(PREFS_BRANCH_NUMBER)
+fun SharedPreferences.isBranchConfigCompleted() = getBoolean(BRANCH_CONFIG_COMPLETED, false)
+fun SharedPreferences.completedBranchConfig() = putBoolean(BRANCH_CONFIG_COMPLETED, true)
+
 
 fun SharedPreferences.hasCompletedOnboarding() = getBoolean(ONBOARDING_COMPLETED, false)
 fun SharedPreferences.completedOnboarding() = putBoolean(ONBOARDING_COMPLETED)

@@ -44,8 +44,12 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
         countySpinnerAdapter =
             ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+    }
 
-        viewModel.counties().observe(this, Observer {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel.counties().observe(viewLifecycleOwner, Observer {
             it.handle(
                 onSuccess = { counties ->
                     progressDialog.dismiss()
@@ -63,7 +67,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
             )
         })
 
-        viewModel.selection().observe(this, Observer {
+        viewModel.selection().observe(viewLifecycleOwner, Observer {
             countySpinner.setSelection(it.first)
             branchNumber.setText(it.second.toString())
             branchNumber.setSelection(it.second.toString().length)
@@ -113,7 +117,6 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
     private fun setContinueButton() {
         continueButton.setOnClickListener {
             parentViewModel.validBranchInput(branchNumber.text)
-
         }
     }
 }
