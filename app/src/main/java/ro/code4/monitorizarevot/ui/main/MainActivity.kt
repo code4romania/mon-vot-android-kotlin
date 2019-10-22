@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.callSupportCenter
-import ro.code4.monitorizarevot.helper.changeBranch
+import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
@@ -53,8 +53,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 true
             } else {
                 when (item.itemId) {
-                    R.id.nav_change_branch -> {
-                        changeBranch()
+                    R.id.nav_change_polling_station -> {
+                        viewModel.notifyChangeRequested()
+                        changePollingStation()
                         true
                     }
                     R.id.nav_call -> {

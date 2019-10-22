@@ -13,15 +13,15 @@ interface NoteDao {
     @Update
     fun updateNote(vararg note: Note)
 
-    @Query("SELECT * FROM note WHERE countyCode=:countyCode AND branchNumber=:branchNumber AND questionId=:questionId ORDER BY date DESC")
+    @Query("SELECT * FROM note WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND questionId=:questionId ORDER BY date DESC")
     fun getNotesForQuestion(
         countyCode: String,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         questionId: Int? = null
     ): LiveData<List<Note>>
 
-    @Query("SELECT * FROM note WHERE countyCode=:countyCode AND branchNumber=:branchNumber ORDER BY date DESC")
-    fun getNotes(countyCode: String, branchNumber: Int): LiveData<List<Note>>
+    @Query("SELECT * FROM note WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber ORDER BY date DESC")
+    fun getNotes(countyCode: String, pollingStationNumber: Int): LiveData<List<Note>>
 
     @Query("SELECT * FROM note WHERE synced=:synced")
     fun getNotSyncedNotes(synced: Boolean = false): Observable<List<Note>>

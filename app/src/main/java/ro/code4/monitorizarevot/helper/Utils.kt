@@ -32,11 +32,10 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.interfaces.ExcludeFromCodeCoverage
-import ro.code4.monitorizarevot.ui.branch.BranchActivity
+import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 fun String.createMultipart(name: String): MultipartBody.Part {
@@ -74,8 +73,8 @@ fun FragmentManager.replaceFragment(
     ft.commit()
 }
 
-fun AppCompatActivity.changeBranch() {
-    startActivity(Intent(this, BranchActivity::class.java))
+fun AppCompatActivity.changePollingStation() {
+    startActivity(Intent(this, PollingStationActivity::class.java))
     finishAffinity()
 }
 
@@ -187,20 +186,25 @@ fun <A, B> zipLiveData(a: LiveData<A>, b: LiveData<B>): LiveData<Pair<A, B>> {
     }
 }
 
-fun <T> zipLiveData(vararg a: LiveData<T>): LiveData<ArrayList<T>> {
-    return MediatorLiveData<ArrayList<T>>().apply {
-        val zippedObjects = ArrayList<T>()
-        a.forEach {
-            addSource(it) { item ->
-                if (!zippedObjects.contains(item)) {
-                    zippedObjects.add(item)
-                }
-                value = zippedObjects
-            }
-
-        }
-    }
-}
+//fun <T> zipLiveData(vararg a: LiveData<T>): LiveData<ArrayList<T>> {
+//    return MediatorLiveData<ArrayList<T>>().apply {
+//        val lastObjects :ArrayList<T>? = null
+//        val zippedObjects = ArrayList<T>()
+//        a.forEach {
+//            addSource(it){item->
+//
+//                update()
+//            }
+//            addSource(it) { item ->
+//                if (!zippedObjects.contains(item)) {
+//                    zippedObjects.add(item)
+//                }
+//                value = zippedObjects
+//            }
+//        }
+//
+//    }
+//}
 
 fun RecyclerView.getCenterXChildPosition(): Int {
     val childCount = childCount

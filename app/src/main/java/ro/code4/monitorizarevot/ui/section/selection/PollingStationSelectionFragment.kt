@@ -1,4 +1,4 @@
-package ro.code4.monitorizarevot.ui.branch.selection
+package ro.code4.monitorizarevot.ui.section.selection
 
 import android.content.Context
 import android.os.Bundle
@@ -6,28 +6,28 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_branch_selection.*
+import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseFragment
-import ro.code4.monitorizarevot.ui.branch.BranchViewModel
+import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
-class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
+class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionViewModel>() {
 
     private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
 
     companion object {
-        val TAG = BranchSelectionFragment::class.java.simpleName
+        val TAG = PollingStationSelectionFragment::class.java.simpleName
     }
 
     override val layout: Int
-        get() = R.layout.fragment_branch_selection
-    override val viewModel: BranchSelectionViewModel by viewModel()
+        get() = R.layout.fragment_polling_station_selection
+    override val viewModel: PollingStationSelectionViewModel by viewModel()
 
-    lateinit var parentViewModel: BranchViewModel
+    lateinit var parentViewModel: PollingStationViewModel
 
     lateinit var countySpinnerAdapter: ArrayAdapter<String>
 
@@ -66,9 +66,9 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
         viewModel.selection().observe(viewLifecycleOwner, Observer {
             countySpinner.setSelection(it.first)
-            branchNumber.setText(it.second.toString())
-            branchNumber.setSelection(it.second.toString().length)
-            branchNumber.isEnabled = true
+            pollingStationNumber.setText(it.second.toString())
+            pollingStationNumber.setSelection(it.second.toString().length)
+            pollingStationNumber.isEnabled = true
         })
     }
 
@@ -80,7 +80,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentViewModel.setTitle(getString(R.string.title_branch_selection))
+        parentViewModel.setTitle(getString(R.string.title_polling_station_selection))
         countySpinner.adapter = countySpinnerAdapter
         countySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -93,7 +93,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
                 county?.let {
                     parentViewModel.selectCounty(it)
                 }
-                branchNumber.isEnabled = county != null
+                pollingStationNumber.isEnabled = county != null
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -113,7 +113,7 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
     private fun setContinueButton() {
         continueButton.setOnClickListener {
-            parentViewModel.validBranchInput(branchNumber.text)
+            parentViewModel.validPollingStationInput(pollingStationNumber.text)
         }
     }
 }

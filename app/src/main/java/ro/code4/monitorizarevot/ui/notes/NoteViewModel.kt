@@ -48,7 +48,8 @@ class NoteViewModel : BaseFormViewModel() {
     private var selectedQuestion: Question? = null
     fun setData(question: Question?) {
         selectedQuestion = question
-        repository.getNotes(countyCode, branchNumber, selectedQuestion).observeOnce(listObserver)
+        repository.getNotes(countyCode, pollingStationNumber, selectedQuestion)
+            .observeOnce(listObserver)
     }
 
     private fun processList(notes: List<Note>) {
@@ -64,7 +65,7 @@ class NoteViewModel : BaseFormViewModel() {
     fun submit(text: String) {
         val note = Note()
         note.questionId = selectedQuestion?.id
-        note.branchNumber = branchNumber
+        note.pollingStationNumber = pollingStationNumber
         note.countyCode = countyCode
         note.description = text
         note.uriPath = noteFile?.absolutePath

@@ -101,12 +101,12 @@
         <item name="android:alpha">0.2</item>
     </style>
 
-    <style name="Text.Branch">
+    <style name="Text.PollingStation">
         <item name="android:textStyle">bold</item>
         <item name="android:alpha">0.5</item>
     </style>
 
-    <style name="Text.BranchSelectLabel">
+    <style name="Text.PollingStationSelectLabel">
         <item name="android:textSize">16sp</item>
 
     </style>

@@ -2,9 +2,8 @@ package ro.code4.monitorizarevot.data.model.answers
 
 import androidx.room.*
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import ro.code4.monitorizarevot.data.model.BranchDetails
 import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.model.PollingStation
 import ro.code4.monitorizarevot.data.model.Question
 
 @Entity(
@@ -22,8 +21,8 @@ import ro.code4.monitorizarevot.data.model.Question
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = BranchDetails::class,
-            parentColumns = ["countyCode", "branchNumber"],
+            entity = PollingStation::class,
+            parentColumns = ["countyCode", "idPollingStation"],
             childColumns = ["countyCode", "pollingStationNumber"]
         )], indices = [Index(value = ["countyCode", "pollingStationNumber", "id"], unique = true)]
 )
@@ -53,13 +52,13 @@ class AnsweredQuestion() {
     constructor(
         questionId: Int,
         countyCode: String,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         formId: Int
     ) : this() {
-        this.id = "$countyCode$branchNumber$formId$questionId"
+        this.id = "$countyCode$pollingStationNumber$formId$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
-        this.pollingStationNumber = branchNumber
+        this.pollingStationNumber = pollingStationNumber
         this.formId = formId
     }
 

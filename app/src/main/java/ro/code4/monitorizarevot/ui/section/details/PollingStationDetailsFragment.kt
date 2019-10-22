@@ -1,4 +1,4 @@
-package ro.code4.monitorizarevot.ui.branch.details
+package ro.code4.monitorizarevot.ui.section.details
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -6,25 +6,25 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_branch_details.*
-import kotlinx.android.synthetic.main.fragment_branch_selection.continueButton
-import kotlinx.android.synthetic.main.widget_change_branch_bar.*
+import kotlinx.android.synthetic.main.fragment_polling_station_details.*
+import kotlinx.android.synthetic.main.fragment_polling_station_selection.continueButton
+import kotlinx.android.synthetic.main.widget_change_polling_station_bar.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseFragment
-import ro.code4.monitorizarevot.ui.branch.BranchViewModel
+import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import java.util.*
 
 
-class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
+class PollingStationDetailsFragment : BaseFragment<PollingStationViewModel>() {
 
     companion object {
-        val TAG = BranchDetailsFragment::class.java.simpleName
+        val TAG = PollingStationDetailsFragment::class.java.simpleName
     }
 
     override val layout: Int
-        get() = R.layout.fragment_branch_details
-    override lateinit var viewModel: BranchViewModel
+        get() = R.layout.fragment_polling_station_details
+    override lateinit var viewModel: PollingStationViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,12 +33,12 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.branchDetails().observe(this, Observer {
-            branchBarText.text = it
+        viewModel.pollingStation().observe(this, Observer {
+            pollingStationBarText.text = it
         })
-        viewModel.setTitle(getString(R.string.title_branch_details))
-        viewModel.getBranchBarText()
-        branchBarButton.setOnClickListener {
+        viewModel.setTitle(getString(R.string.title_polling_station))
+        viewModel.getPollingStationBarText()
+        pollingStationBarButton.setOnClickListener {
             viewModel.notifyChangeRequested()
             activity?.onBackPressed()
         }
@@ -50,8 +50,8 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         })
         arrivalTime.setOnClickListener {
             showDatePicker(
-                R.string.branch_choose_date_enter,
-                R.string.branch_choose_time_enter,
+                R.string.polling_station_choose_date_enter,
+                R.string.polling_station_choose_time_enter,
                 object : DateTimeListener {
                     override fun onDateTimeChanged(
                         year: Int,
@@ -66,8 +66,8 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         }
         departureTime.setOnClickListener {
             showDatePicker(
-                R.string.branch_choose_date_leave,
-                R.string.branch_choose_time_leave,
+                R.string.polling_station_choose_date_leave,
+                R.string.polling_station_choose_time_leave,
                 object : DateTimeListener {
                     override fun onDateTimeChanged(
                         year: Int,
@@ -80,7 +80,7 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
                     }
                 })
         }
-        viewModel.selectedBranch().observe(this, Observer {
+        viewModel.selectedPollingStation().observe(this, Observer {
             setSelection(it)
         })
         setContinueButton()

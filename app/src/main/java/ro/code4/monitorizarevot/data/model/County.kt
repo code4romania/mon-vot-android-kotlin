@@ -23,7 +23,7 @@ class County {
     @Expose
     var limit: Int = 0
 
-    override fun toString(): String = name ?: ""
+    override fun toString(): String = name
 
     override fun equals(other: Any?): Boolean {
         if (other !is County) {

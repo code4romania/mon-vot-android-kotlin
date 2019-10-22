@@ -1,4 +1,4 @@
-package ro.code4.monitorizarevot.ui.branch.selection
+package ro.code4.monitorizarevot.ui.section.selection
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
 
-class BranchSelectionViewModel : BaseViewModel() {
+class PollingStationSelectionViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
     private val countiesLiveData = MutableLiveData<Result<List<String>>>()
@@ -47,7 +47,7 @@ class BranchSelectionViewModel : BaseViewModel() {
 
     private fun updateCounties() {
         val countyCode = sharedPreferences.getCountyCode()
-        val branchNumber = sharedPreferences.getBranchNumber()
+        val pollingStationNumber = sharedPreferences.getPollingStationNumber()
         val countyNames = counties.map { it.name }
 
         if (countyCode.isNullOrBlank()) {
@@ -58,7 +58,7 @@ class BranchSelectionViewModel : BaseViewModel() {
             countiesLiveData.postValue(Result.Success(countyNames))
 
             if (selectedCountyIndex >= 0) {
-                selectionLiveData.postValue(Pair(selectedCountyIndex, branchNumber))
+                selectionLiveData.postValue(Pair(selectedCountyIndex, pollingStationNumber))
             }
         }
     }

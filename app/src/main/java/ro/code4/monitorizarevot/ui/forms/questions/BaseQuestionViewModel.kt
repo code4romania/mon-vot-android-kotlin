@@ -22,7 +22,7 @@ abstract class BaseQuestionViewModel : BaseFormViewModel() {
         selectedFormId = formId
         zipLiveData(
             repository.getSectionsWithQuestions(formId),
-            repository.getAnswersForForm(countyCode, branchNumber, formId)
+            repository.getAnswersForForm(countyCode, pollingStationNumber, formId)
         ).observeForever {
             processList(it.first, it.second)
 

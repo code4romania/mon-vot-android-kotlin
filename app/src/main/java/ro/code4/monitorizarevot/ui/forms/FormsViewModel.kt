@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.ui.forms
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -12,9 +13,9 @@ import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
-import ro.code4.monitorizarevot.data.pojo.BranchDetailsInfo
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
-import ro.code4.monitorizarevot.helper.completedBranchConfig
+import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
+import ro.code4.monitorizarevot.helper.completedPollingStationConfig
 import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
@@ -22,30 +23,51 @@ class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
-    private val syncVisibilityLiveData = MutableLiveData<Int>()
+    private val syncVisibilityLiveData = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
-    private val branchDetailsLiveData = MutableLiveData<BranchDetailsInfo>()
+    private val pollingStationLiveData = MutableLiveData<PollingStationInfo>()
 
     init {
         getForms()
-        getBranchBarText()
+        getPollingStationBarText()
     }
 
     private fun subscribe() {
-        zipLiveData(
-            repository.getNotSyncedQuestions(),
-            repository.getNotSyncedNotes(),
-            repository.getNotSyncedBranchDetails()
-        ).observeForever {
-            syncVisibilityLiveData.postValue(
-                if (it.fold(
-                        0,
-                        { acc, obj -> acc + obj }) != 0
+//        zipLiveData(
+//            repository.getNotSyncedQuestions(),
+//            repository.getNotSyncedNotes(),
+//            repository.getNotSyncedPollingStationsCount()
+//        ).observeForever {
+//            Log.i("gagaga", it.toString())
+//            syncVisibilityLiveData.postValue(
+//                if (it.fold(
+//                        0,
+//                        { acc, obj -> acc + obj }) != 0
+//                ) View.VISIBLE else View.GONE
+//            )
+//        }
+
+        val notSyncedQuestionsCount = repository.getNotSyncedQuestions()
+        val notSyncedNotesCount = repository.getNotSyncedNotes()
+        val notSyncedPollingStationsCount = repository.getNotSyncedPollingStationsCount()
+        fun update() {
+            syncVisibilityLiveData.value =
+                if (notSyncedQuestionsCount.value ?: 0 + (notSyncedNotesCount.value
+                        ?: 0) + (notSyncedPollingStationsCount.value ?: 0) > 0
                 ) View.VISIBLE else View.GONE
-            )
         }
+        syncVisibilityLiveData.addSource(notSyncedQuestionsCount) {
+            update()
+        }
+        syncVisibilityLiveData.addSource(notSyncedNotesCount) {
+            update()
+        }
+        syncVisibilityLiveData.addSource(notSyncedPollingStationsCount) {
+            update()
+        }
+
         zipLiveData(
-            repository.getAnswers(countyCode, branchNumber),
+            repository.getAnswers(countyCode, pollingStationNumber),
             repository.getFormsWithQuestions()
         ).observeForever {
             processList(it.first, it.second)
@@ -60,17 +82,17 @@ class FormsViewModel : BaseFormViewModel() {
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
-    fun branchDetails(): LiveData<BranchDetailsInfo> = branchDetailsLiveData
+    fun pollingStation(): LiveData<PollingStationInfo> = pollingStationLiveData
 
-    private fun getBranchBarText() {
+    private fun getPollingStationBarText() {
         disposables.add(
-            repository.getBranchInfo(
+            repository.getPollingStationInfo(
                 countyCode,
-                branchNumber
+                pollingStationNumber
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    branchDetailsLiveData.postValue(it)
+                    pollingStationLiveData.postValue(it)
                 }, {
                     onError(it)
                 })
@@ -121,7 +143,7 @@ class FormsViewModel : BaseFormViewModel() {
     }
 
     fun notifyChangeRequested() {
-        preferences.completedBranchConfig(false)
+        preferences.completedPollingStationConfig(false)
     }
 
 }

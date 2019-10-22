@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/header_margin_vertial"
-                android:text="@string/branch_title"
+                android:text="@string/polling_station_title"
                 android:textColor="@color/textPrimary"
                 android:textSize="@dimen/header_text" />
 
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/header_margin_vertial"
-                android:text="@string/branch_subtitle"
+                android:text="@string/polling_station_subtitle"
                 android:textColor="@color/textPrimary"
                 android:textSize="@dimen/subheader_text" />
 
@@ -52,15 +52,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/branch_county"
+                android:text="@string/polling_station_county"
                 android:theme="@style/Text.Label" />
-            <!--TODO go back to nodefault spinner-->
-            <!--            <ro.code4.monitorizarevot.widget.NoDefaultSpinner-->
-            <!--                android:id="@+id/countySpinner"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="@dimen/button_height"-->
-            <!--                android:background="@drawable/background_spinner"-->
-            <!--                android:prompt="@string/spinner_choose" />-->
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/countySpinner"
                 android:layout_width="match_parent"
@@ -71,12 +64,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/branchNumber"
-                android:text="@string/branch_number"
+                android:labelFor="@+id/pollingStationNumber"
+                android:text="@string/polling_station_number"
                 android:theme="@style/Text.Label" />
 
             <EditText
-                android:id="@+id/branchNumber"
+                android:id="@+id/pollingStationNumber"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:enabled="false"

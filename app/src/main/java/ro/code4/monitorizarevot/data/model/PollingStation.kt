@@ -9,8 +9,8 @@ import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
 @Entity(
-    tableName = "branch_details",
-    indices = [Index(value = ["countyCode", "branchNumber"], unique = true)],
+    tableName = "polling_station",
+    indices = [Index(value = ["countyCode", "idPollingStation"], unique = true)],
     foreignKeys = [ForeignKey(
         entity = County::class,
         parentColumns = ["code"],
@@ -20,7 +20,7 @@ import org.parceler.Parcel
     )]
 )
 @Parcel(Parcel.Serialization.FIELD) //TODO Syncable
-class BranchDetails() {
+class PollingStation() {
 
     // TODO serialized names to be translated when api is updated
     @PrimaryKey
@@ -28,50 +28,44 @@ class BranchDetails() {
     lateinit var id: String
 
     @Expose
-    @SerializedName("codJudet")
     lateinit var countyCode: String
 
     @Expose
-    @SerializedName("numarSectie")
-    var branchNumber: Int = 0
+    var idPollingStation: Int = 0
 
     @Expose
-    @SerializedName("esteZonaUrbana")
-    var isUrban: Boolean = false
+    var urbanArea: Boolean = false
 
     @Expose
-    @SerializedName("presedinteBesvesteFemeie")
-    var isFemale: Boolean = false
+    var isPollingStationPresidentFemale: Boolean = false
 
     @Expose
-    @SerializedName("oraSosirii")
-    var arrivalTime: String? = null
+    var observerArrivalTime: String? = null
 
     @Expose
-    @SerializedName("oraPlecarii")
-    var departureTime: String? = null
+    var observerLeaveTime: String? = null
 
     var synced: Boolean = false
 
 
-    constructor(countyCode: String, branchNumber: Int) : this() {
+    constructor(countyCode: String, pollingStationNumber: Int) : this() {
         this.countyCode = countyCode
-        this.branchNumber = branchNumber
-        this.id = "$countyCode$branchNumber"
+        this.idPollingStation = pollingStationNumber
+        this.id = "$countyCode$pollingStationNumber"
     }
 
     constructor(
         countyCode: String,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         isUrban: Boolean,
         isFemale: Boolean,
         arrivalTime: String?,
         departureTime: String?
-    ) : this(countyCode, branchNumber) {
-        this.isUrban = isUrban
-        this.isFemale = isFemale
-        this.arrivalTime = arrivalTime
-        this.departureTime = departureTime
+    ) : this(countyCode, pollingStationNumber) {
+        this.urbanArea = isUrban
+        this.isPollingStationPresidentFemale = isFemale
+        this.observerArrivalTime = arrivalTime
+        this.observerLeaveTime = departureTime
     }
 
 }

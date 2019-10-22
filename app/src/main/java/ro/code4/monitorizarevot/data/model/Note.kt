@@ -13,10 +13,11 @@ import java.util.*
         childColumns = ["questionId"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
-        entity = BranchDetails::class,
-        parentColumns = ["countyCode", "branchNumber"],
-        childColumns = ["countyCode", "branchNumber"]
-    )], indices = [Index(value = ["countyCode", "branchNumber", "questionId"], unique = false)]
+        entity = PollingStation::class,
+        parentColumns = ["countyCode", "idPollingStation"],
+        childColumns = ["countyCode", "pollingStationNumber"]
+    )],
+    indices = [Index(value = ["countyCode", "pollingStationNumber", "questionId"], unique = false)]
 )
 class Note {
     @PrimaryKey(autoGenerate = true)
@@ -31,7 +32,7 @@ class Note {
     var date: Date = Date()
 
     lateinit var countyCode: String
-    var branchNumber = 0
+    var pollingStationNumber = 0
 
     var synced = false
 
@@ -41,7 +42,7 @@ class Note {
                 && other.uriPath == uriPath
                 && other.questionId == questionId
                 && other.date == date
-                && other.branchNumber == branchNumber
+                && other.pollingStationNumber == pollingStationNumber
                 && other.synced == synced
 
     override fun hashCode(): Int {
@@ -49,7 +50,7 @@ class Note {
         result = 31 * result + (uriPath?.hashCode() ?: 0)
         result = 31 * result + (questionId ?: 0)
         result = 31 * result + date.hashCode()
-        result = 31 * result + branchNumber
+        result = 31 * result + pollingStationNumber
         result = 31 * result + synced.hashCode()
         return result
     }

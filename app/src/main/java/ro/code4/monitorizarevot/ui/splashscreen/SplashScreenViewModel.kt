@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import org.koin.core.inject
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.getToken
-import ro.code4.monitorizarevot.helper.isBranchConfigCompleted
+import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
+import ro.code4.monitorizarevot.helper.isPollingStationConfigCompleted
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
 class SplashScreenViewModel : BaseViewModel() {
@@ -24,10 +25,15 @@ class SplashScreenViewModel : BaseViewModel() {
         loginLiveData.postValue(
             LoginStatus(
                 isLoggedIn,
-                sharedPreferences.isBranchConfigCompleted()
+                sharedPreferences.isPollingStationConfigCompleted(),
+                sharedPreferences.hasCompletedOnboarding()
             )
         )
     }
 
-    data class LoginStatus(val isLoggedIn: Boolean, val isBranchConfigCompleted: Boolean)
+    data class LoginStatus(
+        val isLoggedIn: Boolean,
+        val isPollingStationConfigCompleted: Boolean,
+        val onboardingCompleted: Boolean
+    )
 }
