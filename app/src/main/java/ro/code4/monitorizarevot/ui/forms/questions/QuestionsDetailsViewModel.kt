@@ -27,13 +27,13 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }
                     answeredQuestion?.also { savedQuestion ->
                         val selectedAnswer =
-                            savedQuestion.selectedAnswers.find { it.optionId == answer.id }
+                            savedQuestion.selectedAnswers.find { it.optionId == answer.idOption }
                         questionWithAnswers.question.savedLocally =
                             savedQuestion.answeredQuestion.savedLocally
                         questionWithAnswers.question.synced = savedQuestion.answeredQuestion.synced
                         if (selectedAnswer != null) {
                             answer.selected = true
-                            if (answer.hasManualInput) {
+                            if (answer.isFreeText) {
                                 answer.value = selectedAnswer.value ?: ""
                             }
                         }
@@ -63,15 +63,15 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         question.id,
                         countyCode,
                         branchNumber,
-                        selectedFormCode
+                        selectedFormId
                     )
                     val list = it.map { answer ->
                         SelectedAnswer(
-                            answer.id,
+                            answer.idOption,
                             countyCode,
                             branchNumber,
                             answeredQuestion.id,
-                            if (answer.hasManualInput) answer.value else null
+                            if (answer.isFreeText) answer.value else null
                         )
                     }
                     repository.saveAnsweredQuestion(answeredQuestion, list)
@@ -81,7 +81,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
     }
 
     fun syncData() {
-        repository.syncAnswers(countyCode, branchNumber, selectedFormCode)
+        repository.syncAnswers(countyCode, branchNumber, selectedFormId)
     }
 
 }
