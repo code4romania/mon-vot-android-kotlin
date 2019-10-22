@@ -284,7 +284,7 @@ class Repository : KoinComponent {
 
         return apiInterface.postNote(
             body, note.countyCode.createMultipart("CountyCode"),
-            note.branchNumber.toString().createMultipart("PollingStattionNumber"),
+            note.branchNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")
         ).doOnNext {
