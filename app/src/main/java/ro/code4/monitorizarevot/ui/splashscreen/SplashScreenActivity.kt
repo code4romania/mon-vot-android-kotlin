@@ -18,8 +18,14 @@ class SplashScreenActivity : BaseActivity<SplashScreenViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.loginLiveData().observe(this, Observer { isLoggedIn ->
-            startActivityWithoutTrace(if (isLoggedIn) BranchActivity::class.java else LoginActivity::class.java)
+        viewModel.loginLiveData().observe(this, Observer { loginStatus ->
+            val activity: Class<*> = when {
+                loginStatus.isLoggedIn && loginStatus.isBranchConfigCompleted -> MainActivity::class.java
+                loginStatus.isLoggedIn -> BranchActivity::class.java
+                else -> LoginActivity::class.java
+            }
+
+            startActivityWithoutTrace(activity)
         })
     }
 }
