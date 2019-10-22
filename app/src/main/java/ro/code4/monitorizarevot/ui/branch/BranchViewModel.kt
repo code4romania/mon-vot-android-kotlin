@@ -24,7 +24,7 @@ class BranchViewModel : BaseViewModel() {
     private val branchDetailsLiveData = MutableLiveData<String>()
     private val arrivalTimeLiveData = MutableLiveData<String>()
     private val departureTimeLiveData = MutableLiveData<String>()
-    private val selectedBranchLiveData = MutableLiveData<Pair<Int, Int>>()
+    private val selectedBranchLiveData = MutableLiveData<Pair<Int?, Int?>>()
 
     private val preferences: SharedPreferences by inject()
     private val app: Application by inject()
@@ -41,7 +41,7 @@ class BranchViewModel : BaseViewModel() {
 
     fun arrivalTime(): LiveData<String> = arrivalTimeLiveData
     fun departureTime(): LiveData<String> = departureTimeLiveData
-    fun selectedBranch(): LiveData<Pair<Int, Int>> = selectedBranchLiveData
+    fun selectedBranch(): LiveData<Pair<Int?, Int?>> = selectedBranchLiveData
 
     fun branchDetails(): LiveData<String> = branchDetailsLiveData
 
@@ -59,16 +59,23 @@ class BranchViewModel : BaseViewModel() {
     @SuppressLint("CheckResult")
     private fun getSelectedBranch() {
 
+        var pair: Pair<Int?, Int?> = Pair(null, null)
+        var arrivalTime: String? = null
+        var departureTime: String? = null
         repository.getBranch(selectedCounty.code, selectedBranchNumber).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                selectedBranchLiveData.postValue(pair)
+                setArrivalTime(arrivalTime)
+                setDepartureTime(departureTime)
+            }
             .subscribe({
-                val pair = Pair(
+                pair = Pair(
                     if (it.isUrban) R.id.urbanEnvironment else R.id.ruralEnvironment,
                     if (it.isFemale) R.id.femaleGender else R.id.maleGender
                 )
-                selectedBranchLiveData.postValue(pair)
-                setArrivalTime(it.arrivalTime)
-                setDepartureTime(it.departureTime)
+                arrivalTime = it.arrivalTime
+                departureTime = it.departureTime
             }, {
                 onError(it)
             })
@@ -99,9 +106,6 @@ class BranchViewModel : BaseViewModel() {
             arrival.getDateText(),
             departure.getDateText()
         )
-
-        preferences.saveCountyCode(selectedCounty.code)
-        preferences.saveBranchNumber(selectedBranchNumber)
         preferences.completedBranchConfig()
         repository.saveBranchDetails(branchDetails)
     }
@@ -137,6 +141,8 @@ class BranchViewModel : BaseViewModel() {
             )
             else -> {
                 selectedBranchNumber = branchNumber
+                preferences.saveCountyCode(selectedCounty.code)
+                preferences.saveBranchNumber(selectedBranchNumber)
                 nextLiveData.call()
             }
         }
@@ -159,6 +165,10 @@ class BranchViewModel : BaseViewModel() {
     }
 
     private fun setArrivalTime(time: String?) {
+        if (time.isNullOrEmpty()) {
+            arrivalTimeLiveData.postValue("")
+            return
+        }
         val timeInMillis = time.getDate()
         timeInMillis?.let {
             arrival = Calendar.getInstance()
@@ -168,6 +178,10 @@ class BranchViewModel : BaseViewModel() {
     }
 
     private fun setDepartureTime(time: String?) {
+        if (time.isNullOrEmpty()) {
+            departureTimeLiveData.postValue("")
+            return
+        }
         val timeInMillis = time.getDate()
         timeInMillis?.let {
             departure = Calendar.getInstance()
@@ -180,6 +194,10 @@ class BranchViewModel : BaseViewModel() {
         departure = Calendar.getInstance()
         departure?.updateTime(year, month, dayOfMonth, hourOfDay, minute)
         departureTimeLiveData.postValue(departure?.getTimeText())
+    }
+
+    fun notifyChangeRequested() {
+        preferences.completedBranchConfig(false)
     }
 
 

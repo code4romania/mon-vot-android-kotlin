@@ -1,18 +1,13 @@
 package ro.code4.monitorizarevot.ui.branch.selection
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.County
-import ro.code4.monitorizarevot.helper.Result
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.getBranchNumber
-import ro.code4.monitorizarevot.helper.getCountyCode
-import ro.code4.monitorizarevot.helper.plusAssign
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
@@ -53,7 +48,7 @@ class BranchSelectionViewModel : BaseViewModel() {
     private fun updateCounties() {
         val countyCode = sharedPreferences.getCountyCode()
         val branchNumber = sharedPreferences.getBranchNumber()
-        val countyNames = counties.map { it.name.orEmpty() }
+        val countyNames = counties.map { it.name }
 
         if (countyCode.isNullOrBlank()) {
             countiesLiveData.postValue(Result.Success(listOf("") + countyNames))

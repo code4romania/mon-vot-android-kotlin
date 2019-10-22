@@ -43,7 +43,8 @@ fun SharedPreferences.saveBranchNumber(branchNumber: Int) =
 
 fun SharedPreferences.getBranchNumber(): Int = getInt(PREFS_BRANCH_NUMBER)
 fun SharedPreferences.isBranchConfigCompleted() = getBoolean(BRANCH_CONFIG_COMPLETED, false)
-fun SharedPreferences.completedBranchConfig() = putBoolean(BRANCH_CONFIG_COMPLETED, true)
+fun SharedPreferences.completedBranchConfig(value: Boolean = true) =
+    putBoolean(BRANCH_CONFIG_COMPLETED, value)
 
 
 fun SharedPreferences.hasCompletedOnboarding() = getBoolean(ONBOARDING_COMPLETED, false)

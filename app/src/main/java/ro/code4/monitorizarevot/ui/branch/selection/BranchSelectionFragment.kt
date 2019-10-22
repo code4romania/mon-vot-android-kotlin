@@ -38,8 +38,6 @@ class BranchSelectionFragment : BaseFragment<BranchSelectionViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = true
-
         countySpinnerAdapter =
             ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)

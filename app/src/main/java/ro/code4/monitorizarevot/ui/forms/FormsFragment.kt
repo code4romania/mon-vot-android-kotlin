@@ -74,6 +74,7 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
         })
 
         branchBarButton.setOnClickListener {
+            viewModel.notifyChangeRequested()
             (activity as AppCompatActivity).changeBranch()
         }
         childFragmentManager.replaceFragment(

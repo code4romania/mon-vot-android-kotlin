@@ -8,6 +8,7 @@ import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
+import ro.code4.monitorizarevot.ui.main.MainActivity
 
 class SplashScreenActivity : BaseActivity<SplashScreenViewModel>() {
 

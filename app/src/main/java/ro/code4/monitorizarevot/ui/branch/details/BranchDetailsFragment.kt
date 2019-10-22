@@ -39,6 +39,7 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         viewModel.setTitle(getString(R.string.title_branch_details))
         viewModel.getBranchBarText()
         branchBarButton.setOnClickListener {
+            viewModel.notifyChangeRequested()
             activity?.onBackPressed()
         }
         viewModel.departureTime().observe(this, Observer {
@@ -85,9 +86,12 @@ class BranchDetailsFragment : BaseFragment<BranchViewModel>() {
         setContinueButton()
     }
 
-    private fun setSelection(pair: Pair<Int, Int>) {
-        environmentRadioGroup.check(pair.first)
-        genderRadioGroup.check(pair.second)
+    private fun setSelection(pair: Pair<Int?, Int?>) {
+        environmentRadioGroup.clearCheck()
+        genderRadioGroup.clearCheck()
+
+        pair.first?.let { environmentRadioGroup.check(it) }
+        pair.second?.let { genderRadioGroup.check(it) }
     }
 
     private fun showDatePicker(dateTitleId: Int, timeTitleId: Int, listener: DateTimeListener) {

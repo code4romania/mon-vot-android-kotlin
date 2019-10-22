@@ -14,6 +14,7 @@ import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.BranchDetailsInfo
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
+import ro.code4.monitorizarevot.helper.completedBranchConfig
 import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
@@ -117,6 +118,10 @@ class FormsViewModel : BaseFormViewModel() {
 
     fun selectedNotes(question: Question? = null) {
         navigateToNotesLiveData.postValue(question)
+    }
+
+    fun notifyChangeRequested() {
+        preferences.completedBranchConfig(false)
     }
 
 }
