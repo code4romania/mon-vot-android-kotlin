@@ -89,8 +89,8 @@ class Repository : KoinComponent {
     fun getFormsWithQuestions(): LiveData<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
 
-    fun getSectionsWithQuestions(formCode: String): LiveData<List<SectionWithQuestions>> =
-        db.formDetailsDao().getSectionsWithQuestions(formCode)
+    fun getSectionsWithQuestions(formId: Int): LiveData<List<SectionWithQuestions>> =
+        db.formDetailsDao().getSectionsWithQuestions(formId)
 
     fun getForms(): Observable<Unit> {
 
@@ -144,7 +144,7 @@ class Repository : KoinComponent {
         if (response == null) {
             return
         }
-        val apiFormDetails = response.formDetailsList
+        val apiFormDetails = response.formVersions
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
@@ -159,12 +159,12 @@ class Repository : KoinComponent {
     }
 
     private fun getFormQuestions(form: FormDetails) {
-        apiInterface.getForm(form.code).doOnNext { list ->
+        apiInterface.getForm(form.id).doOnNext { list ->
             list.forEach { section ->
-                section.formCode = form.code
+                section.formId = form.id
                 section.questions.forEach { question ->
-                    question.sectionId = section.id
-                    question.answers.forEach { answer -> answer.questionId = question.id }
+                    question.sectionId = section.uniqueId
+                    question.optionsToQuestions.forEach { answer -> answer.questionId = question.id }
                 }
             }
             db.formDetailsDao().save(*list.map { it }.toTypedArray())
@@ -173,7 +173,7 @@ class Repository : KoinComponent {
 
     }
 
-    fun getForm(formId: String): Observable<List<Section>> = apiInterface.getForm(formId)
+    fun getForm(formId: Int): Observable<List<Section>> = apiInterface.getForm(formId)
 
     fun getFormVersion(): Observable<VersionResponse> = apiInterface.getForms()
 
@@ -184,9 +184,9 @@ class Repository : KoinComponent {
     fun getAnswersForForm(
         countyCode: String?,
         branchNumber: Int,
-        formCode: String
+        formId: Int
     ): LiveData<List<AnsweredQuestionPOJO>> {
-        return db.formDetailsDao().getAnswersForForm(countyCode, branchNumber, formCode)
+        return db.formDetailsDao().getAnswersForForm(countyCode, branchNumber, formId)
     }
 
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
@@ -197,8 +197,8 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    fun syncAnswers(countyCode: String, branchNumber: Int, formCode: String) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, branchNumber, formCode)
+    fun syncAnswers(countyCode: String, branchNumber: Int, formId: Int) {
+        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, branchNumber, formId)
             .toObservable()
             .subscribeOn(Schedulers.io()).flatMap {
                 syncAnswers(it)
@@ -206,7 +206,7 @@ class Repository : KoinComponent {
                 if (it.isCompletedSuccessfully) {
                     Observable.create<Unit> {
                         db.formDetailsDao()
-                            .updateAnsweredQuestions(countyCode, branchNumber, formCode)
+                            .updateAnsweredQuestions(countyCode, branchNumber, formId)
                     }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
                 }
@@ -217,7 +217,7 @@ class Repository : KoinComponent {
 
     private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<SyncResponse> {
         val responseAnswerContainer = ResponseAnswerContainer()
-        responseAnswerContainer.responseMapperList = list.map {
+        responseAnswerContainer.answers = list.map {
             it.answeredQuestion.options = it.selectedAnswers
             return@map it.answeredQuestion
         }
@@ -283,10 +283,10 @@ class Repository : KoinComponent {
 
 
         return apiInterface.postNote(
-            body, note.countyCode.createMultipart("CodJudet"),
-            note.branchNumber.toString().createMultipart("NumarSectie"),
-            questionId.toString().createMultipart("IdIntrebare"),
-            note.description.createMultipart("TextNota")
+            body, note.countyCode.createMultipart("CountyCode"),
+            note.branchNumber.toString().createMultipart("PollingStationNumber"),
+            questionId.toString().createMultipart("QuestionId"),
+            note.description.createMultipart("Text")
         ).doOnNext {
             note.synced = true
             db.noteDao().updateNote(note)

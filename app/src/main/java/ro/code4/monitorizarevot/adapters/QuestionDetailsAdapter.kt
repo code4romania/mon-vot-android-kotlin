@@ -144,7 +144,7 @@ class QuestionDetailsAdapter constructor(
                     it.value = p0.toString()
                 }
             }
-            val view: View = if (it.hasManualInput) {
+            val view: View = if (it.isFreeText) {
                 RadioButtonWithDetails(context).apply {
                     setText(it.text)
                     setValue(it.value)
@@ -163,7 +163,7 @@ class QuestionDetailsAdapter constructor(
 
             }
             (view as Checkable).isChecked = it.selected
-            view.tag = it.id
+            view.tag = it.idOption
             holder.itemView.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                 .addView(view, params)
         }
@@ -182,7 +182,7 @@ class QuestionDetailsAdapter constructor(
                     it.value = p0.toString()
                 }
             }
-            val view: View = if (it.hasManualInput) {
+            val view: View = if (it.isFreeText) {
                 CheckBoxWithDetails(context).apply {
                     setText(it.text)
                     setTextChangedListener(textWatcher)
@@ -196,7 +196,7 @@ class QuestionDetailsAdapter constructor(
                 }
             }
             (view as Checkable).isChecked = it.selected
-            view.tag = it.id
+            view.tag = it.idOption
             holder.itemView.answersLayout.addView(view, params)
 
         }

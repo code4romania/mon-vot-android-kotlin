@@ -5,7 +5,6 @@ import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
 @Entity(
@@ -20,16 +19,13 @@ import org.parceler.Parcel
 class Answer {
     @PrimaryKey
     @Expose
-    @SerializedName("idOptiune")
-    var id: Int = -1
+    var idOption: Int = -1
 
     @Expose
-    @SerializedName("textOptiune")
     lateinit var text: String
 
     @Expose
-    @SerializedName("seIntroduceText")
-    var hasManualInput: Boolean = false
+    var isFreeText: Boolean = false
 
     var questionId: Int = -1
 
@@ -40,14 +36,14 @@ class Answer {
     var value: String? = null
 
     override fun equals(other: Any?): Boolean =
-        other is Answer && id == other.id && text == other.text &&
-                hasManualInput == other.hasManualInput && questionId == other.questionId &&
+        other is Answer && idOption == other.idOption && text == other.text &&
+                isFreeText == other.isFreeText && questionId == other.questionId &&
                 selected == other.selected && value == other.value
 
     override fun hashCode(): Int {
-        var result = id
+        var result = idOption
         result = 31 * result + text.hashCode()
-        result = 31 * result + hasManualInput.hashCode()
+        result = 31 * result + isFreeText.hashCode()
         result = 31 * result + questionId
         result = 31 * result + selected.hashCode()
         result = 31 * result + (value?.hashCode() ?: 0)

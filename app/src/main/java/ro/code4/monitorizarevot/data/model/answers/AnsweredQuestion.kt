@@ -11,8 +11,8 @@ import ro.code4.monitorizarevot.data.model.Question
     tableName = "answered_question", foreignKeys = [
         ForeignKey(
             entity = FormDetails::class,
-            parentColumns = ["code"],
-            childColumns = ["formCode"],
+            parentColumns = ["id"],
+            childColumns = ["formId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -24,31 +24,27 @@ import ro.code4.monitorizarevot.data.model.Question
         ForeignKey(
             entity = BranchDetails::class,
             parentColumns = ["countyCode", "branchNumber"],
-            childColumns = ["countyCode", "sectionNumber"]
-        )], indices = [Index(value = ["countyCode", "sectionNumber", "id"], unique = true)]
+            childColumns = ["countyCode", "pollingStationNumber"]
+        )], indices = [Index(value = ["countyCode", "pollingStationNumber", "id"], unique = true)]
 )
 class AnsweredQuestion() {
     @PrimaryKey
     lateinit var id: String
+
     @Expose
-    @SerializedName("codFormular")
-    lateinit var formCode: String
-    // TODO serialized names to be translated when api is updated
+    var formId: Int = -1
+
     @Expose
-    @SerializedName("idIntrebare")
     var questionId: Int = -1
 
     @Expose
-    @SerializedName("codJudet")
     lateinit var countyCode: String
 
     @Expose
-    @SerializedName("numarSectie")
-    var sectionNumber: Int = -1
+    var pollingStationNumber: Int = -1
 
     @Ignore
     @Expose
-    @SerializedName("optiuni")
     lateinit var options: List<SelectedAnswer>
 
     var savedLocally = false
@@ -58,13 +54,13 @@ class AnsweredQuestion() {
         questionId: Int,
         countyCode: String,
         branchNumber: Int,
-        formCode: String
+        formId: Int
     ) : this() {
-        this.id = "$countyCode$branchNumber$formCode$questionId"
+        this.id = "$countyCode$branchNumber$formId$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
-        this.sectionNumber = branchNumber
-        this.formCode = formCode
+        this.pollingStationNumber = branchNumber
+        this.formId = formId
     }
 
 }
