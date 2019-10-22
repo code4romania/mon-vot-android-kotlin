@@ -30,7 +30,6 @@ class Section {
     var description: String? = null
 
     @Expose
-//    @Relation(parentColumn = "id", entityColumn = "section_id")
     @Ignore
     lateinit var questions: List<Question>
 

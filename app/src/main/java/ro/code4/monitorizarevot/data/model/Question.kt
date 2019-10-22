@@ -36,7 +36,6 @@ class Question {
 
     @Expose
     @Ignore
-//    @Relation(parentColumn = "id", entityColumn = "question_id")
     lateinit var optionsToQuestions: List<Answer>
 
     lateinit var sectionId: String

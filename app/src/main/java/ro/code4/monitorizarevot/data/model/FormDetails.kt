@@ -27,18 +27,8 @@ class FormDetails {
     @Ignore
     lateinit var sections: List<Section>
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as FormDetails
-
-        if (id != other.id) return false
-        if (code != other.code) return false
-        if (formVersion != other.formVersion) return false
-
-        return true
-    }
+    override fun equals(other: Any?): Boolean =
+        other is FormDetails && id == other.id && code == other.code && formVersion == other.formVersion
 
     override fun hashCode(): Int {
         var result = id
