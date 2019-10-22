@@ -16,7 +16,7 @@ import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 @Database(
     entities = [County::class, BranchDetails::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class, Note::class],
-    version = 1
+    version = 3
 )
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -38,7 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
                             context.applicationContext,
                             AppDatabase::class.java,
                             "database"
-                        ).build()
+                        ).addMigrations(*Migrations.ALL).build()
                     }
                 }
             }
