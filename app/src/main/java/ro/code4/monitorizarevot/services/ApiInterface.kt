@@ -22,7 +22,7 @@ interface ApiInterface {
     fun getForm(@Path("formId") formId: Int): Observable<List<Section>>
 
     @POST("/api/v1/polling-station")
-    fun postPollingStation(@Body pollingStation: PollingStation): Observable<ResponseBody>
+    fun postPollingStationDetails(@Body pollingStation: PollingStation): Observable<ResponseBody>
 
     @POST("/api/v1/answers")
     fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<ResponseBody>

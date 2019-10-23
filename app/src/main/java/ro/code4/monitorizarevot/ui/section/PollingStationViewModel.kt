@@ -62,7 +62,7 @@ class PollingStationViewModel : BaseViewModel() {
         var pair: Pair<Int?, Int?> = Pair(null, null)
         var arrivalTime: String? = null
         var departureTime: String? = null
-        repository.getPollingStation(selectedCounty.code, selectedPollingStationNumber)
+        repository.getPollingStationDetails(selectedCounty.code, selectedPollingStationNumber)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
@@ -108,7 +108,7 @@ class PollingStationViewModel : BaseViewModel() {
             departure.getDateText()
         )
         preferences.completedPollingStationConfig()
-        repository.savePollingStation(pollingStation)
+        repository.savePollingStationDetails(pollingStation)
     }
 
     private fun checkTime(): Boolean {

@@ -69,7 +69,7 @@ class Repository : KoinComponent {
             })
     }
 
-    fun getPollingStation(
+    fun getPollingStationDetails(
         countyCode: String,
         pollingStationNumber: Int
     ): Observable<PollingStation> {
@@ -85,19 +85,19 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    fun savePollingStation(pollingStation: PollingStation) {
+    fun savePollingStationDetails(pollingStation: PollingStation) {
         Single.fromCallable { db.pollingStationDao().save(pollingStation) }.toObservable().flatMap {
-            postPollingStation(pollingStation)
+            postPollingStationDetails(pollingStation)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
                 Log.i(TAG, it.message.orEmpty())
             })
     }
 
-    private fun postPollingStation(pollingStation: PollingStation): Observable<ResponseBody> =
-        apiInterface.postPollingStation(pollingStation).doOnNext {
+    private fun postPollingStationDetails(pollingStation: PollingStation): Observable<ResponseBody> =
+        apiInterface.postPollingStationDetails(pollingStation).doOnNext {
             pollingStation.synced = true
-            db.pollingStationDao().updatePollingStation(pollingStation)
+            db.pollingStationDao().updatePollingStationDetails(pollingStation)
         }
 
     fun getNotSyncedPollingStationsCount(): LiveData<Int> =
@@ -316,7 +316,7 @@ class Repository : KoinComponent {
     private fun syncPollingStation() {
         db.pollingStationDao().getNotSyncedPollingStations().flatMap { Observable.fromIterable(it) }
             .flatMap {
-                postPollingStation(it)
+                postPollingStationDetails(it)
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
 

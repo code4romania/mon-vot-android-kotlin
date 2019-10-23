@@ -13,7 +13,7 @@ interface PollingStationDao {
     fun save(pollingStation: PollingStation)
 
     @Update
-    fun updatePollingStation(pollingStation: PollingStation)
+    fun updatePollingStationDetails(pollingStation: PollingStation)
 
     @Query("SELECT * FROM polling_station WHERE countyCode=:countyCode AND idPollingStation=:pollingStationNumber")
     fun get(countyCode: String, pollingStationNumber: Int): Maybe<PollingStation>
