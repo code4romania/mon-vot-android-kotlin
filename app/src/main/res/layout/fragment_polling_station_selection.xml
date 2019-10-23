@@ -1,83 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/margin"
-        android:paddingRight="@dimen/margin">
+        android:padding="@dimen/margin">
 
-        <LinearLayout
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_icon_building"
+            android:src="@drawable/ic_building"
+            app:layout_constraintBottom_toTopOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Text.Title.Big"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/section_header_height"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xbig_margin"
             android:gravity="center"
-            android:orientation="vertical">
+            android:text="@string/polling_station_title"
+            android:textColor="@color/textPrimary"
+            app:layout_constraintBottom_toTopOf="@id/subtitle"
+            app:layout_constraintTop_toBottomOf="@id/icon"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <ImageView
-                android:layout_width="@dimen/icon_block_size"
-                android:layout_height="@dimen/icon_block_size"
-                android:contentDescription="@string/content_icon_building"
-                android:src="@drawable/ic_building" />
+        <TextView
+            android:id="@+id/subtitle"
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xsmall_margin"
+            android:text="@string/polling_station_subtitle"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/countyLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/header_margin_vertial"
-                android:text="@string/polling_station_title"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/header_text" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/header_margin_vertial"
-                android:text="@string/polling_station_subtitle"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/subheader_text" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/countyLabel"
+            style="@style/Text.Label"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:text="@string/polling_station_county"
+            app:layout_constraintBottom_toTopOf="@id/countySpinner"
+            app:layout_constraintTop_toBottomOf="@id/subtitle"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/polling_station_county"
-                android:theme="@style/Text.Label" />
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/countySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:background="@drawable/background_spinner"
-                android:prompt="@string/spinner_choose" />
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/countySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:background="@drawable/background_spinner"
+            android:prompt="@string/spinner_choose"
+            app:layout_constraintBottom_toTopOf="@id/pollingStationNumberLabel"
+            app:layout_constraintTop_toBottomOf="@id/countyLabel"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/pollingStationNumber"
-                android:text="@string/polling_station_number"
-                android:theme="@style/Text.Label" />
+        <TextView
+            android:id="@+id/pollingStationNumberLabel"
+            style="@style/Text.Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:labelFor="@+id/pollingStationNumber"
+            android:text="@string/polling_station_number"
+            app:layout_constraintBottom_toTopOf="@id/pollingStationNumber"
+            app:layout_constraintTop_toBottomOf="@id/countySpinner"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <EditText
-                android:id="@+id/pollingStationNumber"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:enabled="false"
-                android:importantForAutofill="no"
-                android:inputType="number" />
+        <EditText
+            android:id="@+id/pollingStationNumber"
+            style="@style/Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pollingStationNumberLabel"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/continueButton"

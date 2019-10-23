@@ -164,14 +164,19 @@
         <item name="autoSizeMaxTextSize">16sp</item>
     </style>
 
+    <style name="Text.Spinner">
+        <item name="android:padding">@dimen/small_margin</item>
+    </style>
+
 
     <style name="Input" parent="Widget.AppCompat.EditText">
         <item name="android:textAppearance">@style/Text</item>
         <item name="android:inputType">textCapSentences</item>
+        <item name="android:padding">@dimen/small_margin</item>
+        <item name="android:background">@drawable/background_input</item>
     </style>
 
     <style name="Input.Note">
-        <item name="android:background">@drawable/bg_note_input</item>
         <item name="android:textColorHint">@color/hint</item>
         <item name="android:inputType">textMultiLine|textCapSentences</item>
         <item name="android:lines">8</item>

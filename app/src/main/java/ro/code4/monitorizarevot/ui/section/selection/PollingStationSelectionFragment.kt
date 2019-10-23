@@ -29,7 +29,7 @@ class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionView
 
     lateinit var parentViewModel: PollingStationViewModel
 
-    lateinit var countySpinnerAdapter: ArrayAdapter<String>
+    private lateinit var countySpinnerAdapter: ArrayAdapter<String>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -39,7 +39,7 @@ class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         countySpinnerAdapter =
-            ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, mutableListOf())
+            ArrayAdapter(activity!!, R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
     }
 
