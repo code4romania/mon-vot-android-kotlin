@@ -33,15 +33,6 @@
     <dimen name="menu_width">300dp</dimen>
     <dimen name="menu_item_height">60dp</dimen>
 
-    <!-- Change polling_station bar -->
-    <dimen name="polling_station_bar_padding_vertical">10dp</dimen>
-    <dimen name="polling_station_bar_icon">32dp</dimen>
-    <dimen name="polling_station_bar_text">13sp</dimen>
-    <dimen name="polling_station_bar_text_spacing">10dp</dimen>
-    <dimen name="polling_station_bar_button_width">135dp</dimen>
-    <dimen name="polling_station_bar_button_height">35dp</dimen>
-    <dimen name="polling_station_bar_button_text">11sp</dimen>
-
     <!-- Dark container with bottom button -->
     <dimen name="header_text">21sp</dimen>
     <dimen name="subheader_text">16sp</dimen>
