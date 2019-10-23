@@ -33,19 +33,6 @@ class FormsViewModel : BaseFormViewModel() {
     }
 
     private fun subscribe() {
-//        zipLiveData(
-//            repository.getNotSyncedQuestions(),
-//            repository.getNotSyncedNotes(),
-//            repository.getNotSyncedPollingStationsCount()
-//        ).observeForever {
-//            Log.i("gagaga", it.toString())
-//            syncVisibilityLiveData.postValue(
-//                if (it.fold(
-//                        0,
-//                        { acc, obj -> acc + obj }) != 0
-//                ) View.VISIBLE else View.GONE
-//            )
-//        }
 
         val notSyncedQuestionsCount = repository.getNotSyncedQuestions()
         val notSyncedNotesCount = repository.getNotSyncedNotes()
