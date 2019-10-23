@@ -12,8 +12,7 @@ import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.helper.formatDate
 
-class NoteDelegate(
-) : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDelegate.ViewHolder>() {
+class NoteDelegate : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDelegate.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
         ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)

@@ -1,6 +1,5 @@
 package ro.code4.monitorizarevot.ui.login
 
-import android.app.Activity
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,8 +14,8 @@ import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
 import ro.code4.monitorizarevot.helper.saveToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
-import ro.code4.monitorizarevot.ui.branch.BranchActivity
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
+import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 
 class LoginViewModel : BaseViewModel() {
 
@@ -42,11 +41,10 @@ class LoginViewModel : BaseViewModel() {
         disposable.clear()
     }
 
-    //TODO should check if token still available
     private fun onSuccessfulLogin(loginResponse: LoginResponse) {
         sharedPreferences.saveToken(loginResponse.accessToken)
         if (sharedPreferences.hasCompletedOnboarding()) {
-            loginLiveData.postValue(Result.Success(BranchActivity::class.java))
+            loginLiveData.postValue(Result.Success(PollingStationActivity::class.java))
         } else {
             loginLiveData.postValue(Result.Success(OnboardingActivity::class.java))
         }

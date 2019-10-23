@@ -44,8 +44,8 @@
     <string name="error_section_type">Error in interpreting the section</string>
 
     <!-- Fragment titles -->
-    <string name="title_branch_details">Polling station details</string>
-    <string name="title_branch_selection">Choose your polling station</string>
+    <string name="title_polling_station">Polling station details</string>
+    <string name="title_polling_station_selection">Choose your polling station</string>
     <string name="title_forms_list">Forms</string>
     <string name="title_note">Notes</string>
     <string name="title_guide">Guide</string>
@@ -53,7 +53,7 @@
     <!-- Menu -->
     <string name="menu_logout">Logout</string>
     <string name="menu_forms">Forms</string>
-    <string name="menu_change_branch">Change the polling station</string>
+    <string name="menu_change_polling_station">Change the polling station</string>
     <string name="menu_guide">Observer\'s guide</string>
     <string name="menu_call">Call the Hotline</string>
     <string name="section">Section</string>
@@ -67,30 +67,33 @@
     <string name="login_password">Code</string>
     <string name="login">Login</string>
 
-    <!-- Branch selection -->
-    <string name="branch_title">Choose the polling station</string>
-    <string name="branch_subtitle">you are in</string>
-    <string name="branch_county">County/District</string>
-    <string name="branch_number">Polling station number</string>
-    <string name="branch_change">Change</string>
-    <string name="branch_question_environment">Choose the area of the station</string>
-    <string name="branch_answer_rural">Rural</string>
-    <string name="branch_answer_urban">Urban</string>
-    <string name="branch_question_gender">The president of the polling station is:</string>
-    <string name="branch_answer_man">Man</string>
-    <string name="branch_answer_woman">Woman</string>
-    <string name="branch_question_enter">Arrival time</string>
-    <string name="branch_question_leave">Departure time</string>
-    <string name="branch_choose_time_enter">Choose the time of your arrival</string>
-    <string name="branch_choose_time_leave">Choose the time of your departure</string>
-    <string name="invalid_branch_county">Choose the county/district</string>
-    <string name="invalid_branch_number">Fill in the polling station number</string>
-    <string name="invalid_branch_number_minus">The number of the station must be positive</string>
-    <string name="invalid_branch_number_max">The maximum number for %1$s county is %2$d</string>
-    <string name="invalid_branch_environment">Choose urban or rural</string>
-    <string name="invalid_branch_gender">Choose man or woman</string>
-    <string name="invalid_branch_time_in">Select the time of arrival</string>
+    <!-- Polling Station selection -->
+    <string name="polling_station_title">Choose the polling station</string>
+    <string name="polling_station_subtitle">you are in</string>
+    <string name="polling_station_county">County/District</string>
+    <string name="polling_station_number">Polling station number</string>
+    <string name="polling_station_change">Change</string>
+    <string name="polling_station_question_environment">Choose the area of the station</string>
+    <string name="polling_station_answer_rural">Rural</string>
+    <string name="polling_station_answer_urban">Urban</string>
+    <string name="polling_station_question_gender">The president of the polling station is:</string>
+    <string name="polling_station_answer_man">Man</string>
+    <string name="polling_station_answer_woman">Woman</string>
+    <string name="polling_station_question_enter">Arrival time</string>
+    <string name="polling_station_question_leave">Departure time</string>
+    <string name="polling_station_choose_date_enter">Choose the date of your arrival</string>
+    <string name="polling_station_choose_time_enter">Choose the time of your arrival</string>
+    <string name="polling_station_choose_date_leave">Choose the date of your departure</string>
+    <string name="polling_station_choose_time_leave">Choose the time of your departure</string>
+    <string name="invalid_polling_station_county">Choose the county/district</string>
+    <string name="invalid_polling_station_number">Fill in the polling station number</string>
+    <string name="invalid_polling_station_number_minus">The number of the station must be positive</string>
+    <string name="invalid_polling_station_number_max">The maximum number for %1$s county is %2$d</string>
+    <string name="invalid_polling_station_environment">Choose urban or rural</string>
+    <string name="invalid_polling_station_gender">Choose man or woman</string>
+    <string name="invalid_polling_station_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
+    <string name="polling_station">Polling station %1$d %2$s</string>
 
     <!-- Forms list -->
     <string name="form_notes">Add a message</string>

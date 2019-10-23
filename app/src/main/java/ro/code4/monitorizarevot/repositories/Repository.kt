@@ -14,17 +14,16 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import retrofit2.Call
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
-import ro.code4.monitorizarevot.data.model.response.SyncResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
+import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
@@ -57,10 +56,11 @@ class Repository : KoinComponent {
 
         return Single.zip(
             observableDb,
-            observableApi,
+            observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                if (dbCounties != apiCounties) {
+                if (apiCounties.isNotEmpty() && dbCounties != apiCounties) {
+//             TODO        deleteCounties()
                     db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                     return@BiFunction apiCounties
                 }
@@ -69,22 +69,45 @@ class Repository : KoinComponent {
             })
     }
 
-    fun getCounty(countyCode: String): Observable<County> {
-
-        return db.countyDao().get(countyCode).toObservable()
+    fun getPollingStationDetails(
+        countyCode: String,
+        pollingStationNumber: Int
+    ): Observable<PollingStation> {
+        return db.pollingStationDao().get(countyCode, pollingStationNumber).toObservable()
     }
 
-    fun getBranch(countyCode: String, branchNumber: Int): Observable<BranchDetails> {
-        return db.branchDetailsDao().get(countyCode, branchNumber).toObservable()
+    fun getPollingStationInfo(
+        countyCode: String,
+        pollingStationNumber: Int
+    ): Observable<PollingStationInfo> {
+        return db.pollingStationDao().getPollingStationInfo(countyCode, pollingStationNumber)
+            .toObservable()
     }
 
-    fun saveBranchDetails(branchDetails: BranchDetails) {
-        db.branchDetailsDao().save(branchDetails).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    @SuppressLint("CheckResult")
+    fun savePollingStationDetails(pollingStation: PollingStation) {
+        Single.fromCallable { db.pollingStationDao().save(pollingStation) }.toObservable().flatMap {
+            postPollingStationDetails(pollingStation)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
-    fun getAnswers(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>> =
-        db.formDetailsDao().getAnswersFor(countyCode, branchNumber)
+    private fun postPollingStationDetails(pollingStation: PollingStation): Observable<ResponseBody> =
+        apiInterface.postPollingStationDetails(pollingStation).doOnNext {
+            pollingStation.synced = true
+            db.pollingStationDao().updatePollingStationDetails(pollingStation)
+        }
+
+    fun getNotSyncedPollingStationsCount(): LiveData<Int> =
+        db.pollingStationDao().getCountOfNotSyncedPollingStations()
+
+    fun getAnswers(
+        countyCode: String,
+        pollingStationNumber: Int
+    ): LiveData<List<AnsweredQuestionPOJO>> =
+        db.formDetailsDao().getAnswersFor(countyCode, pollingStationNumber)
 
     fun getFormsWithQuestions(): LiveData<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
@@ -105,13 +128,6 @@ class Repository : KoinComponent {
                 processFormDetailsData(dbFormDetails, response)
 
             })
-    }
-
-
-    private fun deleteFormDetails(list: List<FormDetails>) {
-        db.formDetailsDao().deleteForms(*list.map { it }.toTypedArray())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     private fun deleteFormDetails(formDetails: FormDetails) {
@@ -164,7 +180,9 @@ class Repository : KoinComponent {
                 section.formId = form.id
                 section.questions.forEach { question ->
                     question.sectionId = section.uniqueId
-                    question.optionsToQuestions.forEach { answer -> answer.questionId = question.id }
+                    question.optionsToQuestions.forEach { answer ->
+                        answer.questionId = question.id
+                    }
                 }
             }
             db.formDetailsDao().save(*list.map { it }.toTypedArray())
@@ -173,20 +191,12 @@ class Repository : KoinComponent {
 
     }
 
-    fun getForm(formId: Int): Observable<List<Section>> = apiInterface.getForm(formId)
-
-    fun getFormVersion(): Observable<VersionResponse> = apiInterface.getForms()
-
-    fun postBranchDetails(branchDetails: BranchDetails): Call<ResponseBody> =
-        apiInterface.postBranchDetails(branchDetails)
-
-
     fun getAnswersForForm(
         countyCode: String?,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         formId: Int
     ): LiveData<List<AnsweredQuestionPOJO>> {
-        return db.formDetailsDao().getAnswersForForm(countyCode, branchNumber, formId)
+        return db.formDetailsDao().getAnswersForForm(countyCode, pollingStationNumber, formId)
     }
 
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
@@ -197,25 +207,23 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    fun syncAnswers(countyCode: String, branchNumber: Int, formId: Int) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, branchNumber, formId)
+    fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
+        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
             .toObservable()
             .subscribeOn(Schedulers.io()).flatMap {
                 syncAnswers(it)
             }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                if (it.isCompletedSuccessfully) {
-                    Observable.create<Unit> {
-                        db.formDetailsDao()
-                            .updateAnsweredQuestions(countyCode, branchNumber, formId)
-                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe()
-                }
+                Observable.create<Unit> {
+                    db.formDetailsDao()
+                        .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
+                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
             }, {
                 Log.i(TAG, it.message ?: "Error on synchronizing data")
             })
     }
 
-    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<SyncResponse> {
+    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<ResponseBody> {
         val responseAnswerContainer = ResponseAnswerContainer()
         responseAnswerContainer.answers = list.map {
             it.answeredQuestion.options = it.selectedAnswers
@@ -232,15 +240,13 @@ class Repository : KoinComponent {
             .subscribeOn(Schedulers.io()).flatMap {
                 answers = it
                 syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->
-                if (response.isCompletedSuccessfully) {
-                    answers.forEach { item -> item.answeredQuestion.synced = true }
-                    Observable.create<Unit> {
-                        db.formDetailsDao()
-                            .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
-                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe()
-                }
+            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
+                answers.forEach { item -> item.answeredQuestion.synced = true }
+                Observable.create<Unit> {
+                    db.formDetailsDao()
+                        .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
+                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
             }, {
                 Log.i(TAG, it.message ?: "Error on synchronizing data")
             })
@@ -250,13 +256,13 @@ class Repository : KoinComponent {
 
     fun getNotes(
         countyCode: String,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         selectedQuestion: Question?
     ): LiveData<List<Note>> {
         return if (selectedQuestion == null) {
-            db.noteDao().getNotes(countyCode, branchNumber)
+            db.noteDao().getNotes(countyCode, pollingStationNumber)
         } else {
-            db.noteDao().getNotesForQuestion(countyCode, branchNumber, selectedQuestion.id)
+            db.noteDao().getNotesForQuestion(countyCode, pollingStationNumber, selectedQuestion.id)
         }
     }
 
@@ -284,7 +290,7 @@ class Repository : KoinComponent {
 
         return apiInterface.postNote(
             body, note.countyCode.createMultipart("CountyCode"),
-            note.branchNumber.toString().createMultipart("PollingStationNumber"),
+            note.pollingStationNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")
         ).doOnNext {
@@ -302,13 +308,27 @@ class Repository : KoinComponent {
             .subscribe({
 
             }, {
-                Log.i(TAG, it.localizedMessage ?: "")
+                Log.i(TAG, it.localizedMessage.orEmpty())
+            })
+    }
+
+    @SuppressLint("CheckResult")
+    private fun syncPollingStation() {
+        db.pollingStationDao().getNotSyncedPollingStations().flatMap { Observable.fromIterable(it) }
+            .flatMap {
+                postPollingStationDetails(it)
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {
+                Log.i(TAG, it.localizedMessage.orEmpty())
             })
     }
 
     fun syncData() {
         syncAnswers()
         syncNotes()
+        syncPollingStation()
     }
 
 }

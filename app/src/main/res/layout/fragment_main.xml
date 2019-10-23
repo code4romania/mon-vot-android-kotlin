@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/changeBranchBar"
-        layout="@layout/widget_change_branch_bar"
+        android:id="@+id/changePollingStationBar"
+        layout="@layout/widget_change_polling_station_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -16,5 +16,5 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/changeBranchBar" />
+        app:layout_constraintTop_toBottomOf="@id/changePollingStationBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

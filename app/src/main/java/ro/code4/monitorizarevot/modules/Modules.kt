@@ -21,8 +21,6 @@ import ro.code4.monitorizarevot.BuildConfig.DEBUG
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.repositories.Repository
-import ro.code4.monitorizarevot.ui.branch.BranchViewModel
-import ro.code4.monitorizarevot.ui.branch.selection.BranchSelectionViewModel
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsViewModel
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
@@ -31,6 +29,8 @@ import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
 import ro.code4.monitorizarevot.ui.notes.NoteViewModel
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingViewModel
+import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
+import ro.code4.monitorizarevot.ui.section.selection.PollingStationSelectionViewModel
 import ro.code4.monitorizarevot.ui.splashscreen.SplashScreenViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -63,7 +63,7 @@ val apiModule = module {
     single {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level =
-            if (!DEBUG) HttpLoggingInterceptor.Level.NONE else HttpLoggingInterceptor.Level.BODY
+            if (DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         interceptor
     }
 
@@ -104,8 +104,8 @@ val viewModelsModule = module {
     viewModel { LoginViewModel() }
     viewModel { OnboardingViewModel() }
     viewModel { MainViewModel() }
-    viewModel { BranchViewModel() }
-    viewModel { BranchSelectionViewModel() }
+    viewModel { PollingStationViewModel() }
+    viewModel { PollingStationSelectionViewModel() }
     viewModel { FormsViewModel() }
     viewModel { QuestionsViewModel() }
     viewModel { QuestionsDetailsViewModel() }
