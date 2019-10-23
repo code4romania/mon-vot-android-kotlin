@@ -21,8 +21,6 @@ import ro.code4.monitorizarevot.data.model.Answer
 )
 class SelectedAnswer() {
 
-    //TODO update fields to English names - to check names if influenced by backend
-
     @Expose
     var optionId: Int = -1
 

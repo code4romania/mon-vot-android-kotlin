@@ -5,7 +5,6 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
 @Entity(
@@ -19,12 +18,10 @@ import org.parceler.Parcel
 
     )]
 )
-@Parcel(Parcel.Serialization.FIELD) //TODO Syncable
+@Parcel(Parcel.Serialization.FIELD)
 class PollingStation() {
 
-    // TODO serialized names to be translated when api is updated
     @PrimaryKey
-    @SerializedName("id")
     lateinit var id: String
 
     @Expose

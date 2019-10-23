@@ -136,7 +136,7 @@ fun Context.highlight(prefix: String, suffix: String? = null): CharSequence {
             ForegroundColorSpan(
                 ContextCompat.getColor(
                     this,
-                    ro.code4.monitorizarevot.R.color.textSecondary
+                    R.color.textSecondary
                 )
             ),
             0,
@@ -186,26 +186,6 @@ fun <A, B> zipLiveData(a: LiveData<A>, b: LiveData<B>): LiveData<Pair<A, B>> {
     }
 }
 
-//fun <T> zipLiveData(vararg a: LiveData<T>): LiveData<ArrayList<T>> {
-//    return MediatorLiveData<ArrayList<T>>().apply {
-//        val lastObjects :ArrayList<T>? = null
-//        val zippedObjects = ArrayList<T>()
-//        a.forEach {
-//            addSource(it){item->
-//
-//                update()
-//            }
-//            addSource(it) { item ->
-//                if (!zippedObjects.contains(item)) {
-//                    zippedObjects.add(item)
-//                }
-//                value = zippedObjects
-//            }
-//        }
-//
-//    }
-//}
-
 fun RecyclerView.getCenterXChildPosition(): Int {
     val childCount = childCount
     if (childCount > 0) {
@@ -228,10 +208,10 @@ fun RecyclerView.isChildInCenterX(view: View): Boolean {
     if (childCount > 0) {
         view.getLocationOnScreen(vLocationOnScreen)
         if (vLocationOnScreen[0] <= middleX && vLocationOnScreen[0] + view.width >= middleX) {
-            return true;
+            return true
         }
     }
-    return false;
+    return false
 }
 
 fun RecyclerView.addOnScrollListenerForGalleryEffect() {
