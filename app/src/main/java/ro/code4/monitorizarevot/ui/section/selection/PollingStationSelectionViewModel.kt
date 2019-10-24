@@ -54,7 +54,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         val countyNames = counties.map { it.name }
 
         if (countyCode.isNullOrBlank()) {
-            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.spinner_choose)) + countyNames))
+            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames))
         } else {
             hadSelectedCounty = true
             val selectedCountyIndex = counties.indexOfFirst { it.code == countyCode }

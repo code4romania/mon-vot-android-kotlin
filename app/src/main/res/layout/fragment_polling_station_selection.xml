@@ -95,7 +95,7 @@
             android:enabled="false"
             android:importantForAutofill="no"
             android:inputType="number"
-            android:hint="@string/spinner_choose"
+            android:hint="@string/polling_station_number_hint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pollingStationNumberLabel"
             app:layout_constraintVertical_chainStyle="packed" />

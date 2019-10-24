@@ -32,7 +32,6 @@
     <string name="button_continue">Continue</string>
     <string name="button_continue_to_forms">Continue to forms</string>
     <string name="button_send">Send</string>
-    <string name="spinner_choose">Choose</string>
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Fill in your phone number and the code you received.</string>
@@ -72,6 +71,8 @@
     <string name="polling_station_subtitle">you are in</string>
     <string name="polling_station_county">County/District</string>
     <string name="polling_station_number">Polling station number</string>
+    <string name="polling_station_spinner_choose">Choose</string>
+    <string name="polling_station_number_hint">Fill in your polling station number</string>
     <string name="polling_station_change">Change</string>
     <string name="polling_station_question_environment">Choose the area of the station</string>
     <string name="polling_station_answer_rural">Rural</string>

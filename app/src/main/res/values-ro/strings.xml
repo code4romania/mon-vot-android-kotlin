@@ -35,7 +35,6 @@
     <string name="button_continue">Continuă</string>
     <string name="button_continue_to_forms">Continuă către formulare</string>
     <string name="button_send">Trimite</string>
-    <string name="spinner_choose">Alege</string>
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Introduceți numărul de telefon şi codul primit.</string>
@@ -75,6 +74,8 @@
     <string name="polling_station_subtitle">în care te afli</string>
     <string name="polling_station_county">Județ</string>
     <string name="polling_station_number">Număr secție</string>
+    <string name="polling_station_spinner_choose">Alege</string>
+    <string name="polling_station_number_hint">Introduceți numărul secției</string>
     <string name="polling_station_change">Schimbă</string>
     <string name="polling_station_question_environment">În ce mediu se află secția?</string>
     <string name="polling_station_answer_rural">Rural</string>
