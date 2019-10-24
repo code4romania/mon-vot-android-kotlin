@@ -2,8 +2,8 @@ package ro.code4.monitorizarevot.ui.login
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
+import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.User
@@ -25,11 +25,10 @@ class LoginViewModel : BaseViewModel() {
     private val loginLiveData = SingleLiveEvent<Result<Class<*>>>()
 
     fun loggedIn(): LiveData<Result<Class<*>>> = loginLiveData
-    private val disposable = CompositeDisposable()
 
     fun login(user: User) {
         loginLiveData.postValue(Result.Loading)
-        disposable.add(
+        disposables.add(
             loginRepository.login(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -37,16 +36,30 @@ class LoginViewModel : BaseViewModel() {
         )
     }
 
-    override fun onCleared() {
-        disposable.clear()
-    }
-
     private fun onSuccessfulLogin(loginResponse: LoginResponse) {
         sharedPreferences.saveToken(loginResponse.accessToken)
+        registerForNotification()
+    }
+
+    private fun onSuccessfulRegisterForNotification() {
         if (sharedPreferences.hasCompletedOnboarding()) {
             loginLiveData.postValue(Result.Success(PollingStationActivity::class.java))
         } else {
             loginLiveData.postValue(Result.Success(OnboardingActivity::class.java))
+        }
+    }
+
+    private fun registerForNotification() {
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            if (it.isSuccessful) {
+                disposables.add(
+                    loginRepository.registerForNotification(it.result?.token.orEmpty())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ onSuccessfulRegisterForNotification() }, this::onError)
+                )
+            }
+
         }
     }
 
