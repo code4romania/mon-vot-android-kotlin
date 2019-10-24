@@ -70,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
             android:background="@drawable/background_spinner"
-            android:prompt="@string/spinner_choose"
             app:layout_constraintBottom_toTopOf="@id/pollingStationNumberLabel"
             app:layout_constraintTop_toBottomOf="@id/countyLabel"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -96,6 +95,7 @@
             android:enabled="false"
             android:importantForAutofill="no"
             android:inputType="number"
+            android:hint="@string/spinner_choose"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pollingStationNumberLabel"
             app:layout_constraintVertical_chainStyle="packed" />
