@@ -14,7 +14,11 @@ import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 class LoginActivity : BaseActivity<LoginViewModel>() {
 
-    private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
+    private val progressDialog: ProgressDialogFragment by lazy {
+        ProgressDialogFragment().also {
+            it.isCancelable = false
+        }
+    }
 
     override val layout: Int
         get() = R.layout.activity_login
@@ -34,6 +38,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
 
     private fun clickListenersSetup() {
         loginButton.setOnClickListener {
+            loginButton.isEnabled = false
             val user = User(
                 phone.text.toString(),
                 password.text.toString(),
@@ -55,6 +60,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                     progressDialog.dismiss()
                     Snackbar.make(loginButton, "Something went wrong!", Snackbar.LENGTH_SHORT)
                         .show()
+                    loginButton.isEnabled = true
                 },
                 onLoading = {
                     progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
