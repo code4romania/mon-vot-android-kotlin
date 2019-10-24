@@ -108,7 +108,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <ro.code4.monitorizarevot.widget.validation.ViewsValidationButton
         android:id="@+id/loginButton"
         style="@style/Button.Black"
         android:layout_width="match_parent"
