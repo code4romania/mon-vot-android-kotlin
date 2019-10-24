@@ -1,11 +1,13 @@
 package ro.code4.monitorizarevot.ui.section.selection
 
+import android.app.Application
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
+import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
@@ -13,6 +15,7 @@ import ro.code4.monitorizarevot.ui.base.BaseViewModel
 
 
 class PollingStationSelectionViewModel : BaseViewModel() {
+    private val app: Application by inject()
     private val repository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
     private val countiesLiveData = MutableLiveData<Result<List<String>>>()
@@ -51,7 +54,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         val countyNames = counties.map { it.name }
 
         if (countyCode.isNullOrBlank()) {
-            countiesLiveData.postValue(Result.Success(listOf("") + countyNames))
+            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames))
         } else {
             hadSelectedCounty = true
             val selectedCountyIndex = counties.indexOfFirst { it.code == countyCode }
