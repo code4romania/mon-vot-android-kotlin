@@ -155,4 +155,4 @@ dependencies {
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-// apply plugin: 'com.google.gms.google-services'
+ apply plugin: 'com.google.gms.google-services'
