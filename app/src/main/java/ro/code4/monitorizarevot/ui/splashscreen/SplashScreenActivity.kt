@@ -6,15 +6,19 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 import ro.code4.monitorizarevot.ui.main.MainActivity
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 
-class SplashScreenActivity : BaseActivity<SplashScreenViewModel>() {
+class SplashScreenActivity : BaseAnalyticsActivity<SplashScreenViewModel>() {
 
     override val layout: Int
         get() = R.layout.activity_splash_screen
+    override val screenName: Int
+        get() = R.string.analytics_title_splash
+
     override val viewModel: SplashScreenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {

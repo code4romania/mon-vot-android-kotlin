@@ -11,11 +11,14 @@ import ro.code4.monitorizarevot.adapters.OnboardingAdapter
 import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 
-class OnboardingActivity : BaseActivity<OnboardingViewModel>() {
+class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>() {
     override val layout: Int
         get() = R.layout.activity_onboarding
+    override val screenName: Int
+        get() = R.string.analytics_title_onboarding
     override val viewModel: OnboardingViewModel by viewModel()
     private lateinit var onboardingAdapter: OnboardingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {

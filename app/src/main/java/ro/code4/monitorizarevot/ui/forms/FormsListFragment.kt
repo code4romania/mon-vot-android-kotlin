@@ -11,10 +11,11 @@ import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.FormDelegationAdapter
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 
 
-class FormsListFragment : BaseFragment<FormsViewModel>() {
+class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
 
     companion object {
         val TAG = FormsListFragment::class.java.simpleName
@@ -22,6 +23,9 @@ class FormsListFragment : BaseFragment<FormsViewModel>() {
 
     override val layout: Int
         get() = R.layout.fragment_forms
+    override val screenName: Int
+        get() = R.string.analytics_title_forms
+
     override lateinit var viewModel: FormsViewModel
     private val formAdapter: FormDelegationAdapter by lazy {
         FormDelegationAdapter(

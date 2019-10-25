@@ -10,12 +10,13 @@ import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
-class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionViewModel>() {
+class PollingStationSelectionFragment : BaseAnalyticsFragment<PollingStationSelectionViewModel>() {
 
     private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
 
@@ -25,6 +26,9 @@ class PollingStationSelectionFragment : BaseFragment<PollingStationSelectionView
 
     override val layout: Int
         get() = R.layout.fragment_polling_station_selection
+    override val screenName: Int
+        get() = R.string.analytics_title_station_chooser
+
     override val viewModel: PollingStationSelectionViewModel by viewModel()
 
     lateinit var parentViewModel: PollingStationViewModel
