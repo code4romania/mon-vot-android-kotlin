@@ -4,118 +4,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_login_bkg"
+    android:padding="@dimen/margin"
     tools:context="ro.code4.monitorizarevot.ui.login.LoginActivity">
-
-    <View
-        android:id="@+id/code4bg"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/backgroundLight"
-        app:layout_constraintBottom_toBottomOf="@+id/code4logo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        style="@style/Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
-        android:gravity="center"
-        android:text="@string/developed_by"
-        app:layout_constraintBottom_toBottomOf="@+id/code4logo"
-        app:layout_constraintEnd_toStartOf="@+id/code4logo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/code4logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/xxsmall_margin"
-        android:src="@drawable/logo_code4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-
-    <TextView
-        android:id="@+id/appVersion"
-        style="@style/Text.Label.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/small_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/code4bg"
-        tools:text="V0.00" />
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/margin"
         android:adjustViewBounds="true"
-        app:layout_constraintBottom_toTopOf="@+id/phoneLayout"
+        app:layout_constraintBottom_toTopOf="@+id/loginCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appVersion"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_new"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/loginCard"
         android:layout_width="match_parent"
+        style="@style/MaterialCardView"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginEnd="@dimen/margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo">
 
-        android:layout_marginBottom="@dimen/margin"
-        android:textColorHint="@color/textPrimary"
-        app:layout_constraintBottom_toTopOf="@id/passwordLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phone"
-            style="@style/InputLogin"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="username,phone"
-            android:hint="@string/login_phone"
-            android:inputType="phone"
-            android:text="@string/test_phone_number"
-            tools:targetApi="o" />
+            android:clipChildren="false"
+            android:paddingStart="@dimen/margin"
+            android:paddingTop="@dimen/xbig_margin"
+            android:paddingEnd="@dimen/margin"
+            android:paddingBottom="@dimen/xbig_margin">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/appVersion"
+                style="@style/Text.Label.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin"
+                app:layout_constraintBottom_toBottomOf="@id/code4logo"
+                app:layout_constraintEnd_toStartOf="@id/code4logo"
+                app:layout_constraintTop_toTopOf="@id/code4logo"
+                tools:text="v1.0202 developed by" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginEnd="@dimen/margin"
-        android:layout_marginBottom="@dimen/xxbig_margin"
-        android:textColorHint="@color/textPrimary"
-        app:layout_constraintBottom_toTopOf="@id/loginButton">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            style="@style/InputLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="password"
-            android:hint="@string/login_password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:text="@string/test_password"
-            tools:targetApi="o" />
+            <ImageView
+                android:id="@+id/code4logo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/sync_progress_icon_size"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo_code4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneLayout"
+                style="@style/TextInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/xbig_margin"
+                android:textColorHint="@color/textPrimary"
+                app:layout_constraintTop_toBottomOf="@id/code4logo">
 
-        android:id="@+id/loginButton"
-        style="@style/Button.Black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:text="@string/login"
-        app:layout_constraintBottom_toBottomOf="parent" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone"
+                    style="@style/InputLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="username,phone"
+                    android:drawableStart="@drawable/ic_login_phone"
+                    android:drawablePadding="@dimen/margin"
+                    android:hint="@string/login_phone"
+                    android:inputType="phone"
+                    android:text="@string/test_phone_number"
+                    tools:targetApi="o" />
 
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordLayout"
+                style="@style/TextInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:textColorHint="@color/textPrimary"
+                app:layout_constraintBottom_toTopOf="@id/loginButton"
+                app:layout_constraintTop_toBottomOf="@id/phoneLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    style="@style/InputLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:drawableStart="@drawable/ic_login_password"
+                    android:drawablePadding="@dimen/margin"
+                    android:hint="@string/login_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:text="@string/test_password"
+                    tools:targetApi="o" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+
+                android:id="@+id/loginButton"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_margin"
+                android:text="@string/login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
