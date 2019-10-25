@@ -5,13 +5,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.widget_change_branch_bar.*
+import kotlinx.android.synthetic.main.widget_change_polling_station_bar.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.Constants.FORM
 import ro.code4.monitorizarevot.helper.Constants.QUESTION
-import ro.code4.monitorizarevot.helper.changeBranch
+import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
@@ -35,12 +35,13 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.branchBarText().observe(this, Observer {
-            branchBarText.text = it
+        viewModel.pollingStation().observe(this, Observer {
+            pollingStationBarText.text =
+                getString(R.string.polling_station, it.pollingStationNumber, it.countyName)
         })
 
         viewModel.title().observe(this, Observer {
-            (activity as MainActivity)?.setTitle(it)
+            (activity as MainActivity).setTitle(it)
         })
 
         viewModel.selectedForm().observe(this, Observer {
@@ -72,10 +73,10 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
                 QuestionsDetailsFragment.TAG
             )
         })
-        viewModel.getBranchBarText()
 
-        branchBarButton.setOnClickListener {
-            (activity as AppCompatActivity).changeBranch()
+        pollingStationBarButton.setOnClickListener {
+            viewModel.notifyChangeRequested()
+            (activity as AppCompatActivity).changePollingStation()
         }
         childFragmentManager.replaceFragment(
             R.id.content,

@@ -18,7 +18,7 @@ class QuestionsViewModel : BaseQuestionViewModel() {
                 SectionListItem(
                     R.string.section_title,
                     index + 1,
-                    sectionWithQuestion.section.description ?: ""
+                    sectionWithQuestion.section.description.orEmpty()
                 )
             )
             list.addAll(sectionWithQuestion.questions.map { questionWithAnswers ->

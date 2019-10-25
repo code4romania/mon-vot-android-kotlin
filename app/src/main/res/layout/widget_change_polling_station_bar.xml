@@ -10,35 +10,35 @@
     android:padding="@dimen/margin">
 
     <ImageView
-        android:id="@+id/branchIcon"
+        android:id="@+id/pollingStationIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/content_icon_building"
-        android:src="@drawable/ic_branch"
-        app:layout_constraintBottom_toBottomOf="@id/branchBarText"
+        android:src="@drawable/ic_polling_station"
+        app:layout_constraintBottom_toBottomOf="@id/pollingStationBarText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/branchBarText" />
+        app:layout_constraintTop_toTopOf="@id/pollingStationBarText" />
 
     <TextView
-        android:id="@+id/branchBarText"
-        style="@style/Text.Branch"
+        android:id="@+id/pollingStationBarText"
+        style="@style/Text.PollingStation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/branchBarButton"
-        app:layout_constraintStart_toEndOf="@id/branchIcon"
+        app:layout_constraintEnd_toStartOf="@id/pollingStationBarButton"
+        app:layout_constraintStart_toEndOf="@id/pollingStationIcon"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="CJ 1234" />
 
     <Button
-        android:id="@+id/branchBarButton"
+        android:id="@+id/pollingStationBarButton"
         style="@style/Button.Link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/branch_change"
-        app:layout_constraintBottom_toBottomOf="@id/branchBarText"
+        android:text="@string/polling_station_change"
+        app:layout_constraintBottom_toBottomOf="@id/pollingStationBarText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/branchBarText" />
+        app:layout_constraintTop_toTopOf="@id/pollingStationBarText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

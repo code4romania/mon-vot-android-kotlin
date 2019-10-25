@@ -8,25 +8,27 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
+import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
 import ro.code4.monitorizarevot.helper.saveToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
+import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
+import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 
 class LoginViewModel : BaseViewModel() {
 
     private val loginRepository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
 
-    private val loginLiveData = SingleLiveEvent<Void>()
-    private val onboardingLiveData = SingleLiveEvent<Void>()
+    private val loginLiveData = SingleLiveEvent<Result<Class<*>>>()
 
-    fun loggedIn(): LiveData<Void> = loginLiveData
-    fun onboarding(): LiveData<Void> = onboardingLiveData
+    fun loggedIn(): LiveData<Result<Class<*>>> = loginLiveData
     private val disposable = CompositeDisposable()
 
     fun login(user: User) {
+        loginLiveData.postValue(Result.Loading)
         disposable.add(
             loginRepository.login(user)
                 .subscribeOn(Schedulers.io())
@@ -39,14 +41,16 @@ class LoginViewModel : BaseViewModel() {
         disposable.clear()
     }
 
-    //TODO should check if token still available
-
     private fun onSuccessfulLogin(loginResponse: LoginResponse) {
         sharedPreferences.saveToken(loginResponse.accessToken)
         if (sharedPreferences.hasCompletedOnboarding()) {
-            loginLiveData.call()
+            loginLiveData.postValue(Result.Success(PollingStationActivity::class.java))
         } else {
-            onboardingLiveData.call()
+            loginLiveData.postValue(Result.Success(OnboardingActivity::class.java))
         }
+    }
+
+    override fun onError(throwable: Throwable) {
+        loginLiveData.postValue(Result.Failure(throwable))
     }
 }

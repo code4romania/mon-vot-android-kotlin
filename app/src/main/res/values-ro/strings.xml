@@ -31,10 +31,10 @@
     <!-- General -->
     <string name="developed_by">aplicație dezvoltată de</string>
     <string name="please_wait">Vă rugăm așteptaţi…</string>
+    <string name="loading_label">Loading…</string>
     <string name="button_continue">Continuă</string>
     <string name="button_continue_to_forms">Continuă către formulare</string>
     <string name="button_send">Trimite</string>
-    <string name="spinner_choose">Alege</string>
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Introduceți numărul de telefon şi codul primit.</string>
@@ -46,8 +46,8 @@
     <string name="error_section_type">Eroare în interpretarea secțiunii</string>
 
     <!-- Fragment titles -->
-    <string name="title_branch_details">Detalii secție</string>
-    <string name="title_branch_selection">Alege secția</string>
+    <string name="title_polling_station">Detalii secție</string>
+    <string name="title_polling_station_selection">Alege secția</string>
     <string name="title_forms_list">Formulare</string>
     <string name="title_note">Adaugă notă</string>
     <string name="title_guide">Ghid</string>
@@ -55,7 +55,7 @@
     <!-- Menu -->
     <string name="menu_logout">Delogare</string>
     <string name="menu_forms">Formulare</string>
-    <string name="menu_change_branch">Schimbă secţia</string>
+    <string name="menu_change_polling_station">Schimbă secţia</string>
     <string name="menu_guide">Ghidul observatorului</string>
     <string name="menu_call">Apelează TelVerde</string>
     <string name="section">Section</string>
@@ -69,30 +69,35 @@
     <string name="login_password">Cod primit</string>
     <string name="login">Login</string>
 
-    <!-- Branch selection -->
-    <string name="branch_title">Alege secția</string>
-    <string name="branch_subtitle">în care te afli</string>
-    <string name="branch_county">Județ</string>
-    <string name="branch_number">Număr secție</string>
-    <string name="branch_change">Schimbă</string>
-    <string name="branch_question_environment">În ce mediu se află secția?</string>
-    <string name="branch_answer_rural">Rural</string>
-    <string name="branch_answer_urban">Urban</string>
-    <string name="branch_question_gender">Preşedintele secţiei este</string>
-    <string name="branch_answer_man">Bărbat</string>
-    <string name="branch_answer_woman">Femeie</string>
-    <string name="branch_question_enter">Ora sosirii în secţie</string>
-    <string name="branch_question_leave">Ora plecării din secţie</string>
-    <string name="branch_choose_time_enter">Alege ora sosirii</string>
-    <string name="branch_choose_time_leave">Alege ora plecării</string>
-    <string name="invalid_branch_county">Alege județul</string>
-    <string name="invalid_branch_number">Introdu numărul secției</string>
-    <string name="invalid_branch_number_minus">Numărul secției trebuie să fie pozitiv</string>
-    <string name="invalid_branch_number_max">Numărul maxim pentru județul %1$s este %2$d</string>
-    <string name="invalid_branch_environment">Alege urban sau rural</string>
-    <string name="invalid_branch_gender">Alege bărbat sau femeie</string>
-    <string name="invalid_branch_time_in">Alege ora sosirii</string>
+    <!-- Polling Station selection -->
+    <string name="polling_station_title">Alege secția</string>
+    <string name="polling_station_subtitle">în care te afli</string>
+    <string name="polling_station_county">Județ</string>
+    <string name="polling_station_number">Număr secție</string>
+    <string name="polling_station_spinner_choose">Alege</string>
+    <string name="polling_station_number_hint">Introduceți numărul secției</string>
+    <string name="polling_station_change">Schimbă</string>
+    <string name="polling_station_question_environment">În ce mediu se află secția?</string>
+    <string name="polling_station_answer_rural">Rural</string>
+    <string name="polling_station_answer_urban">Urban</string>
+    <string name="polling_station_question_gender">Preşedintele secţiei este</string>
+    <string name="polling_station_answer_man">Bărbat</string>
+    <string name="polling_station_answer_woman">Femeie</string>
+    <string name="polling_station_question_enter">Ora sosirii în secţie</string>
+    <string name="polling_station_question_leave">Ora plecării din secţie</string>
+    <string name="polling_station_choose_date_enter">Alege data sosirii</string>
+    <string name="polling_station_choose_time_enter">Alege ora sosirii</string>
+    <string name="polling_station_choose_date_leave">Alege data plecării</string>
+    <string name="polling_station_choose_time_leave">Alege ora plecării</string>
+    <string name="invalid_polling_station_county">Alege județul</string>
+    <string name="invalid_polling_station_number">Introdu numărul secției</string>
+    <string name="invalid_polling_station_number_minus">Numărul secției trebuie să fie pozitiv</string>
+    <string name="invalid_polling_station_number_max">Numărul maxim pentru județul %1$s este %2$d</string>
+    <string name="invalid_polling_station_environment">Alege urban sau rural</string>
+    <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
+    <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
+    <string name="polling_station">Secția $1%d $2%s</string>
 
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>

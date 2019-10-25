@@ -32,7 +32,7 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.interfaces.ExcludeFromCodeCoverage
-import ro.code4.monitorizarevot.ui.branch.BranchActivity
+import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -73,12 +73,15 @@ fun FragmentManager.replaceFragment(
     ft.commit()
 }
 
-fun AppCompatActivity.changeBranch() {
-    startActivity(Intent(this, BranchActivity::class.java))
+fun AppCompatActivity.changePollingStation() {
+    startActivity(Intent(this, PollingStationActivity::class.java))
     finishAffinity()
 }
 
-fun Calendar.updateTime(hourOfDay: Int, minute: Int) {
+fun Calendar.updateTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
+    set(Calendar.YEAR, year)
+    set(Calendar.MONTH, month)
+    set(Calendar.DAY_OF_MONTH, dayOfMonth)
     set(Calendar.HOUR_OF_DAY, hourOfDay)
     set(Calendar.MINUTE, minute)
 }
@@ -92,7 +95,7 @@ fun Calendar?.getDateText(): String? {
 }
 
 fun Calendar.getTimeText(): String {
-    val formatter = SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault())
+    val formatter = SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.getDefault())
     return formatter.format(time)
 }
 
@@ -133,7 +136,7 @@ fun Context.highlight(prefix: String, suffix: String? = null): CharSequence {
             ForegroundColorSpan(
                 ContextCompat.getColor(
                     this,
-                    ro.code4.monitorizarevot.R.color.textSecondary
+                    R.color.textSecondary
                 )
             ),
             0,
@@ -200,15 +203,15 @@ fun RecyclerView.isChildInCenterX(view: View): Boolean {
     val childCount = childCount
     val lvLocationOnScreen = IntArray(2)
     val vLocationOnScreen = IntArray(2)
-    getLocationOnScreen(lvLocationOnScreen);
-    val middleX = lvLocationOnScreen[0] + width / 2;
+    getLocationOnScreen(lvLocationOnScreen)
+    val middleX = lvLocationOnScreen[0] + width / 2
     if (childCount > 0) {
-        view.getLocationOnScreen(vLocationOnScreen);
+        view.getLocationOnScreen(vLocationOnScreen)
         if (vLocationOnScreen[0] <= middleX && vLocationOnScreen[0] + view.width >= middleX) {
-            return true;
+            return true
         }
     }
-    return false;
+    return false
 }
 
 fun RecyclerView.addOnScrollListenerForGalleryEffect() {
