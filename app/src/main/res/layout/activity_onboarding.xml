@@ -30,7 +30,7 @@
 
     <Button
         android:id="@+id/backButton"
-        style="@style/Button.Link.Onboarding"
+        style="@style/Button.Text.Onboarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/small_margin"
@@ -43,7 +43,7 @@
 
     <Button
         android:id="@+id/nextButton"
-        style="@style/Button.Link.Onboarding"
+        style="@style/Button.Text.Onboarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/small_margin"

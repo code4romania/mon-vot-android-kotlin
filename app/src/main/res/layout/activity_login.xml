@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_login_bkg"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="@dimen/margin"
     tools:context="ro.code4.monitorizarevot.ui.login.LoginActivity">
 
@@ -21,9 +23,12 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/loginCard"
-        android:layout_width="match_parent"
         style="@style/MaterialCardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/xbig_margin"
+        app:cardElevation="@dimen/big_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo">
 

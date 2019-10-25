@@ -50,7 +50,7 @@
 
         <Button
             android:id="@+id/addMediaButton"
-            style="@style/Button.Link.Purple"
+            style="@style/Button.Text.Purple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"

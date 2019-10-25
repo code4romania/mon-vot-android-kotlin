@@ -76,10 +76,11 @@
 
             <Button
                 android:id="@+id/addNoteButton"
-                style="@style/Button.Link.Purple"
+                style="@style/Button.Text.Purple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/xsmall_margin"
+                app:icon="@drawable/ic_add_note"
                 android:layout_marginBottom="@dimen/small_margin"
                 android:drawableStart="@drawable/ic_add_note"
                 android:text="@string/add_note_to_question"

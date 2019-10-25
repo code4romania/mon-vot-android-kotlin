@@ -34,7 +34,7 @@
 
     <Button
         android:id="@+id/pollingStationBarButton"
-        style="@style/Button.Link"
+        style="@style/Button.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/polling_station_change"
