@@ -11,19 +11,19 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/changeBranchBar"
-            layout="@layout/widget_change_branch_bar" />
+            android:id="@+id/changePollingStationBar"
+            layout="@layout/widget_change_polling_station_bar" />
 
         <TextView
             android:id="@+id/environmentLabel"
-            style="@style/Text.BranchSelectLabel"
+            style="@style/Text.PollingStationSelectLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
-            android:text="@string/branch_question_environment"
-            app:layout_constraintTop_toBottomOf="@id/changeBranchBar" />
+            android:text="@string/polling_station_question_environment"
+            app:layout_constraintTop_toBottomOf="@id/changePollingStationBar" />
 
         <RadioGroup
             android:id="@+id/environmentRadioGroup"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin"
                 android:layout_weight="1"
-                android:text="@string/branch_answer_urban" />
+                android:text="@string/polling_station_answer_urban" />
 
 
             <androidx.appcompat.widget.AppCompatRadioButton
@@ -51,19 +51,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/branch_answer_rural" />
+                android:text="@string/polling_station_answer_rural" />
         </RadioGroup>
 
 
         <TextView
             android:id="@+id/genderLabel"
-            style="@style/Text.BranchSelectLabel"
+            style="@style/Text.PollingStationSelectLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
-            android:text="@string/branch_question_gender"
+            android:text="@string/polling_station_question_gender"
             app:layout_constraintTop_toBottomOf="@id/environmentRadioGroup" />
 
         <RadioGroup
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin"
                 android:layout_weight="1"
-                android:text="@string/branch_answer_man" />
+                android:text="@string/polling_station_answer_man" />
 
 
             <androidx.appcompat.widget.AppCompatRadioButton
@@ -92,19 +92,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/branch_answer_woman" />
+                android:text="@string/polling_station_answer_woman" />
         </RadioGroup>
 
 
         <TextView
             android:id="@+id/arrivalTimeLabel"
-            style="@style/Text.BranchSelectLabel"
+            style="@style/Text.PollingStationSelectLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
-            android:text="@string/branch_question_enter"
+            android:text="@string/polling_station_question_enter"
             app:layout_constraintEnd_toStartOf="@id/departureTimeLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/genderRadioGroup" />
@@ -112,12 +112,12 @@
 
         <TextView
             android:id="@+id/departureTimeLabel"
-            style="@style/Text.BranchSelectLabel"
+            style="@style/Text.PollingStationSelectLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin"
             android:gravity="end"
-            android:text="@string/branch_question_leave"
+            android:text="@string/polling_station_question_leave"
             app:layout_constraintBottom_toBottomOf="@id/arrivalTimeLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/arrivalTimeLabel"

@@ -3,10 +3,11 @@ package ro.code4.monitorizarevot.helper
 import android.content.SharedPreferences
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
-const val ACCESS_TOKEN = "access_token"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
-const val PREFS_BRANCH_NUMBER = "PREFS_BRANCH_NUMBER"
+const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
+const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
+
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
 
@@ -33,13 +34,19 @@ fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
 fun SharedPreferences.deleteToken() = putString(PREFS_TOKEN, null)
 
 fun SharedPreferences.saveCountyCode(countyCode: String?) =
-    putString(PREFS_COUNTY_CODE, countyCode ?: "")
+    putString(PREFS_COUNTY_CODE, countyCode.orEmpty())
 
 fun SharedPreferences.getCountyCode(): String? = getString(PREFS_COUNTY_CODE)
-fun SharedPreferences.saveBranchNumber(branchNumber: Int) =
-    putInt(PREFS_BRANCH_NUMBER, branchNumber)
+fun SharedPreferences.savePollingStationNumber(pollingStationNumber: Int) =
+    putInt(PREFS_POLLING_STATION_NUMBER, pollingStationNumber)
 
-fun SharedPreferences.getBranchNumber(): Int = getInt(PREFS_BRANCH_NUMBER)
+fun SharedPreferences.getPollingStationNumber(): Int = getInt(PREFS_POLLING_STATION_NUMBER)
+fun SharedPreferences.isPollingStationConfigCompleted() =
+    getBoolean(POLLING_STATION_CONFIG_COMPLETED, false)
+
+fun SharedPreferences.completedPollingStationConfig(value: Boolean = true) =
+    putBoolean(POLLING_STATION_CONFIG_COMPLETED, value)
+
 
 fun SharedPreferences.hasCompletedOnboarding() = getBoolean(ONBOARDING_COMPLETED, false)
 fun SharedPreferences.completedOnboarding() = putBoolean(ONBOARDING_COMPLETED)

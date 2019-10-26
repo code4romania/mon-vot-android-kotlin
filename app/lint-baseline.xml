@@ -72,8 +72,7 @@
         message="Possible overdraw: Root element paints background `@color/cardColor` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
         errorLine1="    android:background=&quot;@color/cardColor&quot;"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/widget_change_branch_bar.xml"
+        <location file="src/main/res/layout/widget_change_polling_station_bar.xml"
             line="7"
             column="5"/>
     </issue>
@@ -328,83 +327,6 @@
         <location
             file="src/main/res/values/dimens.xml"
             line="34"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_padding_vertical` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_padding_vertical&quot;>10dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="37"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_icon` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_icon&quot;>32dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="38"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_text` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_text&quot;>13sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="39"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_text_spacing` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_text_spacing&quot;>10dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="40"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_button_width` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_button_width&quot;>135dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="41"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_button_height` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_button_height&quot;>35dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="42"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.branch_bar_button_text` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;branch_bar_button_text&quot;>11sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="43"
             column="12"/>
     </issue>
 

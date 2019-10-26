@@ -34,7 +34,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         if (selectedAnswer != null) {
                             answer.selected = true
                             if (answer.isFreeText) {
-                                answer.value = selectedAnswer.value ?: ""
+                                answer.value = selectedAnswer.value.orEmpty()
                             }
                         }
                     }
@@ -62,14 +62,14 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                     val answeredQuestion = AnsweredQuestion(
                         question.id,
                         countyCode,
-                        branchNumber,
+                        pollingStationNumber,
                         selectedFormId
                     )
                     val list = it.map { answer ->
                         SelectedAnswer(
                             answer.idOption,
                             countyCode,
-                            branchNumber,
+                            pollingStationNumber,
                             answeredQuestion.id,
                             if (answer.isFreeText) answer.value else null
                         )
@@ -81,7 +81,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
     }
 
     fun syncData() {
-        repository.syncAnswers(countyCode, branchNumber, selectedFormId)
+        repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
     }
 
 }

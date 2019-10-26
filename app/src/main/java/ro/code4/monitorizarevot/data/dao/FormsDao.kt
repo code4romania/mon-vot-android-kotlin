@@ -64,8 +64,11 @@ interface FormsDao {
     @Delete
     fun deleteAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber ")
-    fun getAnswersFor(countyCode: String, branchNumber: Int): LiveData<List<AnsweredQuestionPOJO>>
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber ")
+    fun getAnswersFor(
+        countyCode: String,
+        pollingStationNumber: Int
+    ): LiveData<List<AnsweredQuestionPOJO>>
 
 
     @Query("SELECT * FROM form_details")
@@ -74,17 +77,17 @@ interface FormsDao {
     @Query("SELECT * FROM section where formId=:formId")
     fun getSectionsWithQuestions(formId: Int): LiveData<List<SectionWithQuestions>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formId")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
     fun getAnswersForForm(
         countyCode: String?,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         formId: Int
     ): LiveData<List<AnsweredQuestionPOJO>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formId AND synced=:synced")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId AND synced=:synced")
     fun getNotSyncedQuestionsForForm(
         countyCode: String?,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         formId: Int,
         synced: Boolean = false
     ): Maybe<List<AnsweredQuestionPOJO>>
@@ -109,10 +112,10 @@ interface FormsDao {
     @Insert(onConflict = REPLACE)
     fun insertAnswers(vararg answers: SelectedAnswer)
 
-    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStationNumber=:branchNumber AND formId=:formId")
+    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
     fun updateAnsweredQuestions(
         countyCode: String,
-        branchNumber: Int,
+        pollingStationNumber: Int,
         formId: Int,
         synced: Boolean = true
     )
