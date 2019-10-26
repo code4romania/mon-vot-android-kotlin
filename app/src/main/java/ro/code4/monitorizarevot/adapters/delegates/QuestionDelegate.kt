@@ -51,7 +51,7 @@ class QuestionDelegate(
             with(question) {
                 if (savedLocally || synced) {
                     syncIcon.visibility = View.VISIBLE
-                    syncIcon.setImageResource(if (synced) R.drawable.ic_synced else R.drawable.ic_sync_progress)
+                    syncIcon.setImageResource(if (synced) R.drawable.ic_synced else R.drawable.ic_sync_not_done)
                 } else {
                     syncIcon.visibility = View.INVISIBLE
                 }
