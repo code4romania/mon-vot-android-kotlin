@@ -52,6 +52,9 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
         viewModel.setTitle(getString(R.string.title_forms_list))
 
         syncButton.setOnClickListener {
+            // TODO send number of unsynced items
+            logSyncManuallyEvent(0)
+
             viewModel.sync()
         }
         formsList.apply {
@@ -63,6 +66,5 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
                     .sizeResId(R.dimen.small_margin).build()
             )
         }
-
     }
 }
