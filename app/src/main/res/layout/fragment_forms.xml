@@ -25,10 +25,10 @@
 
         <ImageView
             android:id="@+id/syncIcon"
-            android:layout_width="@dimen/sync_progress_icon_size"
-            android:layout_height="@dimen/sync_progress_icon_size"
+            android:layout_width="@dimen/sync_progress_icon_width"
+            android:layout_height="@dimen/sync_progress_icon_height"
             android:layout_marginTop="@dimen/big_margin"
-            android:src="@drawable/ic_sync_progress"
+            android:src="@drawable/ic_sync_todo"
             app:layout_constraintBottom_toTopOf="@+id/syncInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

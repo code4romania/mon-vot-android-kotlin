@@ -76,7 +76,7 @@ class FormDelegate(
                 FormCode.A.name -> R.drawable.ic_form_a
                 FormCode.B.name -> R.drawable.ic_form_b
                 FormCode.C.name -> R.drawable.ic_form_c
-                else -> R.drawable.ic_form_notes
+                else -> R.drawable.ic_form_default
             }
         }
     }
