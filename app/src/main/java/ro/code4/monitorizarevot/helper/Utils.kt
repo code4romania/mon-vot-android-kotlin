@@ -104,6 +104,11 @@ fun Date.formatDate(): String {
     return formatter.format(this)
 }
 
+fun Date.formatDateTime(): String {
+    val formatter = SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.getDefault())
+    return formatter.format(this)
+}
+
 fun String?.getDate(): Long? {
     if (this == null) {
         return null
