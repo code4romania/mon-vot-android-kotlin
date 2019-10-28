@@ -46,6 +46,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // This needs to be set after `setupWithNavController`
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+
         navView.setCheckedItem(R.id.nav_forms)
         // Workaround to allow actions and navigation in the same component
         navView.setNavigationItemSelectedListener { item ->
