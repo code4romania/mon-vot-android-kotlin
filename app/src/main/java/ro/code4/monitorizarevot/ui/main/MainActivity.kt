@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.ui.main
 
 import android.os.Bundle
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -46,7 +47,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navView.setCheckedItem(R.id.nav_forms)
-        //Workaround to allow actions and navigation in the same component
+        // Workaround to allow actions and navigation in the same component
         navView.setNavigationItemSelectedListener { item ->
             val handled = onNavDestinationSelected(item, navController)
             if (handled) {
@@ -86,4 +87,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
         supportActionBar?.title = title
     }
 
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
