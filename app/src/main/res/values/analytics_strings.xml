@@ -2,7 +2,7 @@
     <string name="analytics_title_splash" translatable="false">Splash screen</string>
     <string name="analytics_title_onboarding" translatable="false">Onboarding</string>
     <string name="analytics_title_login" translatable="false">Login</string>
-    <string name="analytics_title_station_chooser" translatable="false">Polling station chooser</string>
+    <string name="analytics_title_station_selection" translatable="false">Polling station chooser</string>
     <string name="analytics_title_station_details" translatable="false">Polling station details</string>
     <string name="analytics_title_forms" translatable="false">Forms</string>
     <string name="analytics_title_questions" translatable="false">Questions</string>

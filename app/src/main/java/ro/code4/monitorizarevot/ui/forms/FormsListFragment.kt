@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
@@ -66,5 +67,13 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
                     .sizeResId(R.dimen.small_margin).build()
             )
         }
+    }
+
+    private fun logSyncManuallyEvent(numberOfNotSynced: Int) {
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, getString(R.string.analytics_event_manual_sync))
+        bundle.putInt(FirebaseAnalytics.Param.VALUE, numberOfNotSynced)
+
+        logAnalyticsEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
     }
 }

@@ -16,15 +16,7 @@ abstract class BaseAnalyticsFragment<out T : BaseViewModel> : BaseFragment<T>(),
         firebaseAnalytics.setCurrentScreen(activity!!, getString(screenName), null)
     }
 
-    fun logSyncManuallyEvent(numberOfNotSynced: Int) {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, getString(R.string.analytics_event_manual_sync))
-        bundle.putInt(FirebaseAnalytics.Param.VALUE, numberOfNotSynced)
-
-        logAnalyticsEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-    }
-
-    private fun logAnalyticsEvent(event: String, eventData: Bundle) {
+    fun logAnalyticsEvent(event: String, eventData: Bundle) {
         firebaseAnalytics.logEvent(event, eventData)
     }
 }
