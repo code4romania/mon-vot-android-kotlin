@@ -31,6 +31,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         questionWithAnswers.question.savedLocally =
                             savedQuestion.answeredQuestion.savedLocally
                         questionWithAnswers.question.synced = savedQuestion.answeredQuestion.synced
+                        questionWithAnswers.question.hasNotes = savedQuestion.answeredQuestion.hasNotes
                         if (selectedAnswer != null) {
                             answer.selected = true
                             if (answer.isFreeText) {

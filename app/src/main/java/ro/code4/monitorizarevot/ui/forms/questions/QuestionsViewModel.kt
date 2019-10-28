@@ -27,6 +27,7 @@ class QuestionsViewModel : BaseQuestionViewModel() {
                 answeredQuestion?.let {
                     questionWithAnswers.question.synced = it.answeredQuestion.synced
                     questionWithAnswers.question.savedLocally = it.answeredQuestion.savedLocally
+                    questionWithAnswers.question.hasNotes = it.answeredQuestion.hasNotes
                 }
                 QuestionListItem(questionWithAnswers.question)
             })

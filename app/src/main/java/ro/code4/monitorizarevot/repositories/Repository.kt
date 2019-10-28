@@ -268,6 +268,13 @@ class Repository : KoinComponent {
 
     fun getNotSyncedNotes(): LiveData<Int> = db.noteDao().getCountOfNotSyncedNotes()
 
+    fun updateQuestionWithNotes(questionId: Int) {
+        Observable.create<Unit> {
+            db.formDetailsDao().updateAnsweredQuestions(questionId)
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+    }
+
     fun saveNote(note: Note): Observable<ResponseBody> =
         Single.fromCallable { db.noteDao().save(note) }.toObservable().flatMap {
             note.id = it[0].toInt()
@@ -286,7 +293,6 @@ class Repository : KoinComponent {
         note.questionId?.let {
             questionId = 0
         }
-
 
         return apiInterface.postNote(
             body, note.countyCode.createMultipart("CountyCode"),

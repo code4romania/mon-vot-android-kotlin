@@ -78,6 +78,9 @@ class NoteViewModel : BaseFormViewModel() {
         //Writing to database is successful and we don't really need the result of the network call
         submitCompletedLiveData.call()
 
+        selectedQuestion?.id?.let {
+            repository.updateQuestionWithNotes(it)
+        }
     }
 
     fun getMediaFromGallery(uri: Uri?) {

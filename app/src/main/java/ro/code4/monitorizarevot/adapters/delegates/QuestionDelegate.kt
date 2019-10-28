@@ -55,6 +55,11 @@ class QuestionDelegate(
                 } else {
                     syncIcon.visibility = View.INVISIBLE
                 }
+                if (hasNotes) {
+                    noteIcon.visibility = View.VISIBLE
+                } else {
+                    noteIcon.visibility = View.INVISIBLE
+                }
                 questionCode.text = code
                 questionText.text = text
             }

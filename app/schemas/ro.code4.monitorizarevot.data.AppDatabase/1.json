@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "706aafe97c4c93dae9577aec51d2011e",
+    "identityHash": "399e7f57f7d5697768e341c4384c78a0",
     "entities": [
       {
         "tableName": "county",
@@ -331,7 +331,7 @@
       },
       {
         "tableName": "answered_question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formId` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStationNumber`) REFERENCES `polling_station`(`countyCode`, `idPollingStation`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formId` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `hasNotes` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStationNumber`) REFERENCES `polling_station`(`countyCode`, `idPollingStation`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -372,6 +372,12 @@
           {
             "fieldPath": "synced",
             "columnName": "synced",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasNotes",
+            "columnName": "hasNotes",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -607,7 +613,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '706aafe97c4c93dae9577aec51d2011e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '399e7f57f7d5697768e341c4384c78a0')"
     ]
   }
 }
