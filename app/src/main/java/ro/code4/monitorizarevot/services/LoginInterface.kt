@@ -9,7 +9,7 @@ import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 
 interface LoginInterface {
-    @POST("access/token")
+    @POST("access/authorize")
     fun login(@Body user: User): Observable<LoginResponse>
 
     @POST("notification/register")

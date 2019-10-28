@@ -28,13 +28,17 @@ import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
-class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.PermissionListener {
+class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.PermissionListener {
 
     override val layout: Int
         get() = R.layout.fragment_note
+    override val screenName: Int
+        get() = R.string.analytics_title_notes
+
     override val viewModel: NoteViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
     private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }

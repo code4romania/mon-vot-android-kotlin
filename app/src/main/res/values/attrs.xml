@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="primaryTextColor" format="reference" />
-    <attr name="buttonTextColor" format="reference" />
     <attr name="buttonColor" format="reference" />
 </resources>

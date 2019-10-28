@@ -14,7 +14,7 @@
     <color name="purple">#81175C</color>
     <color name="darkPurple">#352245</color>
     <color name="textLight">#FFFFFF</color>
-    <color name="buttonBgColor">#1281175C</color>
+    <color name="buttonBgColor">#81175C</color>
     <color name="divider">#E7E7E7</color>
     <color name="inputBorder">#DDDDDD</color>
     <color name="inputFill">#FCFCFC</color>

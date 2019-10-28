@@ -23,6 +23,7 @@ import ro.code4.monitorizarevot.ui.login.LoginActivity
 class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
         get() = R.layout.activity_main
+
     override val viewModel: MainViewModel by viewModel()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
