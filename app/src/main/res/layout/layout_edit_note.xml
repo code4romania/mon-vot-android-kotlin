@@ -50,11 +50,11 @@
 
         <Button
             android:id="@+id/addMediaButton"
-            style="@style/Button.Text.Purple"
+            style="@style/Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:icon="@drawable/ic_note_media"
             android:layout_marginTop="@dimen/big_margin"
-            android:drawableStart="@drawable/ic_note_media"
             android:text="@string/note_media"
             app:layout_constraintBottom_toTopOf="@id/submitButton"
             app:layout_constraintEnd_toEndOf="parent"
