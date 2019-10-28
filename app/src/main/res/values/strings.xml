@@ -23,10 +23,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
-    <string name="app_version">V%1$S</string>
+    <string name="app_version">v%1$S app developed by</string>
 
     <!-- General -->
-    <string name="developed_by">app developed by</string>
     <string name="please_wait">Please wait…</string>
     <string name="loading_label">Loading…</string>
     <string name="button_continue">Continue</string>
