@@ -7,6 +7,8 @@ const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
 const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
+const val PREFS_LANGUAGE_CODE = "PREFS_LANGUAGE_CODE"
+const val RO = "ro"
 
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
@@ -50,3 +52,6 @@ fun SharedPreferences.completedPollingStationConfig(value: Boolean = true) =
 
 fun SharedPreferences.hasCompletedOnboarding() = getBoolean(ONBOARDING_COMPLETED, false)
 fun SharedPreferences.completedOnboarding() = putBoolean(ONBOARDING_COMPLETED)
+
+fun SharedPreferences.getLanguage(): String = getString(PREFS_LANGUAGE_CODE, RO) ?: RO
+fun SharedPreferences.setLanguage(code: String) = putString(PREFS_LANGUAGE_CODE, code)

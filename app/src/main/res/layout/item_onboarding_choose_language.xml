@@ -35,7 +35,7 @@
         android:layout_marginEnd="@dimen/margin"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/topBackground"
-        tools:text="@string/onboarding_title_1" />
+        tools:text="@string/onboarding_title_choose_language" />
 
 
     <Spinner

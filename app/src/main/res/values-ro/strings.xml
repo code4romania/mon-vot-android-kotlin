@@ -96,7 +96,7 @@
     <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
-    <string name="polling_station">Secția $1%d $2%s</string>
+    <string name="polling_station">Secția %1$d %2$s</string>
 
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>
