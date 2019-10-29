@@ -9,7 +9,7 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.OnboardingChooseLanguageScreen
 import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
 import ro.code4.monitorizarevot.adapters.helper.OnboardingTutorialScreen
-import ro.code4.monitorizarevot.helper.completedOnboarding
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -17,6 +17,7 @@ import kotlin.collections.ArrayList
 class OnboardingViewModel : BaseViewModel() {
     private val app: Application by inject()
     private val preferences: SharedPreferences by inject()
+    private val languageChangedLiveData = SingleLiveEvent<Void>()
     private val onboardingLiveData = MutableLiveData<ArrayList<OnboardingScreen>>().apply {
         val screens = ArrayList<OnboardingScreen>()
         app.resources.getStringArray(R.array.languages)
@@ -53,10 +54,18 @@ class OnboardingViewModel : BaseViewModel() {
         postValue(screens)
     }
 
-    private fun getLocales(codes: Array<String>): List<Locale> = codes.map { Locale(it) }
+    private fun getLocales(codes: Array<String>): List<Locale> = codes.map { it.getLocale() }
 
+    fun languageChanged(): LiveData<Void> = languageChangedLiveData
     fun onboarding(): LiveData<ArrayList<OnboardingScreen>> = onboardingLiveData
     fun onboardingCompleted() {
         preferences.completedOnboarding()
+    }
+
+    fun getSelectedLocale(): Locale = preferences.getLocaleCode().getLocale()
+    fun changeLanguage(locale: Locale) {
+        val code = "${locale.language}_${locale.country}"
+        preferences.setLocaleCode(code)
+        languageChangedLiveData.call()
     }
 }

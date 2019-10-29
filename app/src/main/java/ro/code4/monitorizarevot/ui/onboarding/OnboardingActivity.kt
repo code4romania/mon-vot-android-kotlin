@@ -12,8 +12,12 @@ import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
+import java.util.*
 
-class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>() {
+class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>(),
+    OnboardingAdapter.OnLanguageChangedListener {
+
+
     override val layout: Int
         get() = R.layout.activity_onboarding
     override val screenName: Int
@@ -24,6 +28,10 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>() {
         super.onCreate(savedInstanceState)
         viewModel.onboarding().observe(this, Observer {
             setData(it)
+        })
+        viewModel.languageChanged().observe(this, Observer {
+            finish()
+            startActivity(intent)
         })
         backButton.setOnClickListener {
             onboardingViewPager.setCurrentItem(onboardingViewPager.currentItem - 1, true)
@@ -54,9 +62,13 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>() {
     }
 
     private fun setData(screens: ArrayList<OnboardingScreen>) {
-        onboardingAdapter = OnboardingAdapter(this, screens)
+        onboardingAdapter = OnboardingAdapter(this, screens, viewModel.getSelectedLocale(), this)
         onboardingViewPager.adapter = onboardingAdapter
         onboardingViewPager.currentItem = 0
         indicator.setViewPager(onboardingViewPager)
+    }
+
+    override fun onLanguageChanged(locale: Locale) {
+        viewModel.changeLanguage(locale)
     }
 }

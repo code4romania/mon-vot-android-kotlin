@@ -10,7 +10,7 @@ object LocaleManager {
     fun wrapContext(context: Context): Context {
 
         val savedLocale =
-            Locale(PreferenceManager.getDefaultSharedPreferences(context).getLanguage())
+            PreferenceManager.getDefaultSharedPreferences(context).getLocaleCode().getLocale()
 
 
         // as part of creating a new context that contains the new locale we also need to override the default locale.

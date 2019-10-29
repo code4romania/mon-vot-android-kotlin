@@ -375,3 +375,12 @@ fun String.toHtml(): Spanned? {
         Html.fromHtml(this)
     }
 }
+
+fun String.getLocale(): Locale {
+    val parts = split("_")
+    return if (parts.size == 2) {
+        Locale(parts[0], parts[1])
+    } else {
+        Locale(parts[0])
+    }
+}

@@ -26,8 +26,8 @@ class LanguageAdapter(context: Context, private val languages: List<Locale>) :
         val view = LayoutInflater.from(context)
             .inflate(R.layout.item_language, parent, false)
 
-        val language = languages[position]
-        (view as TextView).text = language.displayLanguage
+        val locale = languages[position]
+        (view as TextView).text = locale.getDisplayLanguage(locale).capitalize()
         return view
     }
 }
