@@ -11,7 +11,7 @@ import java.util.*
 
 
 class LanguageAdapter(context: Context, private val languages: List<Locale>) :
-    ArrayAdapter<Locale>(context, R.layout.support_simple_spinner_dropdown_item) {
+    ArrayAdapter<Locale>(context, 0, languages) {
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         return createItemView(position, parent)
@@ -24,7 +24,7 @@ class LanguageAdapter(context: Context, private val languages: List<Locale>) :
     private fun createItemView(position: Int, parent: ViewGroup): View {
 
         val view = LayoutInflater.from(context)
-            .inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
+            .inflate(R.layout.item_language, parent, false)
 
         val language = languages[position]
         (view as TextView).text = language.displayLanguage

@@ -12,6 +12,7 @@
         <item name="buttonColor">@color/buttonBgColor</item>
         <item name="colorButtonNormal">@color/buttonBgColor</item>
         <item name="android:colorButtonNormal">@color/buttonBgColor</item>
+        <item name="inputBackgroundColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,6 +33,7 @@
         <item name="colorAccent">@color/darkPurple</item>
         <item name="buttonColor">@color/darkPurple</item>
         <item name="android:windowBackground">@color/bgColorOnboarding</item>
+        <item name="inputBackgroundColor">@color/white</item>
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">

@@ -148,11 +148,11 @@ dependencies {
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 
-    implementation 'com.github.adrielcafe:PageIndicatorView:1.0.6'
+    implementation 'me.relex:circleindicator:2.1.4'
 
     implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
 
-    implementation "androidx.viewpager2:viewpager2:1.0.0-alpha01"
+    implementation "androidx.viewpager2:viewpager2:1.0.0-rc01"
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics

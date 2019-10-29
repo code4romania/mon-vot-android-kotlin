@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toTopOf="@id/nextButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.rd.PageIndicatorView2
+    <me.relex.circleindicator.CircleIndicator3
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/indicator"
@@ -21,10 +21,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/nextButton"
         app:layout_constraintBottom_toBottomOf="@id/nextButton"
-        app:piv_animationType="worm"
-        app:piv_dynamicCount="true"
-        app:piv_selectedColor="?attr/colorAccent"
-        app:piv_unselectedColor="@color/unselectedColorOnboarding" />
+        app:ci_animator="@animator/animate_alpha"
+        app:ci_drawable="@drawable/indicator_selected"
+        app:ci_drawable_unselected="@drawable/indicator_default"
+        app:ci_height="@dimen/circle_indicator"
+        app:ci_margin="@dimen/xsmall_margin"
+        app:ci_width="@dimen/circle_indicator" />
 
 
     <Button

@@ -49,7 +49,6 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>() {
                 nextButton.text = getString(nextButtonTextResId)
                 nextButton.requestLayout()
                 backButton.visibility = backButtonVisibility
-                indicator.setSelected(position) //TODO find a way to fix this shit
             }
         })
     }
