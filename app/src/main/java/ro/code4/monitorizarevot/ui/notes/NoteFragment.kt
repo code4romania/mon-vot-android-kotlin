@@ -173,7 +173,7 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
         }
 
         if (permanentlyDenied.isNotEmpty()) {
-            showPermissionRationale(isDenied = true)
+            showPermissionRationale(true)
         } else {
             val denied = permissions.filterIndexed { index, s ->
                 grantResults[index] == PackageManager.PERMISSION_DENIED
@@ -185,8 +185,8 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
         }
     }
 
-    private fun showPermissionRationale(isDenied: Boolean = false) {
-        val (titleResId, message, positiveButton, positiveAction) = if (isDenied) {
+    private fun showPermissionRationale(isPermanentlyDenied: Boolean = false) {
+        val (titleResId, message, positiveButton, positiveAction) = if (isPermanentlyDenied) {
             arrayOf(
                 R.string.permission_permanently_denied_title,
                 R.string.permission_permanently_denied_msg,
@@ -204,7 +204,7 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
                 R.string.permission_denied_ok_button,
                 object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
-                        checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        permissionManager.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     }
                 })
 
@@ -227,7 +227,7 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
         vararg allPermissions: String,
         permissionsDenied: List<String>
     ) {
-        //todo show explanation
+        showPermissionRationale()
     }
 
     private fun openAppSettings() {

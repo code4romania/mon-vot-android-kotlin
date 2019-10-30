@@ -13,7 +13,7 @@ open class PermissionManager(private val activity: Activity, private val fragmen
         val PERMISSION_REQUEST = 320
     }
 
-    fun hasPermissions(vararg permissionString: String): Boolean = permissionString.all {
+    private fun hasPermissions(vararg permissionString: String): Boolean = permissionString.all {
         ContextCompat.checkSelfPermission(
             activity,
             it
@@ -43,15 +43,16 @@ open class PermissionManager(private val activity: Activity, private val fragmen
                 })
             return
         }
+        requestPermissions(*permissionString)
+    }
+
+    fun requestPermissions(vararg permissionString: String) {
+
         if (fragment != null) {
             fragment.requestPermissions(permissionString, PERMISSION_REQUEST)
         } else {
             ActivityCompat.requestPermissions(activity, permissionString, PERMISSION_REQUEST)
         }
-    }
-
-    fun requestPermissions(vararg permissionString: String) {
-        ActivityCompat.requestPermissions(activity, permissionString, PERMISSION_REQUEST)
     }
 
 

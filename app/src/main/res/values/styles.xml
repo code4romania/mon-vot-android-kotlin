@@ -36,7 +36,7 @@
         <item name="inputBackgroundColor">@color/white</item>
     </style>
 
-    <style name="AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+    <style name="AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="colorAccent">@color/purple</item>
     </style>
 
