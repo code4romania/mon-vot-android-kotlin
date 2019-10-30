@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_onboarding.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.OnboardingAdapter
 import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
@@ -19,9 +20,9 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>(),
 
 
     override val layout: Int
-        get() = ro.code4.monitorizarevot.R.layout.activity_onboarding
+        get() = R.layout.activity_onboarding
     override val screenName: Int
-        get() = ro.code4.monitorizarevot.R.string.analytics_title_onboarding
+        get() = R.string.analytics_title_onboarding
     override val viewModel: OnboardingViewModel by viewModel()
     private lateinit var onboardingAdapter: OnboardingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +51,14 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>(),
                 val lastIdx = onboardingAdapter.itemCount - 1
                 val (nextButtonTextResId, backButtonVisibility) = when {
                     position == 0 -> Pair(
-                        ro.code4.monitorizarevot.R.string.onboarding_next,
+                        R.string.onboarding_next,
                         View.GONE
                     )
                     lastIdx == position -> Pair(
-                        ro.code4.monitorizarevot.R.string.onboarding_to_app,
+                        R.string.onboarding_to_app,
                         View.VISIBLE
                     )
-                    else -> Pair(ro.code4.monitorizarevot.R.string.onboarding_next, View.VISIBLE)
+                    else -> Pair(R.string.onboarding_next, View.VISIBLE)
                 }
                 nextButton.text = getString(nextButtonTextResId)
                 nextButton.requestLayout()
