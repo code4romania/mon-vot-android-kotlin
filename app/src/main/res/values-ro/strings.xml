@@ -121,4 +121,13 @@
     <!-- Images -->
     <string name="content_icon_building">Building icon</string>
 
+    <!-- Permissions-->
+    <string name="permission_permanently_denied_title">Permisiune necesară</string>
+    <string name="permission_permanently_denied_msg">Pentru a utiliza această funcționalitate, trebuie să modificați permisiunile aplicației. Vă rugăm să deschideți meniul Setări și să acordați acces la permisiunile solicitate.</string>
+    <string name="permission_permanently_denied_settings_button">Setări</string>
+
+    <string name="permission_denied_title">Permisiune necesară</string>
+    <string name="permission_denied_msg">Pentru a utiliza această funcționalitate, avem nevoie de permisiunea ta pentru a accesa spațiul de stocare.</string>
+    <string name="permission_denied_ok_button">OK</string>
+    <string name="permission_denied_cancel_button">Anulare</string>
 </resources>
