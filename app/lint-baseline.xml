@@ -1113,51 +1113,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.string.question_complete` appears to be unused"
-        errorLine1="    &lt;string name=&quot;question_complete&quot;>Completed&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="102"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="105"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.question_incomplete` appears to be unused"
-        errorLine1="    &lt;string name=&quot;question_incomplete&quot;>Incomplete&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="103"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="106"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.question_notes` appears to be unused"
-        errorLine1="    &lt;string name=&quot;question_notes&quot;>Messages&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="104"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="107"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.string.question_finish` appears to be unused"
         errorLine1="    &lt;string name=&quot;question_finish&quot;>Send&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
@@ -1168,81 +1123,6 @@
         <location
             file="src/main/res/values-ro/strings.xml"
             line="110"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.question_confirmation_message` appears to be unused"
-        errorLine1="    &lt;string name=&quot;question_confirmation_message&quot;>Answer saved&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="108"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="111"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.questions_synced` appears to be unused"
-        errorLine1="    &lt;string name=&quot;questions_synced&quot;>Answers synced with the server&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="109"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="112"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.note_title` appears to be unused"
-        errorLine1="    &lt;string name=&quot;note_title&quot;>Add a message&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="112"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="115"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.note_description` appears to be unused"
-        errorLine1="    &lt;string name=&quot;note_description&quot;>Your message&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="113"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="116"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.note_saved` appears to be unused"
-        errorLine1="    &lt;string name=&quot;note_saved&quot;>Note saved&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="116"
-            column="13"/>
-        <location
-            file="src/main/res/values-ro/strings.xml"
-            line="119"
             column="13"/>
     </issue>
 

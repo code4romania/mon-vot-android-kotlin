@@ -8,11 +8,15 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_guide.*
 import org.koin.android.ext.android.inject
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 
-class GuideFragment : BaseFragment<GuideViewModel>() {
+class GuideFragment : BaseAnalyticsFragment<GuideViewModel>() {
     override val layout: Int
         get() = R.layout.fragment_guide
+    override val screenName: Int
+        get() = R.string.analytics_title_guide
+
     override val viewModel: GuideViewModel by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

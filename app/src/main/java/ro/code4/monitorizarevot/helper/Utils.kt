@@ -375,3 +375,17 @@ fun String.toHtml(): Spanned? {
         Html.fromHtml(this)
     }
 }
+
+/*
+    The locale string can be:
+    - [language_code]
+    - [language_code]_[country_code]
+ */
+fun String.getLocale(): Locale {
+    val parts = split("_")
+    return if (parts.size == 2) {
+        Locale(parts[0], parts[1])
+    } else {
+        Locale(parts[0])
+    }
+}
