@@ -14,17 +14,11 @@ open class PermissionManager(private val activity: Activity, private val fragmen
     }
 
     private fun hasPermissions(vararg permissionString: String): Boolean = permissionString.all {
-        ContextCompat.checkSelfPermission(
-            activity,
-            it
-        ) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(activity, it) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun isAnyDenied(vararg permissionString: String): Boolean = permissionString.any {
-        ContextCompat.checkSelfPermission(
-            activity,
-            it
-        ) == PackageManager.PERMISSION_DENIED
+        ContextCompat.checkSelfPermission(activity, it) == PackageManager.PERMISSION_DENIED
     }
 
 
