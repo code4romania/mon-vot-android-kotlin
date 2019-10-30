@@ -69,8 +69,8 @@
     <string name="polling_station_question_gender">Preşedintele secţiei este</string>
     <string name="polling_station_answer_man">Bărbat</string>
     <string name="polling_station_answer_woman">Femeie</string>
-    <string name="polling_station_question_enter">Data Și ora sosirii în secţie</string>
-    <string name="polling_station_question_leave">Data Și ora plecării din secţie</string>
+    <string name="polling_station_question_enter">Data și ora sosirii în secţie</string>
+    <string name="polling_station_question_leave">Data și ora plecării din secţie</string>
     <string name="polling_station_choose_date_enter">Alege data sosirii</string>
     <string name="polling_station_choose_time_enter">Alege ora sosirii</string>
     <string name="polling_station_choose_date_leave">Alege data plecării</string>
