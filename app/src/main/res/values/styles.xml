@@ -20,7 +20,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -197,13 +197,24 @@
         <item name="cardBackgroundColor">@color/cardColor</item>
     </style>
 
-    <style name="NavigationMenuItem">
+    <style name="NavigationView" parent="Widget.Design.NavigationView">
+        <item name="itemTextAppearance">@style/NavigationMenuItem</item>
+        <item name="itemIconTint">@color/menu_icon_selector</item>
+        <item name="itemTextColor">?attr/primaryTextColor</item>
+        <item name="itemHorizontalPadding">@dimen/xbig_margin</item>
+        <item name="itemIconPadding">@dimen/margin</item>
+        <item name="itemPadding">@dimen/margin</item>
+        <item name="itemIconSize">@dimen/sync_icon_size</item>
+        <item name="android:background">@color/menuBackground</item>
+    </style>
+
+    <style name="NavigationMenuItem" parent="Text">
         <item name="android:background">?android:selectableItemBackground</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:padding">16dp</item>
-        <item name="android:textColor">@color/navigationMenuItemText</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
