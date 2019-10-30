@@ -23,6 +23,7 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_back">Back</string>
     <string name="onboarding_to_app">Go to app</string>
+    <string name="onboarding_title_choose_language">Choose your language</string>
     <string name="onboarding_title_1">Pick your voting station</string>
     <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Mention the voting station you are in, choosing the county and it’s number.<br/><br/><b>STEP 2:</b><br/>Add some details (urban/ rural area, details about the section president, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
     <string name="onboarding_title_2">Fill in the forms</string>
