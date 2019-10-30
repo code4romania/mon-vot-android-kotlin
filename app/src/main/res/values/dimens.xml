@@ -60,6 +60,6 @@
     <dimen name="progress_height">4dp</dimen>
 
     <dimen name="login_logo_icon_size">26dp</dimen>
-    <dimen name="sync_icon_size">16dp</dimen>
+    <dimen name="small_icon_size">16dp</dimen>
     <dimen name="circle_indicator">10dp</dimen>
 </resources>
