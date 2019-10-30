@@ -23,10 +23,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
-    <string name="app_version">V%1$S</string>
+    <string name="app_version">v%1$S app developed by</string>
 
     <!-- General -->
-    <string name="developed_by">app developed by</string>
     <string name="please_wait">Please wait…</string>
     <string name="loading_label">Loading…</string>
     <string name="button_continue">Continue</string>
@@ -55,8 +54,7 @@
     <string name="menu_change_polling_station">Change the polling station</string>
     <string name="menu_guide">Observer\'s guide</string>
     <string name="menu_call">Call the Hotline</string>
-    <string name="section">Section</string>
-    <string name="support">Support</string>
+    <string name="menu_settings">Settings</string>
 
     <!-- Images -->
     <string name="content_icon_building">Building icon</string>

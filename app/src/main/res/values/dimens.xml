@@ -1,8 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="big_margin">24dp</dimen>
     <dimen name="xbig_margin">32dp</dimen>
@@ -55,6 +53,7 @@
     <dimen name="question_overview_item_text">14sp</dimen>
     <dimen name="question_card_height">200dp</dimen>
     <dimen name="form_icon_code">72sp</dimen>
+    <dimen name="big_elevation">16dp</dimen>
     <dimen name="elevation">4dp</dimen>
     <dimen name="small_elevation">2dp</dimen>
     <dimen name="xsmall_elevation">1dp</dimen>
