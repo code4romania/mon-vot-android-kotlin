@@ -9,9 +9,9 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@color/backgroundLight</item>
         <item name="primaryTextColor">@color/textPrimary</item>
-        <item name="buttonColor">@color/buttonBgColor</item>
-        <item name="colorButtonNormal">@color/buttonBgColor</item>
-        <item name="android:colorButtonNormal">@color/buttonBgColor</item>
+        <item name="buttonColor">@color/purple</item>
+        <item name="colorButtonNormal">@color/purple</item>
+        <item name="android:colorButtonNormal">@color/purple</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,6 +32,10 @@
         <item name="colorAccent">@color/darkPurple</item>
         <item name="buttonColor">@color/darkPurple</item>
         <item name="android:windowBackground">@color/bgColorOnboarding</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="colorAccent">@color/purple</item>
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">

@@ -5,8 +5,11 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
@@ -29,7 +32,6 @@ import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
-import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.PermissionListener {
@@ -147,10 +149,70 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
         showPopupMenu()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PermissionManager.PERMISSION_REQUEST && grantResults.isNotEmpty()) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED } && grantResults.size == permissions.size) {
+                onPermissionsGranted()
+            } else {
+                checkDeniedPermissions(permissions, grantResults)
+            }
+        }
+
+    }
+
+    private fun checkDeniedPermissions(permissions: Array<out String>, grantResults: IntArray) {
+        val permanentlyDenied = permissions.filterIndexed { index, s ->
+            grantResults[index] == PackageManager.PERMISSION_DENIED
+                    && !permissionManager.checkShouldShowRequestPermissionsRationale(s)
+        }
+
+        if (permanentlyDenied.isNotEmpty()) {
+            showPermissionRationale(isDenied = true)
+        } else {
+            val denied = permissions.filterIndexed { index, s ->
+                grantResults[index] == PackageManager.PERMISSION_DENIED
+                        && permissionManager.checkShouldShowRequestPermissionsRationale(s)
+            }
+            if (denied.isNotEmpty()) {
+                showPermissionRationale(permissions, denied)
+            }
+        }
+    }
+
+    private fun showPermissionRationale(
+        isDenied: Boolean = false
+    ) {
+//        val (title, message, positiveButton, positivieButtonAction) = if(isDenied){
+//        return R.string.permission_denied_title)
+//                .setMessage(R.string.permission_denied_msg)
+//                .setPositiveButton(R.string.permission_denied_settings_button) { _, _ ->
+//                    openAppSettings()
+//                }
+//                .show()
+//        }
+//        }
+    }
+
     override fun onPermissionDenied(
         vararg allPermissions: String,
         permissionsDenied: List<String>
     ) {
         //todo show explanation
     }
+
+    private fun openAppSettings() {
+        activity?.apply {
+            startActivity(
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", packageName, null)
+                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_HISTORY)
+            )
+        }
+    }
+}
 }
