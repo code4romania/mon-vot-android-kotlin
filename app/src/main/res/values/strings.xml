@@ -126,7 +126,12 @@
 
 
     <!--    Permissions-->
+    <string name="permission_permanently_denied_title">Permission needed</string>
+    <string name="permission_permanently_denied_msg">For using this function you have to change the app permissions. Please open the Settings menu and grant access to the requested permissions.</string>
+    <string name="permission_permanently_denied_settings_button">Settings</string>
+
     <string name="permission_denied_title">Permission needed</string>
-    <string name="permission_denied_msg">For using this function you have to change the app permissions. Please open the Settings menu and grant access to the requested permissions.</string>
-    <string name="permission_denied_settings_button">Settings</string>
+    <string name="permission_denied_msg">For using this function we need your permission to access the storage.</string>
+    <string name="permission_denied_ok_button">OK</string>
+    <string name="permission_denied_cancel_button">Cancel</string>
 </resources>
