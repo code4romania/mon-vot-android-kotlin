@@ -50,8 +50,7 @@
     <string name="menu_logout">Delogare</string>
 
     <!-- Polling Station selection -->
-    <string name="polling_station_title">Alege secția</string>
-    <string name="polling_station_subtitle">în care te afli</string>
+    <string name="polling_station_title">Alege secția în care te afli</string>
     <string name="polling_station_county">Județ</string>
     <string name="polling_station_number">Număr secție</string>
     <string name="polling_station_spinner_choose">Alege</string>

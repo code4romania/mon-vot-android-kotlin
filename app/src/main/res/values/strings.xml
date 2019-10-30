@@ -50,8 +50,7 @@
     <string name="menu_logout">Logout</string>
 
     <!-- Polling Station selection -->
-    <string name="polling_station_title">Choose the polling station</string>
-    <string name="polling_station_subtitle">you are in</string>
+    <string name="polling_station_title">Choose the polling station you are in</string>
     <string name="polling_station_county">County/District</string>
     <string name="polling_station_number">Polling station number</string>
     <string name="polling_station_spinner_choose">Choose</string>

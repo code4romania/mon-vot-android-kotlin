@@ -24,7 +24,7 @@ class LanguageAdapter(context: Context, private val languages: List<Locale>) :
     private fun createItemView(position: Int, parent: ViewGroup): View {
 
         val view = LayoutInflater.from(context)
-            .inflate(R.layout.item_language, parent, false)
+            .inflate(R.layout.item_spinner, parent, false)
 
         val locale = languages[position]
         (view as TextView).text = locale.getDisplayLanguage(locale).capitalize()
