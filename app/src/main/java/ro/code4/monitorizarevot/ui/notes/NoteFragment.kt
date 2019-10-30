@@ -134,13 +134,13 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_RECORD_VIDEO, REQUEST_CODE_TAKE_PHOTO -> {
                     viewModel.addMediaToGallery()
                 }
                 REQUEST_CODE_GALLERY -> {
-                    viewModel.getMediaFromGallery(data.data)
+                    viewModel.getMediaFromGallery(data?.data)
                 }
             }
         }
