@@ -56,7 +56,7 @@
             <ImageView
                 android:id="@+id/code4logo"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/sync_progress_icon_size"
+                android:layout_height="@dimen/login_logo_icon_size"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_code4"
                 app:layout_constraintEnd_toEndOf="parent"

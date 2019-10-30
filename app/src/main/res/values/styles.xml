@@ -122,6 +122,7 @@
 
     <style name="Text.Sync">
         <item name="android:textColor">@color/syncProgress</item>
+        <item name="android:alpha">0.4</item>
         <item name="android:textSize">12sp</item>
     </style>
 
