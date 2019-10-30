@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.helper
 
 import android.content.SharedPreferences
+import ro.code4.monitorizarevot.BuildConfig
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
@@ -8,7 +9,7 @@ const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
 const val PREFS_LANGUAGE_CODE = "PREFS_LANGUAGE_CODE"
-const val RO = "ro_RO"
+
 
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
@@ -53,5 +54,6 @@ fun SharedPreferences.completedPollingStationConfig(value: Boolean = true) =
 fun SharedPreferences.hasCompletedOnboarding() = getBoolean(ONBOARDING_COMPLETED, false)
 fun SharedPreferences.completedOnboarding() = putBoolean(ONBOARDING_COMPLETED)
 
-fun SharedPreferences.getLocaleCode(): String = getString(PREFS_LANGUAGE_CODE, RO) ?: RO
+fun SharedPreferences.getLocaleCode(): String =
+    getString(PREFS_LANGUAGE_CODE, BuildConfig.PREFERRED_LOCALE) ?: BuildConfig.PREFERRED_LOCALE
 fun SharedPreferences.setLocaleCode(code: String) = putString(PREFS_LANGUAGE_CODE, code)

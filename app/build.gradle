@@ -54,6 +54,7 @@ android {
             variant.buildConfigField "String", "GUIDE_URL", "\"" + getKey(variant.buildType.name, "guideUrl") + "\""
             variant.buildConfigField "String", "ORGANISATION_WEB_URL", "\"" + getKey(variant.buildType.name, "organisationWebUrl") + "\""
             variant.buildConfigField "String", "SERVICE_CENTER_PHONE_NUMBER", "\"" + getKey(variant.buildType.name, "serviceCenterPhoneNumber") + "\""
+            variant.buildConfigField "String", "PREFERRED_LOCALE", "\"" + getKey(variant.buildType.name, "preferredLocale") + "\""
 
             def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
             def buildType = "${variant.buildType.name.capitalize()}"

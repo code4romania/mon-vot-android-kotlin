@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_onboarding.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.OnboardingAdapter
 import ro.code4.monitorizarevot.adapters.helper.OnboardingScreen
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
@@ -14,14 +13,15 @@ import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import java.util.*
 
+
 class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>(),
     OnboardingAdapter.OnLanguageChangedListener {
 
 
     override val layout: Int
-        get() = R.layout.activity_onboarding
+        get() = ro.code4.monitorizarevot.R.layout.activity_onboarding
     override val screenName: Int
-        get() = R.string.analytics_title_onboarding
+        get() = ro.code4.monitorizarevot.R.string.analytics_title_onboarding
     override val viewModel: OnboardingViewModel by viewModel()
     private lateinit var onboardingAdapter: OnboardingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +30,7 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>(),
             setData(it)
         })
         viewModel.languageChanged().observe(this, Observer {
-            finish()
-            startActivity(intent)
+            recreate()
         })
         backButton.setOnClickListener {
             onboardingViewPager.setCurrentItem(onboardingViewPager.currentItem - 1, true)
@@ -50,9 +49,15 @@ class OnboardingActivity : BaseAnalyticsActivity<OnboardingViewModel>(),
                 super.onPageSelected(position)
                 val lastIdx = onboardingAdapter.itemCount - 1
                 val (nextButtonTextResId, backButtonVisibility) = when {
-                    position == 0 -> Pair(R.string.onboarding_next, View.GONE)
-                    lastIdx == position -> Pair(R.string.onboarding_to_app, View.VISIBLE)
-                    else -> Pair(R.string.onboarding_next, View.VISIBLE)
+                    position == 0 -> Pair(
+                        ro.code4.monitorizarevot.R.string.onboarding_next,
+                        View.GONE
+                    )
+                    lastIdx == position -> Pair(
+                        ro.code4.monitorizarevot.R.string.onboarding_to_app,
+                        View.VISIBLE
+                    )
+                    else -> Pair(ro.code4.monitorizarevot.R.string.onboarding_next, View.VISIBLE)
                 }
                 nextButton.text = getString(nextButtonTextResId)
                 nextButton.requestLayout()
