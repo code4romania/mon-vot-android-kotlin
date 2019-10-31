@@ -75,7 +75,6 @@ fun FragmentManager.replaceFragment(
 
 fun AppCompatActivity.changePollingStation() {
     startActivity(Intent(this, PollingStationActivity::class.java))
-    finishAffinity()
 }
 
 fun Calendar.updateTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
