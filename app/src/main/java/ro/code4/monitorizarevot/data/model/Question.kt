@@ -45,7 +45,6 @@ class Question {
     @Ignore
     var synced = false
 
-    @Expose
     var hasNotes = false
 
     override fun equals(other: Any?): Boolean =
