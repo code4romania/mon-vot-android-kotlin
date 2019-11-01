@@ -21,9 +21,9 @@
             android:layout_marginEnd="@dimen/margin"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
+            android:src="@drawable/ic_note_pen"
             app:layout_constraintEnd_toStartOf="@id/syncIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_note_pen" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/syncIcon"
