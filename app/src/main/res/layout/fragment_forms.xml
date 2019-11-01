@@ -8,6 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:paddingStart="@dimen/margin"
         android:paddingTop="@dimen/big_margin"
         android:paddingEnd="@dimen/margin"
@@ -17,24 +19,24 @@
             android:id="@+id/formsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             android:scrollbars="none"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_form_section"
             tools:itemCount="7"
-            />
+            tools:listitem="@layout/item_form_section" />
 
         <ImageView
             android:id="@+id/syncIcon"
-            android:layout_width="@dimen/sync_progress_icon_width"
-            android:layout_height="@dimen/sync_progress_icon_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
+            android:contentDescription="@null"
             android:src="@drawable/ic_sync_todo"
             app:layout_constraintBottom_toTopOf="@+id/syncInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/formsList"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:contentDescription="@null" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/syncInfo"

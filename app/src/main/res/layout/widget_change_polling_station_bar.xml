@@ -12,8 +12,9 @@
     <ImageView
         android:id="@+id/pollingStationIcon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/small_icon_size"
         android:contentDescription="@string/content_icon_building"
+        android:adjustViewBounds="true"
         android:src="@drawable/ic_polling_station"
         app:layout_constraintBottom_toBottomOf="@id/pollingStationBarText"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +35,8 @@
 
     <Button
         android:id="@+id/pollingStationBarButton"
-        style="@style/Button.Link"
+        style="@style/Button.Text.PrimaryColor"
+        android:theme="@style/Button.Text.PrimaryColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/polling_station_change"

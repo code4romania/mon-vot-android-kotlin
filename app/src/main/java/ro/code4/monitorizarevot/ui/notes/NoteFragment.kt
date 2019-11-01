@@ -4,12 +4,17 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
@@ -28,13 +33,16 @@ import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
-import ro.code4.monitorizarevot.ui.base.BaseFragment
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
-class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.PermissionListener {
+class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.PermissionListener {
 
     override val layout: Int
         get() = R.layout.fragment_note
+    override val screenName: Int
+        get() = R.string.analytics_title_notes
+
     override val viewModel: NoteViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
     private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
@@ -126,13 +134,13 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_RECORD_VIDEO, REQUEST_CODE_TAKE_PHOTO -> {
                     viewModel.addMediaToGallery()
                 }
                 REQUEST_CODE_GALLERY -> {
-                    viewModel.getMediaFromGallery(data.data)
+                    viewModel.getMediaFromGallery(data?.data)
                 }
             }
         }
@@ -143,10 +151,93 @@ class NoteFragment : BaseFragment<NoteViewModel>(), PermissionManager.Permission
         showPopupMenu()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PermissionManager.PERMISSION_REQUEST && grantResults.isNotEmpty()) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED } && grantResults.size == permissions.size) {
+                onPermissionsGranted()
+            } else {
+                checkDeniedPermissions(permissions, grantResults)
+            }
+        }
+
+    }
+
+    private fun checkDeniedPermissions(permissions: Array<out String>, grantResults: IntArray) {
+        val permanentlyDenied = permissions.filterIndexed { index, s ->
+            grantResults[index] == PackageManager.PERMISSION_DENIED
+                    && !permissionManager.checkShouldShowRequestPermissionsRationale(s)
+        }
+
+        if (permanentlyDenied.isNotEmpty()) {
+            showPermissionRationale(true)
+        } else {
+            val denied = permissions.filterIndexed { index, s ->
+                grantResults[index] == PackageManager.PERMISSION_DENIED
+                        && permissionManager.checkShouldShowRequestPermissionsRationale(s)
+            }
+            if (denied.isNotEmpty()) {
+                showPermissionRationale()
+            }
+        }
+    }
+
+    private fun showPermissionRationale(isPermanentlyDenied: Boolean = false) {
+        val (titleResId, message, positiveButton, positiveAction) = if (isPermanentlyDenied) {
+            arrayOf(
+                R.string.permission_permanently_denied_title,
+                R.string.permission_permanently_denied_msg,
+                R.string.permission_permanently_denied_settings_button,
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        openAppSettings()
+                    }
+
+                })
+        } else {
+            arrayOf(
+                R.string.permission_denied_title,
+                R.string.permission_denied_msg,
+                R.string.permission_denied_ok_button,
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        permissionManager.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    }
+                })
+
+        }
+        AlertDialog.Builder(mContext, R.style.AlertDialog)
+            .setTitle(titleResId as Int)
+            .setMessage(message as Int)
+            .setNegativeButton(
+                R.string.permission_denied_cancel_button
+            ) { p0, _ -> p0.dismiss() }
+            .setPositiveButton(
+                positiveButton as Int,
+                positiveAction as DialogInterface.OnClickListener
+            )
+            .show()
+
+    }
+
     override fun onPermissionDenied(
         vararg allPermissions: String,
         permissionsDenied: List<String>
     ) {
-        //todo show explanation
+        showPermissionRationale()
+    }
+
+    private fun openAppSettings() {
+        activity?.apply {
+            startActivity(
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", packageName, null)
+                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_HISTORY)
+            )
+        }
     }
 }

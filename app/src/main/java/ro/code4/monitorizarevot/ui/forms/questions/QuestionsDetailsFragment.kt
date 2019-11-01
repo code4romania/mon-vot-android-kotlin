@@ -21,19 +21,21 @@ import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.addOnLayoutChangeListenerForGalleryEffect
 import ro.code4.monitorizarevot.helper.addOnScrollListenerForGalleryEffect
-import ro.code4.monitorizarevot.ui.base.BaseFragment
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 
-class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
+class QuestionsDetailsFragment : BaseAnalyticsFragment<QuestionsDetailsViewModel>(),
     QuestionDetailsAdapter.OnClickListener {
     override fun addNoteFor(question: Question) {
         baseViewModel.selectedNotes(question)
     }
 
-
     override val layout: Int
         get() = R.layout.fragment_question_details
+    override val screenName: Int
+        get() = R.string.analytics_title_question
+
     override val viewModel: QuestionsDetailsViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
     private lateinit var adapter: QuestionDetailsAdapter
@@ -74,6 +76,8 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
             root.requestFocus()
             if (currentPosition < adapter.itemCount - 1) {//todo check if you can remove this, in theory the button shouldn't be visible when currentPosition ==  adapter.itemCount - 1
                 list.smoothScrollToPosition(currentPosition + 1)
+            } else {
+                activity?.onBackPressed()
             }
         }
         previousQuestionBtn.setOnClickListener {
@@ -98,7 +102,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
                         for (pos in start..end)
                             viewModel.saveAnswer(adapter.getItem(pos))
                     }
-                    setVisibilityOnButtons()
+                    setButtons()
                 }
             }
 
@@ -106,15 +110,22 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
 
     }
 
-    private fun setVisibilityOnButtons() {
-        when (currentPosition) {
-            0 -> previousQuestionBtn.visibility = View.GONE
-            adapter.itemCount - 1 -> nextQuestionBtn.visibility = View.GONE
-            else -> {
-                previousQuestionBtn.visibility = View.VISIBLE
-                nextQuestionBtn.visibility = View.VISIBLE
-            }
+    private fun setButtons() {
+        val (previousBtnVisibility, nextBtnResId) = when {
+            currentPosition == 0 && adapter.itemCount - 1 > 0 -> Pair(
+                View.GONE,
+                R.string.question_next
+            )
+            currentPosition == 0 && adapter.itemCount - 1 == 0 -> Pair(
+                View.GONE,
+                R.string.question_finish
+            )
+            currentPosition == adapter.itemCount - 1 -> Pair(View.VISIBLE, R.string.question_finish)
+            else -> Pair(View.VISIBLE, R.string.question_next)
+
         }
+        previousQuestionBtn.visibility = previousBtnVisibility
+        nextQuestionBtn.text = getString(nextBtnResId)
     }
 
     private fun setData(items: ArrayList<QuestionDetailsListItem>) {
@@ -129,7 +140,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
                 ).id
             }
             layoutManager.scrollToPosition(currentPosition)
-            setVisibilityOnButtons()
+
         } else {
             recyclerViewState = list.layoutManager?.onSaveInstanceState()
             adapter.submitList(items)
@@ -139,6 +150,7 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         recyclerViewState?.let {
             list.layoutManager?.onRestoreInstanceState(it)
         }
+        setButtons()
     }
 
     override fun onPause() {
@@ -146,10 +158,5 @@ class QuestionsDetailsFragment : BaseFragment<QuestionsDetailsViewModel>(),
         viewModel.syncData()
         super.onPause()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setVisibilityOnButtons()
     }
 }

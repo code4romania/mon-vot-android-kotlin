@@ -84,7 +84,6 @@ class FormsViewModel : BaseFormViewModel() {
                     onError(it)
                 })
         )
-
     }
 
     @SuppressLint("CheckResult")

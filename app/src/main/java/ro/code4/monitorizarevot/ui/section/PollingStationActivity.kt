@@ -15,6 +15,7 @@ import ro.code4.monitorizarevot.ui.section.selection.PollingStationSelectionFrag
 class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
     override val layout: Int
         get() = R.layout.activity_polling_station
+
     override val viewModel: PollingStationViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {

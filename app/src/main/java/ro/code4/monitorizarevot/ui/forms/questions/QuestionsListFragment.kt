@@ -15,14 +15,17 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.QuestionDelegationAdapter
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.helper.Constants.FORM
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.BaseFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
-class QuestionsListFragment : BaseFragment<QuestionsViewModel>() {
-
+class QuestionsListFragment : BaseAnalyticsFragment<QuestionsViewModel>() {
 
     override val layout: Int
         get() = R.layout.fragment_list
+    override val screenName: Int
+        get() = R.string.analytics_title_questions
+
     override val viewModel: QuestionsViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
     private val questionAdapter by lazy {

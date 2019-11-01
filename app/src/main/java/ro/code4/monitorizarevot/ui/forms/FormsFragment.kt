@@ -21,9 +21,9 @@ import ro.code4.monitorizarevot.ui.notes.NoteFragment
 
 class FormsFragment : BaseFragment<FormsViewModel>() {
 
-
     override val layout: Int
         get() = R.layout.fragment_main
+
     override val viewModel: FormsViewModel by viewModel()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
             android:scrollbars="none"
+            android:overScrollMode="never"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/xbig_margin"
             app:layout_constraintTop_toBottomOf="@id/editNoteLayout" />

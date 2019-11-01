@@ -54,6 +54,7 @@ android {
             variant.buildConfigField "String", "GUIDE_URL", "\"" + getKey(variant.buildType.name, "guideUrl") + "\""
             variant.buildConfigField "String", "ORGANISATION_WEB_URL", "\"" + getKey(variant.buildType.name, "organisationWebUrl") + "\""
             variant.buildConfigField "String", "SERVICE_CENTER_PHONE_NUMBER", "\"" + getKey(variant.buildType.name, "serviceCenterPhoneNumber") + "\""
+            variant.buildConfigField "String", "PREFERRED_LOCALE", "\"" + getKey(variant.buildType.name, "preferredLocale") + "\""
 
             def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
             def buildType = "${variant.buildType.name.capitalize()}"
@@ -106,7 +107,7 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.1.0"
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
@@ -148,9 +149,11 @@ dependencies {
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 
-    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+    implementation 'me.relex:circleindicator:2.1.4'
 
     implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0-rc01"
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics

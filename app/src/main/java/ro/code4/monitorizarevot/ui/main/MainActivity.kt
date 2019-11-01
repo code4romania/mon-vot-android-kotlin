@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.ui.main
 
 import android.os.Bundle
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -23,6 +24,7 @@ import ro.code4.monitorizarevot.ui.login.LoginActivity
 class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
         get() = R.layout.activity_main
+
     override val viewModel: MainViewModel by viewModel()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -44,8 +46,12 @@ class MainActivity : BaseActivity<MainViewModel>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // This needs to be set after `setupWithNavController`
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+
         navView.setCheckedItem(R.id.nav_forms)
-        //Workaround to allow actions and navigation in the same component
+        // Workaround to allow actions and navigation in the same component
         navView.setNavigationItemSelectedListener { item ->
             val handled = onNavDestinationSelected(item, navController)
             if (handled) {
@@ -85,4 +91,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
         supportActionBar?.title = title
     }
 
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

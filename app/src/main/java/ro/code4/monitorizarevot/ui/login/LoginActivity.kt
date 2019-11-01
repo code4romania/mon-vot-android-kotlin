@@ -9,10 +9,10 @@ import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
-import ro.code4.monitorizarevot.ui.base.BaseActivity
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
-class LoginActivity : BaseActivity<LoginViewModel>() {
+class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
 
     private val progressDialog: ProgressDialogFragment by lazy {
         ProgressDialogFragment().also {
@@ -22,6 +22,9 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
 
     override val layout: Int
         get() = R.layout.activity_login
+    override val screenName: Int
+        get() = R.string.analytics_title_login
+
     override val viewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
