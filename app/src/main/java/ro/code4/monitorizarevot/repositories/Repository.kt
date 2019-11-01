@@ -270,7 +270,7 @@ class Repository : KoinComponent {
 
     fun updateQuestionWithNotes(questionId: Int) {
         Observable.create<Unit> {
-            db.formDetailsDao().updateAnsweredQuestions(questionId)
+            db.formDetailsDao().updateQuestionWithNotes(questionId)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe()
     }

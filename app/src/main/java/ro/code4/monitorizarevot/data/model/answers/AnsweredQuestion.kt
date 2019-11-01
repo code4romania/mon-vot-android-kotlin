@@ -48,7 +48,6 @@ class AnsweredQuestion() {
 
     var savedLocally = false
     var synced = false
-    var hasNotes = false
 
     constructor(
         questionId: Int,

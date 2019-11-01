@@ -44,7 +44,8 @@ class Question {
     var savedLocally = false
     @Ignore
     var synced = false
-    @Ignore
+
+    @Expose
     var hasNotes = false
 
     override fun equals(other: Any?): Boolean =

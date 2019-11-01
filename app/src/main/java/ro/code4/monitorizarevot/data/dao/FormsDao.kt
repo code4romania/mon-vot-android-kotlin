@@ -120,8 +120,8 @@ interface FormsDao {
         synced: Boolean = true
     )
 
-    @Query("UPDATE answered_question SET hasNotes=:hasNotes WHERE questionId=:questionId")
-    fun updateAnsweredQuestions(
+    @Query("UPDATE question SET hasNotes=:hasNotes WHERE id=:questionId")
+    fun updateQuestionWithNotes(
         questionId: Int,
         hasNotes: Boolean = true
     )

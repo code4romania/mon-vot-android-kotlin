@@ -45,6 +45,7 @@ class NoteDelegate : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDele
             with(item.note) {
                 questionId?.let {
                     noteQuestionText.visibility = VISIBLE
+                    // TODO
                     noteQuestionText.text = "Add question $questionId text here."
                 }
                 noteText.text = description
