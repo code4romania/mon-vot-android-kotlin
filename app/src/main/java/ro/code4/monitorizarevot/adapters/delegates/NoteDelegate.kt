@@ -43,11 +43,11 @@ class NoteDelegate : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDele
             item = noteListItem
 
             with(item.note) {
-                questionId?.let {
+/*                questionId?.let {
                     noteQuestionText.visibility = VISIBLE
-                    // TODO
-                    noteQuestionText.text = "Add question $questionId text here."
-                }
+                    // TODO add question text here
+                    // noteQuestionText.text = "Add question $questionId text here."
+                }*/
                 noteText.text = description
                 noteDate.text = date.formatDateTime()
             }
