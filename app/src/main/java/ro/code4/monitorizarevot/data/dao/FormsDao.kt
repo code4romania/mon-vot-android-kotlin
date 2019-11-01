@@ -120,6 +120,12 @@ interface FormsDao {
         synced: Boolean = true
     )
 
+    @Query("UPDATE question SET hasNotes=:hasNotes WHERE id=:questionId")
+    fun updateQuestionWithNotes(
+        questionId: Int,
+        hasNotes: Boolean = true
+    )
+
     @Query("SELECT COUNT(*) FROM answered_question WHERE  synced=:synced")
     fun getCountOfNotSyncedQuestions(synced: Boolean = false): LiveData<Int>
 
