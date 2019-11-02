@@ -8,7 +8,7 @@
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Introduceți numărul de telefon şi codul primit.</string>
-    <string name="error_no_connection">Nu există conexiune la internet. Vă rugăm să vă conectați și să încercați din nou</string>
+    <string name="error_no_connection">Nu există conexiune la internet. Vă rugăm să vă conectați și să încercați din nou.</string>
     <string name="error_server">Eroare de server</string>
     <string name="error_unknown">Eroare necunoscută</string>
     <string name="error_permission">Eroare permisiune %1$S</string>
@@ -25,7 +25,7 @@
     <string name="onboarding_to_app">Spre aplicație</string>
     <string name="onboarding_title_choose_language">Alege-ți limba</string>
     <string name="onboarding_title_1">Alege-ți secția de votare</string>
-    <string name="onboarding_description_1"><![CDATA[<html><b>PASUL 1:</b><br/>Menționează secția de votare în care te afli, alegând județul și numărul acesteia.<br/><br/><b>PASUL 2:</b><br/>Adaugă câteva detalii (mediul urban/rural, detalii despre președintele de secție, ora sosirii). Nu-ți face griji, poți să modifici informațiile mai târziu.</html>]]></string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>PASUL 1:</b><br/>Definește secția de votare în care te afli, alegând județul și numărul acesteia.<br/><br/><b>PASUL 2:</b><br/>Adaugă câteva detalii (mediul urban/rural, detalii despre președintele de secție, ora sosirii). Nu-ți face griji, poți să modifici informațiile mai târziu.</html>]]></string>
     <string name="onboarding_title_2">Completează formularele</string>
     <string name="onboarding_description_2"><![CDATA[<html>Pentru a detecta problemele, îți punem la dispoziție câteva formulare cu regulile standard ale unei secții de votare.<br/>În fiecare formular poți semnala dacă anumite proceduri au fost urmate sau nu.</html>]]></string>
     <string name="onboarding_title_3">Adaugă note</string>
@@ -85,8 +85,8 @@
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>
 
-    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou</string>
-    <string name="sync_manual">Sincronizează Datele Manual</string>
+    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
+    <string name="sync_manual">Sincronizează datele manual</string>
 
     <string name="error_no_form_data">Nu există date pentru acest formular</string>
     <string name="forms_sync_failed_description">Descărcarea formularelor a eșuat</string>
@@ -100,10 +100,10 @@
     <string name="question_previous">Înapoi</string>
     <string name="question_finish">Trimite</string>
     <string name="sync_locally_saved">salvat local</string>
-    <string name="add_note_to_question">Adaugă Notă la Întrebarea Curentă</string>
+    <string name="add_note_to_question">Adaugă notă la întrebarea curentă</string>
 
     <!-- Notes -->
-    <string name="add_note">Adaugă notă</string>
+    <string name="add_note">Adaugă o notă</string>
     <string name="note_description_hint">Scrie aici</string>
     <string name="note_media">Adaugă foto/video</string>
     <string name="invalid_note">Introdu o descriere sau alege un fişier</string>
@@ -118,7 +118,7 @@
     <string name="notes_history">Istoricul notelor</string>
 
     <!-- Images -->
-    <string name="content_icon_building">Building icon</string>
+    <string name="content_icon_building">Simbol clădire</string>
 
     <!-- Permissions-->
     <string name="permission_permanently_denied_title">Permisiune necesară</string>
