@@ -9,9 +9,10 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@color/backgroundLight</item>
         <item name="primaryTextColor">@color/textPrimary</item>
-        <item name="buttonColor">@color/buttonBgColor</item>
-        <item name="colorButtonNormal">@color/buttonBgColor</item>
-        <item name="android:colorButtonNormal">@color/buttonBgColor</item>
+        <item name="buttonColor">@color/purple</item>
+        <item name="colorButtonNormal">@color/purple</item>
+        <item name="android:colorButtonNormal">@color/purple</item>
+        <item name="inputBackgroundColor">@color/inputFill</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,6 +33,11 @@
         <item name="colorAccent">@color/darkPurple</item>
         <item name="buttonColor">@color/darkPurple</item>
         <item name="android:windowBackground">@color/bgColorOnboarding</item>
+        <item name="inputBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorAccent">@color/purple</item>
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -85,6 +91,7 @@
 
     <style name="Text.Title">
         <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Text.Title.Big">
@@ -106,7 +113,7 @@
         <item name="android:alpha">0.5</item>
     </style>
 
-    <style name="Text.PollingStationSelectLabel">
+    <style name="Text.InputAppearance">
         <item name="android:textSize">16sp</item>
 
     </style>
@@ -114,12 +121,13 @@
     <style name="Text.Option">
         <item name="android:background">@drawable/background_input</item>
         <item name="android:padding">@dimen/margin</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:textColorHint">@color/hint</item>
     </style>
 
     <style name="Text.Sync">
         <item name="android:textColor">@color/syncProgress</item>
+        <item name="android:alpha">0.4</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -170,10 +178,14 @@
 
 
     <style name="Input" parent="Widget.AppCompat.EditText">
-        <item name="android:textAppearance">@style/Text</item>
+        <item name="android:textAppearance">@style/Text.InputAppearance</item>
         <item name="android:inputType">textCapSentences</item>
-        <item name="android:padding">@dimen/small_margin</item>
+        <item name="android:padding">@dimen/margin</item>
         <item name="android:background">@drawable/background_input</item>
+    </style>
+
+    <style name="TransparentBg">
+        <item name="inputBackgroundColor">@android:color/transparent</item>
     </style>
 
     <style name="Input.Note">
@@ -183,6 +195,7 @@
         <item name="android:maxLines">8</item>
         <item name="android:minLines">8</item>
         <item name="android:gravity">top</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:scrollbars">vertical</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:overScrollMode">always</item>
@@ -202,7 +215,7 @@
         <item name="itemHorizontalPadding">@dimen/xbig_margin</item>
         <item name="itemIconPadding">@dimen/margin</item>
         <item name="itemPadding">@dimen/margin</item>
-        <item name="itemIconSize">@dimen/sync_icon_size</item>
+        <item name="itemIconSize">@dimen/small_icon_size</item>
         <item name="android:background">@color/menuBackground</item>
     </style>
 

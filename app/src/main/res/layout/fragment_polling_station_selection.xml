@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -18,71 +19,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/content_icon_building"
-            android:src="@drawable/ic_building"
-            app:layout_constraintBottom_toTopOf="@id/title"
+            android:layout_marginTop="@dimen/xbig_margin"
             app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_polling_station"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/title"
-            style="@style/Text.Title.Big"
+            style="@style/Text.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginTop="@dimen/margin"
             android:gravity="center"
             android:text="@string/polling_station_title"
             android:textColor="@color/textPrimary"
-            app:layout_constraintBottom_toTopOf="@id/subtitle"
             app:layout_constraintTop_toBottomOf="@id/icon"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/subtitle"
-            style="@style/Text.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xsmall_margin"
-            android:text="@string/polling_station_subtitle"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/countyLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            app:layout_constraintVertical_chainStyle="packed" />
 
 
         <TextView
             android:id="@+id/countyLabel"
-            style="@style/Text.Label"
+            style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginTop="@dimen/xbig_margin"
             android:text="@string/polling_station_county"
-            app:layout_constraintBottom_toTopOf="@id/countySpinner"
-            app:layout_constraintTop_toBottomOf="@id/subtitle"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
+        <Spinner
             android:id="@+id/countySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
+            android:layout_marginTop="@dimen/small_margin"
             android:background="@drawable/background_spinner"
-            app:layout_constraintBottom_toTopOf="@id/pollingStationNumberLabel"
             app:layout_constraintTop_toBottomOf="@id/countyLabel"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/pollingStationNumberLabel"
-            style="@style/Text.Label"
+            style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginTop="@dimen/big_margin"
             android:labelFor="@+id/pollingStationNumber"
             android:text="@string/polling_station_number"
-            app:layout_constraintBottom_toTopOf="@id/pollingStationNumber"
             app:layout_constraintTop_toBottomOf="@id/countySpinner"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -96,9 +80,9 @@
             android:importantForAutofill="no"
             android:inputType="number"
             android:hint="@string/polling_station_number_hint"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pollingStationNumberLabel"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="LabelFor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

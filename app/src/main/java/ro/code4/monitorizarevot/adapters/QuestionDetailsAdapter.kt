@@ -112,7 +112,7 @@ class QuestionDetailsAdapter constructor(
                 savedLocally && !synced -> {
                     holder.itemView.syncIcon.visibility = View.VISIBLE
                     holder.itemView.syncText.visibility = View.VISIBLE
-                    holder.itemView.syncIcon.setImageResource(R.drawable.ic_sync_progress)
+                    holder.itemView.syncIcon.setImageResource(R.drawable.ic_sync_not_done)
                 }
                 else -> {
                     holder.itemView.syncIcon.visibility = View.INVISIBLE

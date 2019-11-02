@@ -14,7 +14,6 @@
     <color name="purple">#81175C</color>
     <color name="darkPurple">#352245</color>
     <color name="textLight">#FFFFFF</color>
-    <color name="buttonBgColor">#81175C</color>
     <color name="divider">#E7E7E7</color>
     <color name="inputBorder">#DDDDDD</color>
     <color name="inputFill">#FCFCFC</color>
@@ -27,12 +26,13 @@
     <color name="black">#000</color>
     <color name="errorRed">#b1000c</color>
     <color name="syncComplete">#32D23D</color>
-    <color name="syncProgress">#F1963B</color>
+    <color name="syncProgress">#B2B2B2</color>
     <color name="sectionBackground">#1AA7A7A7</color>
     <color name="onboardingColorAccent">#352245</color>
     <color name="unselectedColorOnboarding">#59979797</color>
     <color name="bgColorOnboarding">#EBEAE2</color>
 
     <color name="menuIconDefault">#C8C8C8</color>
-    <color name="menuBackground">#fff</color>
+    <color name="menuBackground">@color/white</color>
+    <color name="white">#FFF</color>
 </resources>

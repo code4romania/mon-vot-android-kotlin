@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.adapters.delegates
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
@@ -10,7 +11,7 @@ import kotlinx.android.synthetic.main.item_note.*
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
-import ro.code4.monitorizarevot.helper.formatDate
+import ro.code4.monitorizarevot.helper.formatDateTime
 
 class NoteDelegate : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDelegate.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
@@ -42,8 +43,13 @@ class NoteDelegate : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDele
             item = noteListItem
 
             with(item.note) {
+/*                questionId?.let {
+                    noteQuestionText.visibility = VISIBLE
+                    // TODO add question text here
+                    // noteQuestionText.text = "Add question $questionId text here."
+                }*/
                 noteText.text = description
-                noteDate.text = date.formatDate()
+                noteDate.text = date.formatDateTime()
             }
         }
     }
