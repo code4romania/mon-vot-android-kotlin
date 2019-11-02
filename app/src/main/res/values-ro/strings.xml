@@ -88,6 +88,8 @@
     <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
     <string name="sync_manual">Sincronizează datele manual</string>
 
+    <string name="form_sync_no_internet">Ai nevoie de o conexiune la internet pentru a sincroniza datele!</string>
+
     <string name="error_no_form_data">Nu există date pentru acest formular</string>
     <string name="forms_sync_failed_description">Descărcarea formularelor a eșuat</string>
     <string name="forms_sync_failed_retry">Reîncearcă</string>
@@ -129,4 +131,7 @@
     <string name="permission_denied_msg">Pentru a utiliza această funcționalitate, avem nevoie de permisiunea ta pentru a accesa spațiul de stocare.</string>
     <string name="permission_denied_ok_button">OK</string>
     <string name="permission_denied_cancel_button">Anulare</string>
+
+    <!-- Errors -->
+    <string name="error_generic">A apărut o problemă!</string>
 </resources>

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_forms.*
@@ -13,7 +14,6 @@ import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.FormDelegationAdapter
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
-import ro.code4.monitorizarevot.ui.base.BaseFragment
 
 
 class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
@@ -55,6 +55,11 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
         syncButton.setOnClickListener {
             // TODO send number of unsynced items
             logSyncManuallyEvent(0)
+
+            if (!isOnline(context!!)) {
+                Snackbar.make(syncButton, getString(R.string.form_sync_no_internet), Snackbar.LENGTH_SHORT)
+                    .show()
+            }
 
             viewModel.sync()
         }
