@@ -8,7 +8,7 @@
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Fill in your phone number and the code you received.</string>
-    <string name="error_no_connection">No internet connection. Please connect and try again</string>
+    <string name="error_no_connection">No internet connection. Please connect and try again.</string>
     <string name="error_server">A server error has occurred</string>
     <string name="error_unknown">An unknown error has occurred</string>
     <string name="error_permission">Permission error %1$S</string>
@@ -25,9 +25,9 @@
     <string name="onboarding_to_app">Go to app</string>
     <string name="onboarding_title_choose_language">Choose your language</string>
     <string name="onboarding_title_1">Pick your voting station</string>
-    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Mention the voting station you are in, choosing the county and it’s number.<br/><br/><b>STEP 2:</b><br/>Add some details (urban/ rural area, details about the section president, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Define the polling station you are in, choosing the county and its number.<br/><br/><b>STEP 2:</b><br/>Add some details about the polling station you are in (urban/rural area, details about the head of the polling commitee, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
     <string name="onboarding_title_2">Fill in the forms</string>
-    <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a voting station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
+    <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a polling station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
     <string name="onboarding_title_3">Add notes</string>
     <string name="onboarding_description_3"><![CDATA[<html>Did you notice any problem that does not appear in the form? Use the ‘<b>Add note</b>’ button, write a message and/or attach a picture.</html>]]></string>
 
@@ -67,8 +67,8 @@
     <string name="polling_station_answer_rural">Rural</string>
     <string name="polling_station_answer_urban">Urban</string>
     <string name="polling_station_question_gender">The president of the polling station is:</string>
-    <string name="polling_station_answer_man">Man</string>
-    <string name="polling_station_answer_woman">Woman</string>
+    <string name="polling_station_answer_man">A man</string>
+    <string name="polling_station_answer_woman">A woman</string>
     <string name="polling_station_question_enter">Arrival date &amp; time</string>
     <string name="polling_station_question_leave">Departure date &amp; time</string>
     <string name="polling_station_choose_date_enter">Choose the date of your arrival</string>
@@ -86,7 +86,7 @@
     <string name="form_notes">Add a message</string>
 
     <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
-    <string name="sync_manual">Synchronize Data Manually</string>
+    <string name="sync_manual">Synchronize data manually</string>
 
     <string name="error_no_form_data">There is no data for this form.</string>
     <string name="forms_sync_failed_description">Syncing forms failed</string>
@@ -100,7 +100,7 @@
     <string name="question_previous">Previous</string>
     <string name="question_finish">Send</string>
     <string name="sync_locally_saved">saved locally</string>
-    <string name="add_note_to_question">Add Note to Current Question</string>
+    <string name="add_note_to_question">Add note to current question</string>
 
     <!-- Notes -->
     <string name="add_note">Add a note</string>
@@ -127,11 +127,11 @@
 
     <!--    Permissions-->
     <string name="permission_permanently_denied_title">Permission needed</string>
-    <string name="permission_permanently_denied_msg">For using this function you have to change the app permissions. Please open the Settings menu and grant access to the requested permissions.</string>
+    <string name="permission_permanently_denied_msg">To use this function, you have to change the app permissions. Please open the Settings menu and grant access to the requested permissions.</string>
     <string name="permission_permanently_denied_settings_button">Settings</string>
 
     <string name="permission_denied_title">Permission needed</string>
-    <string name="permission_denied_msg">For using this function we need your permission to access the storage.</string>
+    <string name="permission_denied_msg">To use this function we need your permission to access the storage.</string>
     <string name="permission_denied_ok_button">OK</string>
     <string name="permission_denied_cancel_button">Cancel</string>
 </resources>
