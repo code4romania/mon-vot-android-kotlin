@@ -132,6 +132,9 @@
     <string name="permission_denied_ok_button">OK</string>
     <string name="permission_denied_cancel_button">Anulare</string>
 
+    <!-- Notifications -->
+    <string name="push_notification_ok">OK</string>
+
     <!-- Errors -->
     <string name="error_generic">A apărut o problemă!</string>
 </resources>

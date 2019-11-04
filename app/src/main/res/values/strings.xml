@@ -136,8 +136,9 @@
     <string name="permission_denied_ok_button">OK</string>
     <string name="permission_denied_cancel_button">Cancel</string>
 
-    <!--    Firebase-->
+    <!-- Notifications -->
     <string name="default_notification_channel_id" translatable="false">Firebase</string>
+    <string name="push_notification_ok">OK</string>
 
     <!-- Errors -->
     <string name="error_generic">Something went wrong!</string>

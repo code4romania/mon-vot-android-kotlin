@@ -8,8 +8,10 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import ro.code4.monitorizarevot.helper.LocaleManager
 import ro.code4.monitorizarevot.modules.*
+import ro.code4.monitorizarevot.ui.base.BaseActivity
 
 class App : Application() {
+    var currentActivity: BaseActivity<*>? = null
     companion object {
         lateinit var instance: App
     }
