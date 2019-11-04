@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ca15d59032e27bc477b4dea6dd454296",
+    "identityHash": "2df90e9f8fe3eaea9edd27350846da84",
     "entities": [
       {
         "tableName": "county",
@@ -440,7 +440,7 @@
       },
       {
         "tableName": "selected_answer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `pollingStationNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStationNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `pollingStationNumber`, `id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `pollingStationNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `pollingStationNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `pollingStationNumber`, `id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "optionId",
@@ -497,7 +497,7 @@
           {
             "table": "answered_question",
             "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
+            "onUpdate": "CASCADE",
             "columns": [
               "countyCode",
               "pollingStationNumber",
@@ -613,7 +613,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ca15d59032e27bc477b4dea6dd454296')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2df90e9f8fe3eaea9edd27350846da84')"
     ]
   }
 }
