@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -32,6 +31,10 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
         appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
         clickListenersSetup()
         loginUserObservable()
+        if (BuildConfig.DEBUG) {
+            phone.setText(R.string.test_phone_number)
+            password.setText(R.string.test_password)
+        }
     }
 
     override fun onDestroy() {
@@ -42,12 +45,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
     private fun clickListenersSetup() {
         loginButton.setOnClickListener {
             loginButton.isEnabled = false
-            val user = User(
-                phone.text.toString(),
-                password.text.toString(),
-                "1234"
-            )//TODO replace with phone uiid  Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            viewModel.login(user)
+            viewModel.login(phone.text.toString(), password.text.toString())
         }
     }
 
@@ -61,7 +59,11 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                 onFailure = {
                     // TODO: Handle errors to show personalized messages for each one
                     progressDialog.dismiss()
-                    Snackbar.make(loginButton, getString(R.string.error_generic), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        loginButton,
+                        getString(R.string.error_generic),
+                        Snackbar.LENGTH_SHORT
+                    )
                         .show()
                     loginButton.isEnabled = true
                 },

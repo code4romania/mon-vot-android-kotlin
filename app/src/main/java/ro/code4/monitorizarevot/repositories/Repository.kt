@@ -48,6 +48,8 @@ class Repository : KoinComponent {
     }
 
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
+    fun registerForNotification(token: String): Observable<ResponseBody> =
+        loginInterface.registerForNotification(token)
 
     fun getCounties(): Single<List<County>> {
 

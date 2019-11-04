@@ -95,7 +95,7 @@ ext {
     retrofitLibraryVersion = '2.5.0'
     koinVersion = '2.0.1'
     roomVersion = '2.2.0'
-    firebaseVersion = '17.0.1'
+    firebaseVersion = '17.2.0'
     crashlyticsVersion = '2.10.1'
     adapterDelegatesVersion = "4.2.0"
 }
@@ -126,6 +126,7 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-analytics:$firebaseVersion"
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     //koin injection
@@ -157,4 +158,4 @@ dependencies {
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-// apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
