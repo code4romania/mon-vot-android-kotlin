@@ -26,22 +26,23 @@ class LoginViewModel : BaseViewModel() {
 
     fun loggedIn(): LiveData<Result<Class<*>>> = loginLiveData
 
-    fun login(user: User) {
+    fun login(phone: String, password: String) {
         loginLiveData.postValue(Result.Loading)
-        disposables.add(
-            loginRepository.login(user)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onSuccessfulLogin, this::onError)
-        )
+        getFirebaseToken(phone, password)
+//        disposables.add(
+//            loginRepository.login(phone)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(this::onSuccessfulLogin, this::onError)
+//        )
     }
 
-    private fun onSuccessfulLogin(loginResponse: LoginResponse) {
+    private fun onSuccessfulLogin(loginResponse: LoginResponse, firebaseToken: String) {
         sharedPreferences.saveToken(loginResponse.accessToken)
-        registerForNotification()
+        registerForNotification(firebaseToken)
     }
 
-    private fun onSuccessfulRegisterForNotification() {
+    private fun onSuccessfulRegisteredForNotification() {
         if (sharedPreferences.hasCompletedOnboarding()) {
             loginLiveData.postValue(Result.Success(PollingStationActivity::class.java))
         } else {
@@ -49,18 +50,29 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
-    private fun registerForNotification() {
+    fun getFirebaseToken(phone: String, password: String) {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-            if (it.isSuccessful) {
+            val firebaseToken = it.result?.token
+            if (it.isSuccessful && firebaseToken != null) {
                 disposables.add(
-                    loginRepository.registerForNotification(it.result?.token.orEmpty())
+                    loginRepository.login(User(phone, password, firebaseToken))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ onSuccessfulRegisterForNotification() }, this::onError)
+                        .subscribe({ loginResponse ->
+                            onSuccessfulLogin(loginResponse, firebaseToken)
+                        }, this::onError)
                 )
             }
-
         }
+    }
+
+    private fun registerForNotification(firebaseToken: String) {
+        disposables.add(
+            loginRepository.registerForNotification(firebaseToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onSuccessfulRegisteredForNotification() }, this::onError)
+        )
     }
 
     override fun onError(throwable: Throwable) {

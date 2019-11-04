@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -46,12 +45,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
     private fun clickListenersSetup() {
         loginButton.setOnClickListener {
             loginButton.isEnabled = false
-            val user = User(
-                phone.text.toString(),
-                password.text.toString(),
-                "1234"
-            )//TODO replace with phone uiid  Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            viewModel.login(user)
+            viewModel.login(phone.text.toString(), password.text.toString())
         }
     }
 
