@@ -29,12 +29,6 @@ class LoginViewModel : BaseViewModel() {
     fun login(phone: String, password: String) {
         loginLiveData.postValue(Result.Loading)
         getFirebaseToken(phone, password)
-//        disposables.add(
-//            loginRepository.login(phone)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::onSuccessfulLogin, this::onError)
-//        )
     }
 
     private fun onSuccessfulLogin(loginResponse: LoginResponse, firebaseToken: String) {
@@ -50,20 +44,31 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
-    fun getFirebaseToken(phone: String, password: String) {
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-            val firebaseToken = it.result?.token
-            if (it.isSuccessful && firebaseToken != null) {
-                disposables.add(
-                    loginRepository.login(User(phone, password, firebaseToken))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ loginResponse ->
-                            onSuccessfulLogin(loginResponse, firebaseToken)
-                        }, this::onError)
-                )
+    private fun getFirebaseToken(phone: String, password: String) {
+        try {
+
+
+            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+                val firebaseToken = it.result?.token
+                if (it.isSuccessful && firebaseToken != null) {
+                    login(phone, password, firebaseToken)
+                }
             }
+        } catch (exception: IllegalStateException) {
+            //The google services are not active - just for development purposes
+            login(phone, password, "1234")
         }
+    }
+
+    fun login(phone: String, password: String, firebaseToken: String) {
+        disposables.add(
+            loginRepository.login(User(phone, password, firebaseToken))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ loginResponse ->
+                    onSuccessfulLogin(loginResponse, firebaseToken)
+                }, this::onError)
+        )
     }
 
     private fun registerForNotification(firebaseToken: String) {

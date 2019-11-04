@@ -12,6 +12,7 @@ import ro.code4.monitorizarevot.ui.base.BaseActivity
 
 class App : Application() {
     var currentActivity: BaseActivity<*>? = null
+
     companion object {
         lateinit var instance: App
     }
