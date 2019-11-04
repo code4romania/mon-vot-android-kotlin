@@ -55,7 +55,7 @@ class AnsweredQuestion() {
         pollingStationNumber: Int,
         formId: Int
     ) : this() {
-        this.id = "$countyCode$pollingStationNumber$formId$questionId"
+        this.id = "${countyCode}_${pollingStationNumber}_${formId}_$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
         this.pollingStationNumber = pollingStationNumber

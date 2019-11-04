@@ -57,12 +57,8 @@ interface FormsDao {
     @Insert(onConflict = REPLACE)
     fun saveAnswers(vararg answers: Answer)
 
-
-    @Insert(onConflict = REPLACE)
-    fun saveAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
-
-    @Delete
-    fun deleteAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
+    @Query("DELETE FROM answered_question WHERE id=:id")
+    fun deleteAnsweredQuestion(id: String): Completable
 
     @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber ")
     fun getAnswersFor(

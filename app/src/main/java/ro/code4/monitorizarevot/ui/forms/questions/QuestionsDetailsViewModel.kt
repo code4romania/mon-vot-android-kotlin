@@ -57,14 +57,14 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
             if (question.synced) {
                 return
             }
+            val answeredQuestion = AnsweredQuestion(
+                question.id,
+                countyCode,
+                pollingStationNumber,
+                selectedFormId
+            )
             answers?.filter { it.selected }?.also {
                 if (it.isNotEmpty()) {
-                    val answeredQuestion = AnsweredQuestion(
-                        question.id,
-                        countyCode,
-                        pollingStationNumber,
-                        selectedFormId
-                    )
                     val list = it.map { answer ->
                         SelectedAnswer(
                             answer.idOption,
@@ -75,6 +75,8 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         )
                     }
                     repository.saveAnsweredQuestion(answeredQuestion, list)
+                } else {
+                    repository.deleteAnsweredQuestion(answeredQuestion)
                 }
             }
         }
