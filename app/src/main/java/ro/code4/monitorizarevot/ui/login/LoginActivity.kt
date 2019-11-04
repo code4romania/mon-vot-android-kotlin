@@ -61,7 +61,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                 onFailure = {
                     // TODO: Handle errors to show personalized messages for each one
                     progressDialog.dismiss()
-                    Snackbar.make(loginButton, "Something went wrong!", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(loginButton, getString(R.string.error_generic), Snackbar.LENGTH_SHORT)
                         .show()
                     loginButton.isEnabled = true
                 },
