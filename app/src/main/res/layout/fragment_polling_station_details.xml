@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/environmentLabel"
-            style="@style/Text.PollingStationSelectLabel"
+            style="@style/Text.InputAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/genderLabel"
-            style="@style/Text.PollingStationSelectLabel"
+            style="@style/Text.InputAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
@@ -98,7 +98,7 @@
 
         <TextView
             android:id="@+id/arrivalTimeLabel"
-            style="@style/Text.PollingStationSelectLabel"
+            style="@style/Text.InputAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
@@ -112,7 +112,7 @@
 
         <TextView
             android:id="@+id/departureTimeLabel"
-            style="@style/Text.PollingStationSelectLabel"
+            style="@style/Text.InputAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin"
@@ -134,6 +134,7 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:hint="@string/hint_time"
+            android:theme="@style/TransparentBg"
             app:layout_constraintEnd_toStartOf="@id/departureTime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/arrivalTimeLabel" />
@@ -146,6 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin"
             android:hint="@string/hint_time"
+            android:theme="@style/TransparentBg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/arrivalTime"
             app:layout_constraintTop_toTopOf="@id/arrivalTime" />

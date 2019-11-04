@@ -1,129 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_notification_channel_id" translatable="false">Firebase</string>
+
     <string name="app_name">Vote Monitor</string>
 
-    <string name="app_version">v%1$S app developed by</string>
-
     <!-- General -->
-    <string name="please_wait">Please wait…</string>
     <string name="loading_label">Loading…</string>
-    <string name="button_continue">Continue</string>
-    <string name="button_continue_to_forms">Continue to forms</string>
-    <string name="button_send">Send</string>
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Fill in your phone number and the code you received.</string>
-    <string name="error_no_connection">No internet connection. Please connect and try again</string>
+    <string name="error_no_connection">No internet connection. Please connect and try again.</string>
     <string name="error_server">A server error has occurred</string>
     <string name="error_unknown">An unknown error has occurred</string>
-
     <string name="error_permission">Permission error %1$S</string>
-    <string name="error_section_type">Error in interpreting the section</string>
-
-    <!-- Fragment titles -->
-    <string name="title_polling_station">Polling station details</string>
-    <string name="title_polling_station_selection">Choose your polling station</string>
-    <string name="title_forms_list">Forms</string>
-    <string name="title_note">Notes</string>
-    <string name="title_guide">Guide</string>
-
-    <!-- Menu -->
-    <string name="menu_logout">Logout</string>
-    <string name="menu_forms">Forms</string>
-    <string name="menu_change_polling_station">Change the polling station</string>
-    <string name="menu_guide">Observer\'s guide</string>
-    <string name="menu_call">Call the Hotline</string>
-    <string name="section">Section</string>
-    <string name="support">Support</string>
-
-    <!-- Images -->
-    <string name="content_icon_building">Building icon</string>
 
     <!-- Login -->
+    <string name="app_version">v%1$S app developed by</string>
     <string name="login_phone">Phone number</string>
     <string name="login_password">Code</string>
     <string name="login">Login</string>
-
-    <!-- Polling Station selection -->
-    <string name="polling_station_title">Choose the polling station</string>
-    <string name="polling_station_subtitle">you are in</string>
-    <string name="polling_station_county">County/District</string>
-    <string name="polling_station_number">Polling station number</string>
-    <string name="polling_station_spinner_choose">Choose</string>
-    <string name="polling_station_number_hint">Fill in your polling station number</string>
-    <string name="polling_station_change">Change</string>
-    <string name="polling_station_question_environment">Choose the area of the station</string>
-    <string name="polling_station_answer_rural">Rural</string>
-    <string name="polling_station_answer_urban">Urban</string>
-    <string name="polling_station_question_gender">The president of the polling station is:</string>
-    <string name="polling_station_answer_man">Man</string>
-    <string name="polling_station_answer_woman">Woman</string>
-    <string name="polling_station_question_enter">Arrival time</string>
-    <string name="polling_station_question_leave">Departure time</string>
-    <string name="polling_station_choose_date_enter">Choose the date of your arrival</string>
-    <string name="polling_station_choose_time_enter">Choose the time of your arrival</string>
-    <string name="polling_station_choose_date_leave">Choose the date of your departure</string>
-    <string name="polling_station_choose_time_leave">Choose the time of your departure</string>
-    <string name="invalid_polling_station_county">Choose the county/district</string>
-    <string name="invalid_polling_station_number">Fill in the polling station number</string>
-    <string name="invalid_polling_station_number_minus">The number of the station must be positive</string>
-    <string name="invalid_polling_station_number_max">The maximum number for %1$s county is %2$d</string>
-    <string name="invalid_polling_station_environment">Choose urban or rural</string>
-    <string name="invalid_polling_station_gender">Choose man or woman</string>
-    <string name="invalid_polling_station_time_in">Select the time of arrival</string>
-    <string name="invalid_time_input">Arrival needs to be before departure</string>
-    <string name="polling_station">Polling station %1$d %2$s</string>
-
-    <!-- Forms list -->
-    <string name="form_notes">Add a message</string>
-    <string name="error_no_form_data">There is no data for this form.</string>
-    <string name="forms_sync_failed_description">Syncing forms failed</string>
-    <string name="forms_sync_failed_retry">Retry</string>
-
-    <!-- Question details -->
-    <string name="question_complete">Completed</string>
-    <string name="question_incomplete">Incomplete</string>
-    <string name="question_notes">Messages</string>
-    <string name="question_next">Next</string>
-    <string name="question_previous">Previous</string>
-    <string name="question_finish">Send</string>
-    <string name="question_confirmation_message">Answer saved</string>
-    <string name="questions_synced">Answers synced with the server</string>
-
-    <!-- Notes -->
-    <string name="note_title">Add a message</string>
-    <string name="note_description">Your message</string>
-    <string name="note_description_hint">Type here</string>
-    <string name="note_media">Add photo or video</string>
-    <string name="note_saved">Note saved</string>
-    <string name="invalid_note">Add a description or choose a file</string>
-    <string name="error_permission_external_storage">We need your permission to select a resource</string>
-    <string name="note_gallery">Load from gallery</string>
-    <string name="note_photo">Take photo</string>
-    <string name="note_video">Record video</string>
-    <string name="notes_history">Notes history</string>
-
-    <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
-    <string name="sync_locally_saved">saved locally</string>
-    <string name="add_note_to_question">Add Note to Current Question</string>
-    <string name="add_note">Add a note</string>
-    <string name="note_submit">Submit</string>
-
-    <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
-    <string name="sync_manual">Synchronize Data Manually</string>
-    <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
-    <string name="section_title">Section %1$d - %2$s</string>
-    <string name="select_photo">Select Photo</string>
-    <string name="file_manager_missing">Please install a file manager.</string>
 
     <!--Onboarding-->
     <string name="onboarding_next">Next</string>
     <string name="onboarding_back">Back</string>
     <string name="onboarding_to_app">Go to app</string>
+    <string name="onboarding_title_choose_language">Choose your language</string>
     <string name="onboarding_title_1">Pick your voting station</string>
-    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Mention the voting station you are in, choosing the county and it’s number.<br/><br/><b>STEP 2:</b><br/>Add some details (urban/ rural area, details about the section president, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Define the polling station you are in, choosing the county and its number.<br/><br/><b>STEP 2:</b><br/>Add some details about the polling station you are in (urban/rural area, details about the head of the polling commitee, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
     <string name="onboarding_title_2">Fill in the forms</string>
-    <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a voting station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
+    <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a polling station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
     <string name="onboarding_title_3">Add notes</string>
     <string name="onboarding_description_3"><![CDATA[<html>Did you notice any problem that does not appear in the form? Use the ‘<b>Add note</b>’ button, write a message and/or attach a picture.</html>]]></string>
+
+    <!-- Fragment titles -->
+    <string name="title_polling_station_selection">Choose your polling station</string>
+    <string name="title_polling_station">Polling station details</string>
+    <string name="title_forms_list">Forms</string>
+    <string name="title_note">Notes</string>
+    <string name="title_guide">Guide</string>
+
+    <!-- Section details header -->
+    <string name="polling_station">Polling station %1$d %2$s</string>
+
+    <!-- Menu -->
+    <string name="menu_forms">Forms</string>
+    <string name="menu_change_polling_station">Change the polling station</string>
+    <string name="menu_guide">Observer\'s guide</string>
+    <string name="menu_call">Call the Hotline</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_logout">Logout</string>
+
+    <!-- Polling Station selection -->
+    <string name="polling_station_title">Choose the polling station you are in</string>
+    <string name="polling_station_county">County/District</string>
+    <string name="polling_station_number">Polling station number</string>
+    <string name="polling_station_spinner_choose">Choose</string>
+    <string name="polling_station_number_hint">Fill in your polling station number</string>
+    <string name="button_continue">Continue</string>
+
+    <string name="invalid_polling_station_county">Choose the county/district</string>
+    <string name="invalid_polling_station_number">Fill in the polling station number</string>
+    <string name="invalid_polling_station_number_minus">The number of the station must be positive</string>
+    <string name="invalid_polling_station_number_max">The maximum number for %1$s county is %2$d</string>
+
+    <string name="polling_station_change">Change</string>
+    <string name="polling_station_question_environment">Choose the area of the station</string>
+    <string name="polling_station_answer_rural">Rural</string>
+    <string name="polling_station_answer_urban">Urban</string>
+    <string name="polling_station_question_gender">The president of the polling station is:</string>
+    <string name="polling_station_answer_man">A man</string>
+    <string name="polling_station_answer_woman">A woman</string>
+    <string name="polling_station_question_enter">Arrival date &amp; time</string>
+    <string name="polling_station_question_leave">Departure date &amp; time</string>
+    <string name="polling_station_choose_date_enter">Choose the date of your arrival</string>
+    <string name="polling_station_choose_time_enter">Choose the time of your arrival</string>
+    <string name="polling_station_choose_date_leave">Choose the date of your departure</string>
+    <string name="polling_station_choose_time_leave">Choose the time of your departure</string>
+    <string name="button_continue_to_forms">Continue to forms</string>
+
+    <string name="invalid_polling_station_environment">Choose urban or rural</string>
+    <string name="invalid_polling_station_gender">Choose man or woman</string>
+    <string name="invalid_polling_station_time_in">Select the time of arrival</string>
+    <string name="invalid_time_input">Arrival needs to be before departure</string>
+
+    <!-- Forms list -->
+    <string name="form_notes">Add a message</string>
+
+    <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
+    <string name="sync_manual">Synchronize data manually</string>
+
+    <string name="error_no_form_data">There is no data for this form.</string>
+    <string name="forms_sync_failed_description">Syncing forms failed</string>
+    <string name="forms_sync_failed_retry">Retry</string>
+
+    <!-- Questions list -->
+    <string name="section_title">Section %1$d - %2$s</string>
+
+    <!-- Question details -->
+    <string name="question_next">Next</string>
+    <string name="question_previous">Previous</string>
+    <string name="question_finish">Send</string>
+    <string name="sync_locally_saved">saved locally</string>
+    <string name="add_note_to_question">Add note to current question</string>
+
+    <!-- Notes -->
+    <string name="add_note">Add a note</string>
+    <string name="note_description_hint">Type here</string>
+    <string name="note_media">Add photo or video</string>
+    <string name="invalid_note">Add a description or choose a file</string>
+    <string name="error_permission_external_storage">We need your permission to select a resource</string>
+    <string name="note_gallery">Load from gallery</string>
+    <string name="note_photo">Take photo</string>
+    <string name="note_video">Record video</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="file_manager_missing">Please install a file manager.</string>
+    <string name="note_submit">Submit</string>
+
+    <string name="notes_history">Notes history</string>
+
+    <!-- Images -->
+    <string name="content_icon_building">Building icon</string>
+
+    <!-- Format helpers -->
+    <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
+    <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
+
+
+    <!--    Permissions-->
+    <string name="permission_permanently_denied_title">Permission needed</string>
+    <string name="permission_permanently_denied_msg">To use this function, you have to change the app permissions. Please open the Settings menu and grant access to the requested permissions.</string>
+    <string name="permission_permanently_denied_settings_button">Settings</string>
+
+    <string name="permission_denied_title">Permission needed</string>
+    <string name="permission_denied_msg">To use this function we need your permission to access the storage.</string>
+    <string name="permission_denied_ok_button">OK</string>
+    <string name="permission_denied_cancel_button">Cancel</string>
+
+    <!--    Firebase-->
+    <string name="default_notification_channel_id" translatable="false">Firebase</string>
 </resources>

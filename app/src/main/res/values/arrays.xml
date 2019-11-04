@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="languages">
+        <item>en_US</item>
+        <item>ro_RO</item>
+    </array>
+</resources>
