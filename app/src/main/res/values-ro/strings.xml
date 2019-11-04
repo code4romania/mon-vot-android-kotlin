@@ -148,4 +148,13 @@
     <string name="onboarding_title_3">Adaugă note</string>
     <string name="onboarding_description_3"><![CDATA[<html>Ai observat o problemă care nu apare în formular? Folosește butonul de ‘<b>Adaugă notă</b>’, scrie un mesaj și/sau anexează o imagine.</html>]]></string>
 
+    <!--Settings-->
+    <string name="settings_title">Setări</string>
+    <string name="settings_mission">Misiunea noastră</string>
+    <string name="settings_content">When darkness turns to day, the sun moves over the horizon and touches everything in sight. This movement across the landscape brightens everything. Such an illumination awakens us all.</string>
+    <string name="settings_change_language">Schimbă limba</string>
+    <string name="settings_contact">Contactează-ne</string>
+    <string name="settings_privacy_policy">Politică de confidențialitate</string>
+    <string name="settings_send_mail_via">Trimiteți email prin</string>
+
 </resources>

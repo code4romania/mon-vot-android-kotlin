@@ -147,4 +147,14 @@
     <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a voting station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
     <string name="onboarding_title_3">Add notes</string>
     <string name="onboarding_description_3"><![CDATA[<html>Did you notice any problem that does not appear in the form? Use the ‘<b>Add note</b>’ button, write a message and/or attach a picture.</html>]]></string>
+
+    <!--Settings-->
+    <string name="settings_title">Settings</string>
+    <string name="settings_mission">Our mission</string>
+    <string name="settings_content">When darkness turns to day, the sun moves over the horizon and touches everything in sight. This movement across the landscape brightens everything. Such an illumination awakens us all.</string>
+    <string name="settings_change_language">Change language</string>
+    <string name="settings_contact">Contact us</string>
+    <string name="settings_privacy_policy">Privacy policy</string>
+    <string name="settings_send_mail_via">Send email via</string>
+
 </resources>
