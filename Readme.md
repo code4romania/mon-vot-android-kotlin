@@ -21,20 +21,24 @@ This project is built by amazing volunteers and you can be one of them! Here's a
 ## Built With
 
 * Android Studio 3.6
-* Android SDK 28
-* Android SDK Build Tools 28  
+* Android SDK 29
 * Kotlin
 * RxJava, Retrofit2
-* Realm database
+* [Koin](https://insert-koin.io/)
+* [Room](https://developer.android.com/reference/android/arch/persistence/room/RoomDatabase) database
+* Firebase crashlytics, analytics & push notifications
 
-Swagger docs for the API are available [here](https://mv-mobile-prod.azurewebsites.net/swagger/ui/index.html).
+Uses [Fastlane](https://fastlane.tools/) for automating builds & releases.
+
+Uses the MVVM architectural pattern.
+
+Swagger docs for the API are available [here](http://mv-mobile-test.azurewebsites.net/swagger/index.html).
 
 ## Repos and projects
 
-![alt text](https://raw.githubusercontent.com/code4romania/monitorizare-vot-android/develop/MV%20solutions.png)
+![alt text](https://raw.githubusercontent.com/code4romania/mon-vot-android-kotlin/develop/vote_monitor_diagram.png)
 
 - repo for the API - https://github.com/code4romania/monitorizare-vot
-- repo for the java android app - https://github.com/code4romania/monitorizare-vot-android
 - repo for the iOS app - https://github.com/code4romania/monitorizare-vot-ios
 
 Other related projects:
