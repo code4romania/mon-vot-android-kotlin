@@ -25,6 +25,9 @@
                         android:id="@+id/nav_call"
                         android:checkable="false"
                         android:title="@string/menu_call" />
+                    <item
+                        android:id="@+id/nav_settings"
+                        android:title="@string/menu_settings" />
                 </group>
             </menu>
         </item>

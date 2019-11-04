@@ -56,6 +56,7 @@
     <string name="menu_call">Call the Hotline</string>
     <string name="section">Section</string>
     <string name="support">Support</string>
+    <string name="menu_settings">Settings</string>
 
     <!-- Images -->
     <string name="content_icon_building">Building icon</string>

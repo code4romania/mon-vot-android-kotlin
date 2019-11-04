@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_settings.*
+import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.browse
 
@@ -24,17 +25,17 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        iv_back.setOnClickListener {
-            //TODO back navigation
-        }
+        tv_version.text = context?.getString(R.string.app_version, BuildConfig.VERSION_NAME)
 
-        tv_language.setOnClickListener {
+        iv_back.setOnClickListener { requireActivity().finish() }
+
+        fl_language.setOnClickListener {
             //TODO redirect user to language picker screen
         }
 
-        tv_contact.setOnClickListener { onContactClicked() }
+        fl_contact.setOnClickListener { onContactClicked() }
 
-        tv_policy.setOnClickListener { context?.browse("https://www.google.com") }
+        fl_policy.setOnClickListener { context?.browse("https://www.google.com") }
     }
 
     private fun onContactClicked() {

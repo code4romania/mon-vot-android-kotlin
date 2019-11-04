@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -18,6 +19,7 @@ import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
+import ro.code4.monitorizarevot.ui.settings.SettingsActivity
 
 
 class MainActivity : BaseActivity<MainViewModel>() {
@@ -62,6 +64,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     R.id.nav_call -> {
                         callSupportCenter()
                         true
+                    }
+                    R.id.nav_settings -> {
+                        startActivity(Intent(this, SettingsActivity::class.java))
+                        drawerLayout.closeDrawer(navView)
+                        false
                     }
                     else -> false
 

@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
+            android:padding="16dp"
             android:src="@drawable/ic_chevron_left" />
 
         <TextView
@@ -47,6 +47,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_version"
                 style="@style/Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,41 +77,62 @@
             android:layout_marginTop="8dp"
             android:text="@string/settings_content" />
 
-        <TextView
-            android:id="@+id/tv_language"
-            style="@style/Text"
+        <FrameLayout
+            android:id="@+id/fl_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:gravity="center_vertical"
-            android:minHeight="48dp"
-            android:text="@string/settings_change_language"
-            android:textSize="15sp" />
+            android:foreground="?attr/selectableItemBackground">
 
-        <TextView
-            android:id="@+id/tv_contact"
-            style="@style/Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:gravity="center_vertical"
-            android:minHeight="48dp"
-            android:text="@string/settings_contact"
-            android:textSize="15sp" />
+            <TextView
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:text="@string/settings_change_language"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/tv_policy"
-            style="@style/Text"
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:gravity="center_vertical"
-            android:minHeight="48dp"
-            android:text="@string/settings_privacy_policy"
-            android:textSize="15sp" />
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:text="@string/settings_contact"
+                android:textSize="15sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:text="@string/settings_privacy_policy"
+                android:textSize="15sp" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
