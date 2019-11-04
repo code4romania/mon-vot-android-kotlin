@@ -208,6 +208,12 @@ class Repository : KoinComponent {
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
+    fun deleteAnsweredQuestion(answeredQuestion: AnsweredQuestion) {
+        db.formDetailsDao().deleteAnsweredQuestion(answeredQuestion.id).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+
     @SuppressLint("CheckResult")
     fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
         db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
@@ -338,5 +344,4 @@ class Repository : KoinComponent {
         syncNotes()
         syncPollingStation()
     }
-
 }
