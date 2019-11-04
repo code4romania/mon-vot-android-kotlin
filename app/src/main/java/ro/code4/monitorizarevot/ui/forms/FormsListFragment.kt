@@ -59,6 +59,8 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
             if (!isOnline(context!!)) {
                 Snackbar.make(syncButton, getString(R.string.form_sync_no_internet), Snackbar.LENGTH_SHORT)
                     .show()
+
+                return@setOnClickListener
             }
 
             viewModel.sync()
