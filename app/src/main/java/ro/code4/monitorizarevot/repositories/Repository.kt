@@ -132,10 +132,13 @@ class Repository : KoinComponent {
             })
     }
 
+    @SuppressLint("CheckResult")
     private fun deleteFormDetails(formDetails: FormDetails) {
         db.formDetailsDao().deleteForms(formDetails)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
 
@@ -176,6 +179,7 @@ class Repository : KoinComponent {
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun getFormQuestions(form: FormDetails) {
         apiInterface.getForm(form.id).doOnNext { list ->
             list.forEach { section ->
@@ -189,7 +193,9 @@ class Repository : KoinComponent {
             }
             db.formDetailsDao().save(*list.map { it }.toTypedArray())
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
 
     }
 
@@ -201,16 +207,22 @@ class Repository : KoinComponent {
         return db.formDetailsDao().getAnswersForForm(countyCode, pollingStationNumber, formId)
     }
 
+    @SuppressLint("CheckResult")
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
         Observable.create<Unit> {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
+    @SuppressLint("CheckResult")
     fun deleteAnsweredQuestion(answeredQuestion: AnsweredQuestion) {
         db.formDetailsDao().deleteAnsweredQuestion(answeredQuestion.id).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
 
@@ -276,11 +288,14 @@ class Repository : KoinComponent {
 
     fun getNotSyncedNotes(): LiveData<Int> = db.noteDao().getCountOfNotSyncedNotes()
 
+    @SuppressLint("CheckResult")
     fun updateQuestionWithNotes(questionId: Int) {
         Observable.create<Unit> {
             db.formDetailsDao().updateQuestionWithNotes(questionId)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
     fun saveNote(note: Note): Observable<ResponseBody> =
