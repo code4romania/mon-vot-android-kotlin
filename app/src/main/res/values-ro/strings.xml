@@ -3,79 +3,65 @@
 
     <string name="app_name">Monitorizare Vot</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="menu_settings">Setări</string>
-
-    <string name="app_version">v%1$S aplicație dezvoltată de</string>
-
     <!-- General -->
-    <string name="please_wait">Vă rugăm așteptaţi…</string>
     <string name="loading_label">Loading…</string>
-    <string name="button_continue">Continuă</string>
-    <string name="button_continue_to_forms">Continuă către formulare</string>
-    <string name="button_send">Trimite</string>
     <string name="hint_time">hh:mm</string>
     <string name="empty" />
     <string name="error_empty_credentials">Introduceți numărul de telefon şi codul primit.</string>
-    <string name="error_no_connection">Nu există conexiune la internet. Vă rugăm să vă conectați și să încercați din nou</string>
+    <string name="error_no_connection">Nu există conexiune la internet. Vă rugăm să vă conectați și să încercați din nou.</string>
     <string name="error_server">Eroare de server</string>
     <string name="error_unknown">Eroare necunoscută</string>
-
     <string name="error_permission">Eroare permisiune %1$S</string>
-    <string name="error_section_type">Eroare în interpretarea secțiunii</string>
-
-    <!-- Fragment titles -->
-    <string name="title_polling_station">Detalii secție</string>
-    <string name="title_polling_station_selection">Alege secția</string>
-    <string name="title_forms_list">Formulare</string>
-    <string name="title_note">Adaugă notă</string>
-    <string name="title_guide">Ghid</string>
-
-    <!-- Menu -->
-    <string name="menu_logout">Delogare</string>
-    <string name="menu_forms">Formulare</string>
-    <string name="menu_change_polling_station">Schimbă secţia</string>
-    <string name="menu_guide">Ghidul observatorului</string>
-    <string name="menu_call">Apelează TelVerde</string>
-    <string name="section">Section</string>
-    <string name="support">Support</string>
-
-    <!-- Images -->
-    <string name="content_icon_building">Building icon</string>
 
     <!-- Login -->
+    <string name="app_version">v%1$S aplicație dezvoltată de</string>
     <string name="login_phone">Numărul de telefon</string>
     <string name="login_password">Cod primit</string>
     <string name="login">Login</string>
 
+    <!--    Onboarding-->
+    <string name="onboarding_next">Continuă</string>
+    <string name="onboarding_back">Înapoi</string>
+    <string name="onboarding_to_app">Spre app</string>
+    <string name="onboarding_title_choose_language">Alege-ți limba</string>
+    <string name="onboarding_title_1">Alege-ți secția de votare</string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>PASUL 1:</b><br/>Definește secția de votare în care te afli, alegând județul și numărul acesteia.<br/><br/><b>PASUL 2:</b><br/>Adaugă câteva detalii (mediul urban/rural, detalii despre președintele de secție, ora sosirii). Nu-ți face griji, poți să modifici informațiile mai târziu.</html>]]></string>
+    <string name="onboarding_title_2">Completează formularele</string>
+    <string name="onboarding_description_2"><![CDATA[<html>Pentru a detecta problemele, îți punem la dispoziție câteva formulare cu regulile standard ale unei secții de votare.<br/>În fiecare formular poți semnala dacă anumite proceduri au fost urmate sau nu.</html>]]></string>
+    <string name="onboarding_title_3">Adaugă note</string>
+    <string name="onboarding_description_3"><![CDATA[<html>Ai observat o problemă care nu apare în formular? Folosește butonul de ‘<b>Adaugă notă</b>’, scrie un mesaj și/sau anexează o imagine.</html>]]></string>
+
+    <!-- Fragment titles -->
+    <string name="title_polling_station_selection">Alege secția</string>
+    <string name="title_polling_station">Detalii secție</string>
+    <string name="title_forms_list">Formulare</string>
+    <string name="title_note">Adaugă notă</string>
+    <string name="title_guide">Ghid</string>
+
+    <!-- Section details header -->
+    <string name="polling_station">Secția %1$d %2$s</string>
+
+    <!-- Menu -->
+    <string name="menu_forms">Formulare</string>
+    <string name="menu_change_polling_station">Schimbă secţia</string>
+    <string name="menu_guide">Ghidul observatorului</string>
+    <string name="menu_call">Apelează TelVerde</string>
+    <string name="menu_settings">Setări</string>
+    <string name="menu_logout">Delogare</string>
+
     <!-- Polling Station selection -->
-    <string name="polling_station_title">Alege secția</string>
-    <string name="polling_station_subtitle">în care te afli</string>
+    <string name="polling_station_title">Alege secția în care te afli</string>
     <string name="polling_station_county">Județ</string>
     <string name="polling_station_number">Număr secție</string>
     <string name="polling_station_spinner_choose">Alege</string>
     <string name="polling_station_number_hint">Introduceți numărul secției</string>
+    <string name="button_continue">Continuă</string>
+
+    <string name="invalid_polling_station_county">Alege județul</string>
+    <string name="invalid_polling_station_number">Introdu numărul secției</string>
+    <string name="invalid_polling_station_number_minus">Numărul secției trebuie să fie pozitiv</string>
+    <string name="invalid_polling_station_number_max">Numărul maxim pentru județul %1$s este %2$d</string>
+
     <string name="polling_station_change">Schimbă</string>
     <string name="polling_station_question_environment">În ce mediu se află secția?</string>
     <string name="polling_station_answer_rural">Rural</string>
@@ -83,71 +69,74 @@
     <string name="polling_station_question_gender">Preşedintele secţiei este</string>
     <string name="polling_station_answer_man">Bărbat</string>
     <string name="polling_station_answer_woman">Femeie</string>
-    <string name="polling_station_question_enter">Ora sosirii în secţie</string>
-    <string name="polling_station_question_leave">Ora plecării din secţie</string>
+    <string name="polling_station_question_enter">Data și ora sosirii</string>
+    <string name="polling_station_question_leave">Data și ora plecării</string>
     <string name="polling_station_choose_date_enter">Alege data sosirii</string>
     <string name="polling_station_choose_time_enter">Alege ora sosirii</string>
     <string name="polling_station_choose_date_leave">Alege data plecării</string>
     <string name="polling_station_choose_time_leave">Alege ora plecării</string>
-    <string name="invalid_polling_station_county">Alege județul</string>
-    <string name="invalid_polling_station_number">Introdu numărul secției</string>
-    <string name="invalid_polling_station_number_minus">Numărul secției trebuie să fie pozitiv</string>
-    <string name="invalid_polling_station_number_max">Numărul maxim pentru județul %1$s este %2$d</string>
+    <string name="button_continue_to_forms">Continuă către formulare</string>
+
     <string name="invalid_polling_station_environment">Alege urban sau rural</string>
     <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
-    <string name="polling_station">Secția $1%d $2%s</string>
 
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>
+
+    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
+    <string name="sync_manual">Sincronizează datele manual</string>
+
+    <string name="form_sync_no_internet">Ai nevoie de o conexiune la internet pentru a sincroniza datele!</string>
+
     <string name="error_no_form_data">Nu există date pentru acest formular</string>
     <string name="forms_sync_failed_description">Descărcarea formularelor a eșuat</string>
     <string name="forms_sync_failed_retry">Reîncearcă</string>
 
+    <!-- Questions list -->
+    <string name="section_title">Secțiunea %1$d - %2$s</string>
+
     <!-- Question details -->
-    <string name="question_complete">Completat</string>
-    <string name="question_incomplete">Necompletat</string>
-    <string name="question_notes">Note</string>
     <string name="question_next">Înainte</string>
     <string name="question_previous">Înapoi</string>
     <string name="question_finish">Trimite</string>
-    <string name="question_confirmation_message">Răspuns salvat</string>
-    <string name="questions_synced">Răspunsuri sincronizate cu serverul</string>
+    <string name="sync_locally_saved">salvat local</string>
+    <string name="add_note_to_question">Adaugă notă la întrebarea curentă</string>
 
     <!-- Notes -->
-    <string name="note_title">Adaugă notă</string>
-    <string name="note_description">Mesajul tău</string>
+    <string name="add_note">Adaugă o notă</string>
     <string name="note_description_hint">Scrie aici</string>
     <string name="note_media">Adaugă foto/video</string>
-    <string name="note_saved">Notă salvată</string>
     <string name="invalid_note">Introdu o descriere sau alege un fişier</string>
     <string name="error_permission_external_storage">Permisiunea este necesară pentru a putea selecta o resursă</string>
     <string name="note_gallery">Încarcă din galerie</string>
     <string name="note_photo">Fotografiază</string>
     <string name="note_video">Înregistrează video</string>
-    <string name="sync_locally_saved">salvat local</string>
-    <string name="add_note_to_question">Adaugă Notă la Întrebarea Curentă</string>
-    <string name="add_note">Adaugă notă</string>
-    <string name="notes_history">Istoricul notelor</string>
-    <string name="note_submit">Trimite</string>
-
-    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou</string>
-    <string name="sync_manual">Sincronizează Datele Manual</string>
-    <string name="section_title">Secțiunea %1$d - %2$s</string>
     <string name="select_photo">Selectează fotografia</string>
     <string name="file_manager_missing">Te rugăm să instalezi un manager de fișiere.</string>
+    <string name="note_submit">Trimite</string>
 
-    <!--    Onboarding-->
-    <string name="onboarding_next">Continuă</string>
-    <string name="onboarding_back">Înapoi</string>
-    <string name="onboarding_to_app">Spre aplicație</string>
-    <string name="onboarding_title_1">Alege-ți secția de votare</string>
-    <string name="onboarding_description_1"><![CDATA[<html><b>PASUL 1:</b><br/>Menționează secția de votare în care te afli, alegând județul și numărul acesteia.<br/><br/><b>PASUL 2:</b><br/>Adaugă câteva detalii (mediul urban/rural, detalii despre președintele de secție, ora sosirii). Nu-ți face griji, poți să modifici informațiile mai târziu.</html>]]></string>
-    <string name="onboarding_title_2">Completează formularele</string>
-    <string name="onboarding_description_2"><![CDATA[<html>Pentru a detecta problemele, îți punem la dispoziție câteva formulare cu regulile standard ale unei secții de votare.<br/>În fiecare formular poți semnala dacă anumite proceduri au fost urmate sau nu.</html>]]></string>
-    <string name="onboarding_title_3">Adaugă note</string>
-    <string name="onboarding_description_3"><![CDATA[<html>Ai observat o problemă care nu apare în formular? Folosește butonul de ‘<b>Adaugă notă</b>’, scrie un mesaj și/sau anexează o imagine.</html>]]></string>
+    <string name="notes_history">Istoricul notelor</string>
+
+    <!-- Images -->
+    <string name="content_icon_building">Simbol clădire</string>
+
+    <!-- Permissions-->
+    <string name="permission_permanently_denied_title">Permisiune necesară</string>
+    <string name="permission_permanently_denied_msg">Pentru a utiliza această funcționalitate, trebuie să modificați permisiunile aplicației. Vă rugăm să deschideți meniul Setări și să acordați acces la permisiunile solicitate.</string>
+    <string name="permission_permanently_denied_settings_button">Setări</string>
+
+    <string name="permission_denied_title">Permisiune necesară</string>
+    <string name="permission_denied_msg">Pentru a utiliza această funcționalitate, avem nevoie de permisiunea ta pentru a accesa spațiul de stocare.</string>
+    <string name="permission_denied_ok_button">OK</string>
+    <string name="permission_denied_cancel_button">Anulare</string>
+
+    <!-- Notifications -->
+    <string name="push_notification_ok">OK</string>
+
+    <!-- Errors -->
+    <string name="error_generic">A apărut o problemă!</string>
 
     <!--Settings-->
     <string name="settings_title">Setări</string>

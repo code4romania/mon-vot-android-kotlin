@@ -17,8 +17,8 @@
 
             <ImageView
                 android:id="@+id/syncIcon"
-                android:layout_width="@dimen/sync_icon_size"
-                android:layout_height="@dimen/sync_icon_size"
+                android:layout_width="@dimen/small_icon_size"
+                android:layout_height="@dimen/small_icon_size"
                 android:layout_marginTop="@dimen/margin"
                 android:layout_marginEnd="@dimen/margin"
                 android:adjustViewBounds="true"

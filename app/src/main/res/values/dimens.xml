@@ -1,8 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="big_margin">24dp</dimen>
     <dimen name="xbig_margin">32dp</dimen>
@@ -61,6 +59,7 @@
     <dimen name="xsmall_elevation">1dp</dimen>
     <dimen name="progress_height">4dp</dimen>
 
-    <dimen name="sync_progress_icon_size">26dp</dimen>
-    <dimen name="sync_icon_size">16dp</dimen>
+    <dimen name="login_logo_icon_size">26dp</dimen>
+    <dimen name="small_icon_size">16dp</dimen>
+    <dimen name="circle_indicator">10dp</dimen>
 </resources>

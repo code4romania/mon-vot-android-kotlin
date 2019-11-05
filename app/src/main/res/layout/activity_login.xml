@@ -56,7 +56,7 @@
             <ImageView
                 android:id="@+id/code4logo"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/sync_progress_icon_size"
+                android:layout_height="@dimen/login_logo_icon_size"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_code4"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,6 @@
                     android:drawablePadding="@dimen/margin"
                     android:hint="@string/login_phone"
                     android:inputType="phone"
-                    android:text="@string/test_phone_number"
                     tools:targetApi="o" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -109,7 +108,6 @@
                     android:hint="@string/login_password"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
-                    android:text="@string/test_password"
                     tools:targetApi="o" />
 
             </com.google.android.material.textfield.TextInputLayout>

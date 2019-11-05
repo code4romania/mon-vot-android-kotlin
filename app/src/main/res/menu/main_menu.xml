@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:checkableBehavior="single">
-        <item android:title="">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/nav_forms"
-                        android:title="@string/menu_forms" />
-                    <item
-                        android:id="@+id/nav_change_polling_station"
-                        android:checkable="false"
-                        android:title="@string/menu_change_polling_station" />
-                </group>
-            </menu>
-        </item>
-        <item android:title="@string/support">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/nav_guide"
-                        android:title="@string/menu_guide" />
-                    <item
-                        android:id="@+id/nav_call"
-                        android:checkable="false"
-                        android:title="@string/menu_call" />
-                    <item
-                        android:id="@+id/nav_settings"
-                        android:title="@string/menu_settings" />
-                </group>
-            </menu>
-        </item>
+        <item
+            android:id="@+id/nav_forms"
+            android:icon="@drawable/ic_menu_forms"
+            android:title="@string/menu_forms" />
+        <item
+            android:id="@+id/nav_change_polling_station"
+            android:checkable="false"
+            android:icon="@drawable/ic_menu_polling_station"
+            android:title="@string/menu_change_polling_station" />
+        <item
+            android:checkable="false"
+            android:enabled="false"
+            android:title="" />
+        <item
+            android:id="@+id/nav_guide"
+            android:icon="@drawable/ic_menu_guide"
+            android:title="@string/menu_guide" />
+        <item
+            android:id="@+id/nav_call"
+            android:checkable="false"
+            android:icon="@drawable/ic_menu_call"
+            android:title="@string/menu_call" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings" />
     </group>
-
 </menu>

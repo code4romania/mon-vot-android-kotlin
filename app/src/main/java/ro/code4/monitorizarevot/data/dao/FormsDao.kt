@@ -57,12 +57,8 @@ interface FormsDao {
     @Insert(onConflict = REPLACE)
     fun saveAnswers(vararg answers: Answer)
 
-
-    @Insert(onConflict = REPLACE)
-    fun saveAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
-
-    @Delete
-    fun deleteAnsweredQuestions(vararg answeredQuestions: AnsweredQuestion): Completable
+    @Query("DELETE FROM answered_question WHERE id=:id")
+    fun deleteAnsweredQuestion(id: String): Completable
 
     @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber ")
     fun getAnswersFor(
@@ -118,6 +114,12 @@ interface FormsDao {
         pollingStationNumber: Int,
         formId: Int,
         synced: Boolean = true
+    )
+
+    @Query("UPDATE question SET hasNotes=:hasNotes WHERE id=:questionId")
+    fun updateQuestionWithNotes(
+        questionId: Int,
+        hasNotes: Boolean = true
     )
 
     @Query("SELECT COUNT(*) FROM answered_question WHERE  synced=:synced")

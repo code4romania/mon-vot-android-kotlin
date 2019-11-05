@@ -76,7 +76,6 @@ fun FragmentManager.replaceFragment(
 
 fun AppCompatActivity.changePollingStation() {
     startActivity(Intent(this, PollingStationActivity::class.java))
-    finishAffinity()
 }
 
 fun Calendar.updateTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
@@ -102,6 +101,11 @@ fun Calendar.getTimeText(): String {
 
 fun Date.formatDate(): String {
     val formatter = SimpleDateFormat(Constants.DATE_FORMAT_SIMPLE, Locale.getDefault())
+    return formatter.format(this)
+}
+
+fun Date.formatDateTime(): String {
+    val formatter = SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.getDefault())
     return formatter.format(this)
 }
 
@@ -374,6 +378,20 @@ fun String.toHtml(): Spanned? {
         Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT)
     } else {
         Html.fromHtml(this)
+    }
+}
+
+/*
+    The locale string can be:
+    - [language_code]
+    - [language_code]_[country_code]
+ */
+fun String.getLocale(): Locale {
+    val parts = split("_")
+    return if (parts.size == 2) {
+        Locale(parts[0], parts[1])
+    } else {
+        Locale(parts[0])
     }
 }
 

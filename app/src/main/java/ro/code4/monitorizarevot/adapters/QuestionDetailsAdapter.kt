@@ -112,7 +112,7 @@ class QuestionDetailsAdapter constructor(
                 savedLocally && !synced -> {
                     holder.itemView.syncIcon.visibility = View.VISIBLE
                     holder.itemView.syncText.visibility = View.VISIBLE
-                    holder.itemView.syncIcon.setImageResource(R.drawable.ic_sync_progress)
+                    holder.itemView.syncIcon.setImageResource(R.drawable.ic_sync_not_done)
                 }
                 else -> {
                     holder.itemView.syncIcon.visibility = View.INVISIBLE
@@ -136,12 +136,16 @@ class QuestionDetailsAdapter constructor(
                 CompoundButton.OnCheckedChangeListener { p0, p1 ->
                     item.question.synced = it.selected == p1 && item.question.synced
                     it.selected = p1
+                    if (!p1) {
+                        it.value = null
+                    }
                     holder.itemView.answersLayout.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                         .onCheckedChanged(p0, p1)
                 }
             val textWatcher = object : TextWatcher by TextWatcherDelegate {
                 override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
                     it.value = p0.toString()
+                    item.question.synced = false
                 }
             }
             val view: View = if (it.isFreeText) {
@@ -176,10 +180,14 @@ class QuestionDetailsAdapter constructor(
                 CompoundButton.OnCheckedChangeListener { _, p1 ->
                     item.question.synced = it.selected == p1 && item.question.synced
                     it.selected = p1
+                    if (!p1) {
+                        it.value = null
+                    }
                 }
             val textWatcher = object : TextWatcher by TextWatcherDelegate {
                 override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
                     it.value = p0.toString()
+                    item.question.synced = false
                 }
             }
             val view: View = if (it.isFreeText) {

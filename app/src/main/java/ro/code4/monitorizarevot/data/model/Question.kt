@@ -45,11 +45,13 @@ class Question {
     @Ignore
     var synced = false
 
+    var hasNotes = false
+
     override fun equals(other: Any?): Boolean =
         other is Question && id == other.id && text == other.text && code == other.code &&
                 questionType == other.questionType &&
                 sectionId == other.sectionId && savedLocally == other.savedLocally &&
-                synced == other.synced
+                synced == other.synced && hasNotes == other.hasNotes
 
 
     override fun hashCode(): Int {
@@ -60,6 +62,7 @@ class Question {
         result = 31 * result + sectionId.hashCode()
         result = 31 * result + savedLocally.hashCode()
         result = 31 * result + synced.hashCode()
+        result = 31 * result + hasNotes.hashCode()
         return result
     }
 

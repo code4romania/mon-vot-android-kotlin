@@ -51,10 +51,11 @@ class QuestionDelegate(
             with(question) {
                 if (savedLocally || synced) {
                     syncIcon.visibility = View.VISIBLE
-                    syncIcon.setImageResource(if (synced) R.drawable.ic_synced else R.drawable.ic_sync_progress)
+                    syncIcon.setImageResource(if (synced) R.drawable.ic_synced else R.drawable.ic_sync_not_done)
                 } else {
                     syncIcon.visibility = View.INVISIBLE
                 }
+                noteIcon.visibility = if (hasNotes) View.VISIBLE else View.INVISIBLE
                 questionCode.text = code
                 questionText.text = text
             }
