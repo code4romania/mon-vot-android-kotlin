@@ -72,16 +72,17 @@ class FormDelegate(
         }
 
         private fun getIcon(code: String): Int {
-            return when (code) {
-                FormCode.A.name -> R.drawable.ic_form_a
-                FormCode.B.name -> R.drawable.ic_form_b
-                FormCode.C.name -> R.drawable.ic_form_c
+            return when {
+                code.startsWith(FormCode.A.name) -> R.drawable.ic_form_a
+                code.startsWith(FormCode.B.name) -> R.drawable.ic_form_b
+                code.startsWith(FormCode.C.name) -> R.drawable.ic_form_default
+                code.startsWith(FormCode.D.name) -> R.drawable.ic_form_c
                 else -> R.drawable.ic_form_default
             }
         }
     }
 
     enum class FormCode {
-        A, B, C
+        A, B, C, D
     }
 }
