@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_polling_station.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.hideKeyboard
 import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseActivity
@@ -28,6 +29,7 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
             startActivityWithoutTrace(MainActivity::class.java)
         })
         viewModel.next().observe(this, Observer {
+            hideKeyboard()
             replaceFragment(
                 R.id.container,
                 PollingStationDetailsFragment(),

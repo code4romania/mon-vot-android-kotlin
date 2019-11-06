@@ -23,7 +23,7 @@
         android:paddingStart="@dimen/small_margin"
         android:paddingEnd="@dimen/small_margin"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@id/previousQuestionBtn"
+        app:layout_constraintBottom_toTopOf="@id/nextQuestionBtn"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_question_details" />
 
@@ -37,11 +37,9 @@
         android:paddingStart="@dimen/small_margin"
         android:paddingEnd="@dimen/small_margin"
         android:text="@string/question_previous"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nextQuestionBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/nextQuestionBtn"

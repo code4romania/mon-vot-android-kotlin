@@ -19,6 +19,7 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
     private var dialog: AlertDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LocaleManager.wrapContext(this)
         setContentView(layout)
         application.registerActivityLifecycleCallbacks(mCallbacks)
         viewModel.messageToast().observe(this, Observer {
@@ -29,6 +30,7 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleManager.wrapContext(newBase))
     }
+
 
     override fun onDestroy() {
         application.unregisterActivityLifecycleCallbacks(mCallbacks)
@@ -53,4 +55,5 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
         }
 
     }
+
 }
