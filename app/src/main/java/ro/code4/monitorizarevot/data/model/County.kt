@@ -23,6 +23,9 @@ class County {
     @Expose
     var limit: Int = 0
 
+    @Expose
+    var diaspora: Boolean? = null
+
     override fun toString(): String = name
 
     override fun equals(other: Any?): Boolean {
