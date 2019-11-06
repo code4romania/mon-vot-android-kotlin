@@ -13,6 +13,7 @@ import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -370,6 +371,14 @@ fun Context.createMediaFile(name: String, folder: String): File {
 fun Activity.startActivityWithoutTrace(activity: Class<*>) {
     startActivity(Intent(this, activity))
     finishAffinity()
+}
+
+fun Activity.hideKeyboard() {
+    val view = currentFocus
+    if (view != null) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }
 
 fun String.toHtml(): Spanned? {
