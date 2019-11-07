@@ -166,6 +166,7 @@ class Repository : KoinComponent {
             return
         }
         val apiFormDetails = response.formVersions
+        apiFormDetails.forEachIndexed { index, formDetails -> formDetails.order = index }
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return

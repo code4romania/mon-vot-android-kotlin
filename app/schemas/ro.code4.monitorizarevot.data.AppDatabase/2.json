@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "b79ffc2b34616a424b9c3cae8c380c02",
+    "identityHash": "f0637c4d16330051d9e5618d5196b1a3",
     "entities": [
       {
         "tableName": "county",
@@ -143,7 +143,7 @@
       },
       {
         "tableName": "form_details",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `code` TEXT NOT NULL, `description` TEXT NOT NULL, `formVersion` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `code` TEXT NOT NULL, `description` TEXT NOT NULL, `formVersion` INTEGER NOT NULL, `diaspora` INTEGER, `order` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -166,6 +166,18 @@
           {
             "fieldPath": "formVersion",
             "columnName": "formVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diaspora",
+            "columnName": "diaspora",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "order",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -619,7 +631,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b79ffc2b34616a424b9c3cae8c380c02')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f0637c4d16330051d9e5618d5196b1a3')"
     ]
   }
 }
