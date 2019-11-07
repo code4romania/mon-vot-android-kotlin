@@ -24,6 +24,12 @@ class FormDetails {
     @SerializedName("ver")
     var formVersion: Int = 0
 
+    @Expose
+    var diaspora: Boolean? = null
+
+    @Expose
+    var order: Int = 0
+
     @Ignore
     lateinit var sections: List<Section>
 

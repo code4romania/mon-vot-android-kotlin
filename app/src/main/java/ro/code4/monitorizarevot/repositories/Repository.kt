@@ -29,6 +29,7 @@ import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 import java.io.File
+import java.util.*
 
 
 class Repository : KoinComponent {
@@ -63,7 +64,10 @@ class Repository : KoinComponent {
                 //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
                 if (apiCounties.isNotEmpty() && dbCounties != apiCounties) {
 //             TODO        deleteCounties()
-                    db.countyDao().save(*apiCounties.map { it }.toTypedArray())
+                    db.countyDao().save(*apiCounties.map {
+                        it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
+                        it
+                    }.toTypedArray())
                     return@BiFunction apiCounties
                 }
                 dbCounties
@@ -166,6 +170,7 @@ class Repository : KoinComponent {
             return
         }
         val apiFormDetails = response.formVersions
+        apiFormDetails.forEachIndexed { index, formDetails -> formDetails.order = index }
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
