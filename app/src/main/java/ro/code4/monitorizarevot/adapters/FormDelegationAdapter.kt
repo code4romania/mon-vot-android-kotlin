@@ -30,7 +30,7 @@ class FormDelegationAdapter(
 
             override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem): Boolean =
                 when {
-                    oldItem is FormListItem && newItem is FormListItem -> oldItem.formWithSections.form == newItem.formWithSections.form
+                    oldItem is FormListItem && newItem is FormListItem -> oldItem.formWithSections == newItem.formWithSections
                     oldItem is AddNoteListItem && newItem is AddNoteListItem -> true
                     else -> false
                 }
