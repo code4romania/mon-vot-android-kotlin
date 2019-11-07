@@ -24,7 +24,7 @@ class FormWithSections {
     override fun hashCode(): Int {
         var result = form.hashCode()
         result = 31 * result + sections.hashCode()
-        result = 31 * result + noAnsweredQuestions.hashCode()
+        result = 31 * result + noAnsweredQuestions
         return result
     }
 }
