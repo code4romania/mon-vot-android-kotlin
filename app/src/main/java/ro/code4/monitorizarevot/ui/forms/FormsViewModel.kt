@@ -30,6 +30,7 @@ class FormsViewModel : BaseFormViewModel() {
     init {
         getForms()
         getPollingStationBarText()
+        subscribe()
     }
 
     private fun subscribe() {
@@ -61,10 +62,7 @@ class FormsViewModel : BaseFormViewModel() {
         }
     }
 
-    fun forms(): LiveData<ArrayList<ListItem>> {
-        subscribe()
-        return formsLiveData
-    }
+    fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData

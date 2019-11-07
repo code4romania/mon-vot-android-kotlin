@@ -16,4 +16,15 @@ class FormWithSections {
 
     @Ignore
     var noAnsweredQuestions: Int = 0
+
+
+    override fun equals(other: Any?): Boolean =
+        other is FormWithSections && form == other.form && sections.map { sections } == other.sections.map { sections } && noAnsweredQuestions == other.noAnsweredQuestions
+
+    override fun hashCode(): Int {
+        var result = form.hashCode()
+        result = 31 * result + sections.hashCode()
+        result = 31 * result + noAnsweredQuestions.hashCode()
+        return result
+    }
 }
