@@ -2,7 +2,11 @@ package ro.code4.monitorizarevot.ui.splashscreen
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import org.koin.core.inject
+import ro.code4.monitorizarevot.BuildConfig
+import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
@@ -16,9 +20,25 @@ class SplashScreenViewModel : BaseViewModel() {
     fun loginLiveData(): LiveData<LoginStatus> = loginLiveData
 
     init {
-        checkLogin()
+        remoteConfiguration()
     }
 
+    private fun remoteConfiguration() {
+        FirebaseRemoteConfig.getInstance().apply {
+            val configSettings = FirebaseRemoteConfigSettings.Builder()
+                .build()
+            setConfigSettingsAsync(configSettings)
+            setDefaultsAsync(R.xml.remote_config_defaults)
+
+        }
+        FirebaseRemoteConfig.getInstance().fetch(if (BuildConfig.DEBUG) 0 else 3600)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    FirebaseRemoteConfig.getInstance().activate()
+                }
+                checkLogin()
+            }
+    }
     private fun checkLogin() {
         val isLoggedIn = sharedPreferences.getToken() != null
 
