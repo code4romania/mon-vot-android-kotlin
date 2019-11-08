@@ -137,8 +137,8 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    private fun deleteFormDetails(formDetails: FormDetails) {
-        db.formDetailsDao().deleteForms(formDetails)
+    private fun deleteFormDetails(vararg formDetails: FormDetails) {
+        db.formDetailsDao().deleteForms(*formDetails)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
                 Log.i(TAG, it.message.orEmpty())
@@ -175,10 +175,17 @@ class Repository : KoinComponent {
             saveFormDetails(apiFormDetails)
             return
         }
+        if (apiFormDetails.size < dbFormDetails.size) {
+            dbFormDetails.minus(apiFormDetails).also { diff ->
+                if (diff.isNotEmpty()) {
+                    deleteFormDetails(*diff.map { it }.toTypedArray())
+                }
+            }
+        }
         apiFormDetails.forEach { apiForm ->
-            if (apiForm.formVersion != dbFormDetails.find { it.code == apiForm.code }?.formVersion) {
-                deleteFormDetails(apiForm)
-                //TODO delete answers and other bullshits
+            val dbForm = dbFormDetails.find { it.id == apiForm.id }
+            if (dbForm != null && apiForm.formVersion != dbForm.formVersion) {
+                deleteFormDetails(dbForm)
                 saveFormDetails(apiForm)
             }
         }
