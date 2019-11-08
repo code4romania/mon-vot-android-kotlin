@@ -74,6 +74,12 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
                     val apiError400 = exception.response().errorBody()?.string()?.fromJson(Gson(), APIError400::class.java)
 
                     apiError400?.let {
+                        if (it.error == null) {
+                            otherError()
+
+                            return
+                        }
+
                         val s = SpannableString(it.error)
 
                         //added a TextView
