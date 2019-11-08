@@ -32,7 +32,6 @@ class FormsViewModel : BaseFormViewModel() {
     init {
         getForms()
         getPollingStationBarText()
-        subscribe()
     }
 
     private fun subscribe() {
@@ -78,6 +77,9 @@ class FormsViewModel : BaseFormViewModel() {
                 pollingStationNumber
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally {
+                    subscribe()
+                }
                 .subscribe({
                     pollingStationLiveData.postValue(it)
                 }, {
