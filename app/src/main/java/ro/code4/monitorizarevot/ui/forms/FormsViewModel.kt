@@ -105,8 +105,13 @@ class FormsViewModel : BaseFormViewModel() {
             formWithSections.noAnsweredQuestions =
                 answers.count { it.answeredQuestion.formId == formWithSections.form.id }
         }
-        val filterDiasporaForms =
+
+
+        val filterDiasporaForms = try {
             FirebaseRemoteConfig.getInstance().getBoolean(REMOTE_CONFIG_FILTER_DIASPORA_FORMS)
+        } catch (e: Exception) {
+            false
+        }
         val formsList = when {
             !filterDiasporaForms || pollingStationLiveData.value?.isDiaspora == true -> forms.map {
                 FormListItem(it)
