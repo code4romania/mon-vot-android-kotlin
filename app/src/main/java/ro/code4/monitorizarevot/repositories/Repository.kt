@@ -62,7 +62,7 @@ class Repository : KoinComponent {
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                if (apiCounties.isNotEmpty() && dbCounties != apiCounties) {
+                if (apiCounties.isNotEmpty() && !apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }) {
 //             TODO        deleteCounties()
                     db.countyDao().save(*apiCounties.map {
                         it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
