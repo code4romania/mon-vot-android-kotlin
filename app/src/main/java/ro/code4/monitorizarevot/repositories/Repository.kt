@@ -64,13 +64,13 @@ class Repository : KoinComponent {
                 //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
                 val all =
                     apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }
+                apiCounties.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
+                }
                 return@BiFunction when {
                     apiCounties.isNotEmpty() && !all -> {
                         // TODO deleteCounties()
-                        db.countyDao().save(*apiCounties.map {
-                            it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                            it
-                        }.toTypedArray())
+                        db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                         apiCounties
                     }
                     apiCounties.isNotEmpty() && all -> apiCounties
