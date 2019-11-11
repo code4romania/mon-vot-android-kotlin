@@ -18,7 +18,11 @@ class GuideFragment : BaseAnalyticsFragment<GuideViewModel>(), WebClient.WebLoad
         get() = R.layout.fragment_guide
     override val screenName: Int
         get() = R.string.analytics_title_guide
-    private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
+    private val progressDialog: ProgressDialogFragment by lazy {
+        ProgressDialogFragment().also {
+            it.isCancelable = false
+        }
+    }
     override val viewModel: GuideViewModel by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
