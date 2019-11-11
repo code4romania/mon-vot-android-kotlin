@@ -1,22 +1,57 @@
 package ro.code4.monitorizarevot.data.model
 
-import com.google.gson.annotations.Expose
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import java.util.*
 
-
+@Entity(
+    tableName = "note", foreignKeys = [ForeignKey(
+        entity = Question::class,
+        parentColumns = ["id"],
+        childColumns = ["questionId"],
+        onDelete = ForeignKey.CASCADE
+    ), ForeignKey(
+        entity = PollingStation::class,
+        parentColumns = ["countyCode", "idPollingStation"],
+        childColumns = ["countyCode", "pollingStationNumber"]
+    )],
+    indices = [Index(value = ["countyCode", "pollingStationNumber", "questionId"], unique = false)]
+)
 class Note {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 
-    private val id: Int = 0
-
-    @Expose
     var uriPath: String? = null
 
-    @Expose
-    var description: String? = null
+    lateinit var description: String
 
-    @Expose
     var questionId: Int? = null
 
-    fun getId(): Long {
-        return id.toLong()
+    var date: Date = Date()
+
+    lateinit var countyCode: String
+    var pollingStationNumber = 0
+
+    var synced = false
+
+    override fun equals(other: Any?): Boolean =
+        other is Note
+                && other.id == id
+                && other.uriPath == uriPath
+                && other.questionId == questionId
+                && other.date == date
+                && other.pollingStationNumber == pollingStationNumber
+                && other.synced == synced
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + (uriPath?.hashCode() ?: 0)
+        result = 31 * result + (questionId ?: 0)
+        result = 31 * result + date.hashCode()
+        result = 31 * result + pollingStationNumber
+        result = 31 * result + synced.hashCode()
+        return result
     }
 }

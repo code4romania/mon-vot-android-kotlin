@@ -3,41 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_forms">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="ro.code4.monitorizarevot.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_forms"
+        android:name="ro.code4.monitorizarevot.ui.forms.FormsFragment"
+        android:label="@string/menu_forms"
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_main" />
+
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="ro.code4.monitorizarevot.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_guide"
+        android:name="ro.code4.monitorizarevot.ui.guide.GuideFragment"
+        android:label="@string/menu_guide"
+        tools:layout="@layout/fragment_guide" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="ro.code4.monitorizarevot.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
-        android:id="@+id/nav_tools"
-        android:name="ro.code4.monitorizarevot.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
-
-    <fragment
-        android:id="@+id/nav_share"
-        android:name="ro.code4.monitorizarevot.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="ro.code4.monitorizarevot.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
 </navigation>

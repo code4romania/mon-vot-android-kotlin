@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin">
+
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_icon_building"
+            android:layout_marginTop="@dimen/xbig_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_polling_station"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:gravity="center"
+            android:text="@string/polling_station_title"
+            android:textColor="@color/textPrimary"
+            app:layout_constraintTop_toBottomOf="@id/icon"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+
+
+        <TextView
+            android:id="@+id/countyLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:text="@string/polling_station_county"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Spinner
+            android:id="@+id/countySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:background="@drawable/background_spinner"
+            app:layout_constraintTop_toBottomOf="@id/countyLabel"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/pollingStationNumberLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:labelFor="@+id/pollingStationNumber"
+            android:text="@string/polling_station_number"
+            app:layout_constraintTop_toBottomOf="@id/countySpinner"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/pollingStationNumber"
+            style="@style/Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:hint="@string/polling_station_number_hint"
+            app:layout_constraintTop_toBottomOf="@id/pollingStationNumberLabel"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="LabelFor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/continueButton"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:text="@string/button_continue" />
+</ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom>

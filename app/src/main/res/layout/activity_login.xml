@@ -1,121 +1,127 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/ic_login_bkg"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:padding="@dimen/margin"
     tools:context="ro.code4.monitorizarevot.ui.login.LoginActivity">
 
-    <FrameLayout
-        android:id="@+id/purple_background"
-        android:background="@drawable/ic_login_bkg"
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toTopOf="@+id/loginCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_new"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/loginCard"
+        style="@style/MaterialCardView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/login_organisation_link"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/xbig_margin"
+        app:cardElevation="@dimen/big_elevation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:gravity="bottom|end"
-            android:background="@color/backgroundLight">
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:paddingStart="@dimen/margin"
+            android:paddingTop="@dimen/xbig_margin"
+            android:paddingEnd="@dimen/margin"
+            android:paddingBottom="@dimen/xbig_margin">
+
             <TextView
-                style="text"
+                android:id="@+id/appVersion"
+                style="@style/Text.Label.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
-                android:text="@string/developed_by"/>
+                android:layout_marginEnd="@dimen/margin"
+                app:layout_constraintBottom_toBottomOf="@id/code4logo"
+                app:layout_constraintEnd_toStartOf="@id/code4logo"
+                app:layout_constraintTop_toTopOf="@id/code4logo"
+                tools:text="v1.0202 developed by" />
+
+
             <ImageView
+                android:id="@+id/code4logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/login_logo_icon_size"
+                android:adjustViewBounds="true"
                 android:src="@drawable/logo_code4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
-        </LinearLayout>
-    </FrameLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="36dp">
-
-        <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/app_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                tools:text="V0.00"
-                android:textColor="@color/textSecondary"
-                android:textSize="14sp" />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/logo_new"
-                android:id="@+id/logo"
-                tools:ignore="ContentDescription" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneLayout"
+                style="@style/TextInputLayoutLogin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/xbig_margin"
                 android:textColorHint="@color/textPrimary"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin">
+                app:layout_constraintTop_toBottomOf="@id/code4logo">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phone"
+                    style="@style/InputLogin"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="username,phone"
+                    android:drawableStart="@drawable/ic_login_phone"
+                    android:drawablePadding="@dimen/margin"
                     android:hint="@string/login_phone"
                     android:inputType="phone"
-                    style="@style/InputLogin"/>
+                    tools:targetApi="o" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordLayout"
+                style="@style/TextInputLayoutLogin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
                 android:textColorHint="@color/textPrimary"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/login_margin_bottom">
+                app:layout_constraintBottom_toTopOf="@id/loginButton"
+                app:layout_constraintTop_toBottomOf="@id/phoneLayout">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password"
+                    style="@style/InputLogin"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:drawableStart="@drawable/ic_login_password"
+                    android:drawablePadding="@dimen/margin"
                     android:hint="@string/login_password"
-                    android:inputType="textPassword"
                     android:imeOptions="actionDone"
-                    style="@style/InputLogin"/>
+                    android:inputType="textPassword"
+                    tools:targetApi="o" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/login_button"
+            <com.google.android.material.button.MaterialButton
+
+                android:id="@+id/loginButton"
+                style="@style/Button"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:layout_margin="@dimen/nav_header_vertical_spacing"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_margin"
                 android:text="@string/login"
-                android:layout_gravity="bottom"
-                style="@style/buttonEmbeddedCommon"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-</FrameLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

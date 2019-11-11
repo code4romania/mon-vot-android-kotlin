@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cardColor"
+    android:elevation="@dimen/xsmall_elevation"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/pollingStationIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/small_icon_size"
+        android:layout_marginStart="@dimen/margin"
+        android:contentDescription="@string/content_icon_building"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_polling_station"
+        app:layout_constraintBottom_toBottomOf="@id/pollingStationBarText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pollingStationBarText" />
+
+    <TextView
+        android:id="@+id/pollingStationBarText"
+        style="@style/Text.PollingStation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pollingStationBarButton"
+        app:layout_constraintStart_toEndOf="@id/pollingStationIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="CJ 1234" />
+
+    <Button
+        android:id="@+id/pollingStationBarButton"
+        style="@style/Button.Text.PrimaryColor"
+        android:theme="@style/Button.Text.PrimaryColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/polling_station_change"
+        app:layout_constraintBottom_toBottomOf="@id/pollingStationBarText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pollingStationBarText" />
+</androidx.constraintlayout.widget.ConstraintLayout>

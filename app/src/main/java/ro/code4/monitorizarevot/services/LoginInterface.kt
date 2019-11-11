@@ -1,11 +1,17 @@
 package ro.code4.monitorizarevot.services
 
 import io.reactivex.Observable
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Query
 import ro.code4.monitorizarevot.data.model.User
+import ro.code4.monitorizarevot.data.model.response.LoginResponse
 
 interface LoginInterface {
-    @POST("access/token")
-    fun login(@Body user: User): Observable<User>
+    @POST("access/authorize")
+    fun login(@Body user: User): Observable<LoginResponse>
+
+    @POST("notification/register")
+    fun registerForNotification(@Query("Token") token: String, @Query("ChannelName") channelName: String = "Firebase"): Observable<ResponseBody>
 }
