@@ -93,15 +93,11 @@ class PollingStationSelectionFragment : BaseAnalyticsFragment<PollingStationSele
                 id: Long
             ) {
                 val county = viewModel.getSelectedCounty(position)
-                county?.let {
-                    parentViewModel.selectCounty(it)
-                }
+                parentViewModel.selectCounty(county)
                 pollingStationNumber.isEnabled = county != null
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         setContinueButton()
         viewModel.getCounties()
