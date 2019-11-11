@@ -6,6 +6,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
+import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.helper.Result
@@ -46,17 +47,21 @@ class LoginViewModel : BaseViewModel() {
 
     private fun getFirebaseToken(phone: String, password: String) {
         try {
-
-
             FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
                 val firebaseToken = it.result?.token
                 if (it.isSuccessful && firebaseToken != null) {
                     login(phone, password, firebaseToken)
+                } else {
+                    onError(Throwable())
                 }
-            }
-        } catch (exception: IllegalStateException) {
+            }.addOnFailureListener(this::onError)
+        } catch (exception: Exception) {
             //The google services are not active - just for development purposes
-            login(phone, password, "1234")
+            if (BuildConfig.DEBUG && exception is IllegalStateException) {
+                login(phone, password, "1234")
+            } else {
+                onError(exception)
+            }
         }
     }
 
