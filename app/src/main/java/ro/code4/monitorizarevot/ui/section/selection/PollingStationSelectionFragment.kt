@@ -17,7 +17,11 @@ import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 class PollingStationSelectionFragment : BaseAnalyticsFragment<PollingStationSelectionViewModel>() {
 
-    private val progressDialog: ProgressDialogFragment by lazy { ProgressDialogFragment() }
+    private val progressDialog: ProgressDialogFragment by lazy {
+        ProgressDialogFragment().also {
+            it.isCancelable = false
+        }
+    }
 
     companion object {
         val TAG = PollingStationSelectionFragment::class.java.simpleName
@@ -61,7 +65,7 @@ class PollingStationSelectionFragment : BaseAnalyticsFragment<PollingStationSele
                 },
                 onLoading = {
                     activity?.run {
-                        progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+                        progressDialog.showNow(supportFragmentManager, ProgressDialogFragment.TAG)
                     }
                 }
             )

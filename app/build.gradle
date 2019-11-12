@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-//apply plugin: 'io.fabric'
+apply plugin: 'io.fabric'
 
 static def getKey(String env, String key) {
     Properties props = new Properties()
@@ -164,4 +164,4 @@ dependencies {
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'

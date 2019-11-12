@@ -2,7 +2,6 @@ package ro.code4.monitorizarevot.ui.login
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
@@ -67,7 +66,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                     loginButton.isEnabled = true
                 },
                 onLoading = {
-                    progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+                    progressDialog.showNow(supportFragmentManager, ProgressDialogFragment.TAG)
                 }
             )
         })

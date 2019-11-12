@@ -43,7 +43,7 @@ class GuideFragment : BaseAnalyticsFragment<GuideViewModel>(), WebClient.WebLoad
 
     override fun onLoading() {
         if (!progressDialog.isResumed) {
-            progressDialog.show(childFragmentManager, ProgressDialogFragment.TAG)
+            progressDialog.showNow(childFragmentManager, ProgressDialogFragment.TAG)
         }
     }
 

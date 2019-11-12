@@ -28,7 +28,7 @@ class SplashScreenActivity : BaseAnalyticsActivity<SplashScreenViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+        progressDialog.showNow(supportFragmentManager, ProgressDialogFragment.TAG)
         viewModel.loginLiveData().observe(this, Observer { loginStatus ->
             progressDialog.dismiss()
             val activity: Class<*> = when {
