@@ -55,16 +55,12 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
     }
 
     fun showPushNotification(notification: RemoteMessage.Notification) {
-        showPushNotification(notification.title, notification.body, null)
-    }
-
-    fun showPushNotification(title: String?, body: String?, doAfterDismiss: (() -> Unit)?) {
         if (!isFinishing && dialog == null) {
             dialog = AlertDialog.Builder(this, R.style.AlertDialog)
-                .setTitle(title)
-                .setMessage(body)
+                .setTitle(notification.title)
+                .setMessage(notification.body)
                 .setPositiveButton(R.string.push_notification_ok)
-                { p0, _ -> if (doAfterDismiss == null) p0.dismiss() else doAfterDismiss()}
+                { p0, _ -> p0.dismiss() }
                 .setCancelable(false)
                 .setOnDismissListener { dialog = null }
                 .show()
