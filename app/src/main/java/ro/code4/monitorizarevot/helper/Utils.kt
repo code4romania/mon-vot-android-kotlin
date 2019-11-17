@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -406,4 +408,22 @@ fun String.getLocale(): Locale {
 
 fun <T> String.fromJson(gson: Gson, clazz: Class<T>): T {
     return gson.fromJson(this, clazz)
+}
+
+fun Context.isOnline(): Boolean {
+    val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val n = cm.activeNetwork
+        if (n != null) {
+            val nc = cm.getNetworkCapabilities(n)
+            //It will check for both wifi and cellular network
+            return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                NetworkCapabilities.TRANSPORT_WIFI)
+        }
+        return false
+    } else {
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
+    }
 }

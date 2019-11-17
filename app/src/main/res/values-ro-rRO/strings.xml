@@ -18,6 +18,7 @@
     <string name="login_phone">Numărul de telefon</string>
     <string name="login_password">Cod primit</string>
     <string name="login">Login</string>
+    <string name="login_no_internet">Ai nevoie de o conexiune la internet pentru a te conecta!</string>
 
     <!--    Onboarding-->
     <string name="onboarding_next">Continuă</string>

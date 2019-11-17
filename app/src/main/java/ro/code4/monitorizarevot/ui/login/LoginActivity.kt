@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.isOnline
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -44,6 +45,13 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
 
     private fun clickListenersSetup() {
         loginButton.setOnClickListener {
+            if (!isOnline()) {
+                Snackbar.make(loginButton, getString(R.string.login_no_internet), Snackbar.LENGTH_SHORT)
+                    .show()
+
+                return@setOnClickListener
+            }
+
             loginButton.isEnabled = false
             viewModel.login(phone.text.toString(), password.text.toString())
         }

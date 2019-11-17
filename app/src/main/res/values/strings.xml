@@ -18,6 +18,7 @@
     <string name="login_phone">Phone number</string>
     <string name="login_password">Code</string>
     <string name="login">Login</string>
+    <string name="login_no_internet">You need to be connected to the internet to be able to log in!</string>
 
     <!--Onboarding-->
     <string name="onboarding_next">Next</string>
