@@ -1,12 +1,14 @@
 package ro.code4.monitorizarevot.ui.login
 
 import android.os.Bundle
+import android.text.TextWatcher
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.TextWatcherDelegate
 import ro.code4.monitorizarevot.helper.isOnline
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
@@ -36,6 +38,18 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
             phone.setText(R.string.test_phone_number)
             password.setText(R.string.test_password)
         }
+
+        phone.addTextChangedListener(object : TextWatcher by TextWatcherDelegate {
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                loginButton.isEnabled = !p0.isNullOrEmpty() && !password.text.isNullOrEmpty()
+            }
+        })
+
+        password.addTextChangedListener(object : TextWatcher by TextWatcherDelegate {
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                loginButton.isEnabled = !p0.isNullOrEmpty() && !phone.text.isNullOrEmpty()
+            }
+        })
     }
 
     override fun onDestroy() {
