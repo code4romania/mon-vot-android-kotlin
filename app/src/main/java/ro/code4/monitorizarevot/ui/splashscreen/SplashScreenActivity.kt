@@ -38,7 +38,13 @@ class SplashScreenActivity : BaseAnalyticsActivity<SplashScreenViewModel>() {
                 else -> LoginActivity::class.java
             }
 
-            startActivityWithoutTrace(activity)
+           val extras = intent.extras
+
+           if (extras?.containsKey("title") == true && extras.containsKey("body")){
+               showPushNotification(extras.getString("title"), extras.getString("body")) { startActivityWithoutTrace(activity) }
+           } else {
+               startActivityWithoutTrace(activity)
+           }
         })
     }
 
