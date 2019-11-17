@@ -37,6 +37,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
         if (BuildConfig.DEBUG) {
             phone.setText(R.string.test_phone_number)
             password.setText(R.string.test_password)
+            loginButton.isEnabled = true
         }
 
         phone.addTextChangedListener(object : TextWatcher by TextWatcherDelegate {
