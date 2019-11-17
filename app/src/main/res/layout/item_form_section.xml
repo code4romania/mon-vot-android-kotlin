@@ -17,7 +17,6 @@
             android:layout_marginStart="@dimen/margin"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
-            app:layout_constraintBottom_toBottomOf="@id/formDescription"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/formDescription"
             tools:src="@drawable/ic_form_notes" />
@@ -30,10 +29,6 @@
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/big_margin"
             android:layout_marginEnd="@dimen/margin"
-            android:lines="1"
-            app:autoSizeMaxTextSize="18sp"
-            app:autoSizeStepGranularity="2sp"
-            app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@id/questionsAnswered"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/formIcon"

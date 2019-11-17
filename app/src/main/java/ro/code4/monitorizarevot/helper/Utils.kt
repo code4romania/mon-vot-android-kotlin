@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -401,4 +402,8 @@ fun String.getLocale(): Locale {
     } else {
         Locale(parts[0])
     }
+}
+
+fun <T> String.fromJson(gson: Gson, clazz: Class<T>): T {
+    return gson.fromJson(this, clazz)
 }

@@ -44,7 +44,7 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.forms().observe(this, Observer {
-            formAdapter.items = ArrayList(it)
+            formAdapter.items = it
         })
         viewModel.syncVisibility().observe(this, Observer {
             syncGroup.visibility = it

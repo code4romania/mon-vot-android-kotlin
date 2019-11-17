@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
@@ -15,6 +16,7 @@ import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
+import ro.code4.monitorizarevot.helper.Constants.REMOTE_CONFIG_FILTER_DIASPORA_FORMS
 import ro.code4.monitorizarevot.helper.completedPollingStationConfig
 import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
@@ -61,10 +63,7 @@ class FormsViewModel : BaseFormViewModel() {
         }
     }
 
-    fun forms(): LiveData<ArrayList<ListItem>> {
-        subscribe()
-        return formsLiveData
-    }
+    fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
@@ -78,6 +77,9 @@ class FormsViewModel : BaseFormViewModel() {
                 pollingStationNumber
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally {
+                    subscribe()
+                }
                 .subscribe({
                     pollingStationLiveData.postValue(it)
                 }, {
@@ -105,7 +107,21 @@ class FormsViewModel : BaseFormViewModel() {
             formWithSections.noAnsweredQuestions =
                 answers.count { it.answeredQuestion.formId == formWithSections.form.id }
         }
-        items.addAll(forms.map { FormListItem(it) })
+
+
+        val filterDiasporaForms = try {
+            FirebaseRemoteConfig.getInstance().getBoolean(REMOTE_CONFIG_FILTER_DIASPORA_FORMS)
+        } catch (e: Exception) {
+            false
+        }
+        val formsList = when {
+            !filterDiasporaForms || pollingStationLiveData.value?.isDiaspora == true -> forms.map {
+                FormListItem(it)
+            }
+            else -> forms.filter { it.form.diaspora == false }.map { FormListItem(it) }
+        }
+
+        items.addAll(formsList)
         items.add(AddNoteListItem())
         formsLiveData.postValue(items)
     }
