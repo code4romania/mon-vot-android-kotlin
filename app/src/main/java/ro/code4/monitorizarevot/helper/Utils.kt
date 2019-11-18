@@ -14,6 +14,7 @@ import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,6 +24,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -373,6 +375,14 @@ fun Activity.startActivityWithoutTrace(activity: Class<*>) {
     finishAffinity()
 }
 
+fun Activity.hideKeyboard() {
+    val view = currentFocus
+    if (view != null) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}
+
 fun String.toHtml(): Spanned? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT)
@@ -393,6 +403,10 @@ fun String.getLocale(): Locale {
     } else {
         Locale(parts[0])
     }
+}
+
+fun <T> String.fromJson(gson: Gson, clazz: Class<T>): T {
+    return gson.fromJson(this, clazz)
 }
 
 fun Context.browse(url: String, newTask: Boolean = false): Boolean {

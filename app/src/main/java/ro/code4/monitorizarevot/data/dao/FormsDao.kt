@@ -67,7 +67,7 @@ interface FormsDao {
     ): LiveData<List<AnsweredQuestionPOJO>>
 
 
-    @Query("SELECT * FROM form_details")
+    @Query("SELECT * FROM form_details ORDER BY `order`")
     fun getFormsWithSections(): LiveData<List<FormWithSections>>
 
     @Query("SELECT * FROM section where formId=:formId")

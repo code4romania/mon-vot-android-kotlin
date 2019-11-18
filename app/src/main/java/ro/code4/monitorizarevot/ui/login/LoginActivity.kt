@@ -56,15 +56,14 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                     progressDialog.dismiss()
                     activity?.let(::startActivityWithoutTrace)
                 },
-                onFailure = {
+                onFailure = {error ->
                     // TODO: Handle errors to show personalized messages for each one
                     progressDialog.dismiss()
-                    Snackbar.make(
-                        loginButton,
-                        getString(R.string.error_generic),
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
+
+                    handleThrowable(error) {
+                        showDefaultErrorSnackBar(loginButton)
+                    }
+
                     loginButton.isEnabled = true
                 },
                 onLoading = {

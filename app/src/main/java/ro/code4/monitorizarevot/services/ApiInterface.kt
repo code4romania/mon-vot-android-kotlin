@@ -13,7 +13,7 @@ import ro.code4.monitorizarevot.data.model.response.VersionResponse
 
 interface ApiInterface {
     @GET("/api/v1/form")
-    fun getForms(): Observable<VersionResponse>
+    fun getForms(@Query("diaspora") diaspora: Boolean? = null): Observable<VersionResponse>
 
     @GET("/api/v1/polling-station")
     fun getCounties(): Single<List<County>>

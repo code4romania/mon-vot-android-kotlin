@@ -29,6 +29,7 @@ import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 import java.io.File
+import java.util.*
 
 
 class Repository : KoinComponent {
@@ -61,14 +62,22 @@ class Repository : KoinComponent {
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                if (apiCounties.isNotEmpty() && dbCounties != apiCounties) {
-//             TODO        deleteCounties()
-                    db.countyDao().save(*apiCounties.map { it }.toTypedArray())
-                    return@BiFunction apiCounties
+                val all =
+                    apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }
+                apiCounties.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
                 }
-                dbCounties
-
-            })
+                return@BiFunction when {
+                    apiCounties.isNotEmpty() && !all -> {
+                        // TODO deleteCounties()
+                        db.countyDao().save(*apiCounties.map { it }.toTypedArray())
+                        apiCounties
+                    }
+                    apiCounties.isNotEmpty() && all -> apiCounties
+                    else -> dbCounties
+                }
+            }
+        )
     }
 
     fun getPollingStationDetails(
@@ -132,10 +141,13 @@ class Repository : KoinComponent {
             })
     }
 
-    private fun deleteFormDetails(formDetails: FormDetails) {
-        db.formDetailsDao().deleteForms(formDetails)
+    @SuppressLint("CheckResult")
+    private fun deleteFormDetails(vararg formDetails: FormDetails) {
+        db.formDetailsDao().deleteForms(*formDetails)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
 
@@ -163,19 +175,28 @@ class Repository : KoinComponent {
             return
         }
         val apiFormDetails = response.formVersions
+        apiFormDetails.forEachIndexed { index, formDetails -> formDetails.order = index }
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
         }
+        if (apiFormDetails.size < dbFormDetails.size) {
+            dbFormDetails.minus(apiFormDetails).also { diff ->
+                if (diff.isNotEmpty()) {
+                    deleteFormDetails(*diff.map { it }.toTypedArray())
+                }
+            }
+        }
         apiFormDetails.forEach { apiForm ->
-            if (apiForm.formVersion != dbFormDetails.find { it.code == apiForm.code }?.formVersion) {
-                deleteFormDetails(apiForm)
-                //TODO delete answers and other bullshits
+            val dbForm = dbFormDetails.find { it.id == apiForm.id }
+            if (dbForm != null && apiForm.formVersion != dbForm.formVersion) {
+                deleteFormDetails(dbForm)
                 saveFormDetails(apiForm)
             }
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun getFormQuestions(form: FormDetails) {
         apiInterface.getForm(form.id).doOnNext { list ->
             list.forEach { section ->
@@ -189,7 +210,9 @@ class Repository : KoinComponent {
             }
             db.formDetailsDao().save(*list.map { it }.toTypedArray())
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
 
     }
 
@@ -201,16 +224,22 @@ class Repository : KoinComponent {
         return db.formDetailsDao().getAnswersForForm(countyCode, pollingStationNumber, formId)
     }
 
+    @SuppressLint("CheckResult")
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
         Observable.create<Unit> {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
+    @SuppressLint("CheckResult")
     fun deleteAnsweredQuestion(answeredQuestion: AnsweredQuestion) {
         db.formDetailsDao().deleteAnsweredQuestion(answeredQuestion.id).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
 
@@ -276,11 +305,14 @@ class Repository : KoinComponent {
 
     fun getNotSyncedNotes(): LiveData<Int> = db.noteDao().getCountOfNotSyncedNotes()
 
+    @SuppressLint("CheckResult")
     fun updateQuestionWithNotes(questionId: Int) {
         Observable.create<Unit> {
             db.formDetailsDao().updateQuestionWithNotes(questionId)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe({}, {
+                Log.i(TAG, it.message.orEmpty())
+            })
     }
 
     fun saveNote(note: Note): Observable<ResponseBody> =

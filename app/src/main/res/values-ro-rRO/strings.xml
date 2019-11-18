@@ -46,8 +46,9 @@
     <string name="menu_change_polling_station">Schimbă secţia</string>
     <string name="menu_guide">Ghidul observatorului</string>
     <string name="menu_call">Apelează TelVerde</string>
-    <string name="menu_settings">Setări</string>
+    <string name="menu_about">Despre</string>
     <string name="menu_logout">Delogare</string>
+    <string name="menu_settings">Setări</string>
 
     <!-- Polling Station selection -->
     <string name="polling_station_title">Alege secția în care te afli</string>
