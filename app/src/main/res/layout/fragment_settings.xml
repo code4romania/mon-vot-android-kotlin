@@ -1,139 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_login_bkg"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="16dp"
-            android:src="@drawable/ic_chevron_left" />
-
-        <TextView
-            style="@style/Text.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/settings_title" />
-
-    </FrameLayout>
-
     <ImageView
-        android:layout_width="wrap_content"
+        android:id="@+id/iv_logo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/logo_new" />
+        android:src="@drawable/ic_rectangle"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/ll_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@color/backgroundLight"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end|center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_version"
-                style="@style/Text.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/app_version"
-                tools:text="v1.2.4 app developed by" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:src="@drawable/logo_code4" />
-
-        </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo">
 
         <TextView
             style="@style/Text.Title.Big"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
             android:text="@string/settings_mission" />
 
         <TextView
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/margin"
             android:text="@string/settings_content" />
 
-        <FrameLayout
-            android:id="@+id/fl_language"
+        <TextView
+            style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:foreground="?attr/selectableItemBackground">
+            android:layout_marginStart="@dimen/margin_settings_btn"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/margin_settings_btn"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableStart="@drawable/ic_single_copy"
+            android:drawablePadding="@dimen/padding_settings_icon"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/padding_settings_btn"
+            android:paddingEnd="@dimen/padding_settings_btn"
+            android:text="@string/settings_download_single"
+            android:textColor="@color/purple" />
 
-            <TextView
-                style="@style/Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:gravity="center_vertical"
-                android:minHeight="48dp"
-                android:text="@string/settings_change_language"
-                android:textSize="15sp" />
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/fl_contact"
+        <TextView
+            style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:foreground="?attr/selectableItemBackground">
+            android:layout_marginStart="@dimen/margin_settings_btn"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/margin_settings_btn"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableStart="@drawable/ic_single_folded"
+            android:drawablePadding="@dimen/padding_settings_icon"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/padding_settings_btn"
+            android:paddingEnd="@dimen/padding_settings_btn"
+            android:text="@string/settings_download_multiple"
+            android:textColor="@color/purple" />
 
-            <TextView
-                style="@style/Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:gravity="center_vertical"
-                android:minHeight="48dp"
-                android:text="@string/settings_contact"
-                android:textSize="15sp" />
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/fl_policy"
+        <TextView
+            style="@style/Text.Title.Big"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:foreground="?attr/selectableItemBackground">
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:text="@string/settings_actions" />
 
-            <TextView
-                style="@style/Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:gravity="center_vertical"
-                android:minHeight="48dp"
-                android:text="@string/settings_privacy_policy"
-                android:textSize="15sp" />
+        <TextView
+            android:id="@+id/tv_contact"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_settings_btn"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/margin_settings_btn"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/padding_settings_btn"
+            android:paddingEnd="@dimen/padding_settings_btn"
+            android:text="@string/settings_contact" />
 
-        </FrameLayout>
+        <TextView
+            android:id="@+id/tv_policy"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_settings_btn"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/margin_settings_btn"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/padding_settings_btn"
+            android:paddingEnd="@dimen/padding_settings_btn"
+            android:text="@string/settings_privacy_policy" />
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -151,5 +151,8 @@
     <string name="settings_contact">Contact us</string>
     <string name="settings_privacy_policy">Privacy policy</string>
     <string name="settings_send_mail_via">Send email via</string>
+    <string name="settings_actions">Actions</string>
+    <string name="settings_download_single">Download something</string>
+    <string name="settings_download_multiple">Download something else</string>
 
 </resources>

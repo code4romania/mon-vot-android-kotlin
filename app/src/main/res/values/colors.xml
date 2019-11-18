@@ -35,4 +35,6 @@
     <color name="menuIconDefault">#C8C8C8</color>
     <color name="menuBackground">@color/white</color>
     <color name="white">#FFF</color>
+
+    <color name="bg_settings_btn">#2681175C</color>
 </resources>

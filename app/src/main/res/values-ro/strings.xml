@@ -146,5 +146,8 @@
     <string name="settings_contact">Contactează-ne</string>
     <string name="settings_privacy_policy">Politică de confidențialitate</string>
     <string name="settings_send_mail_via">Trimiteți email prin</string>
+    <string name="settings_actions">Acțiuni</string>
+    <string name="settings_download_single">Downloadează ceva</string>
+    <string name="settings_download_multiple">Downloadează altceva</string>
 
 </resources>

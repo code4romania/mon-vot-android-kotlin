@@ -14,6 +14,10 @@ import ro.code4.monitorizarevot.helper.browse
 
 class SettingsFragment : Fragment() {
 
+    companion object {
+        val TAG = SettingsFragment::class.java.simpleName
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,24 +29,15 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_version.text = context?.getString(R.string.app_version, BuildConfig.VERSION_NAME)
+        tv_contact.setOnClickListener { onContactClicked() }
 
-        iv_back.setOnClickListener { requireActivity().finish() }
-
-        fl_language.setOnClickListener {
-            //TODO redirect user to language picker screen
-        }
-
-        fl_contact.setOnClickListener { onContactClicked() }
-
-        fl_policy.setOnClickListener { context?.browse("https://www.google.com") }
+        tv_policy.setOnClickListener { context?.browse(BuildConfig.PRIVACY_WEB_URL) }
     }
 
     private fun onContactClicked() {
-        val email = "andrei.mares06@gmail.com"
         val emailIntent = Intent(
             Intent.ACTION_SENDTO,
-            Uri.fromParts("mailto", email, null)
+            Uri.fromParts("mailto", BuildConfig.SUPPORT_EMAIL, null)
         )
         startActivity(
             Intent.createChooser(

@@ -19,4 +19,10 @@
         android:label="@string/menu_guide"
         tools:layout="@layout/fragment_guide" />
 
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="ro.code4.monitorizarevot.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>
