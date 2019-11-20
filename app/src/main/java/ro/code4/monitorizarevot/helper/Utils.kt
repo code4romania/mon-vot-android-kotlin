@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.helper
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -406,4 +407,18 @@ fun String.getLocale(): Locale {
 
 fun <T> String.fromJson(gson: Gson, clazz: Class<T>): T {
     return gson.fromJson(this, clazz)
+}
+
+fun Context.browse(url: String, newTask: Boolean = false): Boolean {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        if (newTask) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(intent)
+        return true
+    } catch (e: ActivityNotFoundException) {
+        return false
+    }
 }
