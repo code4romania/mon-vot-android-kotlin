@@ -12,15 +12,15 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/iv_logo"
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/bg_menu"
             android:src="@drawable/logo_new"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/title"
             style="@style/Text.Title.Big"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,10 +28,10 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:text="@string/about_mission"
-            app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <TextView
-            android:id="@+id/tv_content"
+            android:id="@+id/content"
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,13 +39,14 @@
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/margin"
             android:text="@string/settings_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
-            android:id="@+id/tv_language"
+            android:id="@+id/optionChangeLanguage"
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/margin_settings_btn"
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin_settings_btn"
@@ -56,10 +57,10 @@
             android:paddingStart="@dimen/padding_settings_btn"
             android:paddingEnd="@dimen/padding_settings_btn"
             android:text="@string/settings_change_language"
-            app:layout_constraintTop_toBottomOf="@id/tv_content" />
+            app:layout_constraintTop_toBottomOf="@id/content" />
 
         <TextView
-            android:id="@+id/tv_contact"
+            android:id="@+id/optionContact"
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,10 +74,10 @@
             android:paddingStart="@dimen/padding_settings_btn"
             android:paddingEnd="@dimen/padding_settings_btn"
             android:text="@string/settings_contact"
-            app:layout_constraintTop_toBottomOf="@id/tv_language" />
+            app:layout_constraintTop_toBottomOf="@id/optionChangeLanguage" />
 
         <TextView
-            android:id="@+id/tv_policy"
+            android:id="@+id/optionViewPolicy"
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,10 +92,10 @@
             android:paddingStart="@dimen/padding_settings_btn"
             android:paddingEnd="@dimen/padding_settings_btn"
             android:text="@string/settings_privacy_policy"
-            app:layout_constraintTop_toBottomOf="@id/tv_contact" />
+            app:layout_constraintTop_toBottomOf="@id/optionContact" />
 
         <TextView
-            android:id="@+id/tv_appVersion"
+            android:id="@+id/appVersion"
             style="@style/Text.Label.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +105,7 @@
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@id/code4logo"
             app:layout_constraintEnd_toStartOf="@id/code4logo"
-            app:layout_constraintTop_toBottomOf="@+id/tv_policy"
+            app:layout_constraintTop_toBottomOf="@+id/optionViewPolicy"
             app:layout_constraintTop_toTopOf="@id/code4logo"
             tools:text="v1.0202 developed by" />
 
@@ -118,7 +119,7 @@
             android:src="@drawable/logo_code4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_policy"
+            app:layout_constraintTop_toBottomOf="@+id/optionViewPolicy"
             tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,15 +29,15 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_appVersion.text = context?.getString(R.string.app_version, BuildConfig.VERSION_NAME)
+        appVersion.text = context?.getString(R.string.app_version, BuildConfig.VERSION_NAME)
 
-        tv_language.setOnClickListener {
+        optionChangeLanguage.setOnClickListener {
             //TODO
         }
 
-        tv_contact.setOnClickListener { onContactClicked() }
+        optionContact.setOnClickListener { onContactClicked() }
 
-        tv_policy.setOnClickListener { context?.browse(BuildConfig.PRIVACY_WEB_URL) }
+        optionViewPolicy.setOnClickListener { context?.browse(BuildConfig.PRIVACY_WEB_URL) }
     }
 
     private fun onContactClicked() {
