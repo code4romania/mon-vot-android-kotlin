@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.ui.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_about.*
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.browse
+import ro.code4.monitorizarevot.helper.toHtml
 
 class AboutFragment : Fragment() {
 
@@ -29,7 +31,10 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appVersion.text = context?.getString(R.string.app_version, BuildConfig.VERSION_NAME)
+        appVersion.text = context?.getString(R.string.about_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+
+        content.text = getString(R.string.about_content).toHtml()
+        content.movementMethod = LinkMovementMethod.getInstance()
 
         optionChangeLanguage.setOnClickListener {
             //TODO
@@ -48,7 +53,7 @@ class AboutFragment : Fragment() {
         startActivity(
             Intent.createChooser(
                 emailIntent,
-                getString(R.string.settings_send_mail_via)
+                getString(R.string.about_send_mail_via)
             )
         )
     }

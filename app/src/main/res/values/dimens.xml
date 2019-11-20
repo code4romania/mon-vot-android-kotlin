@@ -62,10 +62,4 @@
     <dimen name="login_logo_icon_size">26dp</dimen>
     <dimen name="small_icon_size">16dp</dimen>
     <dimen name="circle_indicator">10dp</dimen>
-
-    <!-- About -->
-    <dimen name="margin_settings_btn">12dp</dimen>
-    <dimen name="padding_settings_btn">4dp</dimen>
-    <dimen name="padding_settings_icon">20dp</dimen>
-    <dimen name="big_text_size">24sp</dimen>
 </resources>

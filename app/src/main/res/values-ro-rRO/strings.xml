@@ -140,15 +140,12 @@
     <!-- Errors -->
     <string name="error_generic">A apărut o problemă!</string>
 
-    <!--Settings-->
+    <!--About-->
     <string name="about_mission">Despre aplicație</string>
-    <string name="settings_content">Monitorizare Vot este o aplicație realizată de Code for Romania. \n\nEste prima aplicație de monitorizare a alegerilor din România, și una din puținele din lume. A fost folosită, de către observatori, începând alegerile prezidențiale din 2016. În Polonia, a fost folosită, în 2018, la primele lor alegeri observate independent. \n\nSursele de cod ale aplicației sunt deschise. [Aruncă o privire pe GitHub!](Kotlin: https://github.com/code4romania/mon-vot-android-kotlin)(iOS: https://github.com/code4romania/monitorizare-vot-ios) \n\nCode for Romania este un ONG care dezvoltă pro-bono soluţii IT cu scopul de a rezolva probleme ale societăţii. Dacă vrei să sprijini activitatea noastră, intră [site-ul nostru](https://code4.ro/ro/), înscrie-te ca voluntar sau donează.</string>
-    <string name="settings_change_language">Schimbă limba</string>
-    <string name="settings_contact">Contactează-ne</string>
-    <string name="settings_privacy_policy">Politică de confidențialitate</string>
-    <string name="settings_send_mail_via">Trimiteți email prin</string>
-    <string name="settings_actions">Acțiuni</string>
-    <string name="settings_download_single">Downloadează ceva</string>
-    <string name="settings_download_multiple">Downloadează altceva</string>
-
-</resources>
+    <string name="about_content"><![CDATA[<html>Monitorizare Vot este o aplicație realizată de Code for Romania. <br/><br/>Este prima aplicație de monitorizare a alegerilor din România, și una din puținele din lume. A fost folosită, de către observatori, începând alegerile prezidențiale din 2016. În Polonia, a fost folosită, în 2018, la primele lor alegeri observate independent. <br/><br/>Sursele de cod ale aplicației sunt deschise. <a href="https://github.com/code4romania/mon-vot-android-kotlin">Aruncă o privire pe GitHub</a>. <br/><br/>Code for Romania este un ONG care dezvoltă pro-bono soluţii IT cu scopul de a rezolva probleme ale societăţii. Dacă vrei să sprijini activitatea noastră, intră pe <a href="https://code4.ro/ro/">site-ul nostru</a>, înscrie-te ca voluntar sau donează.</html>]]></string>
+    <string name="about_change_language">Schimbă limba</string>
+    <string name="about_contact">Contactează-ne</string>
+    <string name="about_privacy_policy">Politică de confidențialitate</string>
+    <string name="about_send_mail_via">Trimiteți email prin</string>
+    <string name="about_app_version">v%1$S build %2$d aplicație dezvoltată de</string>
+ </resources>
