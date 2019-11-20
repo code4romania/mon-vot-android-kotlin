@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_about.*
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.browse
 
-class SettingsFragment : Fragment() {
+class AboutFragment : Fragment() {
 
     companion object {
-        val TAG = SettingsFragment::class.java.simpleName
+        val TAG = AboutFragment::class.java.simpleName
     }
 
     override fun onCreateView(
@@ -23,11 +23,17 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.fragment_about, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tv_appVersion.text = context?.getString(R.string.app_version, BuildConfig.VERSION_NAME)
+
+        tv_language.setOnClickListener {
+            //TODO
+        }
 
         tv_contact.setOnClickListener { onContactClicked() }
 

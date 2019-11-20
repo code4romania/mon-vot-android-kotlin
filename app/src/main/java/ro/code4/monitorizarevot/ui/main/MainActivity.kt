@@ -42,7 +42,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             setOf(
                 R.id.nav_forms,
                 R.id.nav_guide,
-                R.id.nav_settings
+                R.id.nav_about
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

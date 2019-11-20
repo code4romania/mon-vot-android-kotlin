@@ -30,7 +30,7 @@
 <!--            android:title="" />-->
 
         <item
-            android:id="@+id/nav_settings"
+            android:id="@+id/nav_about"
             android:icon="@drawable/ic_menu_settings"
             android:title="@string/menu_settings" />
 
