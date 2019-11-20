@@ -1,8 +1,6 @@
 package ro.code4.monitorizarevot.ui.splashscreen
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
@@ -32,26 +30,26 @@ class SplashScreenActivity : BaseAnalyticsActivity<SplashScreenViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+        val notificationTitle = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_TITLE)
+        val notificationBody = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_BODY)
         viewModel.loginLiveData().observe(this, Observer { loginStatus ->
             progressDialog.dismiss()
-            when {
+            val activity = when {
                 loginStatus.isLoggedIn && loginStatus.onboardingCompleted
-                        && !loginStatus.isPollingStationConfigCompleted -> startActivityWithoutTrace(PollingStationActivity::class.java)
-                loginStatus.isLoggedIn && loginStatus.isPollingStationConfigCompleted -> {
-                    val notificationTitle = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_TITLE)
-                    val notificationBody = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_BODY)
-                    val intent = Intent(this, MainActivity::class.java)
-                    notificationTitle?.let {
-                        intent.putExtra(Constants.PUSH_NOTIFICATION_TITLE, it)
-                    }
-                    notificationBody?.let {
-                        intent.putExtra(Constants.PUSH_NOTIFICATION_BODY, it)
-                    }
-                    startActivity(intent)
-                    finishAffinity()
-                }
-                loginStatus.isLoggedIn -> startActivityWithoutTrace(OnboardingActivity::class.java)
-                else -> startActivityWithoutTrace(LoginActivity::class.java)
+                        && !loginStatus.isPollingStationConfigCompleted -> PollingStationActivity::class.java
+                loginStatus.isLoggedIn && loginStatus.isPollingStationConfigCompleted -> MainActivity::class.java
+                loginStatus.isLoggedIn -> OnboardingActivity::class.java
+                else -> LoginActivity::class.java
+            }
+
+            if (!notificationTitle.isNullOrBlank()) {
+                showPushNotification(
+                    notificationTitle,
+                    notificationBody.orEmpty(),
+                    { startActivityWithoutTrace(activity) },
+                    { startActivityWithoutTrace(activity) })
+            } else {
+                startActivityWithoutTrace(activity)
             }
         })
     }

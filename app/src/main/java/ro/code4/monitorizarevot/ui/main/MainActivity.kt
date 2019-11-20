@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.callSupportCenter
 import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
@@ -82,12 +81,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
         viewModel.onLogoutLiveData().observe(this, Observer {
             startActivityWithoutTrace(LoginActivity::class.java)
         })
-
-        val notificationTitle = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_TITLE)
-        val notificationBody = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_BODY)
-        notificationTitle?.let {
-            showPushNotification(it, notificationBody.orEmpty())
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
