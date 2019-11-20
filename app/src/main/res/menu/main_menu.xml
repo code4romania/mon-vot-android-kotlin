@@ -24,15 +24,15 @@
             android:icon="@drawable/ic_menu_call"
             android:title="@string/menu_call" />
 
-<!--            <item
-            android:checkable="false"
-            android:enabled="false"
-            android:title="" />
+<!--        <item-->
+<!--            android:checkable="false"-->
+<!--            android:enabled="false"-->
+<!--            android:title="" />-->
 
-            <item
-            android:id="@+id/nav_settings"
+        <item
+            android:id="@+id/nav_about"
             android:icon="@drawable/ic_menu_settings"
-            android:title="@string/menu_about" />-->
+            android:title="@string/menu_settings" />
 
     </group>
 </menu>

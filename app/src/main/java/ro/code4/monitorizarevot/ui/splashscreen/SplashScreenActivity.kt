@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
@@ -29,16 +30,27 @@ class SplashScreenActivity : BaseAnalyticsActivity<SplashScreenViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+        val notificationTitle = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_TITLE)
+        val notificationBody = intent?.extras?.getString(Constants.PUSH_NOTIFICATION_BODY)
         viewModel.loginLiveData().observe(this, Observer { loginStatus ->
             progressDialog.dismiss()
-            val activity: Class<*> = when {
-                loginStatus.isLoggedIn && loginStatus.onboardingCompleted && !loginStatus.isPollingStationConfigCompleted -> PollingStationActivity::class.java
+            val activity = when {
+                loginStatus.isLoggedIn && loginStatus.onboardingCompleted
+                        && !loginStatus.isPollingStationConfigCompleted -> PollingStationActivity::class.java
                 loginStatus.isLoggedIn && loginStatus.isPollingStationConfigCompleted -> MainActivity::class.java
                 loginStatus.isLoggedIn -> OnboardingActivity::class.java
                 else -> LoginActivity::class.java
             }
 
-            startActivityWithoutTrace(activity)
+            if (!notificationTitle.isNullOrBlank()) {
+                showPushNotification(
+                    notificationTitle,
+                    notificationBody.orEmpty(),
+                    { startActivityWithoutTrace(activity) },
+                    { startActivityWithoutTrace(activity) })
+            } else {
+                startActivityWithoutTrace(activity)
+            }
         })
     }
 
