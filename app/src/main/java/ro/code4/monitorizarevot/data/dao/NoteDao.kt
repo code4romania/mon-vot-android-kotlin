@@ -2,7 +2,7 @@ package ro.code4.monitorizarevot.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import io.reactivex.Observable
+import io.reactivex.Maybe
 import ro.code4.monitorizarevot.data.model.Note
 
 @Dao
@@ -24,7 +24,7 @@ interface NoteDao {
     fun getNotes(countyCode: String, pollingStationNumber: Int): LiveData<List<Note>>
 
     @Query("SELECT * FROM note WHERE synced=:synced")
-    fun getNotSyncedNotes(synced: Boolean = false): Observable<List<Note>>
+    fun getNotSyncedNotes(synced: Boolean = false): Maybe<List<Note>>
 
     @Query("SELECT COUNT(*) FROM note WHERE synced =:synced")
     fun getCountOfNotSyncedNotes(synced: Boolean = false): LiveData<Int>

@@ -41,7 +41,7 @@ class FormsViewModel : BaseFormViewModel() {
         val notSyncedPollingStationsCount = repository.getNotSyncedPollingStationsCount()
         fun update() {
             syncVisibilityLiveData.value =
-                if (notSyncedQuestionsCount.value ?: 0 + (notSyncedNotesCount.value
+                if ((notSyncedQuestionsCount.value ?: 0) + (notSyncedNotesCount.value
                         ?: 0) + (notSyncedPollingStationsCount.value ?: 0) > 0
                 ) View.VISIBLE else View.GONE
         }
