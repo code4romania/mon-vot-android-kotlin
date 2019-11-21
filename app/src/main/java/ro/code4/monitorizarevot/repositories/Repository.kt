@@ -102,7 +102,7 @@ class Repository : KoinComponent {
             postPollingStationDetails(pollingStation)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, "save polling station " + it.message.orEmpty())
+                Log.i(TAG, it.message.orEmpty())
             })
     }
 
@@ -147,7 +147,7 @@ class Repository : KoinComponent {
         db.formDetailsDao().deleteForms(*formDetails)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, "delete form details" + it.message.orEmpty())
+                Log.i(TAG, it.message.orEmpty())
             })
     }
 
@@ -212,7 +212,7 @@ class Repository : KoinComponent {
             db.formDetailsDao().save(*list.map { it }.toTypedArray())
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, "get form questions" + it.message.orEmpty())
+                Log.i(TAG, it.message.orEmpty())
             })
 
     }
@@ -231,7 +231,7 @@ class Repository : KoinComponent {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, "save answered question " + it.message.orEmpty())
+                Log.i(TAG, it.message.orEmpty())
             })
     }
 
@@ -239,7 +239,7 @@ class Repository : KoinComponent {
     fun deleteAnsweredQuestion(answeredQuestion: AnsweredQuestion) {
         db.formDetailsDao().deleteAnsweredQuestion(answeredQuestion.id).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, "delete answered question" + it.message.orEmpty())
+                Log.i(TAG, it.message.orEmpty())
             })
     }
 
@@ -257,7 +257,7 @@ class Repository : KoinComponent {
                 }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe()
             }, {
-                Log.i(TAG, "sync answers " + it.message)
+                Log.i(TAG, it.message ?: "Error on synchronizing data")
             })
     }
 
@@ -292,7 +292,7 @@ class Repository : KoinComponent {
             db.formDetailsDao().updateQuestionWithNotes(questionId)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, {
-                Log.i(TAG, "update questions with notes" + it.message.orEmpty())
+                Log.i(TAG, it.message.orEmpty())
             })
     }
 
@@ -342,7 +342,7 @@ class Repository : KoinComponent {
                 }
                 .subscribe({
                 }, {
-                    Log.i(TAG, "error " + it.localizedMessage.orEmpty())
+                    Log.i(TAG, it.localizedMessage.orEmpty())
                 })
         }
     }
