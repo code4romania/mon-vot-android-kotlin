@@ -90,7 +90,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                     loginButton.isEnabled = true
                 },
                 onLoading = {
-                    progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+                    progressDialog.showNow(supportFragmentManager, ProgressDialogFragment.TAG)
                 }
             )
         })

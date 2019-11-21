@@ -48,6 +48,7 @@ class Repository : KoinComponent {
         retrofit.create(ApiInterface::class.java)
     }
 
+    private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
     fun registerForNotification(token: String): Observable<ResponseBody> =
         loginInterface.registerForNotification(token)
@@ -269,26 +270,6 @@ class Repository : KoinComponent {
         return apiInterface.postQuestionAnswer(responseAnswerContainer)
     }
 
-    @SuppressLint("CheckResult")
-    fun syncAnswers() {
-        lateinit var answers: List<AnsweredQuestionPOJO>
-        db.formDetailsDao().getNotSyncedQuestions()
-            .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
-                answers = it
-                syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                answers.forEach { item -> item.answeredQuestion.synced = true }
-                Observable.create<Unit> {
-                    db.formDetailsDao()
-                        .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            }, {
-                Log.i(TAG, it.message ?: "Error on synchronizing data")
-            })
-    }
-
     fun getNotSyncedQuestions(): LiveData<Int> = db.formDetailsDao().getCountOfNotSyncedQuestions()
 
     fun getNotes(
@@ -346,34 +327,64 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    fun syncNotes() {
-        db.noteDao().getNotSyncedNotes()
-            .flatMap { Observable.fromIterable(it) }.flatMap {
-                postNote(it)
-            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-            }, {
-                Log.i(TAG, it.localizedMessage.orEmpty())
-            })
+    fun syncData() {
+        if (!syncInProgress) {
+            syncInProgress = true
+            Observable.merge(
+                mutableListOf(
+                    syncAnswersObservable(),
+                    syncPollingStationObservable(),
+                    syncNotesObservable()
+                )
+            ).observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate {
+                    syncInProgress = false
+                }
+                .subscribe({
+                }, {
+                    Log.i(TAG, it.localizedMessage.orEmpty())
+                })
+        }
     }
 
     @SuppressLint("CheckResult")
-    private fun syncPollingStation() {
-        db.pollingStationDao().getNotSyncedPollingStations().flatMap { Observable.fromIterable(it) }
+    fun syncAnswersObservable(): Observable<Unit> {
+        lateinit var answers: List<AnsweredQuestionPOJO>
+        return db.formDetailsDao().getNotSyncedQuestions()
+            .toObservable()
             .flatMap {
-                postPollingStationDetails(it)
-            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
+                answers = it
+                syncAnswers(it)
+            }
+            .flatMap {
+                answers.forEach { item -> item.answeredQuestion.synced = true }
+                Observable.create<Unit> { emitter ->
+                    db.formDetailsDao()
+                        .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
+                    emitter.onComplete()
 
-            }, {
-                Log.i(TAG, it.localizedMessage.orEmpty())
-            })
+                }
+            }
+            .subscribeOn(Schedulers.io())
     }
 
-    fun syncData() {
-        syncAnswers()
-        syncNotes()
-        syncPollingStation()
+    @SuppressLint("CheckResult")
+    private fun syncNotesObservable(): Observable<ResponseBody> {
+
+        return db.noteDao().getNotSyncedNotes()
+            .toObservable()
+            .flatMap { Observable.fromIterable(it) }
+            .flatMap { postNote(it) }
+            .subscribeOn(Schedulers.io())
+    }
+
+    @SuppressLint("CheckResult")
+    private fun syncPollingStationObservable(): Observable<ResponseBody> {
+        return db.pollingStationDao().getNotSyncedPollingStations()
+            .toObservable()
+            .flatMap { Observable.fromIterable(it) }
+            .flatMap { postPollingStationDetails(it) }
+            .subscribeOn(Schedulers.io())
     }
 }
+

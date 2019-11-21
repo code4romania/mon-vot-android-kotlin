@@ -57,7 +57,7 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
             // TODO send number of unsynced items
             logSyncManuallyEvent(0)
 
-            if (!context!!.isOnline()) {
+            if (!mContext.isOnline()) {
                 Snackbar.make(syncButton, getString(R.string.form_sync_no_internet), Snackbar.LENGTH_SHORT)
                     .show()
 

@@ -43,6 +43,9 @@ class NoteFragment : BaseAnalyticsFragment<NoteViewModel>(), PermissionManager.P
     override val screenName: Int
         get() = R.string.analytics_title_notes
 
+    companion object {
+        val TAG = NoteFragment::class.java.simpleName
+    }
     override val viewModel: NoteViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
     private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
