@@ -85,6 +85,10 @@
 
     </style>
 
+    <style name="Text.Simple">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
     <style name="Text.Small">
         <item name="android:textSize">12sp</item>
     </style>
