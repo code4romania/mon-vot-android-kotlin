@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.ui.login
 import android.os.Bundle
 import android.text.TextWatcher
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
