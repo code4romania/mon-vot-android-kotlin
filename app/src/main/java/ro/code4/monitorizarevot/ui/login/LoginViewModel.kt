@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.ui.login
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -9,10 +10,7 @@ import org.koin.core.inject
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
-import ro.code4.monitorizarevot.helper.Result
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
-import ro.code4.monitorizarevot.helper.saveToken
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
@@ -33,11 +31,13 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun onSuccessfulLogin(loginResponse: LoginResponse, firebaseToken: String) {
+        logD("onSuccessfulLogin")
         sharedPreferences.saveToken(loginResponse.accessToken)
         registerForNotification(firebaseToken)
     }
 
     private fun onSuccessfulRegisteredForNotification() {
+        logD("onSuccessfulRegisteredForNotification")
         if (sharedPreferences.hasCompletedOnboarding()) {
             loginLiveData.postValue(Result.Success(PollingStationActivity::class.java))
         } else {
@@ -66,6 +66,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     fun login(phone: String, password: String, firebaseToken: String) {
+        logD("login: $phone : $password -> $firebaseToken")
         disposables.add(
             loginRepository.login(User(phone, password, firebaseToken))
                 .subscribeOn(Schedulers.io())
@@ -77,6 +78,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun registerForNotification(firebaseToken: String) {
+        logD("registerForNotification with $firebaseToken")
         disposables.add(
             loginRepository.registerForNotification(firebaseToken)
                 .subscribeOn(Schedulers.io())
@@ -86,6 +88,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     override fun onError(throwable: Throwable) {
+        logE("onError ${throwable.message}", throwable)
         loginLiveData.postValue(Result.Failure(throwable))
     }
 }

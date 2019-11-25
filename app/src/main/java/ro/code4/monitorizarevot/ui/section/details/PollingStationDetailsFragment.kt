@@ -11,13 +11,12 @@ import kotlinx.android.synthetic.main.fragment_polling_station_selection.continu
 import kotlinx.android.synthetic.main.widget_change_polling_station_bar.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
-import ro.code4.monitorizarevot.ui.base.BaseFragment
+import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import java.util.*
 
 
-class PollingStationDetailsFragment : BaseAnalyticsFragment<PollingStationViewModel>() {
+class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>() {
 
     companion object {
         val TAG = PollingStationDetailsFragment::class.java.simpleName
