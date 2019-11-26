@@ -20,13 +20,25 @@
                 android:layout_width="@dimen/small_icon_size"
                 android:layout_height="@dimen/small_icon_size"
                 android:layout_marginTop="@dimen/margin"
-                android:layout_marginEnd="@dimen/margin"
+                android:layout_marginEnd="@dimen/xsmall_margin"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/hasNoteIcon"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_synced" />
+
+            <ImageView
+                android:id="@+id/hasNoteIcon"
+                android:layout_width="@dimen/small_icon_size"
+                android:layout_height="@dimen/small_icon_size"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_note_pen" />
 
             <TextView
                 android:id="@+id/syncText"
