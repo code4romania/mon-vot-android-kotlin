@@ -3,7 +3,6 @@ package ro.code4.monitorizarevot.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import ro.code4.monitorizarevot.data.model.PollingStation
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 
@@ -25,7 +24,7 @@ interface PollingStationDao {
     ): Maybe<PollingStationInfo>
 
     @Query("SELECT * FROM polling_station WHERE synced=:synced")
-    fun getNotSyncedPollingStations(synced: Boolean = false): Observable<List<PollingStation>>
+    fun getNotSyncedPollingStations(synced: Boolean = false): Maybe<List<PollingStation>>
 
     @Query("SELECT COUNT(*) FROM polling_station WHERE synced =:synced")
     fun getCountOfNotSyncedPollingStations(synced: Boolean = false): LiveData<Int>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_menu"
+            android:src="@drawable/logo_new"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Text.Title.Big"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:text="@string/about_mission"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <TextView
+            android:id="@+id/content"
+            style="@style/Text.Simple"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:text="@string/about_content"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <TextView
+            android:id="@+id/optionChangeLanguage"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="@dimen/margin"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/xsmall_margin"
+            android:paddingEnd="@dimen/xsmall_margin"
+            android:text="@string/about_change_language"
+            app:layout_constraintTop_toBottomOf="@id/content" />
+
+        <TextView
+            android:id="@+id/optionContact"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/xsmall_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/xsmall_margin"
+            android:paddingEnd="@dimen/xsmall_margin"
+            android:text="@string/about_contact"
+            app:layout_constraintTop_toBottomOf="@id/optionChangeLanguage" />
+
+        <TextView
+            android:id="@+id/optionViewPolicy"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xsmall_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:background="@drawable/selector_bg_btn"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/input_height"
+            android:paddingStart="@dimen/xsmall_margin"
+            android:paddingEnd="@dimen/xsmall_margin"
+            android:text="@string/about_privacy_policy"
+            app:layout_constraintTop_toBottomOf="@id/optionContact" />
+
+        <TextView
+            android:id="@+id/appVersion"
+            style="@style/Text.Label.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/xsmall_margin"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@id/code4logo"
+            app:layout_constraintEnd_toStartOf="@id/code4logo"
+            app:layout_constraintTop_toBottomOf="@+id/optionViewPolicy"
+            app:layout_constraintTop_toTopOf="@id/code4logo"
+            tools:text="v1.0202 developed by" />
+
+        <ImageView
+            android:id="@+id/code4logo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/login_logo_icon_size"
+            android:layout_margin="@dimen/margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_code4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/optionViewPolicy"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

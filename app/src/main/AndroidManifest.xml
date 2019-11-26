@@ -54,6 +54,7 @@
         <activity
             android:name=".ui.section.PollingStationActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.onboarding.OnboardingActivity"

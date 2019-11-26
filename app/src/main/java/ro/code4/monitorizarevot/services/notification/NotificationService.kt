@@ -18,7 +18,7 @@ class NotificationService : FirebaseMessagingService() {
     private fun showNotification(message: RemoteMessage) {
         message.notification?.let {
             App.instance.currentActivity?.runOnUiThread {
-                App.instance.currentActivity?.showPushNotification(it)
+                App.instance.currentActivity?.showPushNotification(it.title.orEmpty(), it.body.orEmpty())
             }
         }
     }

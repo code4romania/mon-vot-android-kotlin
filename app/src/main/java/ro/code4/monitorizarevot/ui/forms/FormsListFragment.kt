@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.FormDelegationAdapter
+import ro.code4.monitorizarevot.helper.isOnline
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 
 
@@ -56,7 +57,7 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
             // TODO send number of unsynced items
             logSyncManuallyEvent(0)
 
-            if (!isOnline(context!!)) {
+            if (!mContext.isOnline()) {
                 Snackbar.make(syncButton, getString(R.string.form_sync_no_internet), Snackbar.LENGTH_SHORT)
                     .show()
 
