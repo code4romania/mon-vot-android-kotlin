@@ -35,11 +35,11 @@ abstract class BaseAnalyticsFragment : Fragment(), AnalyticsScreenName {
         val bundle = Bundle()
         for ((k, v) in params ) {
             when (v) {
-                is String -> bundle.putString(k.name, v)
-                is Int -> bundle.putInt(k.name, v)
+                is String -> bundle.putString(k.title, v)
+                is Int -> bundle.putInt(k.title, v)
                 else -> logW("Not implemented bundle params for ${v.javaClass}")
             }
         }
-        firebaseAnalytics.logEvent(event.name, bundle)
+        firebaseAnalytics.logEvent(event.title, bundle)
     }
 }
