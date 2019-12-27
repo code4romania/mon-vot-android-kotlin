@@ -3,11 +3,14 @@ package ro.code4.monitorizarevot.ui.login
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.android.inject
 import org.koin.core.inject
 import ro.code4.monitorizarevot.BuildConfig
+import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.helper.*
@@ -20,6 +23,7 @@ class LoginViewModel : BaseViewModel() {
 
     private val loginRepository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
+    private val firebaseAnalytics: FirebaseAnalytics by inject()
 
     private val loginLiveData = SingleLiveEvent<Result<Class<*>>>()
 
@@ -77,6 +81,7 @@ class LoginViewModel : BaseViewModel() {
                     logD("Login successful! Token received!")
                     onSuccessfulLogin(loginResponse, firebaseToken)
                 }, { throwable ->
+                    firebaseAnalytics.logEvent(Event.LOGIN_FAILED.title, null)
                     logE("Login failed!", throwable)
                     onError(throwable)
                 })
