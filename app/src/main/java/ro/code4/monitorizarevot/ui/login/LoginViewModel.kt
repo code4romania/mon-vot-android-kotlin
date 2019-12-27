@@ -52,6 +52,7 @@ class LoginViewModel : BaseViewModel() {
                 if (it.isSuccessful && firebaseToken != null) {
                     login(phone, password, firebaseToken)
                 } else {
+                    logW("Failed to get firebase token!")
                     onError(Throwable())
                 }
             }.addOnFailureListener(this::onError)
@@ -60,6 +61,7 @@ class LoginViewModel : BaseViewModel() {
             if (BuildConfig.DEBUG && exception is IllegalStateException) {
                 login(phone, password, "1234")
             } else {
+                logW("Exception while trying to get firebase token!")
                 onError(exception)
             }
         }
@@ -72,8 +74,12 @@ class LoginViewModel : BaseViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ loginResponse ->
+                    logD("Login successful! Token received!")
                     onSuccessfulLogin(loginResponse, firebaseToken)
-                }, this::onError)
+                }, { throwable ->
+                    logE("Login failed!", throwable)
+                    onError(throwable)
+                })
         )
     }
 
@@ -83,7 +89,13 @@ class LoginViewModel : BaseViewModel() {
             loginRepository.registerForNotification(firebaseToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccessfulRegisteredForNotification() }, this::onError)
+                .subscribe({
+                    logD("Registered for notifications on firebase!")
+                    onSuccessfulRegisteredForNotification()
+                }, { throwable ->
+                    logE("Register for notification failed!", throwable)
+                    onError(throwable)
+                })
         )
     }
 
