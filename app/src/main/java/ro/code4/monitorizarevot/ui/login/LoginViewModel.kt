@@ -9,10 +9,7 @@ import org.koin.core.inject
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
-import ro.code4.monitorizarevot.helper.Result
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
-import ro.code4.monitorizarevot.helper.saveToken
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
@@ -52,6 +49,7 @@ class LoginViewModel : BaseViewModel() {
                 if (it.isSuccessful && firebaseToken != null) {
                     login(phone, password, firebaseToken)
                 } else {
+                    logW("Failed to get firebase token!")
                     onError(Throwable())
                 }
             }.addOnFailureListener(this::onError)
@@ -60,6 +58,7 @@ class LoginViewModel : BaseViewModel() {
             if (BuildConfig.DEBUG && exception is IllegalStateException) {
                 login(phone, password, "1234")
             } else {
+                logW("Exception while trying to get firebase token!")
                 onError(exception)
             }
         }
@@ -71,8 +70,12 @@ class LoginViewModel : BaseViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ loginResponse ->
+                    logD("Login successful! Token received!")
                     onSuccessfulLogin(loginResponse, firebaseToken)
-                }, this::onError)
+                }, { throwable ->
+                    logE("Login failed!", throwable)
+                    onError(throwable)
+                })
         )
     }
 
@@ -81,7 +84,13 @@ class LoginViewModel : BaseViewModel() {
             loginRepository.registerForNotification(firebaseToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccessfulRegisteredForNotification() }, this::onError)
+                .subscribe({
+                    logD("Registered for notifications on firebase!")
+                    onSuccessfulRegisteredForNotification()
+                }, { throwable ->
+                    logE("Register for notification failed!", throwable)
+                    onError(throwable)
+                })
         )
     }
 
