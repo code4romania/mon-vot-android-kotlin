@@ -8,6 +8,7 @@ import org.koin.android.ext.android.inject
 import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.analytics.Param
 import ro.code4.monitorizarevot.analytics.ParamKey
+import ro.code4.monitorizarevot.helper.logD
 import ro.code4.monitorizarevot.helper.logW
 import ro.code4.monitorizarevot.interfaces.AnalyticsScreenName
 
@@ -30,6 +31,7 @@ abstract class BaseAnalyticsFragment : Fragment(), AnalyticsScreenName {
     }
 
     fun logAnalyticsEvent(event: Event, vararg params: Param) {
+        logD("logAnalyticsEvent: ${event.name}")
         val bundle = Bundle()
         for ((k, v) in params ) {
             when (v) {
