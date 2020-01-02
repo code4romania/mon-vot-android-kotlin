@@ -2,7 +2,7 @@
 
 [![GitHub contributors](https://img.shields.io/github/contributors/code4romania/mon-vot-android-kotlin.svg?style=for-the-badge)](https://github.com/code4romania/mon-vot-android-kotlin/graphs/contributors) [![GitHub last commit](https://img.shields.io/github/last-commit/code4romania/mon-vot-android-kotlin.svg?style=for-the-badge)](https://github.com/code4romania/mon-vot-android-kotlin/commits/master) [![License: MPL 2.0](https://img.shields.io/badge/license-MPL%202.0-brightgreen.svg?style=for-the-badge)](https://opensource.org/licenses/MPL-2.0)
 
-[See the project live](http://monitorizarevot.ro/)
+[See the project live](https://votemonitor.org/)
 
 Monitorizare Vot is a mobile app for monitoring elections by authorized observers. They can use the app in order to offer a real-time snapshot on what is going on at polling stations and they can report on any noticeable irregularities. 
 
@@ -42,13 +42,7 @@ Swagger docs for the API are available [here](http://mv-mobile-test.azurewebsite
 - repo for the iOS app - https://github.com/code4romania/monitorizare-vot-ios
 
 Other related projects:
-
-- https://github.com/code4romania/monitorizare-vot-votanti-client/
-- https://github.com/code4romania/monitorizare-vot-votanti-api/
-- https://github.com/code4romania/monitorizare-vot-votanti-admin
-- https://github.com/code4romania/monitorizare-vot-admin
 - https://github.com/code4romania/monitorizare-vot-ong
-- https://github.com/code4romania/monitorizare-vot-docs
 
 ## Feedback
 

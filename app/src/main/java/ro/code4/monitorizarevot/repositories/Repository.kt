@@ -48,6 +48,7 @@ class Repository : KoinComponent {
         retrofit.create(ApiInterface::class.java)
     }
 
+    private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
     fun registerForNotification(token: String): Observable<ResponseBody> =
         loginInterface.registerForNotification(token)
@@ -62,17 +63,22 @@ class Repository : KoinComponent {
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                if (apiCounties.isNotEmpty() && dbCounties != apiCounties) {
-//             TODO        deleteCounties()
-                    db.countyDao().save(*apiCounties.map {
-                        it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                        it
-                    }.toTypedArray())
-                    return@BiFunction apiCounties
+                val all =
+                    apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }
+                apiCounties.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
                 }
-                dbCounties
-
-            })
+                return@BiFunction when {
+                    apiCounties.isNotEmpty() && !all -> {
+                        // TODO deleteCounties()
+                        db.countyDao().save(*apiCounties.map { it }.toTypedArray())
+                        apiCounties
+                    }
+                    apiCounties.isNotEmpty() && all -> apiCounties
+                    else -> dbCounties
+                }
+            }
+        )
     }
 
     fun getPollingStationDetails(
@@ -137,8 +143,8 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    private fun deleteFormDetails(formDetails: FormDetails) {
-        db.formDetailsDao().deleteForms(formDetails)
+    private fun deleteFormDetails(vararg formDetails: FormDetails) {
+        db.formDetailsDao().deleteForms(*formDetails)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
                 Log.i(TAG, it.message.orEmpty())
@@ -175,10 +181,17 @@ class Repository : KoinComponent {
             saveFormDetails(apiFormDetails)
             return
         }
+        if (apiFormDetails.size < dbFormDetails.size) {
+            dbFormDetails.minus(apiFormDetails).also { diff ->
+                if (diff.isNotEmpty()) {
+                    deleteFormDetails(*diff.map { it }.toTypedArray())
+                }
+            }
+        }
         apiFormDetails.forEach { apiForm ->
-            if (apiForm.formVersion != dbFormDetails.find { it.code == apiForm.code }?.formVersion) {
-                deleteFormDetails(apiForm)
-                //TODO delete answers and other bullshits
+            val dbForm = dbFormDetails.find { it.id == apiForm.id }
+            if (dbForm != null && apiForm.formVersion != dbForm.formVersion) {
+                deleteFormDetails(dbForm)
                 saveFormDetails(apiForm)
             }
         }
@@ -257,26 +270,6 @@ class Repository : KoinComponent {
         return apiInterface.postQuestionAnswer(responseAnswerContainer)
     }
 
-    @SuppressLint("CheckResult")
-    fun syncAnswers() {
-        lateinit var answers: List<AnsweredQuestionPOJO>
-        db.formDetailsDao().getNotSyncedQuestions()
-            .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
-                answers = it
-                syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                answers.forEach { item -> item.answeredQuestion.synced = true }
-                Observable.create<Unit> {
-                    db.formDetailsDao()
-                        .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            }, {
-                Log.i(TAG, it.message ?: "Error on synchronizing data")
-            })
-    }
-
     fun getNotSyncedQuestions(): LiveData<Int> = db.formDetailsDao().getCountOfNotSyncedQuestions()
 
     fun getNotes(
@@ -334,34 +327,64 @@ class Repository : KoinComponent {
     }
 
     @SuppressLint("CheckResult")
-    fun syncNotes() {
-        db.noteDao().getNotSyncedNotes()
-            .flatMap { Observable.fromIterable(it) }.flatMap {
-                postNote(it)
-            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-            }, {
-                Log.i(TAG, it.localizedMessage.orEmpty())
-            })
+    fun syncData() {
+        if (!syncInProgress) {
+            syncInProgress = true
+            Observable.merge(
+                mutableListOf(
+                    syncAnswersObservable(),
+                    syncPollingStationObservable(),
+                    syncNotesObservable()
+                )
+            ).observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate {
+                    syncInProgress = false
+                }
+                .subscribe({
+                }, {
+                    Log.i(TAG, it.localizedMessage.orEmpty())
+                })
+        }
     }
 
     @SuppressLint("CheckResult")
-    private fun syncPollingStation() {
-        db.pollingStationDao().getNotSyncedPollingStations().flatMap { Observable.fromIterable(it) }
+    fun syncAnswersObservable(): Observable<Unit> {
+        lateinit var answers: List<AnsweredQuestionPOJO>
+        return db.formDetailsDao().getNotSyncedQuestions()
+            .toObservable()
             .flatMap {
-                postPollingStationDetails(it)
-            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
+                answers = it
+                syncAnswers(it)
+            }
+            .flatMap {
+                answers.forEach { item -> item.answeredQuestion.synced = true }
+                Observable.create<Unit> { emitter ->
+                    db.formDetailsDao()
+                        .updateAnsweredQuestion(*answers.map { it.answeredQuestion }.toTypedArray())
+                    emitter.onComplete()
 
-            }, {
-                Log.i(TAG, it.localizedMessage.orEmpty())
-            })
+                }
+            }
+            .subscribeOn(Schedulers.io())
     }
 
-    fun syncData() {
-        syncAnswers()
-        syncNotes()
-        syncPollingStation()
+    @SuppressLint("CheckResult")
+    private fun syncNotesObservable(): Observable<ResponseBody> {
+
+        return db.noteDao().getNotSyncedNotes()
+            .toObservable()
+            .flatMap { Observable.fromIterable(it) }
+            .flatMap { postNote(it) }
+            .subscribeOn(Schedulers.io())
+    }
+
+    @SuppressLint("CheckResult")
+    private fun syncPollingStationObservable(): Observable<ResponseBody> {
+        return db.pollingStationDao().getNotSyncedPollingStations()
+            .toObservable()
+            .flatMap { Observable.fromIterable(it) }
+            .flatMap { postPollingStationDetails(it) }
+            .subscribeOn(Schedulers.io())
     }
 }
+

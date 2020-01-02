@@ -16,4 +16,9 @@ object Constants {
     const val TYPE_SINGLE_CHOICE = 1
     const val TYPE_SINGLE_CHOICE_DETAILS = 2
     const val TYPE_MULTI_CHOICE_DETAILS = 3
+
+    const val REMOTE_CONFIG_FILTER_DIASPORA_FORMS = "filter_diaspora_forms"
+    
+    const val PUSH_NOTIFICATION_TITLE = "title"
+    const val PUSH_NOTIFICATION_BODY = "body"
 }

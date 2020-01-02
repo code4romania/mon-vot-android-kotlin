@@ -59,6 +59,8 @@ android {
             variant.buildConfigField "String", "ORGANISATION_WEB_URL", "\"" + getKey(variant.buildType.name, "organisationWebUrl") + "\""
             variant.buildConfigField "String", "SERVICE_CENTER_PHONE_NUMBER", "\"" + getKey(variant.buildType.name, "serviceCenterPhoneNumber") + "\""
             variant.buildConfigField "String", "PREFERRED_LOCALE", "\"" + getKey(variant.buildType.name, "preferredLocale") + "\""
+            variant.buildConfigField "String", "PRIVACY_WEB_URL", "\"" + getKey(variant.buildType.name, "privacyWebUrl") + "\""
+            variant.buildConfigField "String", "SUPPORT_EMAIL", "\"" + getKey(variant.buildType.name, "supportEmail") + "\""
 
             def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
             def buildType = "${variant.buildType.name.capitalize()}"
@@ -99,7 +101,7 @@ ext {
     retrofitLibraryVersion = '2.5.0'
     koinVersion = '2.0.1'
     roomVersion = '2.2.0'
-    firebaseVersion = '17.2.0'
+    firebaseVersion = '17.2.1'
     crashlyticsVersion = '2.10.1'
     adapterDelegatesVersion = "4.2.0"
 }
@@ -130,16 +132,13 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-analytics:$firebaseVersion"
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.1'
+    implementation 'com.google.firebase:firebase-config:19.0.3'
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     //koin injection
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'org.parceler:parceler-api:1.1.12'
     kapt 'org.parceler:parceler:1.1.12'
@@ -149,7 +148,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
-    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
@@ -159,6 +157,12 @@ dependencies {
     implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
 
     implementation "androidx.viewpager2:viewpager2:1.0.0-rc01"
+
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics

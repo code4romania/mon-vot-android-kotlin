@@ -100,8 +100,9 @@ class QuestionsDetailsFragment : BaseAnalyticsFragment<QuestionsDetailsViewModel
                         } else {
                             Pair(currentPosition + 1, oldPos)
                         }
-                        for (pos in start..end)
+                        for (pos in start..end) {
                             viewModel.saveAnswer(adapter.getItem(pos))
+                        }
                     }
                     setButtons()
                 }
@@ -155,7 +156,9 @@ class QuestionsDetailsFragment : BaseAnalyticsFragment<QuestionsDetailsViewModel
     }
 
     override fun onPause() {
-        viewModel.saveAnswer(adapter.getItem(currentPosition))
+        if (::adapter.isInitialized) {
+            viewModel.saveAnswer(adapter.getItem(currentPosition))
+        }
         viewModel.syncData()
         super.onPause()
 

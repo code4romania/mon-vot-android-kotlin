@@ -1,12 +1,15 @@
 package ro.code4.monitorizarevot.ui.login
 
 import android.os.Bundle
+import android.text.TextWatcher
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.TextWatcherDelegate
+import ro.code4.monitorizarevot.helper.isOnline
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -34,7 +37,20 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
         if (BuildConfig.DEBUG) {
             phone.setText(R.string.test_phone_number)
             password.setText(R.string.test_password)
+            loginButton.isEnabled = true
         }
+
+        phone.addTextChangedListener(object : TextWatcher by TextWatcherDelegate {
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                loginButton.isEnabled = !p0.isNullOrEmpty() && !password.text.isNullOrEmpty()
+            }
+        })
+
+        password.addTextChangedListener(object : TextWatcher by TextWatcherDelegate {
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                loginButton.isEnabled = !p0.isNullOrEmpty() && !phone.text.isNullOrEmpty()
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -44,6 +60,13 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
 
     private fun clickListenersSetup() {
         loginButton.setOnClickListener {
+            if (!isOnline()) {
+                Snackbar.make(loginButton, getString(R.string.login_no_internet), Snackbar.LENGTH_SHORT)
+                    .show()
+
+                return@setOnClickListener
+            }
+
             loginButton.isEnabled = false
             viewModel.login(phone.text.toString(), password.text.toString())
         }
@@ -56,19 +79,18 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                     progressDialog.dismiss()
                     activity?.let(::startActivityWithoutTrace)
                 },
-                onFailure = {
+                onFailure = {error ->
                     // TODO: Handle errors to show personalized messages for each one
                     progressDialog.dismiss()
-                    Snackbar.make(
-                        loginButton,
-                        getString(R.string.error_generic),
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
+
+                    handleThrowable(error) {
+                        showDefaultErrorSnackBar(loginButton)
+                    }
+
                     loginButton.isEnabled = true
                 },
                 onLoading = {
-                    progressDialog.show(supportFragmentManager, ProgressDialogFragment.TAG)
+                    progressDialog.showNow(supportFragmentManager, ProgressDialogFragment.TAG)
                 }
             )
         })

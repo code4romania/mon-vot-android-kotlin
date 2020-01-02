@@ -12,11 +12,16 @@
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_main" />
 
-
     <fragment
         android:id="@+id/nav_guide"
         android:name="ro.code4.monitorizarevot.ui.guide.GuideFragment"
         android:label="@string/menu_guide"
         tools:layout="@layout/fragment_guide" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="ro.code4.monitorizarevot.ui.settings.AboutFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_about" />
 
 </navigation>

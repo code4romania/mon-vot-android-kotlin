@@ -70,7 +70,7 @@ class FormsFragment : BaseFragment<FormsViewModel>() {
                 bundleOf(
                     Pair(QUESTION, Parcels.wrap(it))
                 ),
-                QuestionsDetailsFragment.TAG
+                NoteFragment.TAG
             )
         })
 
