@@ -37,7 +37,8 @@ class AboutFragment : Fragment() {
         content.movementMethod = LinkMovementMethod.getInstance()
 
         optionChangeLanguage.setOnClickListener {
-            //TODO
+            val languageSelector = AboutLanguageSelectorFragment()
+            languageSelector.show(requireFragmentManager(), AboutLanguageSelectorFragment.TAG)
         }
 
         optionContact.setOnClickListener { onContactClicked() }

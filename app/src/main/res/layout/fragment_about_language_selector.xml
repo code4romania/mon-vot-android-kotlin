@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="@dimen/big_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titleOnboarding"
+        style="@style/Text.Title.Big"
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        tools:text="@string/onboarding_title_choose_language"
+        android:text="@string/onboarding_title_choose_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/big_margin"
+        android:layout_marginEnd="@dimen/margin"
+        android:gravity="center" />
+
+
+    <ro.code4.monitorizarevot.ui.settings.SameSelectionAllowedSpinner
+        android:id="@+id/languagesSpinner"
+        style="@style/Text.Onboarding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleOnboarding"
+        app:layout_constraintVertical_bias="0"
+        tools:text="@string/onboarding_description_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/xbig_margin"
+        android:layout_marginEnd="@dimen/margin"
+        android:background="@drawable/background_spinner" />
+</LinearLayout>
