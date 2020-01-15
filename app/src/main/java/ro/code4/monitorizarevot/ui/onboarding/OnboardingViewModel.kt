@@ -54,8 +54,6 @@ class OnboardingViewModel : BaseViewModel() {
         postValue(screens)
     }
 
-    private fun getLocales(codes: Array<String>): List<Locale> = codes.map { it.getLocale() }
-
     fun languageChanged(): LiveData<Void> = languageChangedLiveData
     fun onboarding(): LiveData<ArrayList<OnboardingScreen>> = onboardingLiveData
     fun onboardingCompleted() {
@@ -64,8 +62,11 @@ class OnboardingViewModel : BaseViewModel() {
 
     fun getSelectedLocale(): Locale = preferences.getLocaleCode().getLocale()
     fun changeLanguage(locale: Locale) {
-        val code = "${locale.language}_${locale.country}"
-        preferences.setLocaleCode(code)
+        preferences.setLocaleCode(locale.encode())
         languageChangedLiveData.call()
     }
 }
+
+internal fun getLocales(codes: Array<String>): List<Locale> = codes.map { it.getLocale() }
+
+internal fun Locale.encode() = "${this.language}_${this.country}"

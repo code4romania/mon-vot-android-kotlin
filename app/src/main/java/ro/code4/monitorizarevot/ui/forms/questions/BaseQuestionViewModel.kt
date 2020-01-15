@@ -25,7 +25,6 @@ abstract class BaseQuestionViewModel : BaseFormViewModel() {
             repository.getAnswersForForm(countyCode, pollingStationNumber, formId)
         ).observeForever {
             processList(it.first, it.second)
-
         }
 
     }
