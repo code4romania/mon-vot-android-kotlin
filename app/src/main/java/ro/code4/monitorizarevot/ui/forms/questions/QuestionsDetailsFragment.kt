@@ -21,11 +21,11 @@ import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.addOnLayoutChangeListenerForGalleryEffect
 import ro.code4.monitorizarevot.helper.addOnScrollListenerForGalleryEffect
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
+import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 
-class QuestionsDetailsFragment : BaseAnalyticsFragment<QuestionsDetailsViewModel>(),
+class QuestionsDetailsFragment : ViewModelFragment<QuestionsDetailsViewModel>(),
     QuestionDetailsAdapter.OnClickListener {
     override fun addNoteFor(question: Question) {
         baseViewModel.selectedNotes(question)

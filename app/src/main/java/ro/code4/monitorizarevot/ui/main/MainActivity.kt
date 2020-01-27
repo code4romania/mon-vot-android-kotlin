@@ -10,10 +10,13 @@ import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.helper.callSupportCenter
 import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
@@ -25,6 +28,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
         get() = R.layout.activity_main
 
+    private val firebaseAnalytics: FirebaseAnalytics by inject()
     override val viewModel: MainViewModel by viewModel()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -61,16 +65,17 @@ class MainActivity : BaseActivity<MainViewModel>() {
             } else {
                 when (item.itemId) {
                     R.id.nav_change_polling_station -> {
+                        firebaseAnalytics.logEvent(Event.TAP_CHANGE_STATION.title, null)
                         viewModel.notifyChangeRequested()
                         changePollingStation()
                         true
                     }
                     R.id.nav_call -> {
+                        firebaseAnalytics.logEvent(Event.TAP_CALL.title, null)
                         callSupportCenter()
                         true
                     }
                     else -> false
-
                 }
             }
         }

@@ -7,14 +7,20 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_about.*
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.analytics.Event
+import ro.code4.monitorizarevot.analytics.Param
+import ro.code4.monitorizarevot.analytics.ParamKey
 import ro.code4.monitorizarevot.helper.browse
+import ro.code4.monitorizarevot.helper.logW
 import ro.code4.monitorizarevot.helper.toHtml
+import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 
-class AboutFragment : Fragment() {
+class AboutFragment : BaseAnalyticsFragment() {
+    override val screenName: Int
+        get() = R.string.menu_about
 
     companion object {
         val TAG = AboutFragment::class.java.simpleName
@@ -36,17 +42,21 @@ class AboutFragment : Fragment() {
         content.text = getString(R.string.about_content).toHtml()
         content.movementMethod = LinkMovementMethod.getInstance()
 
-        optionChangeLanguage.setOnClickListener {
-            val languageSelector = AboutLanguageSelectorFragment()
-            languageSelector.show(requireFragmentManager(), AboutLanguageSelectorFragment.TAG)
-        }
+        optionChangeLanguage.setOnClickListener { onChangeLanguageClicked(view) }
 
-        optionContact.setOnClickListener { onContactClicked() }
+        optionContact.setOnClickListener { onContactClicked(view) }
 
-        optionViewPolicy.setOnClickListener { context?.browse(BuildConfig.PRIVACY_WEB_URL) }
+        optionViewPolicy.setOnClickListener { onViewPolicyClicked(view) }
     }
 
-    private fun onContactClicked() {
+    private fun onChangeLanguageClicked(view: View) {
+        logClickEvent(view)
+        val languageSelector = AboutLanguageSelectorFragment()
+        languageSelector.show(requireFragmentManager(), AboutLanguageSelectorFragment.TAG)
+    }
+
+    private fun onContactClicked(view: View) {
+        logClickEvent(view)
         val emailIntent = Intent(
             Intent.ACTION_SENDTO,
             Uri.fromParts("mailto", BuildConfig.SUPPORT_EMAIL, null)
@@ -59,4 +69,18 @@ class AboutFragment : Fragment() {
         )
     }
 
+    private fun onViewPolicyClicked(view: View) {
+        logClickEvent(view)
+        val result = context?.browse(BuildConfig.PRIVACY_WEB_URL)
+        if (!result!!) {
+            logW("No app to view " + BuildConfig.PRIVACY_WEB_URL)
+        }
+    }
+
+    private fun logClickEvent(view: View) {
+        logAnalyticsEvent(
+            Event.BUTTON_CLICK,
+            Param(ParamKey.NAME, resources.getResourceEntryName(view.id))
+        )
+    }
 }

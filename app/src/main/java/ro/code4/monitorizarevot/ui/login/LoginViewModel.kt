@@ -1,18 +1,19 @@
 package ro.code4.monitorizarevot.ui.login
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.android.inject
 import org.koin.core.inject
 import ro.code4.monitorizarevot.BuildConfig
+import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.data.model.User
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
-import ro.code4.monitorizarevot.helper.Result
-import ro.code4.monitorizarevot.helper.SingleLiveEvent
-import ro.code4.monitorizarevot.helper.hasCompletedOnboarding
-import ro.code4.monitorizarevot.helper.saveToken
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingActivity
@@ -22,6 +23,7 @@ class LoginViewModel : BaseViewModel() {
 
     private val loginRepository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
+    private val firebaseAnalytics: FirebaseAnalytics by inject()
 
     private val loginLiveData = SingleLiveEvent<Result<Class<*>>>()
 
@@ -33,11 +35,13 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun onSuccessfulLogin(loginResponse: LoginResponse, firebaseToken: String) {
+        logD("onSuccessfulLogin")
         sharedPreferences.saveToken(loginResponse.accessToken)
         registerForNotification(firebaseToken)
     }
 
     private fun onSuccessfulRegisteredForNotification() {
+        logD("onSuccessfulRegisteredForNotification")
         if (sharedPreferences.hasCompletedOnboarding()) {
             loginLiveData.postValue(Result.Success(PollingStationActivity::class.java))
         } else {
@@ -52,6 +56,7 @@ class LoginViewModel : BaseViewModel() {
                 if (it.isSuccessful && firebaseToken != null) {
                     login(phone, password, firebaseToken)
                 } else {
+                    logW("Failed to get firebase token!")
                     onError(Throwable())
                 }
             }.addOnFailureListener(this::onError)
@@ -60,32 +65,47 @@ class LoginViewModel : BaseViewModel() {
             if (BuildConfig.DEBUG && exception is IllegalStateException) {
                 login(phone, password, "1234")
             } else {
+                logW("Exception while trying to get firebase token!")
                 onError(exception)
             }
         }
     }
 
     fun login(phone: String, password: String, firebaseToken: String) {
+        logD("login: $phone : $password -> $firebaseToken")
         disposables.add(
             loginRepository.login(User(phone, password, firebaseToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ loginResponse ->
+                    logD("Login successful! Token received!")
                     onSuccessfulLogin(loginResponse, firebaseToken)
-                }, this::onError)
+                }, { throwable ->
+                    firebaseAnalytics.logEvent(Event.LOGIN_FAILED.title, null)
+                    logE("Login failed!", throwable)
+                    onError(throwable)
+                })
         )
     }
 
     private fun registerForNotification(firebaseToken: String) {
+        logD("registerForNotification with $firebaseToken")
         disposables.add(
             loginRepository.registerForNotification(firebaseToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccessfulRegisteredForNotification() }, this::onError)
+                .subscribe({
+                    logD("Registered for notifications on firebase!")
+                    onSuccessfulRegisteredForNotification()
+                }, { throwable ->
+                    logE("Register for notification failed!", throwable)
+                    onError(throwable)
+                })
         )
     }
 
     override fun onError(throwable: Throwable) {
+        logE("onError ${throwable.message}", throwable)
         loginLiveData.postValue(Result.Failure(throwable))
     }
 }
