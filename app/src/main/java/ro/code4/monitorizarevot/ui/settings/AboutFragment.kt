@@ -42,11 +42,11 @@ class AboutFragment : BaseAnalyticsFragment() {
         content.text = getString(R.string.about_content).toHtml()
         content.movementMethod = LinkMovementMethod.getInstance()
 
-        optionChangeLanguage.setOnClickListener { onChangeLanguageClicked(view) }
+        optionChangeLanguage.setOnClickListener { onChangeLanguageClicked(it) }
 
-        optionContact.setOnClickListener { onContactClicked(view) }
+        optionContact.setOnClickListener { onContactClicked(it) }
 
-        optionViewPolicy.setOnClickListener { onViewPolicyClicked(view) }
+        optionViewPolicy.setOnClickListener { onViewPolicyClicked(it) }
     }
 
     private fun onChangeLanguageClicked(view: View) {
