@@ -94,6 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:textColorHint="@color/textPrimary"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/colorAccent"
                 app:layout_constraintBottom_toTopOf="@id/loginButton"
                 app:layout_constraintTop_toBottomOf="@id/phoneLayout">
 
@@ -113,14 +115,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-
                 android:id="@+id/loginButton"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/big_margin"
-                android:text="@string/login"
                 android:enabled="false"
+                android:text="@string/login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
