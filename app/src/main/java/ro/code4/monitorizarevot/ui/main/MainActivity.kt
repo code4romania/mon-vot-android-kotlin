@@ -1,15 +1,25 @@
 package ro.code4.monitorizarevot.ui.main
 
+import android.graphics.Typeface
+import android.graphics.Typeface.*
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
+import android.view.MenuItem
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.internal.NavigationMenuView
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -32,7 +42,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override val viewModel: MainViewModel by viewModel()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-
+    private var selectedItem: MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
@@ -56,10 +66,30 @@ class MainActivity : BaseActivity<MainViewModel>() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
         navView.setCheckedItem(R.id.nav_forms)
+        selectedItem = navView.checkedItem
+        var firstSpanString = SpannableString(selectedItem!!.title)
+        firstSpanString.setSpan(StyleSpan(BOLD), 0, firstSpanString.length, 0)
+        selectedItem!!.title = firstSpanString
+
+
         // Workaround to allow actions and navigation in the same component
+
         navView.setNavigationItemSelectedListener { item ->
             val handled = onNavDestinationSelected(item, navController)
+
             if (handled) {
+
+                    val prevSpanString = SpannableString(selectedItem!!.title.toString())
+                    prevSpanString.setSpan(StyleSpan(NORMAL), 0, prevSpanString.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    selectedItem!!.title = prevSpanString
+
+
+                val spanString = SpannableString(item.title)
+                spanString.setSpan(StyleSpan(BOLD), 0, spanString.length, 0)
+                item.title = spanString
+
+                selectedItem = item
+
                 drawerLayout.closeDrawer(navView)
                 true
             } else {
@@ -105,3 +135,4 @@ class MainActivity : BaseActivity<MainViewModel>() {
         }
     }
 }
+
