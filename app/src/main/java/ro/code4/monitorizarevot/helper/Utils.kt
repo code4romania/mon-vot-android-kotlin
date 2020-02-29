@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -385,6 +386,14 @@ fun Activity.hideKeyboard() {
     }
 }
 
+fun Fragment.hideKeyboard() {
+    val view = activity!!.currentFocus
+    if (view != null) {
+        val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}
+
 fun String.toHtml(): Spanned? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT)
@@ -427,6 +436,15 @@ fun Context.isOnline(): Boolean {
         val netInfo = cm.activeNetworkInfo
         return netInfo != null && netInfo.isConnectedOrConnecting
     }
+}
+
+fun Context.isLandscape(): Boolean {
+    return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+}
+
+fun Context.isPortrait(): Boolean {
+    return resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
 }
 
 fun Context.browse(url: String, newTask: Boolean = false): Boolean {

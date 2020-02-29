@@ -42,6 +42,7 @@ class SplashScreenActivity : BaseAnalyticsActivity<SplashScreenViewModel>() {
                 else -> LoginActivity::class.java
             }
 
+
             if (!notificationTitle.isNullOrBlank()) {
                 showPushNotification(
                     notificationTitle,

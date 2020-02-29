@@ -3,13 +3,16 @@ package ro.code4.monitorizarevot.ui.section.selection
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.helper.hideKeyboard
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
@@ -49,6 +52,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         countySpinnerAdapter =
             ArrayAdapter(activity!!, R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,6 +82,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             pollingStationNumber.setSelection(it.second.toString().length)
             pollingStationNumber.isEnabled = true
         })
+        setupHideKeyboardListeners(polling_station_select_scrollview)
     }
 
     override fun onDestroyView() {
@@ -112,6 +117,24 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         countySpinnerAdapter.clear()
         countySpinnerAdapter.addAll(counties)
         countySpinnerAdapter.notifyDataSetChanged()
+    }
+
+    private fun setupHideKeyboardListeners(view: View) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (view !is EditText) {
+            view.setOnTouchListener(View.OnTouchListener { v, event ->
+                hideKeyboard()
+                false
+            })
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val innerView = view.getChildAt(i)
+                setupHideKeyboardListeners(innerView)
+            }
+        }
     }
 
 

@@ -1,6 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_login_bkg"
@@ -36,10 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipChildren="false"
-            android:paddingStart="@dimen/margin"
-            android:paddingTop="@dimen/xbig_margin"
-            android:paddingEnd="@dimen/margin"
-            android:paddingBottom="@dimen/xbig_margin">
+            android:padding="4dp"
+            >
 
             <TextView
                 android:id="@+id/appVersion"
@@ -121,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/big_margin"
                 android:enabled="false"
+
                 android:text="@string/login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />

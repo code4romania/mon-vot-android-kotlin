@@ -14,6 +14,8 @@ import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
@@ -66,20 +68,20 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 .color(Color.TRANSPARENT)
                 .sizeResId(R.dimen.small_margin).build()
         )
-        viewModel.title().observe(this, Observer {
+        viewModel.title().observe(viewLifecycleOwner, Observer {
             baseViewModel.setTitle(it)
         })
 
         viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
-        viewModel.notes().observe(this, Observer {
+        viewModel.notes().observe(viewLifecycleOwner, Observer {
             noteAdapter.items = it
         })
-        viewModel.fileName().observe(this, Observer {
+        viewModel.fileName().observe(viewLifecycleOwner, Observer {
             filenameText.text = it
             filenameText.visibility = View.VISIBLE
             addMediaButton.visibility = View.GONE
         })
-        viewModel.submitCompleted().observe(this, Observer {
+        viewModel.submitCompleted().observe(viewLifecycleOwner, Observer {
             activity?.onBackPressed()
         })
 
@@ -106,6 +108,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             viewModel.submit(noteInput.text.toString())
 
         }
+        setupHideKeyboardListeners(note_scroll_view)
     }
 
     @Suppress("SameParameterValue")
@@ -242,6 +245,23 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                     Uri.fromParts("package", packageName, null)
                 ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_HISTORY)
             )
+        }
+    }
+    private fun setupHideKeyboardListeners(view: View) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (view !is EditText) {
+            view.setOnTouchListener(View.OnTouchListener { v, event ->
+                hideKeyboard()
+                false
+            })
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val innerView = view.getChildAt(i)
+                setupHideKeyboardListeners(innerView)
+            }
         }
     }
 }
