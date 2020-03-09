@@ -177,7 +177,6 @@ class Repository : KoinComponent {
             return
         }
         val apiFormDetails = response.formVersions
-        apiFormDetails.forEachIndexed { index, formDetails -> formDetails.order = index }
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
@@ -191,7 +190,8 @@ class Repository : KoinComponent {
         }
         apiFormDetails.forEach { apiForm ->
             val dbForm = dbFormDetails.find { it.id == apiForm.id }
-            if (dbForm != null && apiForm.formVersion != dbForm.formVersion) {
+            if (dbForm != null && (apiForm.formVersion != dbForm.formVersion ||
+                        apiForm.order != dbForm.order)) {
                 deleteFormDetails(dbForm)
                 saveFormDetails(apiForm)
             }
