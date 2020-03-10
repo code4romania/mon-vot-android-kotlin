@@ -55,27 +55,21 @@ class Repository : KoinComponent {
         loginInterface.registerForNotification(token)
 
     fun getCounties(): Single<List<County>> {
-
         val observableApi = apiInterface.getCounties()
         val observableDb = db.countyDao().getAll().take(1).single(emptyList())
-
         return Single.zip(
             observableDb,
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
-                //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                val all =
-                    apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }
-                apiCounties.forEach {
-                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                }
+                val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
+                apiCounties.forEach { it.name = it.name.toLowerCase(Locale.getDefault()).capitalize() }
                 return@BiFunction when {
-                    apiCounties.isNotEmpty() && !all -> {
-                        // TODO deleteCounties()
+                    apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
+                        db.countyDao().deleteAll()
                         db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                         apiCounties
                     }
-                    apiCounties.isNotEmpty() && all -> apiCounties
+                    apiCounties.isNotEmpty() && areAllApiCountiesInDb -> apiCounties
                     else -> dbCounties
                 }
             }
