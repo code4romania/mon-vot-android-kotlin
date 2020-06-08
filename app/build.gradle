@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.sonarqube'
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
 //apply plugin: 'io.fabric'
 
@@ -163,6 +164,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
+}
+
+sonarqube {
+    properties {
+        property 'sonar.projectName', 'Vote Monitor Android'
+        property 'sonar.projectKey', 'code4romania_vote-monitor-android'
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.organization', 'code4romania'
+    }
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
