@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Analyze with SonarCloud
-        run: ./gradlew clean build sonar:sonar -Dsonar.login=$SONAR_TOKEN
+        run: ./gradlew clean assembleDebug sonar -Dsonar.login=$SONAR_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
