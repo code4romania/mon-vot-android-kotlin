@@ -77,7 +77,7 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
         when (exception) {
             is HttpException -> {
                 if (exception.code() == 400) {
-                    val apiError400 = exception.response().errorBody()?.string()?.fromJson(Gson(), APIError400::class.java)
+                    val apiError400 = exception.response()?.errorBody()?.string()?.fromJson(Gson(), APIError400::class.java)
 
                     apiError400?.let {
                         if (it.error == null) {
