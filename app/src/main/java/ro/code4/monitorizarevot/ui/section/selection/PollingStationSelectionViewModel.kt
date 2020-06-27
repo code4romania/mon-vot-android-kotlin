@@ -51,7 +51,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
     private fun updateCounties() {
         val countyCode = sharedPreferences.getCountyCode()
         val pollingStationNumber = sharedPreferences.getPollingStationNumber()
-        val countyNames = counties.map { it.name }
+        val countyNames = counties.sortedBy { county -> county.order }.map { it.name }
 
         if (countyCode.isNullOrBlank()) {
             countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames))

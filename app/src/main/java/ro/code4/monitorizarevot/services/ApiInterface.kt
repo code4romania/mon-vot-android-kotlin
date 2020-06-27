@@ -15,7 +15,7 @@ interface ApiInterface {
     @GET("/api/v1/form")
     fun getForms(@Query("diaspora") diaspora: Boolean? = null): Observable<VersionResponse>
 
-    @GET("/api/v1/polling-station")
+    @GET("/api/v1/county")
     fun getCounties(): Single<List<County>>
 
     @GET("/api/v1/form/{formId}")
