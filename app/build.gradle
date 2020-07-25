@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.sonarqube'
-// TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-//apply plugin: 'io.fabric'
+// TODO: Uncomment this to enable Firebase Crashlytics
+// apply plugin: 'com.google.firebase.crashlytics'
 
 static def getKey(String env, String key) {
     Properties props = new Properties()
@@ -102,10 +102,10 @@ ext {
     koinVersion = '2.0.1'
     parcelerVersion = "1.1.13"
     roomVersion = '2.2.5'
-    firebaseAnalyticsVersion = '17.4.2'
+    firebaseAnalyticsVersion = '17.4.3'
+    firebaseCrashlyticsVersion = '17.1.0'
     firebaseMessagingVersion = "20.2.0"
     firebaseConfigVersion = "19.1.4"
-    crashlyticsVersion = '2.10.1'
     adapterDelegatesVersion = "4.2.0"
 }
 
@@ -141,7 +141,7 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     implementation "com.google.firebase:firebase-config:$firebaseConfigVersion"
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
+    implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
     // Koin injection
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
