@@ -189,6 +189,9 @@ class Repository : KoinComponent {
                 deleteFormDetails(dbForm)
                 saveFormDetails(apiForm)
             }
+            if (dbForm == null) {
+                saveFormDetails(apiForm)
+            }
         }
     }
 
