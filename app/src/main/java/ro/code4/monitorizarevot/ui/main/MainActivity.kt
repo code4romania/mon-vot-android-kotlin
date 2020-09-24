@@ -15,11 +15,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.analytics.Event
-import ro.code4.monitorizarevot.helper.callSupportCenter
-import ro.code4.monitorizarevot.helper.changePollingStation
-import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 
@@ -73,6 +72,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     R.id.nav_call -> {
                         firebaseAnalytics.logEvent(Event.TAP_CALL.title, null)
                         callSupportCenter()
+                        true
+                    }
+                    R.id.nav_safety -> {
+                        val result = applicationContext?.browse(BuildConfig.SAFETY_URL, true)
+                        if (!result!!) {
+                            logW("No app to view " + BuildConfig.SAFETY_URL)
+                        }
                         true
                     }
                     else -> false
