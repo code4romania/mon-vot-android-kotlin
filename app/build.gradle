@@ -2,8 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-// TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-//apply plugin: 'io.fabric'
+apply plugin: 'org.sonarqube'
+// TODO: Uncomment this to enable Firebase Crashlytics
+// apply plugin: 'com.google.firebase.crashlytics'
 
 static def getKey(String env, String key) {
     Properties props = new Properties()
@@ -17,6 +18,7 @@ androidExtensions {
 
 android {
     compileSdkVersion 29
+    buildToolsVersion = '29.0.3'
 
     defaultConfig {
         applicationId "ro.code4.monitorizarevot"
@@ -25,7 +27,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -49,13 +50,13 @@ android {
             keyPassword getKey("keystore", "keyPassword")
             storePassword getKey("keystore", "storePassword")
         }
-
     }
 
     buildTypes {
         applicationVariants.all { variant ->
             variant.buildConfigField "String", "API_URL", "\"" + getKey(variant.buildType.name, "apiUrl") + "\""
             variant.buildConfigField "String", "GUIDE_URL", "\"" + getKey(variant.buildType.name, "guideUrl") + "\""
+            variant.buildConfigField "String", "SAFETY_URL", "\"" + getKey(variant.buildType.name, "safetyUrl") + "\""
             variant.buildConfigField "String", "ORGANISATION_WEB_URL", "\"" + getKey(variant.buildType.name, "organisationWebUrl") + "\""
             variant.buildConfigField "String", "SERVICE_CENTER_PHONE_NUMBER", "\"" + getKey(variant.buildType.name, "serviceCenterPhoneNumber") + "\""
             variant.buildConfigField "String", "PREFERRED_LOCALE", "\"" + getKey(variant.buildType.name, "preferredLocale") + "\""
@@ -69,14 +70,14 @@ android {
 
         debug {
             minifyEnabled false
-            manifestPlaceholders = [enableCrashReporting:"false"]
+            manifestPlaceholders = [enableCrashReporting: "false"]
         }
 
         release {
             minifyEnabled false
             signingConfig signingConfigs.fastlane
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [enableCrashReporting:"true"]
+            manifestPlaceholders = [enableCrashReporting: "true"]
         }
     }
 
@@ -90,7 +91,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = '29.0.2'
 
     kotlinOptions {
         jvmTarget = "1.8"
@@ -98,11 +98,15 @@ android {
 }
 
 ext {
-    retrofitLibraryVersion = '2.5.0'
+    retrofitVersion = '2.9.0'
+    navigationVersion = "2.2.2"
     koinVersion = '2.0.1'
-    roomVersion = '2.2.0'
-    firebaseVersion = '17.2.1'
-    crashlyticsVersion = '2.10.1'
+    parcelerVersion = "1.1.13"
+    roomVersion = '2.2.5'
+    firebaseAnalyticsVersion = '17.4.3'
+    firebaseCrashlyticsVersion = '17.1.0'
+    firebaseMessagingVersion = "20.2.0"
+    firebaseConfigVersion = "19.1.4"
     adapterDelegatesVersion = "4.2.0"
 }
 
@@ -110,59 +114,62 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "androidx.preference:preference-ktx:1.1.0"
-    implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.1.0'
-    implementation 'androidx.navigation:navigation-ui:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
     implementation 'androidx.annotation:annotation:1.1.0'
-
+    implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
-    implementation "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitLibraryVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
-    implementation "com.squareup.retrofit2:converter-scalars:$retrofitLibraryVersion"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.1.1'
-
+    implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
+    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    implementation 'me.relex:circleindicator:2.1.4'
+    implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui:$navigationVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:$firebaseVersion"
-    implementation 'com.google.firebase:firebase-messaging:20.0.1'
-    implementation 'com.google.firebase:firebase-config:19.0.3'
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
-
-    //koin injection
+    implementation "com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion"
+    implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+    implementation "com.google.firebase:firebase-config:$firebaseConfigVersion"
+    implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
+    // Koin injection
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    implementation 'org.parceler:parceler-api:1.1.12'
-    kapt 'org.parceler:parceler:1.1.12'
-
-    //Room
+    // Parceler
+    implementation "org.parceler:parceler-api:$parcelerVersion"
+    kapt "org.parceler:parceler:$parcelerVersion"
+    // Room
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
+
+    // Unit tests
+    testImplementation 'junit:junit:4.13'
+    // Instrumented tests
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
+}
 
-    implementation 'com.sylversky.fontreplacer:fontreplacer:1.0'
-    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
-
-    implementation 'me.relex:circleindicator:2.1.4'
-
-    implementation "com.hannesdorfmann:adapterdelegates4:$adapterDelegatesVersion"
-
-    implementation "androidx.viewpager2:viewpager2:1.0.0-rc01"
-
+sonarqube {
+    properties {
+        property 'sonar.projectName', 'Vote Monitor Android'
+        property 'sonar.projectKey', 'code4romania_vote-monitor-android'
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.organization', 'code4romania'
+    }
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics

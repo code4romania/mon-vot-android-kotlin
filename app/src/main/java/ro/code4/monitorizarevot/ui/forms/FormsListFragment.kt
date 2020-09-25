@@ -7,17 +7,19 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.FormDelegationAdapter
+import ro.code4.monitorizarevot.analytics.Event
+import ro.code4.monitorizarevot.analytics.Param
+import ro.code4.monitorizarevot.analytics.ParamKey
 import ro.code4.monitorizarevot.helper.isOnline
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
+import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 
 
-class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
+class FormsListFragment : ViewModelFragment<FormsViewModel>() {
 
     companion object {
         val TAG = FormsListFragment::class.java.simpleName
@@ -55,7 +57,7 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
 
         syncButton.setOnClickListener {
             // TODO send number of unsynced items
-            logSyncManuallyEvent(0)
+            logAnalyticsEvent(Event.MANUAL_SYNC, Param(ParamKey.NUMBER_NOT_SYNCED, 0))
 
             if (!mContext.isOnline()) {
                 Snackbar.make(syncButton, getString(R.string.form_sync_no_internet), Snackbar.LENGTH_SHORT)
@@ -75,13 +77,5 @@ class FormsListFragment : BaseAnalyticsFragment<FormsViewModel>() {
                     .sizeResId(R.dimen.small_margin).build()
             )
         }
-    }
-
-    private fun logSyncManuallyEvent(numberOfNotSynced: Int) {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, getString(R.string.analytics_event_manual_sync))
-        bundle.putInt(FirebaseAnalytics.Param.VALUE, numberOfNotSynced)
-
-        logAnalyticsEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
     }
 }

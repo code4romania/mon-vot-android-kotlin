@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -19,4 +20,6 @@ interface CountyDao {
     @Query("SELECT * FROM county where code=:countyCode")
     fun get(countyCode: String): Maybe<County>
 
+    @Query("DELETE FROM county")
+    fun deleteAll()
 }

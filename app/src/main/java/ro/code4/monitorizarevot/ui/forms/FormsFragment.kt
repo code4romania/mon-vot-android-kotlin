@@ -13,13 +13,15 @@ import ro.code4.monitorizarevot.helper.Constants.FORM
 import ro.code4.monitorizarevot.helper.Constants.QUESTION
 import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.replaceFragment
-import ro.code4.monitorizarevot.ui.base.BaseFragment
+import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
 import ro.code4.monitorizarevot.ui.main.MainActivity
 import ro.code4.monitorizarevot.ui.notes.NoteFragment
 
-class FormsFragment : BaseFragment<FormsViewModel>() {
+class FormsFragment : ViewModelFragment<FormsViewModel>() {
+    override val screenName: Int
+        get() = R.string.menu_forms
 
     override val layout: Int
         get() = R.layout.fragment_main

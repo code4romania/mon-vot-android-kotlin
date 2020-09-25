@@ -46,6 +46,7 @@
     <string name="menu_forms">Forms</string>
     <string name="menu_change_polling_station">Change the polling station</string>
     <string name="menu_guide">Observer\'s guide</string>
+    <string name="menu_safety">Voting safety</string>
     <string name="menu_call">Call the Hotline</string>
     <string name="menu_about">About</string>
     <string name="menu_logout">Logout</string>
@@ -105,6 +106,7 @@
     <string name="question_finish">Send</string>
     <string name="sync_locally_saved">saved locally</string>
     <string name="add_note_to_question">Add note to current question</string>
+    <string name="view_add_note_to_question">View/add notes to current question</string>
 
     <!-- Notes -->
     <string name="add_note">Add a note</string>

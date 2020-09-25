@@ -46,6 +46,7 @@
     <string name="menu_forms">Formulare</string>
     <string name="menu_change_polling_station">Schimbă secţia</string>
     <string name="menu_guide">Ghidul observatorului</string>
+    <string name="menu_safety">Siguranța la vot</string>
     <string name="menu_call">Apelează TelVerde</string>
     <string name="menu_about">Despre</string>
     <string name="menu_logout">Delogare</string>
@@ -105,6 +106,7 @@
     <string name="question_finish">Trimite</string>
     <string name="sync_locally_saved">salvat local</string>
     <string name="add_note_to_question">Adaugă notă la întrebarea curentă</string>
+    <string name="view_add_note_to_question">Vezi/adaugă note la întrebarea curentă</string>
 
     <!-- Notes -->
     <string name="add_note">Adaugă o notă</string>

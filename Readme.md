@@ -18,6 +18,8 @@ The app also has a web version, available for every citizen who wants to report 
 
 This project is built by amazing volunteers and you can be one of them! Here's a list of ways in [which you can contribute to this project](.github/CONTRIBUTING.MD).
 
+__IMPORTANT:__ Please follow the Code4Romania [WORKFLOW](.github/WORKFLOW.MD)
+
 ## Built With
 
 * Android Studio 3.6
@@ -32,7 +34,13 @@ Uses [Fastlane](https://fastlane.tools/) for automating builds & releases.
 
 Uses the MVVM architectural pattern.
 
-Swagger docs for the API are available [here](http://mv-mobile-test.azurewebsites.net/swagger/index.html).
+Relies on Firebase's RemoteConfig for remote settings.
+
+The app is localized, meaning it's easier for any interested party to fork the project and use it in other countries, simply localizing the messages. Please see the [steps for app localization](https://github.com/code4romania/mon-vot-android-kotlin/wiki/Steps-for-app-localisation) in the wiki.
+
+More info on redeploying and reusing the app can be found in the wiki: [Redeploy steps](https://github.com/code4romania/mon-vot-android-kotlin/wiki/Steps-for-redeploying---reusing-the-app) & [Google Play Deploy Steps](https://github.com/code4romania/mon-vot-android-kotlin/wiki/Google-Play-Deploy-Steps)
+
+Swagger docs for the API are available [here](https://app-vmon-api-dev.azurewebsites.net/swagger/index.html).
 
 ## Repos and projects
 

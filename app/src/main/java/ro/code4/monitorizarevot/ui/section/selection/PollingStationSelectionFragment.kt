@@ -11,11 +11,12 @@ import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
+import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
-class PollingStationSelectionFragment : BaseAnalyticsFragment<PollingStationSelectionViewModel>() {
+class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectionViewModel>() {
 
     private val progressDialog: ProgressDialogFragment by lazy {
         ProgressDialogFragment().also {

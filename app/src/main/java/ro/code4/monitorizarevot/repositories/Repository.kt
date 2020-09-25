@@ -50,31 +50,26 @@ class Repository : KoinComponent {
 
     private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
+
     fun registerForNotification(token: String): Observable<ResponseBody> =
         loginInterface.registerForNotification(token)
 
     fun getCounties(): Single<List<County>> {
-
         val observableApi = apiInterface.getCounties()
         val observableDb = db.countyDao().getAll().take(1).single(emptyList())
-
         return Single.zip(
             observableDb,
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
-                //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                val all =
-                    apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }
-                apiCounties.forEach {
-                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                }
+                val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
+                apiCounties.forEach { it.name = it.name.toLowerCase(Locale.getDefault()).capitalize() }
                 return@BiFunction when {
-                    apiCounties.isNotEmpty() && !all -> {
-                        // TODO deleteCounties()
+                    apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
+                        db.countyDao().deleteAll()
                         db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                         apiCounties
                     }
-                    apiCounties.isNotEmpty() && all -> apiCounties
+                    apiCounties.isNotEmpty() && areAllApiCountiesInDb -> apiCounties
                     else -> dbCounties
                 }
             }
@@ -176,7 +171,6 @@ class Repository : KoinComponent {
             return
         }
         val apiFormDetails = response.formVersions
-        apiFormDetails.forEachIndexed { index, formDetails -> formDetails.order = index }
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
@@ -190,8 +184,12 @@ class Repository : KoinComponent {
         }
         apiFormDetails.forEach { apiForm ->
             val dbForm = dbFormDetails.find { it.id == apiForm.id }
-            if (dbForm != null && apiForm.formVersion != dbForm.formVersion) {
+            if (dbForm != null && (apiForm.formVersion != dbForm.formVersion ||
+                        apiForm.order != dbForm.order)) {
                 deleteFormDetails(dbForm)
+                saveFormDetails(apiForm)
+            }
+            if (dbForm == null) {
                 saveFormDetails(apiForm)
             }
         }

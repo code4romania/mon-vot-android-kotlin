@@ -32,10 +32,12 @@ import ro.code4.monitorizarevot.widget.RadioButtonWithDetails
 
 
 class QuestionDetailsAdapter constructor(
-    private val context: Context,
-    private val items: ArrayList<QuestionDetailsListItem>
+    private val context: Context
 ) : ListAdapter<QuestionDetailsListItem, ViewHolder>(DIFF_CALLBACK) {
 
+    constructor(context: Context, items: ArrayList<QuestionDetailsListItem>) : this(context) {
+        submitList(items)
+    }
 
     private var params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -69,7 +71,7 @@ class QuestionDetailsAdapter constructor(
     }
 
     override fun getItemId(position: Int): Long =
-        items[position].questionWithAnswers.question.id.toLong()
+        getItem(position).questionWithAnswers.question.id.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -87,10 +89,8 @@ class QuestionDetailsAdapter constructor(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = items.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = getItem(position)
 
         when (getItemViewType(position)) {
             TYPE_MULTI_CHOICE, TYPE_MULTI_CHOICE_DETAILS -> setupMultiChoice(
@@ -119,8 +119,13 @@ class QuestionDetailsAdapter constructor(
                     holder.itemView.syncText.visibility = View.INVISIBLE
                 }
             }
+            holder.itemView.hasNoteIcon.visibility = if (hasNotes) View.VISIBLE else View.GONE
             holder.itemView.questionCode.text = code
             holder.itemView.question.text = text
+            holder.itemView.addNoteButton.text =
+                if (hasNotes) context.getString(R.string.view_add_note_to_question)
+                else context.getString(R.string.add_note_to_question)
+
             holder.itemView.addNoteButton.setOnClickListener {
                 listener.addNoteFor(this)
             }
@@ -212,9 +217,9 @@ class QuestionDetailsAdapter constructor(
 
 
     override fun getItemViewType(position: Int): Int =
-        items[position].questionWithAnswers.question.questionType
+        getItem(position).questionWithAnswers.question.questionType
 
-    public override fun getItem(position: Int): QuestionDetailsListItem = items[position]
+    public override fun getItem(position: Int): QuestionDetailsListItem = super.getItem(position)
 
     interface OnClickListener {
         fun addNoteFor(question: Question)
