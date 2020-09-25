@@ -24,8 +24,8 @@ android {
         applicationId "ro.code4.monitorizarevot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 35
+        versionName "2.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
