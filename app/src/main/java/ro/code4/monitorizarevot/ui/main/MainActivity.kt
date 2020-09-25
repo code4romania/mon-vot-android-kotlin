@@ -75,8 +75,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         true
                     }
                     R.id.nav_safety -> {
-                        val result = applicationContext?.browse(BuildConfig.SAFETY_URL, true)
-                        if (!result!!) {
+                        val result = applicationContext.browse(BuildConfig.SAFETY_URL, true)
+                        if (!result) {
                             logW("No app to view " + BuildConfig.SAFETY_URL)
                         }
                         true
