@@ -310,7 +310,7 @@ class Repository : KoinComponent {
 
         }
         note.questionId?.let {
-            questionId = 0
+            questionId = it
         }
 
         return apiInterface.postNote(
