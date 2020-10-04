@@ -1,10 +1,10 @@
 package ro.code4.monitorizarevot.helper
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import ro.code4.monitorizarevot.BuildConfig
 
 class WebClient(private val listener: WebLoaderListener) : WebViewClient() {
     override fun onPageFinished(view: WebView, url: String?) {
@@ -21,12 +21,11 @@ class WebClient(private val listener: WebLoaderListener) : WebViewClient() {
         super.onPageStarted(view, url, favicon)
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        return request?.url?.path?.contains(BuildConfig.GUIDE_URL) == false
-
-    }
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
+        request.url?.let { !listener.shouldLoadUrl(it) } ?: true
 
     interface WebLoaderListener {
+        fun shouldLoadUrl(uri: Uri): Boolean
         fun onPageFinished()
         fun onLoading()
     }

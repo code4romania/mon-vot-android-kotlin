@@ -1,5 +1,7 @@
 package ro.code4.monitorizarevot.ui.guide
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
@@ -8,13 +10,10 @@ import kotlinx.android.synthetic.main.fragment_guide.*
 import org.koin.android.ext.android.inject
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.WebClient
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 class GuideFragment : ViewModelFragment<GuideViewModel>(), WebClient.WebLoaderListener {
-
-
     override val layout: Int
         get() = R.layout.fragment_guide
     override val screenName: Int
@@ -26,6 +25,7 @@ class GuideFragment : ViewModelFragment<GuideViewModel>(), WebClient.WebLoaderLi
     }
     override val viewModel: GuideViewModel by inject()
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,6 +36,10 @@ class GuideFragment : ViewModelFragment<GuideViewModel>(), WebClient.WebLoaderLi
         viewModel.url().observe(this, Observer {
             webView.loadUrl(it)
         })
+    }
+
+    override fun shouldLoadUrl(uri: Uri): Boolean {
+        return uri.path.equals(viewModel.url().value)
     }
 
     override fun onPageFinished() {
