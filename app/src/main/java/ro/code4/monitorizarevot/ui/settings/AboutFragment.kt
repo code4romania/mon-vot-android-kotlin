@@ -7,12 +7,14 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.android.synthetic.main.fragment_about.*
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.analytics.Param
 import ro.code4.monitorizarevot.analytics.ParamKey
+import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.browse
 import ro.code4.monitorizarevot.helper.logW
 import ro.code4.monitorizarevot.helper.toHtml
@@ -26,6 +28,24 @@ class AboutFragment : BaseAnalyticsFragment() {
         val TAG = AboutFragment::class.java.simpleName
     }
 
+    private val remoteConfig = runCatching { FirebaseRemoteConfig.getInstance() }.getOrNull()
+    private val contactEmailUri by lazy {
+        Uri.fromParts(
+                "mailto",
+                remoteConfig.getStringOrDefault(
+                        Constants.REMOTE_CONFIG_CONTACT_EMAIL,
+                        BuildConfig.SUPPORT_EMAIL
+                ),
+                null
+        )
+    }
+    private val privacyPolicyUrl by lazy {
+        remoteConfig.getStringOrDefault(
+                Constants.REMOTE_CONFIG_PRIVACY_POLICY_URL,
+                BuildConfig.PRIVACY_WEB_URL
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +57,7 @@ class AboutFragment : BaseAnalyticsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appVersion.text = context?.getString(R.string.about_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        appVersion.text = getString(R.string.about_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
         content.text = getString(R.string.about_content).toHtml()
         content.movementMethod = LinkMovementMethod.getInstance()
@@ -52,14 +72,14 @@ class AboutFragment : BaseAnalyticsFragment() {
     private fun onChangeLanguageClicked(view: View) {
         logClickEvent(view)
         val languageSelector = AboutLanguageSelectorFragment()
-        languageSelector.show(requireFragmentManager(), AboutLanguageSelectorFragment.TAG)
+        languageSelector.show(parentFragmentManager, AboutLanguageSelectorFragment.TAG)
     }
 
     private fun onContactClicked(view: View) {
         logClickEvent(view)
         val emailIntent = Intent(
             Intent.ACTION_SENDTO,
-            Uri.fromParts("mailto", BuildConfig.SUPPORT_EMAIL, null)
+            contactEmailUri
         )
         startActivity(
             Intent.createChooser(
@@ -71,9 +91,9 @@ class AboutFragment : BaseAnalyticsFragment() {
 
     private fun onViewPolicyClicked(view: View) {
         logClickEvent(view)
-        val result = context?.browse(BuildConfig.PRIVACY_WEB_URL)
-        if (!result!!) {
-            logW("No app to view " + BuildConfig.PRIVACY_WEB_URL)
+        val result = requireContext().browse(privacyPolicyUrl)
+        if (!result) {
+            logW("No app to view $privacyPolicyUrl")
         }
     }
 
@@ -83,4 +103,12 @@ class AboutFragment : BaseAnalyticsFragment() {
             Param(ParamKey.NAME, resources.getResourceEntryName(view.id))
         )
     }
+
+    @Suppress("NOTHING_TO_INLINE")
+    internal inline fun FirebaseRemoteConfig?.getStringOrDefault(key: String, defaultValue: String) =
+            this?.getString(key).takeUnless {
+                it == FirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING
+            } ?: defaultValue.also {
+                logW("Returned default value '$defaultValue' for key '$key'")
+            }
 }
