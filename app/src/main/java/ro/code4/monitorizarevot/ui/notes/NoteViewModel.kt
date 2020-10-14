@@ -69,8 +69,11 @@ class NoteViewModel : BaseFormViewModel() {
         note.countyCode = countyCode
         note.description = text
         note.uriPath = noteFile?.absolutePath
-        repository.saveNote(note).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe(
+        repository.saveNote(note)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { noteFile?.delete() }
+            .subscribe(
                 {},
                 {
                     Log.d(TAG, it.toString())
@@ -85,14 +88,15 @@ class NoteViewModel : BaseFormViewModel() {
 
     fun getMediaFromGallery(uri: Uri?) {
         uri?.let {
-            val filePath = FileUtils.getPath(app, it)
-            if (filePath != null) {
-                val file = File(filePath)
-                fileNameLiveData.postValue(file.name)
-                noteFile = file
-            } else {
-                messageIdToastLiveData.postValue(app.getString(ro.code4.monitorizarevot.R.string.error_permission_external_storage))
-            }
+            runCatching {
+                FileUtils.copyFileToCache(app, it)
+            }.getOrNull()?.let {
+                fileNameLiveData.postValue(it.name)
+                noteFile?.delete()
+                noteFile = it
+            } ?: messageIdToastLiveData.postValue(
+                app.getString(R.string.error_permission_external_storage)
+            )
         }
     }
 
