@@ -72,7 +72,6 @@ class NoteViewModel : BaseFormViewModel() {
         repository.saveNote(note)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete { noteFile?.delete() }
             .subscribe(
                 {},
                 {
