@@ -9,7 +9,7 @@ apply plugin: 'org.sonarqube'
 static def getKey(String env, String key) {
     Properties props = new Properties()
     props.load(new FileInputStream(new File(env.concat('.properties'))))
-    return props[key]
+    return props[key] ?: ""
 }
 
 androidExtensions {
