@@ -295,32 +295,34 @@ class Repository : KoinComponent {
     }
 
     fun saveNote(note: Note): Observable<ResponseBody> =
-        Single.fromCallable { db.noteDao().save(note) }.toObservable().flatMap {
-            note.id = it[0].toInt()
+        Single.fromCallable {
+            db.noteDao().save(note).first()
+        }.flatMapObservable {
+            note.id = it.toInt()
             postNote(note)
         }
 
     private fun postNote(note: Note): Observable<ResponseBody> {
-        var body: MultipartBody.Part? = null
-        var questionId = 0
-        note.uriPath?.let {
-            val file = File(it)
-            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
+        val noteFile = note.uriPath?.let { File(it) }
+        val body: MultipartBody.Part? = noteFile?.let {
+            MultipartBody.Part.createFormData(
+                "file",
+                it.name,
+                it.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            )
         }
-        note.questionId?.let {
-            questionId = it
-        }
+        val questionId = note.questionId ?: 0
 
         return apiInterface.postNote(
-            body, note.countyCode.createMultipart("CountyCode"),
+            body,
+            note.countyCode.createMultipart("CountyCode"),
             note.pollingStationNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")
         ).doOnNext {
             note.synced = true
             db.noteDao().updateNote(note)
+            noteFile?.delete()
         }
     }
 
