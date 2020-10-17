@@ -1,49 +1,39 @@
 package ro.code4.monitorizarevot.helper
 
-import android.app.Activity
-import android.content.Context
+import android.graphics.Rect
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 
 /*
- *  It'll hide software keyboard if user taps outside the input field
+ *  Hide software keyboard if user taps outside the EditText
  *  use inside override fun dispatchTouchEvent()
  */
-fun collapseKeyboardOnOutsideTap(
-    activity: Activity?,
-    motionEvent: MotionEvent,
-    currentFocusedView: View?
+fun collapseKeyboardIfFocusOutsideEditText(
+        motionEvent: MotionEvent,
+        oldFocusedView: View,
+        newFocusedView: View
 ) {
-    if (currentFocusedView != null
-        && (motionEvent.action == MotionEvent.ACTION_UP
-            || motionEvent.action == MotionEvent.ACTION_MOVE
-            )
-        && currentFocusedView is EditText
-        && !currentFocusedView.javaClass.name.startsWith("android.webkit.")
-    ) {
-        val srcCoordinates = IntArray(2)
-        // stores the coordinates of current view in srcCoordinates
-        currentFocusedView.getLocationOnScreen(srcCoordinates)
+    if (motionEvent.action == MotionEvent.ACTION_UP) {
+        if (newFocusedView == oldFocusedView) {
 
-        val x = motionEvent.rawX + currentFocusedView.getLeft() - srcCoordinates[0]
-        val y = motionEvent.rawY + currentFocusedView.getTop() - srcCoordinates[1]
+            val srcCoordinates = IntArray(2)
+            oldFocusedView.getLocationOnScreen(srcCoordinates)
 
-        // Checks the motion event is inside the currentFocused view
-        if (x < currentFocusedView.getLeft() || x > currentFocusedView.getRight()
-            || y < currentFocusedView.getTop() || y > currentFocusedView.getBottom()
-        ) {
-            // Collapse the keyboard from activity
-            if (activity != null && activity.window != null && activity.window.decorView != null
-            ) {
-                val imm = activity
-                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(
-                    activity.window.decorView
-                        .windowToken, 0
-                )
-            }
+            val rect = Rect(srcCoordinates[0], srcCoordinates[1], srcCoordinates[0] +
+                    oldFocusedView.width, srcCoordinates[1] + oldFocusedView.height)
+
+            if (rect.contains(motionEvent.x.toInt(), motionEvent.y.toInt()))
+                return
+        } else if (newFocusedView is EditText) {
+            //  If new focus is other EditText then will not collapse
+            return
         }
+
+        // Collapse the keyboard from activity
+        ContextCompat.getSystemService(newFocusedView.context, InputMethodManager::class.java)
+                ?.hideSoftInputFromWindow(newFocusedView.windowToken, 0)
     }
 }
