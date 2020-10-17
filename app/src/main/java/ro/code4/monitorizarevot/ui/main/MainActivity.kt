@@ -55,6 +55,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
         navView.setCheckedItem(R.id.nav_forms)
+        navView.menu.findItem(R.id.nav_safety).isVisible = viewModel.isSafetyItemVisible
         // Workaround to allow actions and navigation in the same component
         navView.setNavigationItemSelectedListener { item ->
             val handled = onNavDestinationSelected(item, navController)
@@ -75,9 +76,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         true
                     }
                     R.id.nav_safety -> {
-                        val result = applicationContext.browse(BuildConfig.SAFETY_URL, true)
+                        val result = browse(viewModel.safetyUrl, true)
                         if (!result) {
-                            logW("No app to view " + BuildConfig.SAFETY_URL)
+                            logW("No app to view ${viewModel.safetyUrl}")
                         }
                         true
                     }

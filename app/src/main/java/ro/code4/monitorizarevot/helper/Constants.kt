@@ -20,7 +20,9 @@ object Constants {
     const val REMOTE_CONFIG_FILTER_DIASPORA_FORMS = "filter_diaspora_forms"
     const val REMOTE_CONFIG_CONTACT_EMAIL = "contact_email"
     const val REMOTE_CONFIG_PRIVACY_POLICY_URL = "privacy_policy_url"
-    
+    const val REMOTE_CONFIG_OBSERVER_GUIDE_URL = "observer_guide_url"
+    const val REMOTE_CONFIG_SAFETY_GUIDE_URL = "safety_guide_url"
+
     const val PUSH_NOTIFICATION_TITLE = "title"
     const val PUSH_NOTIFICATION_BODY = "body"
 }

@@ -16,6 +16,7 @@ import ro.code4.monitorizarevot.analytics.Param
 import ro.code4.monitorizarevot.analytics.ParamKey
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.browse
+import ro.code4.monitorizarevot.helper.getStringOrDefault
 import ro.code4.monitorizarevot.helper.logW
 import ro.code4.monitorizarevot.helper.toHtml
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
@@ -103,12 +104,4 @@ class AboutFragment : BaseAnalyticsFragment() {
             Param(ParamKey.NAME, resources.getResourceEntryName(view.id))
         )
     }
-
-    @Suppress("NOTHING_TO_INLINE")
-    internal inline fun FirebaseRemoteConfig?.getStringOrDefault(key: String, defaultValue: String) =
-            this?.getString(key).takeUnless {
-                it == FirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING
-            } ?: defaultValue.also {
-                logW("Returned default value '$defaultValue' for key '$key'")
-            }
 }

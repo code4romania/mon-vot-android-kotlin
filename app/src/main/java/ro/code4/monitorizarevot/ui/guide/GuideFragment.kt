@@ -1,20 +1,21 @@
 package ro.code4.monitorizarevot.ui.guide
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_guide.*
 import org.koin.android.ext.android.inject
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.helper.WebClient
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
-class GuideFragment : ViewModelFragment<GuideViewModel>(), WebClient.WebLoaderListener {
-
-
+class GuideFragment : ViewModelFragment<GuideViewModel>() {
     override val layout: Int
         get() = R.layout.fragment_guide
     override val screenName: Int
@@ -26,26 +27,42 @@ class GuideFragment : ViewModelFragment<GuideViewModel>(), WebClient.WebLoaderLi
     }
     override val viewModel: GuideViewModel by inject()
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        webView.settings.setSupportZoom(true)
-        webView.settings.javaScriptEnabled = true
-        webView.webChromeClient = WebChromeClient()
-        webView.webViewClient = WebClient(this)
-        viewModel.url().observe(this, Observer {
+        webView.apply {
+            settings.setSupportZoom(true)
+            settings.javaScriptEnabled = true
+            webChromeClient = WebChromeClient()
+            webViewClient = object : WebViewClient() {
+                override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    if (!progressDialog.isResumed) {
+                        progressDialog.showNow(childFragmentManager, ProgressDialogFragment.TAG)
+                    }
+                }
+
+                override fun onPageFinished(view: WebView, url: String) {
+                    super.onPageFinished(view, url)
+                    if (view.title.isNullOrEmpty()) {
+                        view.reload()
+                        return
+                    }
+                    progressDialog.dismiss()
+                }
+
+                override fun shouldOverrideUrlLoading(
+                    view: WebView,
+                    request: WebResourceRequest
+                ): Boolean {
+                    return request.url?.let { !it.path.equals(viewModel.url().value) } ?: true
+                }
+            }
+        }
+        viewModel.url().observe(viewLifecycleOwner, Observer {
             webView.loadUrl(it)
         })
-    }
-
-    override fun onPageFinished() {
-        progressDialog.dismiss()
-    }
-
-    override fun onLoading() {
-        if (!progressDialog.isResumed) {
-            progressDialog.showNow(childFragmentManager, ProgressDialogFragment.TAG)
-        }
     }
 
     override fun onDestroyView() {
