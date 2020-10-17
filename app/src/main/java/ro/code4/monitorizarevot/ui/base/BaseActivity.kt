@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -13,12 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import retrofit2.HttpException
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.APIError400
 import ro.code4.monitorizarevot.helper.LocaleManager
+import ro.code4.monitorizarevot.helper.collapseKeyboardIfFocusOutsideEditText
 import ro.code4.monitorizarevot.helper.fromJson
 import ro.code4.monitorizarevot.helper.lifecycle.ActivityCallbacks
 import ro.code4.monitorizarevot.interfaces.Layout
@@ -131,4 +132,14 @@ abstract class BaseActivity<out T : BaseViewModel> : AppCompatActivity(), Layout
             .show()
     }
 
+    //    Collapse the keyboard when the user taps outside the EditText
+    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
+
+        currentFocus?.let { oldFocus ->
+            super.dispatchTouchEvent(motionEvent)
+            val newFocus = currentFocus ?: oldFocus
+            collapseKeyboardIfFocusOutsideEditText(motionEvent, oldFocus, newFocus)
+        }
+        return super.dispatchTouchEvent(motionEvent)
+    }
 }
