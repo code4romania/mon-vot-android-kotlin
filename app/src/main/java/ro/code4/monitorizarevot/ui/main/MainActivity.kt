@@ -66,11 +66,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         navView.setCheckedItem(R.id.nav_forms)
         navView.menu.findItem(R.id.nav_safety).isVisible = viewModel.isSafetyItemVisible
-        selectedItem = navView.checkedItem
-        var firstSpanString = SpannableString(selectedItem!!.title)
-        firstSpanString.setSpan(StyleSpan(BOLD), 0, firstSpanString.length, 0)
-        selectedItem!!.title = firstSpanString
 
+        selectedItem = navView.checkedItem
+        selectedItem!!.title = getSpannableString(selectedItem!!.title.toString(), BOLD)
 
         // Workaround to allow actions and navigation in the same component
 
@@ -78,16 +76,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
             val handled = onNavDestinationSelected(item, navController)
 
             if (handled) {
-
-                    val prevSpanString = SpannableString(selectedItem!!.title.toString())
-                    prevSpanString.setSpan(StyleSpan(NORMAL), 0, prevSpanString.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                    selectedItem!!.title = prevSpanString
-
-
-                val spanString = SpannableString(item.title)
-                spanString.setSpan(StyleSpan(BOLD), 0, spanString.length, 0)
-                item.title = spanString
-
+                selectedItem!!.title = getSpannableString(selectedItem!!.title.toString(), NORMAL)
+                item.title = getSpannableString(item.title.toString(), BOLD)
                 selectedItem = item
 
                 drawerLayout.closeDrawer(navView)
@@ -140,6 +130,12 @@ class MainActivity : BaseActivity<MainViewModel>() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun getSpannableString(title: String, style: Int): SpannableString {
+        var spanString = SpannableString(title)
+        spanString.setSpan(StyleSpan(style), 0, spanString.length, 0)
+        return spanString
     }
 }
 
