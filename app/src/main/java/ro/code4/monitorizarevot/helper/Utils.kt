@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -15,8 +16,10 @@ import android.provider.MediaStore
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -449,3 +452,34 @@ internal inline fun FirebaseRemoteConfig?.getStringOrDefault(key: String, defaul
     this?.getString(key).takeUnless {
         it == FirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING
     } ?: defaultValue
+
+/*
+ *  Hide software keyboard if user taps outside the EditText
+ *  use inside override fun dispatchTouchEvent()
+ */
+fun collapseKeyboardIfFocusOutsideEditText(
+        motionEvent: MotionEvent,
+        oldFocusedView: View,
+        newFocusedView: View
+) {
+    if (motionEvent.action == MotionEvent.ACTION_UP) {
+        if (newFocusedView == oldFocusedView) {
+
+            val srcCoordinates = IntArray(2)
+            oldFocusedView.getLocationOnScreen(srcCoordinates)
+
+            val rect = Rect(srcCoordinates[0], srcCoordinates[1], srcCoordinates[0] +
+                    oldFocusedView.width, srcCoordinates[1] + oldFocusedView.height)
+
+            if (rect.contains(motionEvent.x.toInt(), motionEvent.y.toInt()))
+                return
+        } else if (newFocusedView is EditText) {
+            //  If new focus is other EditText then will not collapse
+            return
+        }
+
+        // Collapse the keyboard from activity
+        ContextCompat.getSystemService(newFocusedView.context, InputMethodManager::class.java)
+                ?.hideSoftInputFromWindow(newFocusedView.windowToken, 0)
+    }
+}
