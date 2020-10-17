@@ -25,11 +25,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.analytics.Event
-import ro.code4.monitorizarevot.helper.callSupportCenter
-import ro.code4.monitorizarevot.helper.changePollingStation
-import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
 
@@ -66,6 +65,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
         navView.setCheckedItem(R.id.nav_forms)
+        navView.menu.findItem(R.id.nav_safety).isVisible = viewModel.isSafetyItemVisible
         selectedItem = navView.checkedItem
         var firstSpanString = SpannableString(selectedItem!!.title)
         firstSpanString.setSpan(StyleSpan(BOLD), 0, firstSpanString.length, 0)
@@ -103,6 +103,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     R.id.nav_call -> {
                         firebaseAnalytics.logEvent(Event.TAP_CALL.title, null)
                         callSupportCenter()
+                        true
+                    }
+                    R.id.nav_safety -> {
+                        val result = browse(viewModel.safetyUrl, true)
+                        if (!result) {
+                            logW("No app to view ${viewModel.safetyUrl}")
+                        }
                         true
                     }
                     else -> false

@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -442,3 +443,9 @@ fun Context.browse(url: String, newTask: Boolean = false): Boolean {
         return false
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+internal inline fun FirebaseRemoteConfig?.getStringOrDefault(key: String, defaultValue: String) =
+    this?.getString(key).takeUnless {
+        it == FirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING
+    } ?: defaultValue

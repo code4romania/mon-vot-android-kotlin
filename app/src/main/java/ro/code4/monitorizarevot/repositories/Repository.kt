@@ -55,27 +55,21 @@ class Repository : KoinComponent {
         loginInterface.registerForNotification(token)
 
     fun getCounties(): Single<List<County>> {
-
         val observableApi = apiInterface.getCounties()
         val observableDb = db.countyDao().getAll().take(1).single(emptyList())
-
         return Single.zip(
             observableDb,
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
-                //todo side effects are recommended in "do" methods, check: https://github.com/Froussios/Intro-To-RxJava/blob/master/Part%203%20-%20Taming%20the%20sequence/1.%20Side%20effects.md
-                val all =
-                    apiCounties.all { apiCounty -> dbCounties.find { it.id == apiCounty.id } == apiCounty }
-                apiCounties.forEach {
-                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                }
+                val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
+                apiCounties.forEach { it.name = it.name.toLowerCase(Locale.getDefault()).capitalize() }
                 return@BiFunction when {
-                    apiCounties.isNotEmpty() && !all -> {
-                        // TODO deleteCounties()
+                    apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
+                        db.countyDao().deleteAll()
                         db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                         apiCounties
                     }
-                    apiCounties.isNotEmpty() && all -> apiCounties
+                    apiCounties.isNotEmpty() && areAllApiCountiesInDb -> apiCounties
                     else -> dbCounties
                 }
             }
@@ -177,7 +171,6 @@ class Repository : KoinComponent {
             return
         }
         val apiFormDetails = response.formVersions
-        apiFormDetails.forEachIndexed { index, formDetails -> formDetails.order = index }
         if (dbFormDetails == null || dbFormDetails.isEmpty()) {
             saveFormDetails(apiFormDetails)
             return
@@ -191,8 +184,12 @@ class Repository : KoinComponent {
         }
         apiFormDetails.forEach { apiForm ->
             val dbForm = dbFormDetails.find { it.id == apiForm.id }
-            if (dbForm != null && apiForm.formVersion != dbForm.formVersion) {
+            if (dbForm != null && (apiForm.formVersion != dbForm.formVersion ||
+                        apiForm.order != dbForm.order)) {
                 deleteFormDetails(dbForm)
+                saveFormDetails(apiForm)
+            }
+            if (dbForm == null) {
                 saveFormDetails(apiForm)
             }
         }
@@ -298,32 +295,34 @@ class Repository : KoinComponent {
     }
 
     fun saveNote(note: Note): Observable<ResponseBody> =
-        Single.fromCallable { db.noteDao().save(note) }.toObservable().flatMap {
-            note.id = it[0].toInt()
+        Single.fromCallable {
+            db.noteDao().save(note).first()
+        }.flatMapObservable {
+            note.id = it.toInt()
             postNote(note)
         }
 
     private fun postNote(note: Note): Observable<ResponseBody> {
-        var body: MultipartBody.Part? = null
-        var questionId = 0
-        note.uriPath?.let {
-            val file = File(it)
-            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
+        val noteFile = note.uriPath?.let { File(it) }
+        val body: MultipartBody.Part? = noteFile?.let {
+            MultipartBody.Part.createFormData(
+                "file",
+                it.name,
+                it.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            )
         }
-        note.questionId?.let {
-            questionId = 0
-        }
+        val questionId = note.questionId ?: 0
 
         return apiInterface.postNote(
-            body, note.countyCode.createMultipart("CountyCode"),
+            body,
+            note.countyCode.createMultipart("CountyCode"),
             note.pollingStationNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")
         ).doOnNext {
             note.synced = true
             db.noteDao().updateNote(note)
+            noteFile?.delete()
         }
     }
 
