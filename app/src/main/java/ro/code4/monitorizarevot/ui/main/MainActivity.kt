@@ -1,6 +1,11 @@
 package ro.code4.monitorizarevot.ui.main
 
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.NORMAL
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.StyleSpan
+import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -15,13 +20,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.ui.base.BaseActivity
 import ro.code4.monitorizarevot.ui.login.LoginActivity
-
 
 class MainActivity : BaseActivity<MainViewModel>() {
     override val layout: Int
@@ -31,7 +34,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override val viewModel: MainViewModel by viewModel()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-
+    private var selectedItem: MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
@@ -56,10 +59,20 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         navView.setCheckedItem(R.id.nav_forms)
         navView.menu.findItem(R.id.nav_safety).isVisible = viewModel.isSafetyItemVisible
+
+        selectedItem = navView.checkedItem
+        selectedItem!!.title = getStyledSpannableString(selectedItem!!.title.toString(), BOLD)
+
         // Workaround to allow actions and navigation in the same component
+
         navView.setNavigationItemSelectedListener { item ->
             val handled = onNavDestinationSelected(item, navController)
+
             if (handled) {
+                selectedItem!!.title = getStyledSpannableString(selectedItem!!.title.toString(), NORMAL)
+                item.title = getStyledSpannableString(item.title.toString(), BOLD)
+                selectedItem = item
+
                 drawerLayout.closeDrawer(navView)
                 true
             } else {
@@ -111,4 +124,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
             super.onBackPressed()
         }
     }
+
+    private fun getStyledSpannableString(title: String, style: Int): SpannableString {
+        val spanString = SpannableString(title)
+        spanString.setSpan(StyleSpan(style), 0, spanString.length, 0)
+        return spanString
+    }
 }
+
