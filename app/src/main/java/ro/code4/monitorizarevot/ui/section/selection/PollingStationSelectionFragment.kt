@@ -11,12 +11,13 @@ import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
+import ro.code4.monitorizarevot.ui.base.BaseViewModelFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
-class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectionViewModel>() {
+class PollingStationSelectionFragment : BaseViewModelFragment<PollingStationSelectionViewModel>() {
 
     private val progressDialog: ProgressDialogFragment by lazy {
         ProgressDialogFragment().also {
@@ -47,22 +48,24 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         countySpinnerAdapter =
-            ArrayAdapter(activity!!, R.layout.item_spinner, mutableListOf())
+            ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        //todo add default item in case the list is empty.
+        // at the moment it shows just an empty dropdown.
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.counties().observe(viewLifecycleOwner, Observer {
-            it.handle(
+        viewModel.counties().observe(viewLifecycleOwner, Observer { result ->
+            result.handle(
                 onSuccess = { counties ->
                     progressDialog.dismiss()
                     counties?.run(::setCountiesDropdown)
                 },
                 onFailure = {
                     progressDialog.dismiss()
-                    // TODO: Show some message for the user know what happened
+                    onError(it)
                 },
                 onLoading = {
                     activity?.run {

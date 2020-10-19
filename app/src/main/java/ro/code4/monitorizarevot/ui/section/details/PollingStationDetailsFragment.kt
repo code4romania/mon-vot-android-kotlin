@@ -36,7 +36,7 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.pollingStation().observe(this, Observer {
+        viewModel.pollingStation().observe(viewLifecycleOwner, Observer {
             pollingStationBarText.text = it
         })
         viewModel.setTitle(getString(R.string.title_polling_station))
@@ -45,10 +45,10 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
             viewModel.notifyChangeRequested()
             activity?.onBackPressed()
         }
-        viewModel.departureTime().observe(this, Observer {
+        viewModel.departureTime().observe(viewLifecycleOwner, Observer {
             departureTime.text = it
         })
-        viewModel.arrivalTime().observe(this, Observer {
+        viewModel.arrivalTime().observe(viewLifecycleOwner, Observer {
             arrivalTime.text = it
         })
         arrivalTime.setOnClickListener {
@@ -83,7 +83,7 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
                     }
                 })
         }
-        viewModel.selectedPollingStation().observe(this, Observer {
+        viewModel.selectedPollingStation().observe(viewLifecycleOwner, Observer {
             setSelection(it)
         })
         setContinueButton()
@@ -100,7 +100,7 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
     private fun showDatePicker(dateTitleId: Int, timeTitleId: Int, listener: DateTimeListener) {
         val now = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
-            activity!!,
+            requireActivity(),
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 showTimePicker(timeTitleId, year, month, day, listener)
             }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)

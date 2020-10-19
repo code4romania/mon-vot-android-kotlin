@@ -10,12 +10,17 @@ import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
 abstract class BaseQuestionViewModel : BaseFormViewModel() {
     val questionsLiveData = MutableLiveData<ArrayList<ListItem>>()
     var selectedFormId: Int = -1
     fun questions(): LiveData<ArrayList<ListItem>> = questionsLiveData
+
+    val syncLiveData = MutableLiveData<Result<Boolean>>()
+
+    fun syncData(): LiveData<Result<Boolean>> = syncLiveData
 
     private fun getQuestions(formId: Int) {
         selectedFormId = formId

@@ -35,17 +35,20 @@ class PollingStationSelectionViewModel : BaseViewModel() {
             return
         }
 
-        disposables += repository.getCounties().subscribeOn(Schedulers.io())
+        disposables += repository.getCounties()
+            .subscribeOn(Schedulers.io())
             .doOnSuccess {
                 counties.clear()
                 counties.addAll(it)
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                updateCounties()
-            }, {
-                onError(it)
-            })
+            .subscribe(
+                {
+                    updateCounties()
+                },
+                {
+                    onError(it)
+                })
     }
 
     private fun updateCounties() {
@@ -71,9 +74,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
     }
 
     override fun onError(throwable: Throwable) {
-        // TODO: Handle errors to show a specific message for each one
-        countiesLiveData.postValue(Result.Failure(throwable))
+        logE("onError ${throwable.message}", throwable)
+        countiesLiveData.postValue(Result.Error(throwable))
     }
-
-
 }

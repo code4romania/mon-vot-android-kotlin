@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.forms.questions
 
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.MultiChoiceListItem
 import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
@@ -12,6 +13,8 @@ import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE
 import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE_DETAILS
 import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE
 import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE_DETAILS
+import ro.code4.monitorizarevot.helper.Result
+import ro.code4.monitorizarevot.helper.logD
 
 class QuestionsDetailsViewModel : BaseQuestionViewModel() {
 
@@ -82,8 +85,21 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
         }
     }
 
-    fun syncData() {
-        repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+    fun syncAnswersData() {
+        val disposable = repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    logD(TAG, "response:$it")
+                    syncLiveData.postValue(Result.Success(it))
+                }, {
+                    syncLiveData.postValue(Result.Error(it))
+                }
+            )
+        disposables.add(disposable)
     }
 
+    companion object {
+        const val TAG = "QuestionsDetailsViewModel"
+    }
 }

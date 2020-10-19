@@ -16,6 +16,7 @@ abstract class ViewModelFragment<out T : BaseViewModel> : BaseAnalyticsFragment(
         super.onAttach(context)
         mContext = context
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,4 +24,6 @@ abstract class ViewModelFragment<out T : BaseViewModel> : BaseAnalyticsFragment(
     ): View? {
         return inflater.inflate(layout, container, false)
     }
+
+    open fun onError(thr: Throwable) = Unit
 }

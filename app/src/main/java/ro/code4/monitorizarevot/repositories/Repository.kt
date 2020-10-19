@@ -7,6 +7,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -14,6 +15,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import retrofit2.Response
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
@@ -25,6 +27,8 @@ import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.exceptions.EmptyResultsException
+import ro.code4.monitorizarevot.extensions.successOrThrow
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
@@ -69,10 +73,15 @@ class Repository : KoinComponent {
                         apiCounties
                     }
                     apiCounties.isNotEmpty() && areAllApiCountiesInDb -> apiCounties
-                    else -> dbCounties
+                    dbCounties.isNotEmpty() ->
+                        dbCounties
+                    else ->
+                        throw EmptyResultsException("empty results.")
                 }
             }
-        )
+        ).doOnError(Consumer {
+            Log.e(TAG, "exception received when fetching the counties:$it")
+        })
     }
 
     fun getPollingStationDetails(
@@ -122,8 +131,12 @@ class Repository : KoinComponent {
         db.formDetailsDao().getSectionsWithQuestions(formId)
 
     fun getForms(): Observable<Unit> {
+
         val observableDb = db.formDetailsDao().getFormsWithSections()
         val observableApi = apiInterface.getForms()
+
+        // todo fix this as it does not work as expected. nulls are not treated as return values.
+        //  instead it throws a NullPointerException.
         return Observable.zip(
             observableDb.onErrorReturn { null },
             observableApi.onErrorReturn { null },
@@ -236,25 +249,30 @@ class Repository : KoinComponent {
             })
     }
 
-
     @SuppressLint("CheckResult")
-    fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
+    fun syncAnswers(
+        countyCode: String,
+        pollingStationNumber: Int,
+        formId: Int
+    ): Observable<Boolean> {
+        return db.formDetailsDao()
+            .getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
             .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
-                syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                Observable.create<Unit> {
-                    db.formDetailsDao()
-                        .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            }, {
-                Log.i(TAG, it.message ?: "Error on synchronizing data")
-            })
+            .subscribeOn(Schedulers.io())
+            .flatMap {
+                return@flatMap syncAnswers(it)
+            }
+            .map {
+                return@map it.successOrThrow()
+            }
+            .flatMap {
+                return@flatMap db.formDetailsDao()
+                    .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
+                    .andThen(Observable.just(it))
+            }
     }
 
-    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<ResponseBody> {
+    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<Response<Void>> {
         val responseAnswerContainer = ResponseAnswerContainer()
         responseAnswerContainer.answers = list.map {
             it.answeredQuestion.options = it.selectedAnswers

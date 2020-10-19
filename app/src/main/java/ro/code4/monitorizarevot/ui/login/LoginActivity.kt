@@ -6,13 +6,16 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
+import retrofit2.http.HTTP
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.helper.TextWatcherDelegate
-import ro.code4.monitorizarevot.helper.isOnline
-import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
+import ro.code4.monitorizarevot.exceptions.ErrorCodes
+import ro.code4.monitorizarevot.exceptions.RetrofitException
+import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
+import java.io.IOException
 
 class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
 
@@ -60,13 +63,6 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
 
     private fun clickListenersSetup() {
         loginButton.setOnClickListener {
-            if (!isOnline()) {
-                Snackbar.make(loginButton, getString(R.string.login_no_internet), Snackbar.LENGTH_SHORT)
-                    .show()
-
-                return@setOnClickListener
-            }
-
             loginButton.isEnabled = false
             viewModel.login(phone.text.toString(), password.text.toString())
         }
@@ -79,7 +75,7 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                     progressDialog.dismiss()
                     activity?.let(::startActivityWithoutTrace)
                 },
-                onFailure = {error ->
+                onFailure = { error ->
                     // TODO: Handle errors to show personalized messages for each one
                     progressDialog.dismiss()
 
@@ -94,5 +90,60 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                 }
             )
         })
+    }
+
+    private fun handleThrowable(exception: Throwable, fallback: (exception: Throwable) -> Unit) {
+        when (exception) {
+            is RetrofitException -> {
+                when (exception.kind) {
+                    RetrofitException.Kind.HTTP -> {
+                        processHttpException(exception, fallback)
+                    }
+                    RetrofitException.Kind.NETWORK -> {
+                        var messageId: String = getString(R.string.error_generic)
+                        if (!isOnline()) {
+                            messageId = getString(R.string.login_no_internet)
+                        }
+
+                        Snackbar.make(
+                            loginButton,
+                            messageId,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    else -> {
+                        fallback(exception)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun processHttpException(
+        exception: RetrofitException,
+        fallback: (exception: Throwable) -> Unit
+    ) {
+        val message = exception.message ?: getString(R.string.error_generic)
+        when (exception.response?.code()) {
+            ErrorCodes.UNKNOWN -> {
+                createAndShowDialog(
+                    message, {
+                        dialog = null
+                    },
+                    getString(R.string.login_no_internet)
+                )
+            }
+            ErrorCodes.UNAUTHORIZED -> {
+                createAndShowDialog(
+                    message, {
+                        dialog = null
+                    },
+                    getString(R.string.login_unauthorized)
+                )
+            }
+            else -> {
+                fallback(exception)
+            }
+        }
     }
 }

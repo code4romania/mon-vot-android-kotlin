@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.ui.forms.questions
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,14 +19,12 @@ import ro.code4.monitorizarevot.adapters.QuestionDetailsAdapter
 import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
-import ro.code4.monitorizarevot.helper.Constants
-import ro.code4.monitorizarevot.helper.addOnLayoutChangeListenerForGalleryEffect
-import ro.code4.monitorizarevot.helper.addOnScrollListenerForGalleryEffect
-import ro.code4.monitorizarevot.ui.base.ViewModelFragment
+import ro.code4.monitorizarevot.helper.*
+import ro.code4.monitorizarevot.ui.base.BaseViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
 
-class QuestionsDetailsFragment : ViewModelFragment<QuestionsDetailsViewModel>(),
+class QuestionsDetailsFragment : BaseViewModelFragment<QuestionsDetailsViewModel>(),
     QuestionDetailsAdapter.OnClickListener {
     override fun addNoteFor(question: Question) {
         baseViewModel.selectedNotes(question)
@@ -49,17 +48,17 @@ class QuestionsDetailsFragment : ViewModelFragment<QuestionsDetailsViewModel>(),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        baseViewModel = getSharedViewModel(from = { parentFragment!! })
+        baseViewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.questions().observe(this, Observer { list ->
+        viewModel.questions().observe(viewLifecycleOwner, Observer { list ->
             setData(ArrayList(list.map { it as QuestionDetailsListItem }))
         })
 
-        viewModel.title().observe(this, Observer {
+        viewModel.title().observe(viewLifecycleOwner, Observer {
             baseViewModel.setTitle(it)
         })
 
@@ -107,9 +106,15 @@ class QuestionsDetailsFragment : ViewModelFragment<QuestionsDetailsViewModel>(),
                     setButtons()
                 }
             }
-
         })
 
+        viewModel.syncData().observe(viewLifecycleOwner, Observer { it ->
+            val result = it.getOrThrow {
+                logE(TAG, "exception when syncing data:" + it.message)
+                onError(it)
+            }
+            logD(TAG, "success when syncing the data:$result")
+        })
     }
 
     private fun setButtons() {
@@ -159,8 +164,7 @@ class QuestionsDetailsFragment : ViewModelFragment<QuestionsDetailsViewModel>(),
         if (::adapter.isInitialized) {
             viewModel.saveAnswer(adapter.getItem(currentPosition))
         }
-        viewModel.syncData()
+        viewModel.syncAnswersData()
         super.onPause()
-
     }
 }

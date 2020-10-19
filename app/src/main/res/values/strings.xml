@@ -12,6 +12,10 @@
     <string name="error_server">A server error has occurred</string>
     <string name="error_unknown">An unknown error has occurred</string>
     <string name="error_permission">Permission error %1$S</string>
+    <string name="error_network">Connection error</string>
+
+    <!-- needs proper message -->
+    <string name="no_counties_found">No counties found. Please connect to the network and try again.</string>
 
     <!-- Login -->
     <string name="app_version">v%1$S app developed by</string>
@@ -19,6 +23,9 @@
     <string name="login_password">Code</string>
     <string name="login">Login</string>
     <string name="login_no_internet">You need to be connected to the internet to be able to log in!</string>
+
+    <!-- needs proper message -->
+    <string name="login_unauthorized">You are not authorized!</string>
 
     <!--Onboarding-->
     <string name="onboarding_next">Next</string>
@@ -146,6 +153,9 @@
 
     <!-- Errors -->
     <string name="error_generic">Something went wrong!</string>
+
+    <!-- needs proper message -->
+    <string name="error_generic_message">Something went wrong and we cannot retrieve data!</string>
 
     <!--About-->
     <string name="about_mission">About this app</string>

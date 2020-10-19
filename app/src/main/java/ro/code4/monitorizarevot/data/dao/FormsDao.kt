@@ -115,7 +115,7 @@ interface FormsDao {
         pollingStationNumber: Int,
         formId: Int,
         synced: Boolean = true
-    )
+    ): Completable
 
     @Query("UPDATE question SET hasNotes=:hasNotes WHERE id=:questionId")
     fun updateQuestionWithNotes(

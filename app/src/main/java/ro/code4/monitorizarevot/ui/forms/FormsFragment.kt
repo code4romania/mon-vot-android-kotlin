@@ -12,7 +12,9 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.Constants.FORM
 import ro.code4.monitorizarevot.helper.Constants.QUESTION
 import ro.code4.monitorizarevot.helper.changePollingStation
+import ro.code4.monitorizarevot.helper.data
 import ro.code4.monitorizarevot.helper.replaceFragment
+import ro.code4.monitorizarevot.helper.succeeded
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
@@ -37,16 +39,22 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.pollingStation().observe(this, Observer {
-            pollingStationBarText.text =
-                getString(R.string.polling_station, it.pollingStationNumber, it.countyName)
+        viewModel.pollingStation().observe(viewLifecycleOwner, Observer {
+            if (it.succeeded) {
+                pollingStationBarText.text =
+                    getString(
+                        R.string.polling_station,
+                        it.data?.pollingStationNumber,
+                        it.data?.countyName
+                    )
+            }
         })
 
-        viewModel.title().observe(this, Observer {
+        viewModel.title().observe(viewLifecycleOwner, Observer {
             (activity as MainActivity).setTitle(it)
         })
 
-        viewModel.selectedForm().observe(this, Observer {
+        viewModel.selectedForm().observe(viewLifecycleOwner, Observer {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 QuestionsListFragment(),
@@ -54,7 +62,7 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
                 QuestionsListFragment.TAG
             )
         })
-        viewModel.selectedQuestion().observe(this, Observer {
+        viewModel.selectedQuestion().observe(viewLifecycleOwner, Observer {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 QuestionsDetailsFragment(),
@@ -65,7 +73,7 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
                 QuestionsDetailsFragment.TAG
             )
         })
-        viewModel.navigateToNotes().observe(this, Observer {
+        viewModel.navigateToNotes().observe(viewLifecycleOwner, Observer {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 NoteFragment(),
@@ -86,6 +94,4 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
         )
 
     }
-
-
 }
