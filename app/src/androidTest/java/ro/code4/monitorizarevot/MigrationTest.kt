@@ -98,78 +98,45 @@ class MigrationTest {
     }
 
     @Test
-    fun migrate3To4ForSections() {
-        helper.createDatabase(TEST_DB, 3).use {
-            val values = ContentValues().apply {
-                put("uniqueId", "unique_section")
-                put("formId", 100)
-            }
-            val rowId = it.insert("section", SQLiteDatabase.CONFLICT_FAIL, values)
-            assertTrue(rowId > 0)
-        }
-        val db = helper.runMigrationsAndValidate(TEST_DB, 4, true, Migrations.MIGRATION_3_4)
-        val sectionsCursor = db.query("SELECT * FROM section")
-        assertNotNull(sectionsCursor)
-        sectionsCursor.use {
-            // we have a single row, previously inserted
-            assertEquals(1, it.count)
-            assertTrue(it.moveToFirst())
-            // we expect 5 columns
-            assertEquals(5, it.columnCount)
-            // check for the new column "orderNumber" and that it has the default value of 0
-            assertEquals(0, it.getInt(it.getColumnIndex("orderNumber")))
-        }
+    fun migrate3To4() {
+        check3To4MigrationFor(ContentValues().apply {
+            put("uniqueId", "unique_section")
+            put("formId", 100)
+        }, "section", 5, "SELECT * FROM section")
+        check3To4MigrationFor(ContentValues().apply {
+            put("id", 100)
+            put("text", "question_text")
+            put("code", "question_code")
+            put("questionType", 0)
+            put("sectionId", "section_id")
+            put("hasNotes", false)
+        }, "question", 7, "SELECT * FROM question")
+        check3To4MigrationFor(ContentValues().apply {
+            put("idOption", 100)
+            put("text", "answer_text")
+            put("isFreeText", false)
+            put("questionId", 0)
+        }, "answer", 5, "SELECT * FROM answer")
     }
 
-    @Test
-    fun migrate3To4ForQuestions() {
+    private fun check3To4MigrationFor(
+        testValues: ContentValues,
+        tableName: String,
+        nrOfColumns: Int,
+        query: String
+    ) {
         helper.createDatabase(TEST_DB, 3).use {
-            val values = ContentValues().apply {
-                put("id", 100)
-                put("text", "question_text")
-                put("code", "question_code")
-                put("questionType", 0)
-                put("sectionId", "section_id")
-                put("hasNotes", false)
-            }
-            val rowId = it.insert("question", SQLiteDatabase.CONFLICT_FAIL, values)
+            val rowId = it.insert(tableName, SQLiteDatabase.CONFLICT_FAIL, testValues)
             assertTrue(rowId > 0)
         }
         val db = helper.runMigrationsAndValidate(TEST_DB, 4, true, Migrations.MIGRATION_3_4)
-        val sectionsCursor = db.query("SELECT * FROM question")
+        val sectionsCursor = db.query(query)
         assertNotNull(sectionsCursor)
         sectionsCursor.use {
             // we have a single row, previously inserted
             assertEquals(1, it.count)
             assertTrue(it.moveToFirst())
-            // we expect 7 columns
-            assertEquals(7, it.columnCount)
-            // check for the new column "orderNumber" and that it has the default value of 0
-            assertEquals(0, it.getInt(it.getColumnIndex("orderNumber")))
-        }
-    }
-
-    @Test
-    fun migrate3To4ForAnswers() {
-        helper.createDatabase(TEST_DB, 3).use {
-            val values = ContentValues().apply {
-                put("idOption", 100)
-                put("text", "answer_text")
-                put("isFreeText", false)
-                put("questionId", 0)
-            }
-            val rowId = it.insert("answer", SQLiteDatabase.CONFLICT_FAIL, values)
-            assertTrue(rowId > 0)
-        }
-        val db = helper.runMigrationsAndValidate(TEST_DB, 4, true, Migrations.MIGRATION_3_4)
-        val sectionsCursor = db.query("SELECT * FROM answer")
-        assertNotNull(sectionsCursor)
-        sectionsCursor.use {
-            // we have a single row, previously inserted
-            assertEquals(1, it.count)
-            assertTrue(it.moveToFirst())
-            // we expect 5 columns
-            assertEquals(5, it.columnCount)
+            assertEquals(nrOfColumns, it.columnCount)
             // check for the new column "orderNumber" and that it has the default value of 0
             assertEquals(0, it.getInt(it.getColumnIndex("orderNumber")))
         }
