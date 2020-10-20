@@ -62,7 +62,9 @@ class Repository : KoinComponent {
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
-                apiCounties.forEach { it.name = it.name.toLowerCase(Locale.getDefault()).capitalize() }
+                apiCounties.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
+                }
                 return@BiFunction when {
                     apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
                         db.countyDao().deleteAll()
@@ -113,27 +115,23 @@ class Repository : KoinComponent {
     fun getAnswers(
         countyCode: String,
         pollingStationNumber: Int
-    ): LiveData<List<AnsweredQuestionPOJO>> =
+    ): Observable<List<AnsweredQuestionPOJO>> =
         db.formDetailsDao().getAnswersFor(countyCode, pollingStationNumber)
 
-    fun getFormsWithQuestions(): LiveData<List<FormWithSections>> =
+    fun getFormsWithQuestions(): Observable<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
 
-    fun getSectionsWithQuestions(formId: Int): LiveData<List<SectionWithQuestions>> =
+    fun getSectionsWithQuestions(formId: Int): Observable<List<SectionWithQuestions>> =
         db.formDetailsDao().getSectionsWithQuestions(formId)
 
     fun getForms(): Observable<Unit> {
-
-        val observableDb = db.formDetailsDao().getAllForms().toObservable()
-
+        val observableDb = db.formDetailsDao().getFormsWithSections()
         val observableApi = apiInterface.getForms()
-
         return Observable.zip(
             observableDb.onErrorReturn { null },
             observableApi.onErrorReturn { null },
-            BiFunction<List<FormDetails>?, VersionResponse?, Unit> { dbFormDetails, response ->
+            BiFunction<List<FormWithSections>?, VersionResponse?, Unit> { dbFormDetails, response ->
                 processFormDetailsData(dbFormDetails, response)
-
             })
     }
 
@@ -164,7 +162,7 @@ class Repository : KoinComponent {
     }
 
     private fun processFormDetailsData(
-        dbFormDetails: List<FormDetails>?,
+        dbFormDetails: List<FormWithSections>?,
         response: VersionResponse?
     ) {
         if (response == null) {
@@ -176,17 +174,17 @@ class Repository : KoinComponent {
             return
         }
         if (apiFormDetails.size < dbFormDetails.size) {
-            dbFormDetails.minus(apiFormDetails).also { diff ->
+            dbFormDetails.map { it.form }.minus(apiFormDetails).also { diff ->
                 if (diff.isNotEmpty()) {
                     deleteFormDetails(*diff.map { it }.toTypedArray())
                 }
             }
         }
         apiFormDetails.forEach { apiForm ->
-            val dbForm = dbFormDetails.find { it.id == apiForm.id }
-            if (dbForm != null && (apiForm.formVersion != dbForm.formVersion ||
-                        apiForm.order != dbForm.order)) {
-                deleteFormDetails(dbForm)
+            val dbForm = dbFormDetails.find { it.form.id == apiForm.id }
+            if (dbForm != null && (apiForm.formVersion != dbForm.form.formVersion ||
+                        apiForm.order != dbForm.form.order)) {
+                deleteFormDetails(dbForm.form)
                 saveFormDetails(apiForm)
             }
             if (dbForm == null) {
@@ -219,7 +217,7 @@ class Repository : KoinComponent {
         countyCode: String?,
         pollingStationNumber: Int,
         formId: Int
-    ): LiveData<List<AnsweredQuestionPOJO>> {
+    ): Observable<List<AnsweredQuestionPOJO>> {
         return db.formDetailsDao().getAnswersForForm(countyCode, pollingStationNumber, formId)
     }
 

@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
 import ro.code4.monitorizarevot.adapters.helper.FormListItem
@@ -18,7 +20,6 @@ import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.helper.Constants.REMOTE_CONFIG_FILTER_DIASPORA_FORMS
 import ro.code4.monitorizarevot.helper.completedPollingStationConfig
-import ro.code4.monitorizarevot.helper.zipLiveData
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
 class FormsViewModel : BaseFormViewModel() {
@@ -55,12 +56,15 @@ class FormsViewModel : BaseFormViewModel() {
             update()
         }
 
-        zipLiveData(
+        disposables.add(Observable.combineLatest(
             repository.getAnswers(countyCode, pollingStationNumber),
-            repository.getFormsWithQuestions()
-        ).observeForever {
+            repository.getFormsWithQuestions(),
+            BiFunction<List<AnsweredQuestionPOJO>, List<FormWithSections>, Pair<List<AnsweredQuestionPOJO>, List<FormWithSections>>> {
+                    t1, t2 -> Pair(t1, t2)
+            }
+        ).subscribe {
             processList(it.first, it.second)
-        }
+        })
     }
 
     fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
