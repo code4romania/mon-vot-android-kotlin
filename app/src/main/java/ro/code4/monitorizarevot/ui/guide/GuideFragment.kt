@@ -16,20 +16,23 @@ import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 class GuideFragment : ViewModelFragment<GuideViewModel>() {
+
     override val layout: Int
         get() = R.layout.fragment_guide
+
     override val screenName: Int
         get() = R.string.analytics_title_guide
-    private val progressDialog: ProgressDialogFragment by lazy {
-        ProgressDialogFragment().also {
-            it.isCancelable = false
-        }
-    }
+
+    private var progressDialog: ProgressDialogFragment? = null
     override val viewModel: GuideViewModel by inject()
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        progressDialog = ProgressDialogFragment().also {
+            it.isCancelable = false
+        }
 
         webView.apply {
             settings.setSupportZoom(true)
@@ -38,8 +41,8 @@ class GuideFragment : ViewModelFragment<GuideViewModel>() {
             webViewClient = object : WebViewClient() {
                 override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
-                    if (!progressDialog.isResumed) {
-                        progressDialog.showNow(childFragmentManager, ProgressDialogFragment.TAG)
+                    if (progressDialog?.isResumed == true) {
+                        progressDialog?.showNow(childFragmentManager, ProgressDialogFragment.TAG)
                     }
                 }
 
@@ -49,13 +52,10 @@ class GuideFragment : ViewModelFragment<GuideViewModel>() {
                         view.reload()
                         return
                     }
-                    progressDialog.dismiss()
+                    progressDialog?.dismiss()
                 }
 
-                override fun shouldOverrideUrlLoading(
-                    view: WebView,
-                    request: WebResourceRequest
-                ): Boolean {
+                override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                     return request.url?.let { !it.path.equals(viewModel.url().value) } ?: true
                 }
             }
@@ -66,8 +66,9 @@ class GuideFragment : ViewModelFragment<GuideViewModel>() {
     }
 
     override fun onDestroyView() {
-        if (progressDialog.isResumed) {
-            progressDialog.dismissAllowingStateLoss()
+        if (progressDialog?.isResumed == true) {
+            progressDialog?.dismissAllowingStateLoss()
+            progressDialog = null
         }
         super.onDestroyView()
     }
