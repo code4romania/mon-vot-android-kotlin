@@ -27,7 +27,7 @@ abstract class BaseAnalyticsFragment : Fragment(), AnalyticsScreenName {
     override fun onResume() {
         super.onResume()
 
-        firebaseAnalytics.setCurrentScreen(activity!!, getString(screenName), null)
+        firebaseAnalytics.setCurrentScreen(requireActivity(), getString(screenName), null)
     }
 
     fun logAnalyticsEvent(event: Event, vararg params: Param) {

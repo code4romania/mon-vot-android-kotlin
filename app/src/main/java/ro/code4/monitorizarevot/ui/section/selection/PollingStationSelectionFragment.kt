@@ -47,7 +47,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         countySpinnerAdapter =
-            ArrayAdapter(activity!!, R.layout.item_spinner, mutableListOf())
+            ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
     }
 

@@ -53,8 +53,8 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        permissionManager = PermissionManager(activity!!, this)
-        baseViewModel = getSharedViewModel(from = { parentFragment!! })
+        permissionManager = PermissionManager(requireActivity(), this)
+        baseViewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,15 +66,15 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 .color(Color.TRANSPARENT)
                 .sizeResId(R.dimen.small_margin).build()
         )
-        viewModel.title().observe(this, Observer {
+        viewModel.title().observe(viewLifecycleOwner, Observer {
             baseViewModel.setTitle(it)
         })
 
         viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
-        viewModel.notes().observe(this, Observer {
+        viewModel.notes().observe(viewLifecycleOwner, Observer {
             noteAdapter.items = it
         })
-        viewModel.fileName().observe(this, Observer {
+        viewModel.fileName().observe(viewLifecycleOwner, Observer {
             filenameText.text = it
             filenameText.visibility = View.VISIBLE
             addMediaButton.visibility = View.GONE
