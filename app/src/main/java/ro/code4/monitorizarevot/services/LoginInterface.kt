@@ -11,7 +11,4 @@ import ro.code4.monitorizarevot.data.model.response.LoginResponse
 interface LoginInterface {
     @POST("access/authorize")
     fun login(@Body user: User): Observable<LoginResponse>
-
-    @POST("notification/register")
-    fun registerForNotification(@Query("Token") token: String, @Query("ChannelName") channelName: String = "Firebase"): Observable<ResponseBody>
 }

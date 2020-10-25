@@ -1,13 +1,11 @@
 package ro.code4.monitorizarevot.ui.login
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.koin.android.ext.android.inject
 import org.koin.core.inject
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.analytics.Event
@@ -34,10 +32,11 @@ class LoginViewModel : BaseViewModel() {
         getFirebaseToken(phone, password)
     }
 
-    private fun onSuccessfulLogin(loginResponse: LoginResponse, firebaseToken: String) {
+    private fun onSuccessfulLogin(loginResponse: LoginResponse) {
         logD("onSuccessfulLogin")
+
         sharedPreferences.saveToken(loginResponse.accessToken)
-        registerForNotification(firebaseToken)
+        onSuccessfulRegisteredForNotification()
     }
 
     private fun onSuccessfulRegisteredForNotification() {
@@ -73,35 +72,24 @@ class LoginViewModel : BaseViewModel() {
 
     fun login(phone: String, password: String, firebaseToken: String) {
         logD("login: $phone : $password -> $firebaseToken")
-        disposables.add(
-            loginRepository.login(User(phone, password, firebaseToken))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ loginResponse ->
-                    logD("Login successful! Token received!")
-                    onSuccessfulLogin(loginResponse, firebaseToken)
-                }, { throwable ->
+
+        val user = User(
+            user = phone,
+            password = password,
+            fcmToken = firebaseToken
+        )
+
+        loginRepository.login(user)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { loginResponse -> onSuccessfulLogin(loginResponse) },
+                { throwable ->
                     firebaseAnalytics.logEvent(Event.LOGIN_FAILED.title, null)
                     logE("Login failed!", throwable)
                     onError(throwable)
                 })
-        )
-    }
-
-    private fun registerForNotification(firebaseToken: String) {
-        logD("registerForNotification with $firebaseToken")
-        disposables.add(
-            loginRepository.registerForNotification(firebaseToken)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    logD("Registered for notifications on firebase!")
-                    onSuccessfulRegisteredForNotification()
-                }, { throwable ->
-                    logE("Register for notification failed!", throwable)
-                    onError(throwable)
-                })
-        )
+            .run { disposables.add(this) }
     }
 
     override fun onError(throwable: Throwable) {
