@@ -35,6 +35,9 @@ class Answer {
     @Ignore
     var value: String? = null
 
+    @Expose
+    var orderNumber = 0
+
     override fun equals(other: Any?): Boolean =
         other is Answer && idOption == other.idOption && text == other.text &&
                 isFreeText == other.isFreeText && questionId == other.questionId &&
