@@ -116,13 +116,13 @@ class FormsViewModel : BaseFormViewModel() {
         } catch (e: Exception) {
             false
         }
-        val formsList = when {
+        var formsList = when {
             !filterDiasporaForms || pollingStationLiveData.value?.isDiaspora == true -> forms.map {
                 FormListItem(it)
             }
             else -> forms.filter { it.form.diaspora == false }.map { FormListItem(it) }
         }
-        formsList.sortedBy { it.formWithSections.form.order }
+        formsList = formsList.sortedBy { it.formWithSections.form.order }
         items.addAll(formsList)
         items.add(AddNoteListItem())
         formsLiveData.postValue(items)
