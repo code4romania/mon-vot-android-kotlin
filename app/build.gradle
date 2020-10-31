@@ -69,6 +69,7 @@ android {
         }
 
         debug {
+            debuggable true
             minifyEnabled false
             manifestPlaceholders = [enableCrashReporting: "false"]
         }

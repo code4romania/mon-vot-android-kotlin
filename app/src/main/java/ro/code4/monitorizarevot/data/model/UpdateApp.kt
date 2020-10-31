@@ -10,6 +10,6 @@ import org.parceler.Parcel
 
 @Parcelize
 data class UpdateApp(
-    val needUpdate : Boolean,
-    val forceUpdate : Boolean
+    val hasUpdate : Boolean,
+    val needForceUpdate : Boolean
 ) : Parcelable

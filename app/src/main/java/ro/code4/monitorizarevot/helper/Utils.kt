@@ -483,3 +483,13 @@ fun collapseKeyboardIfFocusOutsideEditText(
                 ?.hideSoftInputFromWindow(newFocusedView.windowToken, 0)
     }
 }
+
+fun Context.openAppInPlayStore(appPackageName: String = packageName) {
+    val uri = try {
+        Uri.parse("market://details?id=$appPackageName")
+    } catch (exception: ActivityNotFoundException) {
+        Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+    }
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    startActivity(intent)
+}
