@@ -72,14 +72,7 @@ class LoginViewModel : BaseViewModel() {
 
     fun login(phone: String, password: String, firebaseToken: String) {
         logD("login: $phone : $password -> $firebaseToken")
-
-        val user = User(
-            user = phone,
-            password = password,
-            fcmToken = firebaseToken
-        )
-
-        loginRepository.login(user)
+        loginRepository.login(User(phone, password, firebaseToken))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
