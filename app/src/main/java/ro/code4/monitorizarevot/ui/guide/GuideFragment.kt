@@ -71,10 +71,7 @@ class GuideFragment : BaseViewModelFragment<GuideViewModel>() {
                     description: String?,
                     failingUrl: String?
                 ) {
-                    var message: String? = description
-                    if (TextUtils.isEmpty(message)) {
-                        message = "Unknown Error"
-                    }
+                    val message = description.takeUnless { it.isNullOrEmpty() } ?: "Unknown Error"
                     onError(
                         WebViewException(
                             message!!,
@@ -91,15 +88,11 @@ class GuideFragment : BaseViewModelFragment<GuideViewModel>() {
 
     override fun onError(thr: Throwable) {
         logE(TAG, "Error loading the page:" + thr.message)
-        var messageId: String = getString(R.string.error_generic_message)
-        if (thr is WebViewException) {
-            if (thr.message.contains("ERR_INTERNET_DISCONNECTED")) {
-                messageId = getString(R.string.error_no_connection)
-            }
-        }
+        val messageId =
+            if (thr is WebViewException) R.string.error_no_connection else R.string.error_generic_message
 
         progressDialog.dismiss()
-        logE(TAG, messageId)
+        logE(TAG, getString(messageId))
         //todo add action
     }
 

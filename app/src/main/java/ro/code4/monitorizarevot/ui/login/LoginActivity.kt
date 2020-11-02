@@ -100,10 +100,8 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                         processHttpException(exception, fallback)
                     }
                     RetrofitException.Kind.NETWORK -> {
-                        var messageId: String = getString(R.string.error_generic)
-                        if (!isOnline()) {
-                            messageId = getString(R.string.login_no_internet)
-                        }
+                        val messageId =
+                            if (!isOnline()) R.string.login_no_internet else R.string.error_generic
 
                         Snackbar.make(
                             loginButton,

@@ -10,7 +10,7 @@ import java.io.IOException
 /**
  * Exception that is retrieved from retrofit. It is of three types, http, network and unexpected.
  */
-open class RetrofitException internal constructor(
+class RetrofitException internal constructor(
     message: String?,
     /**
      * RobResponse object containing status code, headers, body, etc.

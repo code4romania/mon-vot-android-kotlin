@@ -260,13 +260,14 @@ class Repository : KoinComponent {
             .toObservable()
             .subscribeOn(Schedulers.io())
             .flatMap {
-                return@flatMap syncAnswers(it)
+                syncAnswers(it)
             }
             .map {
                 return@map it.successOrThrow()
             }
             .flatMap {
                 return@flatMap db.formDetailsDao()
+
                     .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
                     .andThen(Observable.just(it))
             }
