@@ -51,9 +51,6 @@ class Repository : KoinComponent {
     private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
 
-    fun registerForNotification(token: String): Observable<ResponseBody> =
-        loginInterface.registerForNotification(token)
-
     fun getCounties(): Single<List<County>> {
         val observableApi = apiInterface.getCounties()
         val observableDb = db.countyDao().getAll().take(1).single(emptyList())
