@@ -37,11 +37,11 @@ class LoginViewModel : BaseViewModel() {
         sharedPreferences.saveToken(loginResponse.accessToken)
 
         logD("onSuccessfulRegisteredForNotification")
-        val classJava = when (sharedPreferences.hasCompletedOnboarding()) {
+        val nextActivity = when (sharedPreferences.hasCompletedOnboarding()) {
             true -> PollingStationActivity::class.java
             false -> OnboardingActivity::class.java
         }
-        loginLiveData.postValue(Result.Success(classJava))
+        loginLiveData.postValue(Result.Success(nextActivity))
     }
 
     private fun getFirebaseToken(phone: String, password: String) {
