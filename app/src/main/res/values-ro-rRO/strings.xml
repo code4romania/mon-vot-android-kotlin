@@ -150,4 +150,8 @@
     <string name="about_privacy_policy">Politică de confidențialitate</string>
     <string name="about_send_mail_via">Trimiteți email prin</string>
     <string name="about_app_version">v%1$S build %2$d aplicație dezvoltată de</string>
+
+    <!-- Updates -->
+    <string name="app_update_dialog_title">Actualizare disponibilă</string>
+    <string name="app_update_dialog_message">O nouă versiune a aplicației este disponibilă. Te rugăm să faci update pentru a folosi cele mai recente funcționalități.</string>
  </resources>

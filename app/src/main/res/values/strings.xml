@@ -155,4 +155,8 @@
     <string name="about_privacy_policy">Privacy policy</string>
     <string name="about_send_mail_via">Send email via</string>
     <string name="about_app_version">v%1$S build %2$d app developed by</string>
+
+    <!-- Updates -->
+    <string name="app_update_dialog_title">App UpdateAvailable</string>
+    <string name="app_update_dialog_message">A new app version is available. Please update the app to use the latest features.</string>
 </resources>

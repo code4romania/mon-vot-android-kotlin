@@ -1,15 +1,20 @@
 package ro.code4.monitorizarevot.ui.login
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextWatcher
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.data.model.UpdateApp
 import ro.code4.monitorizarevot.helper.TextWatcherDelegate
 import ro.code4.monitorizarevot.helper.isOnline
+import ro.code4.monitorizarevot.helper.openAppInPlayStore
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -51,6 +56,28 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
                 loginButton.isEnabled = !p0.isNullOrEmpty() && !phone.text.isNullOrEmpty()
             }
         })
+        observeAppUpdates()
+    }
+
+    private fun observeAppUpdates() {
+        viewModel.shouldUpdateAppVersion().observe(this) { shouldUpdateApp(update = it) }
+    }
+
+    private fun shouldUpdateApp(update: UpdateApp) {
+        if (update.hasUpdate) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.app_update_dialog_title)
+                .setMessage(R.string.app_update_dialog_message)
+                .setCancelable(update.needForceUpdate.not())
+                .setPositiveButton(android.R.string.ok) { dialog: DialogInterface, _ ->
+                    if (update.needForceUpdate) {
+                        openAppInPlayStore()
+                    }
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
+        }
     }
 
     override fun onDestroy() {
