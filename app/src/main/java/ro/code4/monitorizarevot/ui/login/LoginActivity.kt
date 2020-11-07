@@ -6,8 +6,6 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import retrofit2.HttpException
-import retrofit2.http.HTTP
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.exceptions.ErrorCodes
@@ -15,7 +13,6 @@ import ro.code4.monitorizarevot.exceptions.RetrofitException
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.ui.base.BaseAnalyticsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
-import java.io.IOException
 
 class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
 
@@ -121,14 +118,14 @@ class LoginActivity : BaseAnalyticsActivity<LoginViewModel>() {
         exception: RetrofitException,
         fallback: (exception: Throwable) -> Unit
     ) {
-        val message = exception.message ?: getString(R.string.error_generic)
+        val message = exception.getErrorBodyAs<ErrorResponse>(ErrorResponse::class.java)?.error ?: getString(R.string.error_generic)
         when (exception.response?.code()) {
-            ErrorCodes.UNKNOWN -> {
+            ErrorCodes.BAD_REQUEST -> {
                 createAndShowDialog(
                     message, {
                         dialog = null
                     },
-                    getString(R.string.login_no_internet)
+                    getString(R.string.login_bad_request)
                 )
             }
             ErrorCodes.UNAUTHORIZED -> {

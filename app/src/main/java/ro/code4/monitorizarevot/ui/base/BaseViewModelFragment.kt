@@ -32,7 +32,7 @@ abstract class BaseViewModelFragment<out T : BaseViewModel> : ViewModelFragment<
                     ErrorCodes.UNAUTHORIZED -> {
                         startLoginActivity()
                     }
-                    ErrorCodes.UNKNOWN -> {
+                    ErrorCodes.BAD_REQUEST -> {
                         logE(TAG, "unknown error.")
                     }
                     else -> {

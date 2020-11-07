@@ -24,6 +24,9 @@
     <string name="login">Login</string>
     <string name="login_no_internet">Ai nevoie de o conexiune la internet pentru a te conecta!</string>
 
+    <!-- needs proper message -->
+    <string name="login_bad_request">Bad Request!</string>
+
     <!-- needs proper messages -->
     <string name="login_unauthorized">Nu esti autorizat!</string>
 

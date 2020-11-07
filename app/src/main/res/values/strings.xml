@@ -23,6 +23,7 @@
     <string name="login_password">Code</string>
     <string name="login">Login</string>
     <string name="login_no_internet">You need to be connected to the internet to be able to log in!</string>
+    <string name="login_bad_request">Bad Request!</string>
 
     <!-- needs proper message -->
     <string name="login_unauthorized">You are not authorized!</string>
