@@ -15,7 +15,7 @@ import ro.code4.monitorizarevot.adapters.FormDelegationAdapter
 import ro.code4.monitorizarevot.analytics.Event
 import ro.code4.monitorizarevot.analytics.Param
 import ro.code4.monitorizarevot.analytics.ParamKey
-import ro.code4.monitorizarevot.helper.*
+import ro.code4.monitorizarevot.helper.isOnline
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 
 
@@ -47,12 +47,7 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.forms().observe(viewLifecycleOwner, Observer {
-            if (it.succeeded) {
-                formAdapter.items = it.data
-            } else {
-                logE(TAG, "forms retrieval failed.")
-                //todo add a dialog.
-            }
+            formAdapter.items = it
         })
         viewModel.syncVisibility().observe(viewLifecycleOwner, Observer {
             syncGroup.visibility = it

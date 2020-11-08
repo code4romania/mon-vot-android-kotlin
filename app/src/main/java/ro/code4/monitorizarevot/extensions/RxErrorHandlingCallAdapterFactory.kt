@@ -93,13 +93,16 @@ class RxErrorHandlingCallAdapterFactory private constructor() : CallAdapter.Fact
         }
 
         private fun asRetrofitException(throwable: Throwable): RetrofitException {
-            if (throwable is HttpException) {
-                val response = throwable.response()
-                return httpError(response!!, retrofit)
-            } else if (throwable is IOException) {
-                return networkError(throwable)
+            return when (throwable) {
+                is HttpException -> {
+                    val response = throwable.response()
+                    httpError(response!!, retrofit)
+                }
+                is IOException -> {
+                    networkError(throwable)
+                }
+                else -> unexpectedError(throwable)
             }
-            return unexpectedError(throwable)
         }
     }
 

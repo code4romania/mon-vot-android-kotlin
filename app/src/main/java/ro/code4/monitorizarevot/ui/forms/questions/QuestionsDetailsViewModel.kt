@@ -15,6 +15,7 @@ import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE
 import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE_DETAILS
 import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.helper.logD
+import ro.code4.monitorizarevot.helper.logE
 
 class QuestionsDetailsViewModel : BaseQuestionViewModel() {
 
@@ -86,17 +87,19 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
     }
 
     fun syncAnswersData() {
-        val disposable = repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+        // todo a better solution is required for disposing this.
+        //  if added to the CompositeDisposable it will be disposed before finishing.
+       repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    logD(TAG, "response:$it")
+                    logD("response success:$it", TAG)
                     syncLiveData.postValue(Result.Success(it))
                 }, {
+                    logE("response error:$it", TAG)
                     syncLiveData.postValue(Result.Error(it))
                 }
             )
-        disposables.add(disposable)
     }
 
     companion object {

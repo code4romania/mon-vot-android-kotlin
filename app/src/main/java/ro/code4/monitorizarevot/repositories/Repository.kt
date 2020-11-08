@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.repositories
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,6 +31,7 @@ import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
 import ro.code4.monitorizarevot.exceptions.EmptyResultsException
 import ro.code4.monitorizarevot.extensions.successOrThrow
 import ro.code4.monitorizarevot.helper.createMultipart
+import ro.code4.monitorizarevot.helper.logD
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 import java.io.File
@@ -73,15 +75,10 @@ class Repository : KoinComponent {
                         apiCounties
                     }
                     apiCounties.isNotEmpty() && areAllApiCountiesInDb -> apiCounties
-                    dbCounties.isNotEmpty() ->
-                        dbCounties
-                    else ->
-                        throw EmptyResultsException("empty results.")
+                    else -> dbCounties
                 }
             }
-        ).doOnError(Consumer {
-            Log.e(TAG, "exception received when fetching the counties:$it")
-        })
+        )
     }
 
     fun getPollingStationDetails(
@@ -193,7 +190,8 @@ class Repository : KoinComponent {
         apiFormDetails.forEach { apiForm ->
             val dbForm = dbFormDetails.find { it.form.id == apiForm.id }
             if (dbForm != null && (apiForm.formVersion != dbForm.form.formVersion ||
-                        apiForm.order != dbForm.form.order)) {
+                        apiForm.order != dbForm.form.order)
+            ) {
                 deleteFormDetails(dbForm.form)
                 saveFormDetails(apiForm)
             }
@@ -262,14 +260,14 @@ class Repository : KoinComponent {
             .flatMap {
                 syncAnswers(it)
             }
-            .map {
-                return@map it.successOrThrow()
-            }
+            .map { it.successOrThrow() }
             .flatMap {
-                return@flatMap db.formDetailsDao()
+                Completable.fromAction {
+                    logD("saving the forms details to db for stationNr:$pollingStationNumber", TAG)
+                    db.formDetailsDao()
+                        .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
 
-                    .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
-                    .andThen(Observable.just(it))
+                }.andThen(Observable.just(it))
             }
     }
 

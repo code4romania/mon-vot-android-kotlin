@@ -3,8 +3,6 @@ package ro.code4.monitorizarevot.ui.guide
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -14,14 +12,10 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_guide.*
 import org.koin.android.ext.android.inject
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.helper.createAndShowDialog
-import ro.code4.monitorizarevot.ui.base.BaseViewModelFragment
-import ro.code4.monitorizarevot.exceptions.WebViewException
-import ro.code4.monitorizarevot.helper.logE
+import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
-class GuideFragment : BaseViewModelFragment<GuideViewModel>() {
-
+class GuideFragment : ViewModelFragment<GuideViewModel>() {
     override val layout: Int
         get() = R.layout.fragment_guide
     override val screenName: Int
@@ -64,21 +58,6 @@ class GuideFragment : BaseViewModelFragment<GuideViewModel>() {
                 ): Boolean {
                     return request.url?.let { !it.path.equals(viewModel.url().value) } ?: true
                 }
-
-                override fun onReceivedError(
-                    view: WebView?,
-                    errorCode: Int,
-                    description: String?,
-                    failingUrl: String?
-                ) {
-                    val message = description.takeUnless { it.isNullOrEmpty() } ?: "Unknown Error"
-                    onError(
-                        WebViewException(
-                            message!!,
-                            errorCode
-                        )
-                    )
-                }
             }
         }
         viewModel.url().observe(viewLifecycleOwner, Observer {
@@ -86,24 +65,10 @@ class GuideFragment : BaseViewModelFragment<GuideViewModel>() {
         })
     }
 
-    override fun onError(thr: Throwable) {
-        logE(TAG, "Error loading the page:" + thr.message)
-        val messageId =
-            if (thr is WebViewException) R.string.error_no_connection else R.string.error_generic_message
-
-        progressDialog.dismiss()
-        logE(TAG, getString(messageId))
-        //todo add action
-    }
-
     override fun onDestroyView() {
         if (progressDialog.isResumed) {
             progressDialog.dismissAllowingStateLoss()
         }
         super.onDestroyView()
-    }
-
-    companion object {
-        const val TAG = "GuideFragment"
     }
 }

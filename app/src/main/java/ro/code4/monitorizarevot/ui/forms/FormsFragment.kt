@@ -40,14 +40,8 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.pollingStation().observe(viewLifecycleOwner, Observer {
-            if (it.succeeded) {
-                pollingStationBarText.text =
-                    getString(
-                        R.string.polling_station,
-                        it.data?.pollingStationNumber,
-                        it.data?.countyName
-                    )
-            }
+            pollingStationBarText.text =
+                getString(R.string.polling_station, it.pollingStationNumber, it.countyName)
         })
 
         viewModel.title().observe(viewLifecycleOwner, Observer {

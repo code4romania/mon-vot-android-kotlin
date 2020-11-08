@@ -10,14 +10,12 @@ import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
-import ro.code4.monitorizarevot.ui.base.BaseViewModelFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
-class PollingStationSelectionFragment : BaseViewModelFragment<PollingStationSelectionViewModel>() {
+class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectionViewModel>() {
 
     private val progressDialog: ProgressDialogFragment by lazy {
         ProgressDialogFragment().also {
@@ -57,15 +55,15 @@ class PollingStationSelectionFragment : BaseViewModelFragment<PollingStationSele
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.counties().observe(viewLifecycleOwner, Observer { result ->
-            result.handle(
+        viewModel.counties().observe(viewLifecycleOwner, Observer {
+            it.handle(
                 onSuccess = { counties ->
                     progressDialog.dismiss()
                     counties?.run(::setCountiesDropdown)
                 },
                 onFailure = {
                     progressDialog.dismiss()
-                    onError(it)
+                    // TODO: Show some message for the user know what happened
                 },
                 onLoading = {
                     activity?.run {

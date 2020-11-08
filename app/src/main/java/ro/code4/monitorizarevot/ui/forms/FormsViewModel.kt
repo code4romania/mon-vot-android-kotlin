@@ -18,22 +18,20 @@ import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
-import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REMOTE_CONFIG_FILTER_DIASPORA_FORMS
 import ro.code4.monitorizarevot.helper.completedPollingStationConfig
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 
 class FormsViewModel : BaseFormViewModel() {
-    private val formsLiveData = MutableLiveData<Result<ArrayList<ListItem>>>()
+    private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
     private val syncVisibilityLiveData = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
-    private val pollingStationLiveData = MutableLiveData<Result<PollingStationInfo>>()
+    private val pollingStationLiveData = MutableLiveData<PollingStationInfo>()
 
     init {
         getForms()
-        //todo this does not work as expected.
         getPollingStationBarText()
     }
 
@@ -69,12 +67,12 @@ class FormsViewModel : BaseFormViewModel() {
         })
     }
 
-    fun forms(): LiveData<Result<ArrayList<ListItem>>> = formsLiveData
+    fun forms(): LiveData<ArrayList<ListItem>> = formsLiveData
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
-    fun pollingStation(): LiveData<Result<PollingStationInfo>> = pollingStationLiveData
+    fun pollingStation(): LiveData<PollingStationInfo> = pollingStationLiveData
 
     private fun getPollingStationBarText() {
         disposables.add(
@@ -87,7 +85,7 @@ class FormsViewModel : BaseFormViewModel() {
                     subscribe()
                 }
                 .subscribe({
-                    pollingStationLiveData.postValue(Result.Success(it))
+                    pollingStationLiveData.postValue(it)
                 }, {
                     onError(it)
                 })
@@ -100,13 +98,9 @@ class FormsViewModel : BaseFormViewModel() {
             repository.getForms()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        logD(TAG, "retrieving polling bar text.")
-                    },
-                    {
-                        formsLiveData.postValue(Result.Error(it))
-                    })
+                .subscribe({}, {
+                    onError(it)
+                })
         )
 
     }
@@ -122,9 +116,8 @@ class FormsViewModel : BaseFormViewModel() {
         } catch (e: Exception) {
             false
         }
-
         var formsList = when {
-            !filterDiasporaForms || pollingStationLiveData.value?.data?.isDiaspora == true -> forms.map {
+            !filterDiasporaForms || pollingStationLiveData.value?.isDiaspora == true -> forms.map {
                 FormListItem(it)
             }
             else -> forms.filter { it.form.diaspora == false }.map { FormListItem(it) }
@@ -132,7 +125,7 @@ class FormsViewModel : BaseFormViewModel() {
         formsList = formsList.sortedBy { it.formWithSections.form.order }
         items.addAll(formsList)
         items.add(AddNoteListItem())
-        formsLiveData.postValue(Result.Success(items))
+        formsLiveData.postValue(items)
     }
 
     fun selectForm(formDetails: FormDetails) {
@@ -157,11 +150,4 @@ class FormsViewModel : BaseFormViewModel() {
         preferences.completedPollingStationConfig(false)
     }
 
-    override fun onError(throwable: Throwable) {
-        logE(TAG, "exception." + throwable.message)
-    }
-
-    companion object {
-        const val TAG = "FormsViewModel"
-    }
 }

@@ -16,11 +16,11 @@ import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
 abstract class BaseQuestionViewModel : BaseFormViewModel() {
     val questionsLiveData = MutableLiveData<ArrayList<ListItem>>()
     var selectedFormId: Int = -1
-    fun questions(): LiveData<ArrayList<ListItem>> = questionsLiveData
 
     val syncLiveData = MutableLiveData<Result<Boolean>>()
-
+    fun questions(): LiveData<ArrayList<ListItem>> = questionsLiveData
     fun syncData(): LiveData<Result<Boolean>> = syncLiveData
+
 
     private fun getQuestions(formId: Int) {
         selectedFormId = formId
