@@ -8,7 +8,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -28,7 +27,6 @@ import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
-import ro.code4.monitorizarevot.exceptions.EmptyResultsException
 import ro.code4.monitorizarevot.extensions.successOrThrow
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.helper.logD

@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.forms.questions
 
+import android.annotation.SuppressLint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.MultiChoiceListItem
@@ -86,6 +87,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
         }
     }
 
+    @SuppressLint("CheckResult")
     fun syncAnswersData() {
         // todo a better solution is required for disposing this.
         //  if added to the CompositeDisposable it will be disposed before finishing.

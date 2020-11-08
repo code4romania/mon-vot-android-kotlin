@@ -1,10 +1,7 @@
 package ro.code4.monitorizarevot.ui.base
 
-import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.exceptions.EmptyResultsException
 import ro.code4.monitorizarevot.exceptions.ErrorCodes
 import ro.code4.monitorizarevot.exceptions.RetrofitException
-import ro.code4.monitorizarevot.helper.createAndShowDialog
 import ro.code4.monitorizarevot.helper.logE
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
 import ro.code4.monitorizarevot.ui.login.LoginActivity
@@ -15,12 +12,6 @@ abstract class BaseViewModelFragment<out T : BaseViewModel> : ViewModelFragment<
         when (thr) {
             is RetrofitException -> {
                 processRetrofitException(thr)
-            }
-            is EmptyResultsException -> {
-                val messageId: String = getString(R.string.no_counties_found)
-                activity?.createAndShowDialog(messageId, {
-                    logE(TAG, "action needed.")
-                })
             }
         }
     }
@@ -43,12 +34,10 @@ abstract class BaseViewModelFragment<out T : BaseViewModel> : ViewModelFragment<
 
             RetrofitException.Kind.NETWORK -> {
                 logE(TAG, "network error.")
-                //todo do something about it.
             }
 
             RetrofitException.Kind.UNEXPECTED -> {
                 logE(TAG, "unexpected error.")
-                //todo do something about it.
             }
         }
     }
