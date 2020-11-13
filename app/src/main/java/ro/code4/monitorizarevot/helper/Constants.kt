@@ -11,6 +11,7 @@ object Constants {
     const val REQUEST_CODE_RECORD_VIDEO = 1001
     const val REQUEST_CODE_TAKE_PHOTO = 1002
     const val REQUEST_CODE_GALLERY = 1003
+    const val FILES_PATHS_SEPARATOR = "|"
 
     const val TYPE_MULTI_CHOICE = 0
     const val TYPE_SINGLE_CHOICE = 1
