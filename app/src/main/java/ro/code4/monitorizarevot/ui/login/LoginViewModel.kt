@@ -83,6 +83,6 @@ class LoginViewModel : BaseViewModel() {
 
     override fun onError(throwable: Throwable) {
         logE("onError ${throwable.message}", throwable)
-        loginLiveData.postValue(Result.Failure(throwable))
+        loginLiveData.postValue(Result.Error(throwable))
     }
 }

@@ -1,5 +1,7 @@
 package ro.code4.monitorizarevot.ui.forms.questions
 
+import android.annotation.SuppressLint
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.MultiChoiceListItem
 import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
@@ -12,6 +14,9 @@ import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE
 import ro.code4.monitorizarevot.helper.Constants.TYPE_MULTI_CHOICE_DETAILS
 import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE
 import ro.code4.monitorizarevot.helper.Constants.TYPE_SINGLE_CHOICE_DETAILS
+import ro.code4.monitorizarevot.helper.Result
+import ro.code4.monitorizarevot.helper.logD
+import ro.code4.monitorizarevot.helper.logE
 
 class QuestionsDetailsViewModel : BaseQuestionViewModel() {
 
@@ -82,8 +87,24 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
         }
     }
 
-    fun syncData() {
-        repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+    @SuppressLint("CheckResult")
+    fun syncAnswersData() {
+        // todo a better solution is required for disposing this.
+        //  if added to the CompositeDisposable it will be disposed before finishing.
+       repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    logD("response success:$it", TAG)
+                    syncLiveData.postValue(Result.Success(it))
+                }, {
+                    logE("response error:$it", TAG)
+                    syncLiveData.postValue(Result.Error(it))
+                }
+            )
     }
 
+    companion object {
+        const val TAG = "QuestionsDetailsViewModel"
+    }
 }

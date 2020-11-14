@@ -19,6 +19,7 @@ import ro.code4.monitorizarevot.App
 import ro.code4.monitorizarevot.BuildConfig.API_URL
 import ro.code4.monitorizarevot.BuildConfig.DEBUG
 import ro.code4.monitorizarevot.data.AppDatabase
+import ro.code4.monitorizarevot.extensions.RxErrorHandlingCallAdapterFactory
 import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
@@ -84,9 +85,9 @@ val apiModule = module {
     single {
         Retrofit.Builder()
             .baseUrl(API_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
             .client(get<OkHttpClient>())
             .build()
     }

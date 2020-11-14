@@ -41,15 +41,15 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = getSharedViewModel(from = { parentFragment!! })
+        viewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.forms().observe(this, Observer {
+        viewModel.forms().observe(viewLifecycleOwner, Observer {
             formAdapter.items = it
         })
-        viewModel.syncVisibility().observe(this, Observer {
+        viewModel.syncVisibility().observe(viewLifecycleOwner, Observer {
             syncGroup.visibility = it
         })
 

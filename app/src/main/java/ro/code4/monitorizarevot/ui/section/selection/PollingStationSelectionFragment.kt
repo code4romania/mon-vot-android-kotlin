@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
@@ -47,8 +46,10 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         countySpinnerAdapter =
-            ArrayAdapter(activity!!, R.layout.item_spinner, mutableListOf())
+            ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        //todo add default item in case the list is empty.
+        // at the moment it shows just an empty dropdown.
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

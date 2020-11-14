@@ -72,7 +72,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
 
     override fun onError(throwable: Throwable) {
         // TODO: Handle errors to show a specific message for each one
-        countiesLiveData.postValue(Result.Failure(throwable))
+        countiesLiveData.postValue(Result.Error(throwable))
     }
 
 

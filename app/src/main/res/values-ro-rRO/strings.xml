@@ -12,6 +12,10 @@
     <string name="error_server">Eroare de server</string>
     <string name="error_unknown">Eroare necunoscută</string>
     <string name="error_permission">Eroare permisiune %1$S</string>
+    <string name="error_network">Eroare de conexiune</string>
+
+    <!-- needs proper message -->
+    <string name="no_counties_found">Nu a fost gasit niciun judet. Te rog conecteaza-te la retea si incearca din nou.</string>
 
     <!-- Login -->
     <string name="app_version">v%1$S aplicație dezvoltată de</string>
@@ -19,6 +23,12 @@
     <string name="login_password">Cod primit</string>
     <string name="login">Login</string>
     <string name="login_no_internet">Ai nevoie de o conexiune la internet pentru a te conecta!</string>
+
+    <!-- needs proper message -->
+    <string name="login_bad_request">Bad Request!</string>
+
+    <!-- needs proper messages -->
+    <string name="login_unauthorized">Nu esti autorizat!</string>
 
     <!--    Onboarding-->
     <string name="onboarding_next">Continuă</string>
@@ -141,6 +151,8 @@
 
     <!-- Errors -->
     <string name="error_generic">A apărut o problemă!</string>
+    <!-- needs proper message -->
+    <string name="error_generic_message">A aparut o problema si nu putem incarca datele!</string>
 
     <!--About-->
     <string name="about_mission">Despre aplicație</string>
@@ -150,4 +162,4 @@
     <string name="about_privacy_policy">Politică de confidențialitate</string>
     <string name="about_send_mail_via">Trimiteți email prin</string>
     <string name="about_app_version">v%1$S build %2$d aplicație dezvoltată de</string>
- </resources>
+</resources>

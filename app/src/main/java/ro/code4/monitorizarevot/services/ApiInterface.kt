@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.data.model.PollingStation
@@ -25,7 +26,7 @@ interface ApiInterface {
     fun postPollingStationDetails(@Body pollingStation: PollingStation): Observable<ResponseBody>
 
     @POST("/api/v1/answers")
-    fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<ResponseBody>
+    fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<Response<Void>>
 
     @Multipart
     @POST("/api/v2/note/upload")

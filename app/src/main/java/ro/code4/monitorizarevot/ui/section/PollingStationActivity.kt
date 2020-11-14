@@ -38,6 +38,4 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
         })
         replaceFragment(R.id.container, PollingStationSelectionFragment())
     }
-
-
 }

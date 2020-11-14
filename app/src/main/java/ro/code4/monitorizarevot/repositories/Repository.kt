@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.repositories
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,6 +15,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import retrofit2.Response
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
@@ -25,7 +27,9 @@ import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.extensions.successOrThrow
 import ro.code4.monitorizarevot.helper.createMultipart
+import ro.code4.monitorizarevot.helper.logD
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 import java.io.File
@@ -122,8 +126,12 @@ class Repository : KoinComponent {
         db.formDetailsDao().getSectionsWithQuestions(formId)
 
     fun getForms(): Observable<Unit> {
+
         val observableDb = db.formDetailsDao().getFormsWithSections()
         val observableApi = apiInterface.getForms()
+
+        // todo fix this as it does not work as expected. nulls are not treated as return values.
+        //  instead it throws a NullPointerException.
         return Observable.zip(
             observableDb.onErrorReturn { null },
             observableApi.onErrorReturn { null },
@@ -180,7 +188,8 @@ class Repository : KoinComponent {
         apiFormDetails.forEach { apiForm ->
             val dbForm = dbFormDetails.find { it.form.id == apiForm.id }
             if (dbForm != null && (apiForm.formVersion != dbForm.form.formVersion ||
-                        apiForm.order != dbForm.form.order)) {
+                        apiForm.order != dbForm.form.order)
+            ) {
                 deleteFormDetails(dbForm.form)
                 saveFormDetails(apiForm)
             }
@@ -236,25 +245,31 @@ class Repository : KoinComponent {
             })
     }
 
-
     @SuppressLint("CheckResult")
-    fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
+    fun syncAnswers(
+        countyCode: String,
+        pollingStationNumber: Int,
+        formId: Int
+    ): Observable<Boolean> {
+        return db.formDetailsDao()
+            .getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
             .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
+            .subscribeOn(Schedulers.io())
+            .flatMap {
                 syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                Observable.create<Unit> {
+            }
+            .map { it.successOrThrow() }
+            .flatMap {
+                Completable.fromAction {
+                    logD("saving the forms details to db for stationNr:$pollingStationNumber", TAG)
                     db.formDetailsDao()
                         .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            }, {
-                Log.i(TAG, it.message ?: "Error on synchronizing data")
-            })
+
+                }.andThen(Observable.just(it))
+            }
     }
 
-    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<ResponseBody> {
+    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<Response<Void>> {
         val responseAnswerContainer = ResponseAnswerContainer()
         responseAnswerContainer.answers = list.map {
             it.answeredQuestion.options = it.selectedAnswers

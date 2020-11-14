@@ -3,6 +3,7 @@ package ro.code4.monitorizarevot.helper
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -14,13 +15,17 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.*
+import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.text.util.Linkify
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.EditText
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -45,6 +50,7 @@ import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 fun String.createMultipart(name: String): MultipartBody.Part {
@@ -445,6 +451,36 @@ fun Context.browse(url: String, newTask: Boolean = false): Boolean {
     } catch (e: ActivityNotFoundException) {
         return false
     }
+}
+
+fun Activity.createAndShowDialog(
+    message: String,
+    callback:() -> Unit,
+    title: String = getString(R.string.error_generic)
+): AlertDialog? {
+
+    val s = SpannableString(message)
+
+    //added a TextView
+    val tx1 = TextView(this)
+    tx1.text = s
+    tx1.autoLinkMask = Activity.RESULT_OK
+    tx1.movementMethod = LinkMovementMethod.getInstance()
+    val valueInPixels = resources.getDimension(R.dimen.big_margin).toInt()
+    tx1.setPadding(valueInPixels, valueInPixels, valueInPixels, valueInPixels)
+
+    Linkify.addLinks(s, Linkify.PHONE_NUMBERS)
+    val builder = AlertDialog.Builder(this)
+    return builder.setTitle(title)
+        .setCancelable(false)
+        .setPositiveButton(R.string.push_notification_ok)
+        { p0, _ -> p0.dismiss() }
+        .setCancelable(false)
+        .setOnDismissListener {
+            callback()
+        }
+        .setView(tx1)
+        .show()
 }
 
 @Suppress("NOTHING_TO_INLINE")
