@@ -80,11 +80,11 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             noteFileContainer.visibility = View.VISIBLE
             noteFileContainer.removeAllViews()
             it.forEach { filename ->
-                val newTexView = requireActivity().layoutInflater.inflate(
+                val newTextView = requireActivity().layoutInflater.inflate(
                     R.layout.include_note_filename, noteFileContainer, false
                 ) as TextView
-                newTexView.text = filename
-                noteFileContainer.addView(newTexView)
+                newTextView.text = filename
+                noteFileContainer.addView(newTextView)
             }
         })
         viewModel.submitCompleted().observe(this, Observer {
@@ -152,7 +152,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                     viewModel.addMediaToGallery()
                 }
                 REQUEST_CODE_GALLERY -> {
-                    viewModel.addMediaFromGallery(data?.data)
+                    viewModel.addMediaFromGallery(data?.clipData, data?.data)
                 }
             }
         }
