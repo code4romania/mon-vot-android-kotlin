@@ -118,7 +118,7 @@ class NoteViewModel : BaseFormViewModel() {
             filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
             if (hasFailedFiles) {
                 messageIdToastLiveData.postValue(
-                    app.getString(R.string.error_permission_external_storage)
+                    app.getString(R.string.error_note_file_copy_multiple)
                 )
             }
         } else if (uri != null) {
@@ -126,7 +126,7 @@ class NoteViewModel : BaseFormViewModel() {
                 noteFiles.add(it)
                 filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
             } ?: messageIdToastLiveData.postValue(
-                app.getString(R.string.error_permission_external_storage)
+                app.getString(R.string.error_note_file_copy_single)
             )
         }
     }
