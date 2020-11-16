@@ -113,7 +113,8 @@
     <string name="note_description_hint">Type here</string>
     <string name="note_media">Add photo or video</string>
     <string name="invalid_note">Add a description or choose a file</string>
-    <string name="error_permission_external_storage">We need your permission to select a resource</string>
+    <string name="error_note_file_copy_single">Unable to attach the file. Check the app permissions and the storage space available</string>
+    <string name="error_note_file_copy_multiple">Unable to attach some of the files. Check the app permissions and the storage space available</string>
     <string name="note_gallery">Load from gallery</string>
     <string name="note_photo">Take photo</string>
     <string name="note_video">Record video</string>

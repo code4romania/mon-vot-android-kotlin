@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot.ui.notes
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -17,6 +18,7 @@ import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.adapters.helper.SectionListItem
 import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
+import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.FileUtils
 import ro.code4.monitorizarevot.helper.SingleLiveEvent
 import ro.code4.monitorizarevot.helper.observeOnce
@@ -28,9 +30,9 @@ class NoteViewModel : BaseFormViewModel() {
 
     private val app: Application by inject()
     private val notesLiveData = MutableLiveData<ArrayList<ListItem>>()
-    private val fileNameLiveData = MutableLiveData<String>()
+    private val filesNamesLiveData = MutableLiveData<List<String>>()
     private val submitCompletedLiveData = SingleLiveEvent<Void>()
-    private var noteFile: File? = null
+    private val noteFiles = mutableListOf<File>()
     private val listObserver =
         Observer<List<Note>> { list ->
             processList(list)
@@ -43,7 +45,7 @@ class NoteViewModel : BaseFormViewModel() {
     }
 
     fun notes(): LiveData<ArrayList<ListItem>> = notesLiveData
-    fun fileName(): LiveData<String> = fileNameLiveData
+    fun filesNames(): LiveData<List<String>> = filesNamesLiveData
     fun submitCompleted(): SingleLiveEvent<Void> = submitCompletedLiveData
     private var selectedQuestion: Question? = null
     fun setData(question: Question?) {
@@ -68,7 +70,7 @@ class NoteViewModel : BaseFormViewModel() {
         note.pollingStationNumber = pollingStationNumber
         note.countyCode = countyCode
         note.description = text
-        note.uriPath = noteFile?.absolutePath
+        note.uriPath = concatFilePathsOrNull()
         repository.saveNote(note)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -85,30 +87,61 @@ class NoteViewModel : BaseFormViewModel() {
         }
     }
 
-    fun getMediaFromGallery(uri: Uri?) {
-        uri?.let {
-            runCatching {
-                FileUtils.copyFileToCache(app, it)
-            }.getOrNull()?.let {
-                fileNameLiveData.postValue(it.name)
-                noteFile?.delete()
-                noteFile = it
+    private fun concatFilePathsOrNull(): String? {
+        val joinedPaths =
+            noteFiles.joinToString(separator = Constants.FILES_PATHS_SEPARATOR) { it.absolutePath }
+        return if (joinedPaths.isEmpty()) null else joinedPaths
+    }
+
+    /**
+     * Makes copies of the file/files selected by the user so they are available as a note upload. Depending
+     * on the user selection, only one of the parameters will be initialized.
+     *
+     * @param clipData non null if the user selects multiple files
+     * @param uri non null if the user selects a single file
+     */
+    fun addMediaFromGallery(clipData: ClipData?, uri: Uri?) {
+        if (clipData != null) {
+            if (clipData.itemCount == 0) return
+            // flag which will indicate if there was a problem with processing any of the files, so we can
+            // show an error to the user at the end
+            var hasFailedFiles = false
+            for (cdItemPosition in 0 until clipData.itemCount) {
+                val fileSaveStatus = runCatching {
+                    FileUtils.copyFileToCache(app, clipData.getItemAt(cdItemPosition).uri)
+                }
+                if (fileSaveStatus.exceptionOrNull() != null) {
+                    hasFailedFiles = true
+                }
+                fileSaveStatus.getOrNull()?.let { noteFiles.add(it) }
+            }
+            filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
+            if (hasFailedFiles) {
+                messageIdToastLiveData.postValue(
+                    app.getString(R.string.error_note_file_copy_multiple)
+                )
+            }
+        } else if (uri != null) {
+            runCatching { FileUtils.copyFileToCache(app, uri) }.getOrNull()?.let {
+                noteFiles.add(it)
+                filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
             } ?: messageIdToastLiveData.postValue(
-                app.getString(R.string.error_permission_external_storage)
+                app.getString(R.string.error_note_file_copy_single)
             )
         }
     }
 
-    fun addFile(file: File?) {
-        noteFile = file
+    fun addUserGeneratedFile(file: File?) {
+        file?.let { noteFiles.add(it) }
     }
 
     fun addMediaToGallery() {
-        fileNameLiveData.postValue(noteFile?.name)
+        filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-        val contentUri = Uri.fromFile(noteFile)
-        mediaScanIntent.data = contentUri
-        app.sendBroadcast(mediaScanIntent)
+        noteFiles.forEach {
+            val contentUri = Uri.fromFile(it)
+            mediaScanIntent.data = contentUri
+            app.sendBroadcast(mediaScanIntent)
+        }
     }
-
 }

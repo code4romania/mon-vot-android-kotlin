@@ -25,6 +25,7 @@ import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
@@ -180,7 +181,8 @@ class Repository : KoinComponent {
         apiFormDetails.forEach { apiForm ->
             val dbForm = dbFormDetails.find { it.form.id == apiForm.id }
             if (dbForm != null && (apiForm.formVersion != dbForm.form.formVersion ||
-                        apiForm.order != dbForm.form.order)) {
+                        apiForm.order != dbForm.form.order)
+            ) {
                 deleteFormDetails(dbForm.form)
                 saveFormDetails(apiForm)
             }
@@ -298,14 +300,25 @@ class Repository : KoinComponent {
         }
 
     private fun postNote(note: Note): Observable<ResponseBody> {
-        val noteFile = note.uriPath?.let { File(it) }
-        val body: MultipartBody.Part? = noteFile?.let {
-            MultipartBody.Part.createFormData(
-                "file",
-                it.name,
-                it.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            )
-        }
+        val noteFiles = note.uriPath?.let {
+            if (it.isEmpty()) return@let null
+            val filePaths = it.split(Constants.FILES_PATHS_SEPARATOR)
+            if (filePaths.isEmpty()) null else filePaths.map { path -> File(path) }
+        }?.filter { it.exists() }
+        Log.d(TAG, "Files to be uploaded with note: ${noteFiles?.map { it.absolutePath }}")
+        val body: Array<MultipartBody.Part>? = noteFiles?.let { paths ->
+            mutableListOf<MultipartBody.Part>().apply {
+                paths.forEach { file ->
+                    this.add(
+                        MultipartBody.Part.createFormData(
+                            "files",
+                            file.name,
+                            file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                        )
+                    )
+                }
+            }
+        }?.toTypedArray()
         val questionId = note.questionId ?: 0
 
         return apiInterface.postNote(
@@ -317,7 +330,7 @@ class Repository : KoinComponent {
         ).doOnNext {
             note.synced = true
             db.noteDao().updateNote(note)
-            noteFile?.delete()
+            noteFiles?.forEach { uploadedFile -> uploadedFile.delete() }
         }
     }
 

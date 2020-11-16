@@ -113,7 +113,8 @@
     <string name="note_description_hint">Scrie aici</string>
     <string name="note_media">Adaugă foto/video</string>
     <string name="invalid_note">Introdu o descriere sau alege un fişier</string>
-    <string name="error_permission_external_storage">Permisiunea este necesară pentru a putea selecta o resursă</string>
+    <string name="error_note_file_copy_single">Fișierul nu a putut fi atașat. Verificați permisiunile aplicației și spațiul de stocare disponibil</string>
+    <string name="error_note_file_copy_multiple">Unele fișiere nu au putut fi atașate. Verificați permisiunile aplicației și spațiul de stocare disponibil</string>
     <string name="note_gallery">Încarcă din galerie</string>
     <string name="note_photo">Fotografiază</string>
     <string name="note_video">Înregistrează video</string>

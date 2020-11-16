@@ -14,6 +14,8 @@ import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
@@ -33,7 +35,6 @@ import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
@@ -59,6 +60,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val noteFileContainer = view.findViewById<LinearLayout>(R.id.noteFilesContainer)
         notesList.layoutManager = LinearLayoutManager(mContext)
         notesList.adapter = noteAdapter
         notesList.addItemDecoration(
@@ -74,10 +76,16 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
         viewModel.notes().observe(this, Observer {
             noteAdapter.items = it
         })
-        viewModel.fileName().observe(this, Observer {
-            filenameText.text = it
-            filenameText.visibility = View.VISIBLE
-            addMediaButton.visibility = View.GONE
+        viewModel.filesNames().observe(this, Observer {
+            noteFileContainer.visibility = View.VISIBLE
+            noteFileContainer.removeAllViews()
+            it.forEach { filename ->
+                val newTextView = requireActivity().layoutInflater.inflate(
+                    R.layout.include_note_filename, noteFileContainer, false
+                ) as TextView
+                newTextView.text = filename
+                noteFileContainer.addView(newTextView)
+            }
         })
         viewModel.submitCompleted().observe(this, Observer {
             activity?.onBackPressed()
@@ -122,11 +130,11 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 R.id.note_gallery -> openGallery()
                 R.id.note_photo -> {
                     val file = takePicture()
-                    viewModel.addFile(file)
+                    viewModel.addUserGeneratedFile(file)
                 }
                 R.id.note_video -> {
                     val file = takeVideo()
-                    viewModel.addFile(file)
+                    viewModel.addUserGeneratedFile(file)
                 }
             }
             true
@@ -144,7 +152,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                     viewModel.addMediaToGallery()
                 }
                 REQUEST_CODE_GALLERY -> {
-                    viewModel.getMediaFromGallery(data?.data)
+                    viewModel.addMediaFromGallery(data?.clipData, data?.data)
                 }
             }
         }

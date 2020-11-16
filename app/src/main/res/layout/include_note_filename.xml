@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/filenameText"
+    style="@style/Text.Small"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin"
+    android:drawableStart="@drawable/ic_file"
+    android:drawablePadding="@dimen/small_margin"
+    tools:text="Frauda_0342.jpg" />
