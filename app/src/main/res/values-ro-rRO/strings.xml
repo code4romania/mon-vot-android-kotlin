@@ -88,7 +88,8 @@
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>
 
-    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
+    <string name="sync_info">Unele răspunsuri sau note nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
+    <string name="sync_info_success">Toate răspunsurile și notele au fost sincronizate cu succes</string>
     <string name="sync_manual">Sincronizează datele manual</string>
 
     <string name="form_sync_no_internet">Ai nevoie de o conexiune la internet pentru a sincroniza datele!</string>
