@@ -37,16 +37,16 @@ class QuestionsListFragment : ViewModelFragment<QuestionsViewModel>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        baseViewModel = getSharedViewModel(from = { parentFragment!! })
+        baseViewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.questions().observe(this, Observer {
+        viewModel.questions().observe(viewLifecycleOwner, Observer {
             questionAdapter.items = it
         })
-        viewModel.title().observe(this, Observer {
+        viewModel.title().observe(viewLifecycleOwner, Observer {
             baseViewModel.setTitle(it)
         })
         viewModel.setData(Parcels.unwrap<FormDetails>(arguments?.getParcelable((FORM))))
