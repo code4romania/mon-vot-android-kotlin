@@ -47,6 +47,9 @@ class Question {
 
     var hasNotes = false
 
+    @Expose
+    var orderNumber = 0
+
     override fun equals(other: Any?): Boolean =
         other is Question && id == other.id && text == other.text && code == other.code &&
                 questionType == other.questionType &&

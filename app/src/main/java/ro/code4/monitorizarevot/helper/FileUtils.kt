@@ -18,7 +18,7 @@ object FileUtils {
     @Throws(IOException::class)
     internal fun copyFileToCache(context: Context, uri: Uri): File =
         with(context) {
-            val directory = File(cacheDir, UPLOADS_DIR_NAME)
+            val directory = File(filesDir, UPLOADS_DIR_NAME)
             directory.mkdirs()
             File(
                 directory,

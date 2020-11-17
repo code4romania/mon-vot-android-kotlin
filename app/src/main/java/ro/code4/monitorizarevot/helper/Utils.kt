@@ -313,6 +313,7 @@ fun Fragment.openGallery() {
     intent.type = "image/*"
     val extraMime = arrayOf("image/*", "video/*")
     intent.putExtra(Intent.EXTRA_MIME_TYPES, extraMime)
+    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
     intent.addCategory(Intent.CATEGORY_OPENABLE)
     intent.resolveActivity(activity!!.packageManager)?.also {
         startActivityForResult(

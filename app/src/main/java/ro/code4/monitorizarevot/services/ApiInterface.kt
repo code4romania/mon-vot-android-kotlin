@@ -28,13 +28,12 @@ interface ApiInterface {
     fun postQuestionAnswer(@Body responseAnswer: ResponseAnswerContainer): Observable<ResponseBody>
 
     @Multipart
-    @POST("/api/v2/note/upload")
+    @POST("/api/v2/note")
     fun postNote(
-        @Part file: MultipartBody.Part?,
+        @Part files: Array<MultipartBody.Part>?,
         @Part countyCode: MultipartBody.Part,
         @Part pollingStationNumber: MultipartBody.Part,
         @Part questionId: MultipartBody.Part,
         @Part description: MultipartBody.Part
     ): Observable<ResponseBody>
-
 }
