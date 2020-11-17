@@ -126,4 +126,12 @@ interface FormsDao {
     @Query("SELECT COUNT(*) FROM answered_question WHERE  synced=:synced")
     fun getCountOfNotSyncedQuestions(synced: Boolean = false): LiveData<Int>
 
+    @Query("DELETE FROM answered_question")
+    fun deleteAllAnswers()
+    @Query("DELETE FROM question")
+    fun deleteAllQuestions()
+    @Query("DELETE FROM section")
+    fun deleteAllSections()
+    @Query("DELETE FROM form_details")
+    fun deleteAllForms()
 }
