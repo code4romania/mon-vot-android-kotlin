@@ -48,11 +48,11 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.forms().observe(this, Observer {
             formAdapter.items = it
-            updateSyncStatus()
+            updateSyncSuccessfulNotice()
         })
         viewModel.syncVisibility().observe(this, Observer {
             syncGroup.visibility = it
-            updateSyncStatus()
+            updateSyncSuccessfulNotice()
         })
 
         viewModel.setTitle(getString(R.string.title_forms_list))
@@ -84,18 +84,16 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
     }
 
     /**
-     * Update the status of the sync indicators based on the values of the LiveDatas for forms and the sync
-     * Button. If we only use the syncVisibility() LiveData then we could get into a situation when the
-     * syncVisibility LiveData will trigger before the forms LiveData and we will have an empty screen which
-     * shows that everything is synchronized(and the info views will also jump around after the forms will be
-     * added).
+     * Update the visibility of a successful sync indicator based on the values of the LiveDatas for forms
+     * and the sync Button. If we only use the syncVisibility() LiveData then we could get into a situation
+     * when the syncVisibility LiveData will trigger before the forms LiveData and we will have an empty
+     * screen which shows that everything is synchronized(and the info views will also jump around after the
+     * forms will be loaded).
      */
-    private fun updateSyncStatus() {
-        val newSyncVisibility = viewModel.syncVisibility().value
+    private fun updateSyncSuccessfulNotice() {
+        val visibilityOfSyncBtn = viewModel.syncVisibility().value
         val areFormsVisible = viewModel.forms().value?.let { true } ?: false
-        newSyncVisibility?.let {
-            // remember that the sync visibility we use it's for the sync button so the success info will use
-            // the complementary visibility(ex: received View.VISIBLE should set View.GONE)
+        visibilityOfSyncBtn?.let {
             when (it) {
                 View.VISIBLE -> syncSuccessGroup.visibility = View.GONE
                 View.GONE -> syncSuccessGroup.visibility =

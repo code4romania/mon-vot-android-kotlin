@@ -36,6 +36,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/syncInfo"
+            app:layout_constraintVertical_bias="0"
             app:srcCompat="@drawable/ic_sync_label_icon" />
 
         <TextView
@@ -84,7 +85,6 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/syncInfoSuccess"
-            app:layout_constraintTop_toBottomOf="@id/formsList"
             app:srcCompat="@drawable/ic_synced" />
 
         <TextView
@@ -92,14 +92,16 @@
             style="@style/Text.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
             android:layout_marginBottom="@dimen/big_margin"
             android:paddingStart="@dimen/small_margin"
             android:paddingEnd="@dimen/small_margin"
             android:text="@string/sync_info_success"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/syncIconSuccess"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/formsList" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/syncSuccessGroup"
