@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -79,12 +80,16 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
         viewModel.filesNames().observe(viewLifecycleOwner, Observer {
             noteFileContainer.visibility = View.VISIBLE
             noteFileContainer.removeAllViews()
-            it.forEach { filename ->
-                val newTextView = requireActivity().layoutInflater.inflate(
+            it.forEachIndexed { index, filename ->
+                val attachmentView = requireActivity().layoutInflater.inflate(
                     R.layout.include_note_filename, noteFileContainer, false
-                ) as TextView
-                newTextView.text = filename
-                noteFileContainer.addView(newTextView)
+                ).also { view ->
+                    view.findViewById<TextView>(R.id.filenameText).text = filename
+                    view.findViewById<ImageButton>(R.id.deleteFile).setOnClickListener {
+                        viewModel.deleteFile(filename, index)
+                    }
+                }
+                noteFileContainer.addView(attachmentView)
             }
         })
         viewModel.submitCompleted().observe(this, Observer {

@@ -43,9 +43,13 @@ object FileUtils {
             contentResolver.query(uri, null, null, null, null)
                 ?.let { cursor ->
                     cursor.run {
-                        if (moveToFirst())
-                            getString(getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                        else null
+                        if (moveToFirst()) {
+                            getString(getColumnIndex(OpenableColumns.DISPLAY_NAME))?.let { name ->
+                                "${System.currentTimeMillis()}_${name}"
+                            }
+                        } else {
+                            null
+                        }
                     }.also { cursor.close() }
                 }
         }.getOrNull()
