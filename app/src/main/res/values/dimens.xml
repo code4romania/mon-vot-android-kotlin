@@ -61,5 +61,6 @@
 
     <dimen name="login_logo_icon_size">26dp</dimen>
     <dimen name="small_icon_size">16dp</dimen>
+    <dimen name="medium_icon_size">32dp</dimen>
     <dimen name="circle_indicator">10dp</dimen>
 </resources>
