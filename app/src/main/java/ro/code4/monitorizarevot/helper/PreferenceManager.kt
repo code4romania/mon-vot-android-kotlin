@@ -71,9 +71,13 @@ fun SharedPreferences.setLastDbResetTimestamp(value: Long) = putLong(PREFS_LAST_
 
 fun SharedPreferences.clearUserPrefs() = run {
     completedPollingStationConfig(false)
+    removeCurrentLocationPrefs()
+    deleteToken()
+}
+
+private fun SharedPreferences.removeCurrentLocationPrefs() {
     val editor = edit()
     editor.remove(PREFS_COUNTY_CODE)
     editor.remove(PREFS_POLLING_STATION_NUMBER)
     editor.apply()
-    deleteToken()
 }

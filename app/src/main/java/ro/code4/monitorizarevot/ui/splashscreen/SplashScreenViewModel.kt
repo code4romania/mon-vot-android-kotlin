@@ -23,27 +23,21 @@ class SplashScreenViewModel : BaseViewModel() {
     }
 
     private fun remoteConfiguration() {
-        try {
-            FirebaseRemoteConfig.getInstance().apply {
-                val configSettings = FirebaseRemoteConfigSettings.Builder()
-                    .build()
-                setConfigSettingsAsync(configSettings)
-                setDefaultsAsync(R.xml.remote_config_defaults)
-                fetch(if (BuildConfig.DEBUG) 0 else 3600)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            FirebaseRemoteConfig.getInstance().activate()
-                        }
-                        checkResetDB()
-                        checkLogin()
+
+        FirebaseRemoteConfig.getInstance().apply {
+            val configSettings = FirebaseRemoteConfigSettings.Builder()
+                .build()
+            setConfigSettingsAsync(configSettings)
+            setDefaultsAsync(R.xml.remote_config_defaults)
+            fetchAndActivate()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        FirebaseRemoteConfig.getInstance().activate()
                     }
-
-            }
-        } catch (e: Exception) {
-            checkResetDB()
-            checkLogin()
+                    checkResetDB()
+                }
         }
-
+        checkLogin()
     }
 
     private fun checkLogin() {
