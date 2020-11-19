@@ -134,7 +134,13 @@ class NoteViewModel : BaseFormViewModel() {
     fun deleteFile(filename: String, position: Int) {
         val targetFiles = noteFiles.filter { it.absolutePath.endsWith("/$filename") }
         if (targetFiles.isNotEmpty() && targetFiles.size == 1) {
-            targetFiles[0].delete()
+            try {
+                targetFiles[0].delete()
+            } catch (ex: Exception) {
+                // ignored
+                // this try-catch block will prevent the app from crashing if the file can't be deleted(which
+                // is ok because we dereference the file below and it is safe to remain on disk)
+            }
         }
         noteFiles = noteFiles.filterIndexed { index, _ -> index != position }.toMutableList()
         filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
