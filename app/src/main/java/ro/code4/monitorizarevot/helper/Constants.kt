@@ -23,6 +23,7 @@ object Constants {
     const val REMOTE_CONFIG_PRIVACY_POLICY_URL = "privacy_policy_url"
     const val REMOTE_CONFIG_OBSERVER_GUIDE_URL = "observer_guide_url"
     const val REMOTE_CONFIG_SAFETY_GUIDE_URL = "safety_guide_url"
+    const val REMOTE_CONFIG_ROUND_START_TIMESTAMP = "round_start_time"
 
     const val PUSH_NOTIFICATION_TITLE = "title"
     const val PUSH_NOTIFICATION_BODY = "body"

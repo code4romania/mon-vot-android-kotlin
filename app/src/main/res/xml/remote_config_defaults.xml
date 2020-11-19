@@ -4,4 +4,8 @@
         <key>filter_diaspora_forms</key>
         <value>false</value>
     </entry>
+    <entry>
+        <key>round_start_time</key>
+        <value>1605534872</value>
+    </entry>
 </defaultsMap>

@@ -28,4 +28,7 @@ interface NoteDao {
 
     @Query("SELECT COUNT(*) FROM note WHERE synced =:synced")
     fun getCountOfNotSyncedNotes(synced: Boolean = false): LiveData<Int>
+
+    @Query("DELETE FROM note")
+    fun deleteAll()
 }

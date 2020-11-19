@@ -28,4 +28,7 @@ interface PollingStationDao {
 
     @Query("SELECT COUNT(*) FROM polling_station WHERE synced =:synced")
     fun getCountOfNotSyncedPollingStations(synced: Boolean = false): LiveData<Int>
+
+    @Query("DELETE FROM polling_station")
+    fun deleteAll()
 }

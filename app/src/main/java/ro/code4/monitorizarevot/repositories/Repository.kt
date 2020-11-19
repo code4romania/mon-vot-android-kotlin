@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.repositories
 
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
@@ -393,6 +394,19 @@ class Repository : KoinComponent {
             .flatMap { Observable.fromIterable(it) }
             .flatMap { postPollingStationDetails(it) }
             .subscribeOn(Schedulers.io())
+    }
+
+    fun clearDBData() {
+        AsyncTask.execute {
+            db.noteDao().deleteAll()
+
+            db.formDetailsDao().deleteAllAnswers()
+            db.formDetailsDao().deleteAllQuestions()
+            db.formDetailsDao().deleteAllSections()
+            db.formDetailsDao().deleteAllForms()
+
+            db.pollingStationDao().deleteAll()
+        }
     }
 }
 
