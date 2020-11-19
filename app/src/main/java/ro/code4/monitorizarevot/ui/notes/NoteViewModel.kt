@@ -32,7 +32,7 @@ class NoteViewModel : BaseFormViewModel() {
     private val notesLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val filesNamesLiveData = MutableLiveData<List<String>>()
     private val submitCompletedLiveData = SingleLiveEvent<Void>()
-    private val noteFiles = mutableListOf<File>()
+    private var noteFiles = mutableListOf<File>()
     private val listObserver =
         Observer<List<Note>> { list ->
             processList(list)
@@ -129,6 +129,21 @@ class NoteViewModel : BaseFormViewModel() {
                 app.getString(R.string.error_note_file_copy_single)
             )
         }
+    }
+
+    fun deleteFile(filename: String, position: Int) {
+        val targetFiles = noteFiles.filter { it.absolutePath.endsWith("/$filename") }
+        if (targetFiles.isNotEmpty() && targetFiles.size == 1) {
+            try {
+                targetFiles[0].delete()
+            } catch (ex: Exception) {
+                // ignored
+                // this try-catch block will prevent the app from crashing if the file can't be deleted(which
+                // is ok because we dereference the file below and it is safe to remain on disk)
+            }
+        }
+        noteFiles = noteFiles.filterIndexed { index, _ -> index != position }.toMutableList()
+        filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
     }
 
     fun addUserGeneratedFile(file: File?) {
