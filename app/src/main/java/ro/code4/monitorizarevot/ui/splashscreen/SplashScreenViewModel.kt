@@ -30,10 +30,7 @@ class SplashScreenViewModel : BaseViewModel() {
             setConfigSettingsAsync(configSettings)
             setDefaultsAsync(R.xml.remote_config_defaults)
             fetchAndActivate()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        FirebaseRemoteConfig.getInstance().activate()
-                    }
+                .addOnCompleteListener {
                     checkResetDB()
                 }
         }
