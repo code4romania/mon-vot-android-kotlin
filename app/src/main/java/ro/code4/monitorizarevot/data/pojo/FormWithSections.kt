@@ -7,7 +7,7 @@ import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Section
 
 
-class FormWithSections {
+open class FormWithSections {
     @Embedded
     lateinit var form: FormDetails
 
@@ -16,7 +16,6 @@ class FormWithSections {
 
     @Ignore
     var noAnsweredQuestions: Int = 0
-
 
     override fun equals(other: Any?): Boolean =
         other is FormWithSections && form == other.form && sections.map { sections } == other.sections.map { sections } && noAnsweredQuestions == other.noAnsweredQuestions
@@ -28,3 +27,5 @@ class FormWithSections {
         return result
     }
 }
+
+class ErrorFormWithSections(exception: Throwable) : FormWithSections()
