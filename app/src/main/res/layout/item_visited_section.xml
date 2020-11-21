@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MaterialCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/visitedStation"
+        style="@style/Text.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin"
+        android:paddingTop="@dimen/big_margin"
+        android:paddingEnd="@dimen/margin"
+        android:paddingBottom="@dimen/big_margin"
+        tools:text="Station 12 Bucharest" />
+
+</com.google.android.material.card.MaterialCardView>

@@ -3,7 +3,9 @@ package ro.code4.monitorizarevot.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import ro.code4.monitorizarevot.data.model.PollingStation
+import ro.code4.monitorizarevot.data.pojo.CountyAndPollingStation
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 
 @Dao
@@ -31,4 +33,7 @@ interface PollingStationDao {
 
     @Query("DELETE FROM polling_station")
     fun deleteAll()
+    
+    @Query("SELECT * FROM polling_station WHERE observerArrivalTime NOT NULL")
+    fun getVisitedPollingStations(): Observable<List<CountyAndPollingStation>>
 }

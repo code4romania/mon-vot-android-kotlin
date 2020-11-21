@@ -1,6 +1,7 @@
 package ro.code4.monitorizarevot.ui.section
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_polling_station.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -19,9 +20,15 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
 
     override val viewModel: PollingStationViewModel by viewModel()
 
+    private var countyName: String? = null
+    private var pollingStationId = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
+        countyName = intent.getStringExtra(EXTRA_COUNTY_NAME)
+        pollingStationId = intent.getIntExtra(EXTRA_POLLING_STATION_ID, -1)
+
         viewModel.title().observe(this, Observer {
             title = it
         })
@@ -36,8 +43,19 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
                 tag = PollingStationDetailsFragment.TAG
             )
         })
-        replaceFragment(R.id.container, PollingStationSelectionFragment())
+        replaceFragment(R.id.container, PollingStationSelectionFragment().apply {
+            if (countyName != null && pollingStationId > 0) {
+                arguments = bundleOf(
+                    EXTRA_COUNTY_NAME to countyName,
+                    EXTRA_POLLING_STATION_ID to pollingStationId
+                )
+            }
+        })
     }
 
+    companion object {
+        const val EXTRA_COUNTY_NAME = "extra_county_name"
+        const val EXTRA_POLLING_STATION_ID = "extra_polling_station_id"
+    }
 
 }

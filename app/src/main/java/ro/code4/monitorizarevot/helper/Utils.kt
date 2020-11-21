@@ -38,10 +38,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.interfaces.ExcludeFromCodeCoverage
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
+import ro.code4.monitorizarevot.ui.section.VisitedPollingStationsActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,8 +84,17 @@ fun FragmentManager.replaceFragment(
     ft.commit()
 }
 
-fun AppCompatActivity.changePollingStation() {
-    startActivity(Intent(this, PollingStationActivity::class.java))
+fun AppCompatActivity.changePollingStation(county: County? = null, pollingStationId: Int = -1) {
+    val intent = Intent(this, PollingStationActivity::class.java)
+    if (county != null && pollingStationId > 0) {
+        intent.putExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, pollingStationId)
+        intent.putExtra(PollingStationActivity.EXTRA_COUNTY_NAME, county.name)
+    }
+    startActivity(intent)
+}
+
+fun AppCompatActivity.showVisitedPollingStations() {
+    startActivity(Intent(this, VisitedPollingStationsActivity::class.java))
 }
 
 fun Calendar.updateTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {

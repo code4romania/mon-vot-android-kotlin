@@ -10,8 +10,9 @@ import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
+import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
+import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
@@ -38,6 +39,8 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     lateinit var parentViewModel: PollingStationViewModel
 
     private lateinit var countySpinnerAdapter: ArrayAdapter<String>
+    private var countyCode: String? = null
+    private var pollingStationId = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,12 +52,15 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         countySpinnerAdapter =
             ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        countyCode = arguments?.getString(PollingStationActivity.EXTRA_COUNTY_NAME)
+        pollingStationId =
+            arguments?.getInt(PollingStationActivity.EXTRA_POLLING_STATION_ID, -1) ?: -1
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        viewModel.counties().observe(viewLifecycleOwner, Observer {
+        val countiesSource = viewModel.counties()
+        countiesSource.observe(viewLifecycleOwner, Observer {
             it.handle(
                 onSuccess = { counties ->
                     progressDialog.dismiss()
@@ -77,6 +83,20 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             pollingStationNumber.setText(it.second.toString())
             pollingStationNumber.setSelection(it.second.toString().length)
             pollingStationNumber.isEnabled = true
+
+            if (countyCode != null && pollingStationId > 0) {
+                val counties = countiesSource.value?.let { countiesResult ->
+                    if (countiesResult is Result.Success) {
+                        countiesResult.data
+                    } else null
+                }
+                val targetIndex =
+                    counties?.indexOfFirst { countyName -> countyName == countyCode } ?: -1
+                if (targetIndex >= 0) {
+                    countySpinner.setSelection(targetIndex)
+                    pollingStationNumber.setText(pollingStationId.toString())
+                }
+            }
         })
     }
 
