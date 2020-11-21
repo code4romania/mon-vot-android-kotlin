@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.section
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,16 +12,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.activity_polling_station.toolbar
 import kotlinx.android.synthetic.main.activity_visited_polling_stations.*
-import kotlinx.android.synthetic.main.activity_visited_polling_stations.syncButton
-import kotlinx.android.synthetic.main.activity_visited_polling_stations.syncGroup
-import kotlinx.android.synthetic.main.activity_visited_polling_stations.syncSuccessGroup
-import kotlinx.android.synthetic.main.fragment_forms.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.VisitedStationsAdapter
-import ro.code4.monitorizarevot.analytics.Event
-import ro.code4.monitorizarevot.analytics.Param
-import ro.code4.monitorizarevot.analytics.ParamKey
 import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.isOnline
@@ -38,7 +32,22 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
         setSupportActionBar(toolbar)
 
         visitedStationsAdapter = VisitedStationsAdapter(this) { station ->
-            changePollingStation(station.countyOrNull(), station.idPollingStation)
+            if (callingActivity?.className == PollingStationActivity::class.java.name) {
+                val data = Intent().apply {
+                    putExtra(
+                        PollingStationActivity.EXTRA_COUNTY_NAME,
+                        station.countyOrNull()?.name
+                    )
+                    putExtra(
+                        PollingStationActivity.EXTRA_POLLING_STATION_ID,
+                        station.idPollingStation
+                    )
+                }
+                setResult(RESULT_OK, data)
+                finish()
+            } else {
+                changePollingStation(station.countyOrNull(), station.idPollingStation)
+            }
         }
         visitedStations.apply {
             layoutManager = LinearLayoutManager(this@VisitedPollingStationsActivity)

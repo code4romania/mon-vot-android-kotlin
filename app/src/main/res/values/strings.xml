@@ -61,6 +61,7 @@
     <string name="polling_station_spinner_choose">Choose</string>
     <string name="polling_station_number_hint">Fill in your polling station number</string>
     <string name="button_continue">Continue</string>
+    <string name="button_select_visited">Select from visited stations</string>
 
     <string name="invalid_polling_station_county">Choose the county/district</string>
     <string name="invalid_polling_station_number">Fill in the polling station number</string>

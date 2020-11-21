@@ -1,6 +1,8 @@
 package ro.code4.monitorizarevot.ui.section.selection
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -14,6 +16,7 @@ import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
+import ro.code4.monitorizarevot.ui.section.VisitedPollingStationsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
@@ -23,10 +26,6 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         ProgressDialogFragment().also {
             it.isCancelable = false
         }
-    }
-
-    companion object {
-        val TAG = PollingStationSelectionFragment::class.java.simpleName
     }
 
     override val layout: Int
@@ -93,8 +92,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
                 val targetIndex =
                     counties?.indexOfFirst { countyName -> countyName == countyCode } ?: -1
                 if (targetIndex >= 0) {
-                    countySpinner.setSelection(targetIndex)
-                    pollingStationNumber.setText(pollingStationId.toString())
+                    updateSelectionDisplay(targetIndex)
                 }
             }
         })
@@ -124,7 +122,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-        setContinueButton()
+        setupActionButtons()
         viewModel.getCounties()
     }
 
@@ -134,10 +132,39 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         countySpinnerAdapter.notifyDataSetChanged()
     }
 
-
-    private fun setContinueButton() {
+    private fun setupActionButtons() {
         continueButton.setOnClickListener {
             parentViewModel.validPollingStationInput(pollingStationNumber.text)
         }
+        visitedStationsButton.setOnClickListener {
+            val intent = Intent(requireContext(), VisitedPollingStationsActivity::class.java)
+            startActivityForResult(intent, CHOOSE_SECTION_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_SECTION_CODE) {
+            val newCountyCode = data?.getStringExtra(PollingStationActivity.EXTRA_COUNTY_NAME)
+            val newPollingStationNr =
+                data?.getIntExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, -1) ?: -1
+            if (newCountyCode != null && newPollingStationNr > 0) {
+                for (i in 0 until countySpinnerAdapter.count) {
+                    if (countySpinnerAdapter.getItem(i) == newCountyCode) {
+                        updateSelectionDisplay(i)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateSelectionDisplay(position: Int) {
+        countySpinner.setSelection(position)
+        pollingStationNumber.setText(pollingStationId.toString())
+    }
+
+    companion object {
+        val TAG = PollingStationSelectionFragment::class.java.simpleName
+        const val CHOOSE_SECTION_CODE = 1000
     }
 }
