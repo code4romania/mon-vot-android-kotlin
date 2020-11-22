@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,11 +23,9 @@ import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
+import ro.code4.monitorizarevot.data.model.response.PostNoteResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
-import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
-import ro.code4.monitorizarevot.data.pojo.FormWithSections
-import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
-import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.data.pojo.*
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
@@ -49,6 +49,8 @@ class Repository : KoinComponent {
     private val apiInterface: ApiInterface by lazy {
         retrofit.create(ApiInterface::class.java)
     }
+
+    private val postTypeToken = object : TypeToken<PostNoteResponse>() {}.type
 
     private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
@@ -330,10 +332,16 @@ class Repository : KoinComponent {
             note.description.createMultipart("Text")
         ).doOnNext {
             note.synced = true
+            note.uriPath = combineApiFilesUrls(it)
             db.noteDao().updateNote(note)
             noteFiles?.forEach { uploadedFile -> uploadedFile.delete() }
         }
     }
+
+    private fun combineApiFilesUrls(response: ResponseBody): String? = kotlin.runCatching {
+        val parsedResponse = Gson().fromJson<PostNoteResponse>(response.charStream(), postTypeToken)
+        parsedResponse.filesAddress.joinToString(separator = Constants.FILES_PATHS_SEPARATOR)
+    }.getOrNull()
 
     @SuppressLint("CheckResult")
     fun syncData() {
@@ -408,5 +416,6 @@ class Repository : KoinComponent {
             db.pollingStationDao().deleteAll()
         }
     }
+
 }
 

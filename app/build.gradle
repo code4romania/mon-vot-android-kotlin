@@ -154,6 +154,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Unit tests
     testImplementation 'junit:junit:4.13'

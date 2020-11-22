@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.parceler.Parcel
 import java.util.*
 
 @Entity(
@@ -19,6 +20,7 @@ import java.util.*
     )],
     indices = [Index(value = ["countyCode", "pollingStationNumber", "questionId"], unique = false)]
 )
+@Parcel(Parcel.Serialization.FIELD)
 class Note {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

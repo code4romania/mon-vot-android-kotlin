@@ -16,6 +16,7 @@ import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.adapters.helper.SectionListItem
+import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.Constants
@@ -48,8 +49,11 @@ class NoteViewModel : BaseFormViewModel() {
     fun filesNames(): LiveData<List<String>> = filesNamesLiveData
     fun submitCompleted(): SingleLiveEvent<Void> = submitCompletedLiveData
     private var selectedQuestion: Question? = null
-    fun setData(question: Question?) {
+    private var noteIdentifier: Pair<FormDetails, Question>? = null
+
+    fun setData(question: Question?, identifier: Pair<FormDetails, Question>?) {
         selectedQuestion = question
+        noteIdentifier = identifier
         repository.getNotes(countyCode, pollingStationNumber, selectedQuestion)
             .observeOnce(listObserver)
     }
@@ -58,7 +62,11 @@ class NoteViewModel : BaseFormViewModel() {
         if (notes.isNotEmpty()) {
             val list = ArrayList<ListItem>(notes.size + 1)
             list.add(SectionListItem(R.string.notes_history))
-            list.addAll(notes.map { NoteListItem(it) })
+            list.addAll(notes.map {
+                NoteListItem(it, noteIdentifier?.let { pairFdQ ->
+                    NoteFormQuestionCodes(pairFdQ.first.code, pairFdQ.second.code)
+                })
+            })
             notesLiveData.postValue(list)
         }
     }

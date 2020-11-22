@@ -27,6 +27,7 @@ import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
 import ro.code4.monitorizarevot.ui.guide.GuideViewModel
 import ro.code4.monitorizarevot.ui.login.LoginViewModel
 import ro.code4.monitorizarevot.ui.main.MainViewModel
+import ro.code4.monitorizarevot.ui.notes.NoteDetailsViewModel
 import ro.code4.monitorizarevot.ui.notes.NoteViewModel
 import ro.code4.monitorizarevot.ui.onboarding.OnboardingViewModel
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
@@ -110,6 +111,7 @@ val viewModelsModule = module {
     viewModel { QuestionsViewModel() }
     viewModel { QuestionsDetailsViewModel() }
     viewModel { NoteViewModel() }
+    viewModel { NoteDetailsViewModel() }
     viewModel { GuideViewModel() }
     viewModel { SplashScreenViewModel() }
 }
