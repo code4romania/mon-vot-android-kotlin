@@ -1,7 +1,6 @@
 package ro.code4.monitorizarevot.ui.forms
 
 import android.annotation.SuppressLint
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,7 +25,7 @@ class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
-    private val syncVisibilityLiveData = MediatorLiveData<Int>()
+    private val unSyncedDataCount = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
     private val pollingStationLiveData = MutableLiveData<PollingStationInfo>()
 
@@ -36,31 +35,23 @@ class FormsViewModel : BaseFormViewModel() {
     }
 
     private fun subscribe() {
-
         val notSyncedQuestionsCount = repository.getNotSyncedQuestions()
         val notSyncedNotesCount = repository.getNotSyncedNotes()
         val notSyncedPollingStationsCount = repository.getNotSyncedPollingStationsCount()
         fun update() {
-            syncVisibilityLiveData.value =
-                if ((notSyncedQuestionsCount.value ?: 0) + (notSyncedNotesCount.value
-                        ?: 0) + (notSyncedPollingStationsCount.value ?: 0) > 0
-                ) View.VISIBLE else View.GONE
+            unSyncedDataCount.value =
+                (notSyncedQuestionsCount.value ?: 0) + (notSyncedNotesCount.value ?: 0) +
+                        (notSyncedPollingStationsCount.value ?: 0)
         }
-        syncVisibilityLiveData.addSource(notSyncedQuestionsCount) {
-            update()
-        }
-        syncVisibilityLiveData.addSource(notSyncedNotesCount) {
-            update()
-        }
-        syncVisibilityLiveData.addSource(notSyncedPollingStationsCount) {
-            update()
-        }
+        unSyncedDataCount.addSource(notSyncedQuestionsCount) { update() }
+        unSyncedDataCount.addSource(notSyncedNotesCount) { update() }
+        unSyncedDataCount.addSource(notSyncedPollingStationsCount) { update() }
 
         disposables.add(Observable.combineLatest(
             repository.getAnswers(countyCode, pollingStationNumber),
             repository.getFormsWithQuestions(),
-            BiFunction<List<AnsweredQuestionPOJO>, List<FormWithSections>, Pair<List<AnsweredQuestionPOJO>, List<FormWithSections>>> {
-                    t1, t2 -> Pair(t1, t2)
+            BiFunction<List<AnsweredQuestionPOJO>, List<FormWithSections>, Pair<List<AnsweredQuestionPOJO>, List<FormWithSections>>> { t1, t2 ->
+                Pair(t1, t2)
             }
         ).subscribe {
             processList(it.first, it.second)
@@ -136,7 +127,7 @@ class FormsViewModel : BaseFormViewModel() {
         selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
     }
 
-    fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData
+    fun unSyncedDataCount(): LiveData<Int> = unSyncedDataCount
 
     fun sync() {
         repository.syncData()
