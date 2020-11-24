@@ -25,7 +25,7 @@ class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
-    private val unSyncedDataCount = MediatorLiveData<Int>()
+    private val unSyncedDataCountLiveData = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
     private val pollingStationLiveData = MutableLiveData<PollingStationInfo>()
 
@@ -39,13 +39,13 @@ class FormsViewModel : BaseFormViewModel() {
         val notSyncedNotesCount = repository.getNotSyncedNotes()
         val notSyncedPollingStationsCount = repository.getNotSyncedPollingStationsCount()
         fun update() {
-            unSyncedDataCount.value =
+            unSyncedDataCountLiveData.value =
                 (notSyncedQuestionsCount.value ?: 0) + (notSyncedNotesCount.value ?: 0) +
                         (notSyncedPollingStationsCount.value ?: 0)
         }
-        unSyncedDataCount.addSource(notSyncedQuestionsCount) { update() }
-        unSyncedDataCount.addSource(notSyncedNotesCount) { update() }
-        unSyncedDataCount.addSource(notSyncedPollingStationsCount) { update() }
+        unSyncedDataCountLiveData.addSource(notSyncedQuestionsCount) { update() }
+        unSyncedDataCountLiveData.addSource(notSyncedNotesCount) { update() }
+        unSyncedDataCountLiveData.addSource(notSyncedPollingStationsCount) { update() }
 
         disposables.add(Observable.combineLatest(
             repository.getAnswers(countyCode, pollingStationNumber),
@@ -127,7 +127,7 @@ class FormsViewModel : BaseFormViewModel() {
         selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
     }
 
-    fun unSyncedDataCount(): LiveData<Int> = unSyncedDataCount
+    fun unSyncedDataCount(): LiveData<Int> = unSyncedDataCountLiveData
 
     fun sync() {
         repository.syncData()
