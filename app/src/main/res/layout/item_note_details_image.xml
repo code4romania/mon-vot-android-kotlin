@@ -2,15 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/small_margin">
 
     <ImageView
         android:id="@+id/noteImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/small_icon_size"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
+        android:minHeight="@dimen/small_icon_size"
         tools:src="@drawable/bg_menu" />
 
     <FrameLayout
