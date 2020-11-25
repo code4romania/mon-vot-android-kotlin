@@ -20,12 +20,10 @@ import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
+import ro.code4.monitorizarevot.data.model.response.ErrorVersionResponse
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
-import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
-import ro.code4.monitorizarevot.data.pojo.FormWithSections
-import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
-import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.data.pojo.*
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
@@ -127,9 +125,9 @@ class Repository : KoinComponent {
         val observableDb = db.formDetailsDao().getFormsWithSections()
         val observableApi = apiInterface.getForms()
         return Observable.zip(
-            observableDb.onErrorReturn { null },
-            observableApi.onErrorReturn { null },
-            BiFunction<List<FormWithSections>?, VersionResponse?, Unit> { dbFormDetails, response ->
+            observableDb.onErrorReturn { listOf(ErrorFormWithSections(it)) },
+            observableApi.onErrorReturn { ErrorVersionResponse(it) },
+            BiFunction<List<FormWithSections>, VersionResponse, Unit> { dbFormDetails, response ->
                 processFormDetailsData(dbFormDetails, response)
             })
     }
@@ -161,14 +159,16 @@ class Repository : KoinComponent {
     }
 
     private fun processFormDetailsData(
-        dbFormDetails: List<FormWithSections>?,
-        response: VersionResponse?
+        dbFormDetails: List<FormWithSections>,
+        response: VersionResponse
     ) {
-        if (response == null) {
+        if (response is ErrorVersionResponse) {
             return
         }
         val apiFormDetails = response.formVersions
-        if (dbFormDetails == null || dbFormDetails.isEmpty()) {
+        if ((dbFormDetails.size == 1 && dbFormDetails[0] is ErrorFormWithSections)
+            || dbFormDetails.isEmpty()
+        ) {
             saveFormDetails(apiFormDetails)
             return
         }
