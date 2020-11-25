@@ -3,9 +3,9 @@ package ro.code4.monitorizarevot.ui.notes
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ro.code4.monitorizarevot.data.model.FormDetails
+import org.parceler.Parcel
+import org.parceler.ParcelConstructor
 import ro.code4.monitorizarevot.data.model.Note
-import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.formatNoteDateTime
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
@@ -16,15 +16,13 @@ class NoteDetailsViewModel : BaseViewModel() {
     private val _noteDetails = MutableLiveData<NoteDetails>()
     val noteDetails: LiveData<NoteDetails> = _noteDetails
 
-    fun setData(note: Note?, formQuestion: Pair<FormDetails, Question>?) {
+    fun setData(note: Note?, codes: NoteFormQuestionCodes?) {
         note?.let {
             this.note = note
             _noteDetails.postValue(
                 NoteDetails(
                     it.description,
-                    formQuestion?.let { fq ->
-                        NoteFormQuestionCodes(fq.first.code, fq.second.code)
-                    },
+                    codes,
                     it.date.formatNoteDateTime(),
                     unwrapNoteUrls(it),
                     it.synced
@@ -63,7 +61,8 @@ data class NoteAttachment(
     val isVideo: Boolean
 )
 
-data class NoteFormQuestionCodes(
+@Parcel(Parcel.Serialization.BEAN)
+data class NoteFormQuestionCodes @ParcelConstructor constructor(
     val formCode: String,
     val questionCode: String
 )

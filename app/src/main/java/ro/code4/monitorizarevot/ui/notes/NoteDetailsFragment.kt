@@ -39,7 +39,7 @@ class NoteDetailsFragment : ViewModelFragment<NoteDetailsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setData(
             Parcels.unwrap<Note>(arguments?.getParcelable((Constants.NOTE))),
-            baseViewModel.selectedQuestion().value
+            Parcels.unwrap<NoteFormQuestionCodes?>(arguments?.getParcelable((Constants.FORM_QUESTION_CODES)))
         )
         noteContentAdapter = NoteDetailsAdapter(requireContext())
         noteContent.apply {

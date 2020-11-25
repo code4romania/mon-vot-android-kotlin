@@ -52,8 +52,9 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
 
     override val viewModel: NoteViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
+    private var fqCodes: NoteFormQuestionCodes? = null
     private val noteAdapter: NoteDelegationAdapter by lazy {
-        NoteDelegationAdapter { note -> baseViewModel.selectNote(note) }
+        NoteDelegationAdapter { note -> baseViewModel.selectNote(note, fqCodes) }
     }
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {
@@ -76,10 +77,14 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             baseViewModel.setTitle(it)
         })
 
-        val fdq = baseViewModel.selectedQuestion()
-        viewModel.setData(
-            Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))), fdq.value
-        )
+        val selectedFormLiveData = baseViewModel.selectedForm()
+        val selectedQuestion: Question =
+            Parcels.unwrap<Question>(arguments?.getParcelable(Constants.QUESTION))
+        fqCodes = selectedFormLiveData.value?.let {
+            NoteFormQuestionCodes(it.code, selectedQuestion.code)
+        }
+        viewModel.setData(selectedQuestion, fqCodes)
+
         viewModel.notes().observe(viewLifecycleOwner, Observer {
             noteAdapter.items = it
         })

@@ -22,12 +22,13 @@ import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.helper.Constants.REMOTE_CONFIG_FILTER_DIASPORA_FORMS
 import ro.code4.monitorizarevot.helper.completedPollingStationConfig
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
+import ro.code4.monitorizarevot.ui.notes.NoteFormQuestionCodes
 
 class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
-    private val selectedNoteLiveData = MutableLiveData<Note>()
+    private val selectedNoteLiveData = MutableLiveData<Pair<Note, NoteFormQuestionCodes?>>()
     private val syncVisibilityLiveData = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
     private val pollingStationLiveData = MutableLiveData<PollingStationInfo>()
@@ -73,7 +74,7 @@ class FormsViewModel : BaseFormViewModel() {
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
-    fun selectedNote() : LiveData<Note> = selectedNoteLiveData
+    fun selectedNote() : LiveData<Pair<Note, NoteFormQuestionCodes?>> = selectedNoteLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
     fun pollingStation(): LiveData<PollingStationInfo> = pollingStationLiveData
 
@@ -139,8 +140,8 @@ class FormsViewModel : BaseFormViewModel() {
         selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
     }
 
-    fun selectNote(note: Note) {
-        selectedNoteLiveData.postValue(note)
+    fun selectNote(note: Note, codes: NoteFormQuestionCodes?) {
+        selectedNoteLiveData.postValue(Pair(note, codes))
     }
 
     fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData

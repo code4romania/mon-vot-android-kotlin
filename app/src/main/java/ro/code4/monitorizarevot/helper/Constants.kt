@@ -9,6 +9,7 @@ object Constants {
     const val FORM = "form"
     const val QUESTION = "question"
     const val NOTE = "note"
+    const val FORM_QUESTION_CODES = "form_question_codes"
 
     const val REQUEST_CODE_RECORD_VIDEO = 1001
     const val REQUEST_CODE_TAKE_PHOTO = 1002
