@@ -15,26 +15,33 @@ class SplashScreenViewModel : BaseViewModel() {
     private val sharedPreferences: SharedPreferences by inject()
     private val repository: Repository by inject()
     private val loginLiveData = SingleLiveEvent<LoginStatus>()
+    private val remoteConfig = runCatching { FirebaseRemoteConfig.getInstance() }.getOrNull()
 
     fun loginLiveData(): LiveData<LoginStatus> = loginLiveData
 
     init {
         remoteConfiguration()
+        checkLogin()
     }
 
     private fun remoteConfiguration() {
+        remoteConfig?.let {
+            it.apply {
+                val minInterval = if (BuildConfig.DEBUG) 0 else 3600L
+                val configSettings = FirebaseRemoteConfigSettings.Builder()
+                    .setMinimumFetchIntervalInSeconds(minInterval)
+                    .build()
 
-        FirebaseRemoteConfig.getInstance().apply {
-            val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .build()
-            setConfigSettingsAsync(configSettings)
-            setDefaultsAsync(R.xml.remote_config_defaults)
-            fetchAndActivate()
-                .addOnCompleteListener {
-                    checkResetDB()
-                }
+                setConfigSettingsAsync(configSettings)
+                setDefaultsAsync(R.xml.remote_config_defaults)
+                fetchAndActivate()
+                    .addOnCompleteListener {
+                        checkResetDB()
+                    }
+            }
         }
-        checkLogin()
+
+
     }
 
     private fun checkLogin() {
