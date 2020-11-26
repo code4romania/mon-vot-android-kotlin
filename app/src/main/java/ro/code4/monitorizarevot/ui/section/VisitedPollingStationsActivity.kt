@@ -30,6 +30,8 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_minimalist_arrow)
 
         visitedStationsAdapter = VisitedStationsAdapter(this) { station ->
             if (callingActivity?.className == PollingStationActivity::class.java.name) {
@@ -55,7 +57,7 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
             addItemDecoration(
                 HorizontalDividerItemDecoration.Builder(this@VisitedPollingStationsActivity)
                     .color(Color.TRANSPARENT)
-                    .sizeResId(R.dimen.small_margin).build()
+                    .sizeResId(R.dimen.medium_margin).build()
             )
         }
         syncButton.setOnClickListener {

@@ -60,6 +60,7 @@
                 tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.section.VisitedPollingStationsActivity"
+            android:parentActivityName=".ui.main.MainActivity"
             android:label="@string/title_visited_stations"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
