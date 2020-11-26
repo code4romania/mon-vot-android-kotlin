@@ -50,16 +50,16 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
             formAdapter.items = it
             updateSyncSuccessfulNotice()
         })
-        viewModel.syncVisibility().observe(viewLifecycleOwner, Observer {
-            syncGroup.visibility = it
+        viewModel.unSyncedDataCount().observe(viewLifecycleOwner, Observer {
+            syncGroup.visibility = if (it > 0) View.VISIBLE else View.GONE
             updateSyncSuccessfulNotice()
         })
 
         viewModel.setTitle(getString(R.string.title_forms_list))
 
         syncButton.setOnClickListener {
-            // TODO send number of unsynced items
-            logAnalyticsEvent(Event.MANUAL_SYNC, Param(ParamKey.NUMBER_NOT_SYNCED, 0))
+            val unSyncedCount = viewModel.unSyncedDataCount().value ?: 0
+            logAnalyticsEvent(Event.MANUAL_SYNC, Param(ParamKey.NUMBER_NOT_SYNCED, unSyncedCount))
 
             if (!mContext.isOnline()) {
                 Snackbar.make(
@@ -91,15 +91,13 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
      * forms will be loaded).
      */
     private fun updateSyncSuccessfulNotice() {
-        val visibilityOfSyncBtn = viewModel.syncVisibility().value
         val areFormsVisible = viewModel.forms().value?.let { true } ?: false
-        visibilityOfSyncBtn?.let {
-            when (it) {
+        viewModel.unSyncedDataCount().value?.let { unSyncedCount ->
+            when (if (unSyncedCount > 0) View.VISIBLE else View.GONE) {
                 View.VISIBLE -> syncSuccessGroup.visibility = View.GONE
                 View.GONE -> syncSuccessGroup.visibility =
                     if (areFormsVisible) View.VISIBLE else View.GONE
             }
-            Unit
         }
     }
 }
