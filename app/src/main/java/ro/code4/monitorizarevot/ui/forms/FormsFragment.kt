@@ -72,9 +72,7 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 NoteFragment(),
-                bundleOf(
-                    Pair(QUESTION, Parcels.wrap(it))
-                ),
+                it?.let { bundleOf(Pair(QUESTION, Parcels.wrap(it))) },
                 NoteFragment.TAG
             )
         })

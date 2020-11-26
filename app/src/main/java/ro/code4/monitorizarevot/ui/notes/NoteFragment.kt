@@ -31,6 +31,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.NoteDelegationAdapter
+import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
@@ -77,11 +78,14 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             baseViewModel.setTitle(it)
         })
 
-        val selectedFormLiveData = baseViewModel.selectedForm()
-        val selectedQuestion: Question =
-            Parcels.unwrap<Question>(arguments?.getParcelable(Constants.QUESTION))
-        fqCodes = selectedFormLiveData.value?.let {
-            NoteFormQuestionCodes(it.code, selectedQuestion.code)
+        val selectedForm: FormDetails? = baseViewModel.selectedForm().value
+        val selectedQuestion: Question? = arguments?.let {
+            Parcels.unwrap<Question>(it.getParcelable(Constants.QUESTION))
+        }
+        fqCodes = if (selectedForm != null && selectedQuestion != null) {
+            NoteFormQuestionCodes(selectedForm.code, selectedQuestion.code)
+        } else {
+            null
         }
         viewModel.setData(selectedQuestion, fqCodes)
 
