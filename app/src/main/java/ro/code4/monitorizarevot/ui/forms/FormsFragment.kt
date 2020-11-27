@@ -10,7 +10,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.Constants.FORM
-import ro.code4.monitorizarevot.helper.Constants.FORM_QUESTION_CODES
 import ro.code4.monitorizarevot.helper.Constants.NOTE
 import ro.code4.monitorizarevot.helper.Constants.QUESTION
 import ro.code4.monitorizarevot.helper.changePollingStation
@@ -81,10 +80,7 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 NoteDetailsFragment(),
-                bundleOf(
-                    Pair(NOTE, Parcels.wrap(it.first)),
-                    Pair(FORM_QUESTION_CODES, Parcels.wrap(it.second))
-                ),
+                bundleOf(Pair(NOTE, Parcels.wrap(it))),
                 NoteDetailsFragment.TAG
             )
         })

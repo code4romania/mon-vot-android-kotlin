@@ -61,7 +61,7 @@ class NoteViewModel : BaseFormViewModel() {
         if (notes.isNotEmpty()) {
             val list = ArrayList<ListItem>(notes.size + 1)
             list.add(SectionListItem(R.string.notes_history))
-            list.addAll(notes.map { NoteListItem(it, fqCodes) })
+            list.addAll(notes.map { NoteListItem(it) })
             notesLiveData.postValue(list)
         }
     }
@@ -74,6 +74,10 @@ class NoteViewModel : BaseFormViewModel() {
         note.countyCode = countyCode
         note.description = text
         note.uriPath = concatFilePathsOrNull()
+        fqCodes?.let {
+            note.formCode = it.formCode
+            note.questionCode = it.questionCode
+        }
         repository.saveNote(note)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

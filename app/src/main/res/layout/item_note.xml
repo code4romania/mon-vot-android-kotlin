@@ -30,13 +30,14 @@
 
         <TextView
             android:id="@+id/formAndQuestionIdentifier"
-            style="@style/Text.Label.Small"
+            style="@style/Text.Label.Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:ellipsize="end"
             app:layout_constraintEnd_toStartOf="@id/noteDate"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintBaseline_toBaselineOf="@id/noteDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noteText"
             tools:text="Form5 - Q5" />

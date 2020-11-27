@@ -20,4 +20,4 @@ class SectionListItem(@param:StringRes val titleResourceId: Int, vararg val form
 
 class FormListItem(val formWithSections: FormWithSections) : ListItem()
 class AddNoteListItem : ListItem()
-class NoteListItem(val note: Note, val codes: NoteFormQuestionCodes?) : ListItem()
+class NoteListItem(val note: Note) : ListItem()

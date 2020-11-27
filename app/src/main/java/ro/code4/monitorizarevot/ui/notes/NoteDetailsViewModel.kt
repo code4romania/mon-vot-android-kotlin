@@ -16,13 +16,15 @@ class NoteDetailsViewModel : BaseViewModel() {
     private val _noteDetails = MutableLiveData<NoteDetails>()
     val noteDetails: LiveData<NoteDetails> = _noteDetails
 
-    fun setData(note: Note?, codes: NoteFormQuestionCodes?) {
+    fun setData(note: Note?) {
         note?.let {
             this.note = note
             _noteDetails.postValue(
                 NoteDetails(
                     it.description,
-                    codes,
+                    note.formCode?.let { fc ->
+                        note.questionCode?.let { qc -> NoteFormQuestionCodes(fc, qc) }
+                    },
                     it.date.formatNoteDateTime(),
                     unwrapNoteUrls(it),
                     it.synced

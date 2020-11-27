@@ -55,7 +55,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
     private lateinit var baseViewModel: FormsViewModel
     private var fqCodes: NoteFormQuestionCodes? = null
     private val noteAdapter: NoteDelegationAdapter by lazy {
-        NoteDelegationAdapter { note -> baseViewModel.selectNote(note, fqCodes) }
+        NoteDelegationAdapter { note -> baseViewModel.selectNote(note) }
     }
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {

@@ -27,7 +27,7 @@ class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
-    private val selectedNoteLiveData = MutableLiveData<Pair<Note, NoteFormQuestionCodes?>>()
+    private val selectedNoteLiveData = MutableLiveData<Note>()
     private val syncVisibilityLiveData = MediatorLiveData<Int>()
     private val unSyncedDataCountLiveData = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
@@ -66,7 +66,7 @@ class FormsViewModel : BaseFormViewModel() {
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
-    fun selectedNote() : LiveData<Pair<Note, NoteFormQuestionCodes?>> = selectedNoteLiveData
+    fun selectedNote() : LiveData<Note> = selectedNoteLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
     fun pollingStation(): LiveData<PollingStationInfo> = pollingStationLiveData
 
@@ -132,8 +132,8 @@ class FormsViewModel : BaseFormViewModel() {
         selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
     }
 
-    fun selectNote(note: Note, codes: NoteFormQuestionCodes?) {
-        selectedNoteLiveData.postValue(Pair(note, codes))
+    fun selectNote(note: Note) {
+        selectedNoteLiveData.postValue(note)
     }
 
     fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData

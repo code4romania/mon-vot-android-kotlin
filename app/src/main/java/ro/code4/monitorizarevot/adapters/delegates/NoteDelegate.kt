@@ -17,6 +17,7 @@ import ro.code4.monitorizarevot.helper.formatNoteDateTime
 class NoteDelegate(
     private val noteSelectedListener: (Note) -> Unit
 ) : AbsListItemAdapterDelegate<NoteListItem, ListItem, NoteDelegate.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
         ViewHolder(
             noteSelectedListener,
@@ -24,16 +25,11 @@ class NoteDelegate(
         )
 
     override fun isForViewType(
-        item: ListItem,
-        items: MutableList<ListItem>,
-        position: Int
-    ): Boolean =
-        item is NoteListItem
+        item: ListItem, items: MutableList<ListItem>, position: Int
+    ): Boolean = item is NoteListItem
 
     override fun onBindViewHolder(
-        item: NoteListItem,
-        holder: ViewHolder,
-        payloads: MutableList<Any>
+        item: NoteListItem, holder: ViewHolder, payloads: MutableList<Any>
     ) {
         holder.bind(item)
     }
@@ -49,11 +45,14 @@ class NoteDelegate(
         fun bind(noteListItem: NoteListItem) {
             item = noteListItem
             noteRowContainer.setOnClickListener { noteSelectedListener(noteListItem.note) }
-            formAndQuestionIdentifier.text = item.codes?.let { codes ->
-                containerView.context.getString(
-                    R.string.note_details_codes, codes.formCode, codes.questionCode
-                )
-            } ?: ""
+            formAndQuestionIdentifier.text =
+                if (item.note.formCode != null && item.note.questionCode != null) {
+                    containerView.context.getString(
+                        R.string.note_details_codes, item.note.formCode, item.note.questionCode
+                    )
+                } else {
+                    ""
+                }
             with(item.note) {
 /*                questionId?.let {
                     noteQuestionText.visibility = VISIBLE

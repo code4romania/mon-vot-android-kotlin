@@ -37,10 +37,7 @@ class NoteDetailsFragment : ViewModelFragment<NoteDetailsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setData(
-            Parcels.unwrap<Note>(arguments?.getParcelable((Constants.NOTE))),
-            Parcels.unwrap<NoteFormQuestionCodes?>(arguments?.getParcelable((Constants.FORM_QUESTION_CODES)))
-        )
+        viewModel.setData(Parcels.unwrap<Note>(arguments?.getParcelable((Constants.NOTE))))
         noteContentAdapter = NoteDetailsAdapter(requireContext())
         noteContent.apply {
             layoutManager = LinearLayoutManager(requireContext())
