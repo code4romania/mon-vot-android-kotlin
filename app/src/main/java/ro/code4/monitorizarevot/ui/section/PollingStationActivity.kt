@@ -33,6 +33,7 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
             title = it
         })
         viewModel.nextToMain().observe(this, Observer {
+            viewModel.registerStationSelection()
             startActivityWithoutTrace(MainActivity::class.java)
         })
         viewModel.next().observe(this, Observer {

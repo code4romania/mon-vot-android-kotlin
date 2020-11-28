@@ -27,4 +27,6 @@ object Constants {
 
     const val PUSH_NOTIFICATION_TITLE = "title"
     const val PUSH_NOTIFICATION_BODY = "body"
+
+    const val HAS_SELECTED_STATIONS = "has_selected_station"
 }

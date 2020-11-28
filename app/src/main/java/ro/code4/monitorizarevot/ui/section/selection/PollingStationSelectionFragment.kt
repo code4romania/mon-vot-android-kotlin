@@ -36,7 +36,6 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override val viewModel: PollingStationSelectionViewModel by viewModel()
 
     lateinit var parentViewModel: PollingStationViewModel
-
     private lateinit var countySpinnerAdapter: ArrayAdapter<String>
     private var countyCode: String? = null
     private var pollingStationId = -1
@@ -103,6 +102,13 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         super.onDestroyView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        kotlin.runCatching {
+            visitedStationsButton.visibility = if (viewModel.hasSelectedStation()) View.VISIBLE else View.GONE
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -149,6 +155,8 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             val newPollingStationNr =
                 data?.getIntExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, -1) ?: -1
             if (newCountyCode != null && newPollingStationNr > 0) {
+                countyCode = newCountyCode
+                pollingStationId = newPollingStationNr
                 for (i in 0 until countySpinnerAdapter.count) {
                     if (countySpinnerAdapter.getItem(i) == newCountyCode) {
                         updateSelectionDisplay(i)

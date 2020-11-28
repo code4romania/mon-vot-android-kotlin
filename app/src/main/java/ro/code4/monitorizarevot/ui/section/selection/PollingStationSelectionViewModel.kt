@@ -75,5 +75,6 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         countiesLiveData.postValue(Result.Failure(throwable))
     }
 
-
+    fun hasSelectedStation() =
+        sharedPreferences.getBoolean(Constants.HAS_SELECTED_STATIONS, false)
 }

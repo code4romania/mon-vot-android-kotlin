@@ -95,9 +95,7 @@
             style="@style/Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginEnd="@dimen/margin"
+            android:layout_margin="@dimen/margin"
             android:text="@string/button_continue" />
 
         <Button
@@ -105,7 +103,9 @@
             style="@style/Button.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
             android:text="@string/button_select_visited" />
     </LinearLayout>
 </ro.code4.monitorizarevot.widget.ScrollViewWithFixedBottom>
