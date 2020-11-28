@@ -58,7 +58,7 @@ class NoteDetailsFragment : ViewModelFragment<NoteDetailsViewModel>() {
                     Snackbar.make(
                         view,
                         getString(R.string.note_details_missing_internet),
-                        Snackbar.LENGTH_SHORT
+                        Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else {
