@@ -10,6 +10,11 @@
             android:checkable="false"
             android:icon="@drawable/ic_menu_polling_station"
             android:title="@string/menu_change_polling_station" />
+
+        <item
+            android:id="@+id/nav_visited_stations"
+            android:icon="@drawable/ic_menu_visited_stations"
+            android:title="@string/menu_visited_stations" />
         <item
             android:checkable="false"
             android:enabled="false"

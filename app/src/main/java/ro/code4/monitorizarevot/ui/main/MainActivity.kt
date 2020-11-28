@@ -95,6 +95,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         }
                         true
                     }
+                    R.id.nav_visited_stations -> {
+                        showVisitedPollingStations()
+                        true
+                    }
                     else -> false
                 }
             }
