@@ -10,6 +10,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.helper.Constants.FORM
+import ro.code4.monitorizarevot.helper.Constants.NOTE
 import ro.code4.monitorizarevot.helper.Constants.QUESTION
 import ro.code4.monitorizarevot.helper.changePollingStation
 import ro.code4.monitorizarevot.helper.replaceFragment
@@ -17,6 +18,7 @@ import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsFragment
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsListFragment
 import ro.code4.monitorizarevot.ui.main.MainActivity
+import ro.code4.monitorizarevot.ui.notes.NoteDetailsFragment
 import ro.code4.monitorizarevot.ui.notes.NoteFragment
 
 class FormsFragment : ViewModelFragment<FormsViewModel>() {
@@ -69,10 +71,17 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
             childFragmentManager.replaceFragment(
                 R.id.content,
                 NoteFragment(),
-                bundleOf(
-                    Pair(QUESTION, Parcels.wrap(it))
-                ),
+                it?.let { bundleOf(Pair(QUESTION, Parcels.wrap(it))) },
                 NoteFragment.TAG
+            )
+        })
+
+        viewModel.selectedNote().observe(viewLifecycleOwner, Observer {
+            childFragmentManager.replaceFragment(
+                R.id.content,
+                NoteDetailsFragment(),
+                bundleOf(Pair(NOTE, Parcels.wrap(it))),
+                NoteDetailsFragment.TAG
             )
         })
 

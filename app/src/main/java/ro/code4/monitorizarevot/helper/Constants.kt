@@ -5,8 +5,11 @@ object Constants {
     const val DATE_TIME_FORMAT = "dd.MM.yyyy HH:mm"
     const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val DATE_FORMAT_SIMPLE = "dd.MM.yyyy"
+    const val DATA_NOTE_FORMAT = "dd/MM HH:mm"
     const val FORM = "form"
     const val QUESTION = "question"
+    const val NOTE = "note"
+    const val FORM_QUESTION_CODES = "form_question_codes"
 
     const val REQUEST_CODE_RECORD_VIDEO = 1001
     const val REQUEST_CODE_TAKE_PHOTO = 1002

@@ -31,6 +31,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.NoteDelegationAdapter
+import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
@@ -49,9 +50,13 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
     companion object {
         val TAG = NoteFragment::class.java.simpleName
     }
+
     override val viewModel: NoteViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
-    private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
+    private var fqCodes: NoteFormQuestionCodes? = null
+    private val noteAdapter: NoteDelegationAdapter by lazy {
+        NoteDelegationAdapter { note -> baseViewModel.selectNote(note) }
+    }
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -73,7 +78,17 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             baseViewModel.setTitle(it)
         })
 
-        viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
+        val selectedForm: FormDetails? = baseViewModel.selectedForm().value
+        val selectedQuestion: Question? = arguments?.let {
+            Parcels.unwrap<Question>(it.getParcelable(Constants.QUESTION))
+        }
+        fqCodes = if (selectedForm != null && selectedQuestion != null) {
+            NoteFormQuestionCodes(selectedForm.code, selectedQuestion.code)
+        } else {
+            null
+        }
+        viewModel.setData(selectedQuestion, fqCodes)
+
         viewModel.notes().observe(viewLifecycleOwner, Observer {
             noteAdapter.items = it
         })

@@ -13,6 +13,7 @@ import ro.code4.monitorizarevot.adapters.helper.AddNoteListItem
 import ro.code4.monitorizarevot.adapters.helper.FormListItem
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.data.model.FormDetails
+import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
@@ -20,11 +21,14 @@ import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.helper.Constants.REMOTE_CONFIG_FILTER_DIASPORA_FORMS
 import ro.code4.monitorizarevot.helper.completedPollingStationConfig
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
+import ro.code4.monitorizarevot.ui.notes.NoteFormQuestionCodes
 
 class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
     private val selectedFormLiveData = MutableLiveData<FormDetails>()
     private val selectedQuestionLiveData = MutableLiveData<Pair<FormDetails, Question>>()
+    private val selectedNoteLiveData = MutableLiveData<Note>()
+    private val syncVisibilityLiveData = MediatorLiveData<Int>()
     private val unSyncedDataCountLiveData = MediatorLiveData<Int>()
     private val navigateToNotesLiveData = MutableLiveData<Question?>()
     private val pollingStationLiveData = MutableLiveData<PollingStationInfo>()
@@ -62,6 +66,7 @@ class FormsViewModel : BaseFormViewModel() {
 
     fun selectedForm(): LiveData<FormDetails> = selectedFormLiveData
     fun selectedQuestion(): LiveData<Pair<FormDetails, Question>> = selectedQuestionLiveData
+    fun selectedNote() : LiveData<Note> = selectedNoteLiveData
     fun navigateToNotes(): LiveData<Question?> = navigateToNotesLiveData
     fun pollingStation(): LiveData<PollingStationInfo> = pollingStationLiveData
 
@@ -127,6 +132,12 @@ class FormsViewModel : BaseFormViewModel() {
         selectedQuestionLiveData.postValue(Pair(selectedFormLiveData.value!!, question))
     }
 
+    fun selectNote(note: Note) {
+        selectedNoteLiveData.postValue(note)
+    }
+
+    fun syncVisibility(): LiveData<Int> = syncVisibilityLiveData
+    
     fun unSyncedDataCount(): LiveData<Int> = unSyncedDataCountLiveData
 
     fun sync() {

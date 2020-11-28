@@ -128,6 +128,11 @@ fun Date.formatDateTime(): String {
     return formatter.format(this)
 }
 
+fun Date.formatNoteDateTime(): String {
+    val formatter = SimpleDateFormat(Constants.DATA_NOTE_FORMAT, Locale.getDefault())
+    return formatter.format(this)
+}
+
 fun String?.getDate(): Long? {
     if (this == null) {
         return null

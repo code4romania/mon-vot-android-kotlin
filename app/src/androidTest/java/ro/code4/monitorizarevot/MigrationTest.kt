@@ -14,6 +14,7 @@ import org.junit.runner.RunWith
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.Migrations
 import java.io.IOException
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class MigrationTest {
@@ -139,6 +140,51 @@ class MigrationTest {
             assertEquals(nrOfColumns, it.columnCount)
             // check for the new column "orderNumber" and that it has the default value of 0
             assertEquals(0, it.getInt(it.getColumnIndex("orderNumber")))
+        }
+    }
+
+    @Test
+    fun migrate4To5() {
+        val expectedTime = Date().time
+        helper.createDatabase(TEST_DB, 4).use {
+            val values = ContentValues().apply {
+                put("id", 1)
+                put("uriPath", "/fake/path/on/disk/for/file/image/jpg")
+                put("description", "description for note")
+                put("questionId", 12)
+                put("date", expectedTime)
+                put("countyCode", "B")
+                put("pollingStationNumber", 55)
+                put("synced", false)
+            }
+            val rowId = it.insert("note", SQLiteDatabase.CONFLICT_FAIL, values)
+            assertTrue(rowId > 0)
+        }
+        val db = helper.runMigrationsAndValidate(TEST_DB, 5, true, Migrations.MIGRATION_4_5)
+        val noteDataCursor = db.query("SELECT * FROM note")
+        assertNotNull(noteDataCursor)
+        noteDataCursor.use {
+            // we have a single row, previously inserted
+            assertEquals(1, it.count)
+            assertTrue(it.moveToFirst())
+            // at this point we expect to have exactly 10 columns for the note table
+            assertEquals(10, it.columnCount)
+            // check for the new column "formCode" and that it has the default value of null
+            assertNull(it.getString(it.getColumnIndex("formCode")))
+            // check for the new column "questionCode" and that it has the default value of null
+            assertNull(it.getString(it.getColumnIndex("questionCode")))
+            // check for older columns
+            assertEquals(1, it.getInt(it.getColumnIndex("id")))
+            assertEquals(
+                "/fake/path/on/disk/for/file/image/jpg",
+                it.getString(it.getColumnIndex("uriPath"))
+            )
+            assertEquals("description for note", it.getString(it.getColumnIndex("description")))
+            assertEquals(12, it.getInt(it.getColumnIndex("questionId")))
+            assertEquals(expectedTime, it.getLong(it.getColumnIndex("date")))
+            assertEquals(55, it.getInt(it.getColumnIndex("pollingStationNumber")))
+            assertEquals("B", it.getString(it.getColumnIndex("countyCode")))
+            assertTrue(it.getInt(it.getColumnIndex("synced")) == 0)
         }
     }
 

@@ -126,8 +126,11 @@
     <string name="select_photo">Selectează fotografia</string>
     <string name="file_manager_missing">Te rugăm să instalezi un manager de fișiere.</string>
     <string name="note_submit">Trimite</string>
-
     <string name="notes_history">Istoricul notelor</string>
+    <string name="note_video_preview_notice">Videoclipul atașat nu are un preview. Apăsați aici pentru a îl vizualiza într-un player extern!</string>
+    <string name="note_video_previewer_missing">Nu există aplicații capabile să afișeze acest videoclip!</string>
+    <string name="note_details_missing_internet">Ai nevoie de o conexiune la internet pentru a vedea fișierele atașate ale unei note sincronizate!</string>
+    <string name="note_details_codes">Formular %1$s - Întrebare %2$s</string>
 
     <!-- Images -->
     <string name="content_icon_building">Simbol clădire</string>
@@ -156,4 +159,4 @@
     <string name="about_privacy_policy">Politică de confidențialitate</string>
     <string name="about_send_mail_via">Trimiteți email prin</string>
     <string name="about_app_version">v%1$S build %2$d aplicație dezvoltată de</string>
- </resources>
+</resources>

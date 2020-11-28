@@ -48,8 +48,11 @@ class NoteViewModel : BaseFormViewModel() {
     fun filesNames(): LiveData<List<String>> = filesNamesLiveData
     fun submitCompleted(): SingleLiveEvent<Void> = submitCompletedLiveData
     private var selectedQuestion: Question? = null
-    fun setData(question: Question?) {
+    private var fqCodes: NoteFormQuestionCodes? = null
+
+    fun setData(question: Question?, codes: NoteFormQuestionCodes?) {
         selectedQuestion = question
+        fqCodes = codes
         repository.getNotes(countyCode, pollingStationNumber, selectedQuestion)
             .observeOnce(listObserver)
     }
@@ -71,6 +74,10 @@ class NoteViewModel : BaseFormViewModel() {
         note.countyCode = countyCode
         note.description = text
         note.uriPath = concatFilePathsOrNull()
+        fqCodes?.let {
+            note.formCode = it.formCode
+            note.questionCode = it.questionCode
+        }
         repository.saveNote(note)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
