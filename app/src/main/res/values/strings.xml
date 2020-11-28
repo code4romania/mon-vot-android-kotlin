@@ -130,7 +130,7 @@
     <string name="note_video_previewer_missing">There aren\'t any apps capable of showing the video!</string>
     <string name="note_details_missing_internet">You need to be connected to the internet to be able to see the attached files of a synchronized note!</string>
     <string name="notes_history">Notes history</string>
-    <string name="note_details_codes">Form %1$s - Q %2$s</string>
+    <string name="note_details_codes">Form %1$s - Question %2$s</string>
 
     <!-- Images -->
     <string name="content_icon_building">Building icon</string>
