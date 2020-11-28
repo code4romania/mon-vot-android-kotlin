@@ -39,6 +39,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
             .doOnSuccess {
                 counties.clear()
                 counties.addAll(it)
+                counties.sortBy { c -> c.order }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -54,11 +55,11 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         val countyNames = counties.sortedBy { county -> county.order }.map { it.name }
 
         if (countyCode.isNullOrBlank()) {
-            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames))
+            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames.toList()))
         } else {
             hadSelectedCounty = true
             val selectedCountyIndex = counties.indexOfFirst { it.code == countyCode }
-            countiesLiveData.postValue(Result.Success(countyNames))
+            countiesLiveData.postValue(Result.Success(countyNames.toList()))
 
             if (selectedCountyIndex >= 0) {
                 selectionLiveData.postValue(Pair(selectedCountyIndex, pollingStationNumber))
@@ -75,5 +76,6 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         countiesLiveData.postValue(Result.Failure(throwable))
     }
 
-
+    fun hasSelectedStation() =
+        sharedPreferences.getBoolean(Constants.HAS_SELECTED_STATIONS, false)
 }

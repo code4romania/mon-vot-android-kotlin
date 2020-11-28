@@ -35,6 +35,7 @@
     <!-- Fragment titles -->
     <string name="title_polling_station_selection">Alege secția</string>
     <string name="title_polling_station">Detalii secție</string>
+    <string name="title_visited_stations">Secții de vot vizitate</string>
     <string name="title_forms_list">Formulare</string>
     <string name="title_note">Adaugă notă</string>
     <string name="title_guide">Ghid</string>
@@ -51,6 +52,7 @@
     <string name="menu_about">Despre</string>
     <string name="menu_logout">Delogare</string>
     <string name="menu_settings">Despre</string>
+    <string name="menu_visited_stations">Secții de vot vizitate</string>
 
     <!-- Polling Station selection -->
     <string name="polling_station_title">Alege secția în care te afli</string>
@@ -59,6 +61,7 @@
     <string name="polling_station_spinner_choose">Alege</string>
     <string name="polling_station_number_hint">Introduceți numărul secției</string>
     <string name="button_continue">Continuă</string>
+    <string name="button_select_visited">Alege din secțiile vizitate</string>
 
     <string name="invalid_polling_station_county">Alege județul</string>
     <string name="invalid_polling_station_number">Introdu numărul secției</string>
@@ -84,6 +87,7 @@
     <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
+    <string name="polling_station_visited">Secţia de votare %1$d %2$s</string>
 
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>

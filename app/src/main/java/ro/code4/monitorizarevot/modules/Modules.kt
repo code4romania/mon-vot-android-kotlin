@@ -21,6 +21,7 @@ import ro.code4.monitorizarevot.BuildConfig.DEBUG
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.helper.getToken
 import ro.code4.monitorizarevot.repositories.Repository
+import ro.code4.monitorizarevot.ui.section.VisitedPollingStationsViewModel
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsDetailsViewModel
 import ro.code4.monitorizarevot.ui.forms.questions.QuestionsViewModel
@@ -107,6 +108,7 @@ val viewModelsModule = module {
     viewModel { MainViewModel() }
     viewModel { PollingStationViewModel() }
     viewModel { PollingStationSelectionViewModel() }
+    viewModel { VisitedPollingStationsViewModel(get()) }
     viewModel { FormsViewModel() }
     viewModel { QuestionsViewModel() }
     viewModel { QuestionsDetailsViewModel() }

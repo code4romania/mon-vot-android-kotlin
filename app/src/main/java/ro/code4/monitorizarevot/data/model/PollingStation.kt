@@ -65,4 +65,35 @@ class PollingStation() {
         this.observerLeaveTime = departureTime
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PollingStation
+
+        if (id != other.id) return false
+        if (countyCode != other.countyCode) return false
+        if (idPollingStation != other.idPollingStation) return false
+        if (urbanArea != other.urbanArea) return false
+        if (isPollingStationPresidentFemale != other.isPollingStationPresidentFemale) return false
+        if (observerArrivalTime != other.observerArrivalTime) return false
+        if (observerLeaveTime != other.observerLeaveTime) return false
+        if (synced != other.synced) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + countyCode.hashCode()
+        result = 31 * result + idPollingStation
+        result = 31 * result + urbanArea.hashCode()
+        result = 31 * result + isPollingStationPresidentFemale.hashCode()
+        result = 31 * result + (observerArrivalTime?.hashCode() ?: 0)
+        result = 31 * result + (observerLeaveTime?.hashCode() ?: 0)
+        result = 31 * result + synced.hashCode()
+        return result
+    }
+
+
 }

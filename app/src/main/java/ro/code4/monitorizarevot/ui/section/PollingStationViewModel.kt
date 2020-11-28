@@ -201,5 +201,7 @@ class PollingStationViewModel : BaseViewModel() {
         preferences.completedPollingStationConfig(false)
     }
 
-
+    fun registerStationSelection() {
+        preferences.putBoolean(Constants.HAS_SELECTED_STATIONS, true)
+    }
 }

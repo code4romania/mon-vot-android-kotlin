@@ -419,6 +419,7 @@ class Repository : KoinComponent {
             db.pollingStationDao().deleteAll()
         }
     }
-
+    
+    fun getVisitedStations() = db.pollingStationDao().getVisitedPollingStations()
 }
 
