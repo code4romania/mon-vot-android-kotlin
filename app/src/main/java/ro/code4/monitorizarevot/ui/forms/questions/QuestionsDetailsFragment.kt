@@ -161,6 +161,5 @@ class QuestionsDetailsFragment : ViewModelFragment<QuestionsDetailsViewModel>(),
         }
         viewModel.syncData()
         super.onPause()
-
     }
 }
