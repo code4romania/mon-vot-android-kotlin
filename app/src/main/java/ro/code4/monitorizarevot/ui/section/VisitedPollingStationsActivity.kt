@@ -32,6 +32,7 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_minimalist_arrow)
+        setTitle(R.string.title_visited_stations)
 
         visitedStationsAdapter = VisitedStationsAdapter(this) { station ->
             if (callingActivity?.className == PollingStationActivity::class.java.name) {
