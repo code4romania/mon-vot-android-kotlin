@@ -6,8 +6,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.*
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +17,8 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import retrofit2.HttpException
+import retrofit2.Response
 import retrofit2.Retrofit
 import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
@@ -29,6 +31,8 @@ import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.*
 import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.createMultipart
+import ro.code4.monitorizarevot.helper.logD
+import ro.code4.monitorizarevot.helper.logE
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
 import java.io.File
@@ -228,11 +232,14 @@ class Repository : KoinComponent {
 
     @SuppressLint("CheckResult")
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
-        Observable.create<Unit> {
+        Observable.fromCallable<Boolean> {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
+            true
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, it.message.orEmpty())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                logD("Saving answered question: $answeredQuestion(answers: $answers)", TAG)
+            }, {
+                logE(it.message.orEmpty(), TAG)
             })
     }
 
@@ -244,25 +251,47 @@ class Repository : KoinComponent {
             })
     }
 
-
     @SuppressLint("CheckResult")
     fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
+        db.formDetailsDao()
+            .getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
             .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
-                syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                Observable.create<Unit> {
-                    db.formDetailsDao()
-                        .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+            .subscribeOn(Schedulers.io())
+            .flatMap { answers ->
+                syncAnswers(answers)
+                    .flatMap {
+                        Completable.fromAction {
+                            if (answers.isNotEmpty()) {
+                                logD("Updated number of answers:" + answers.size)
+                                logD("Updated answered questions for:$pollingStationNumber", TAG)
+                                db.formDetailsDao()
+                                    .updateAnsweredQuestions(
+                                        countyCode,
+                                        pollingStationNumber,
+                                        formId
+                                    )
+                            } else {
+                                logD("empty list.")
+                            }
+                        }.andThen(Observable.just(it))
+                    }
+            }
+            .map {
+                if (!it.isSuccessful) {
+                    throw HttpException(it)
+                }
+                return@map it.code()
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                logD("Success in syncing data.", Repository.TAG)
             }, {
-                Log.i(TAG, it.message ?: "Error on synchronizing data")
+                val errorMessage = it.message ?: "Error on synchronizing data"
+                logE(errorMessage, it, Repository.TAG)
             })
     }
 
-    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<ResponseBody> {
+    private fun syncAnswers(list: List<AnsweredQuestionPOJO>): Observable<Response<Void>> {
         val responseAnswerContainer = ResponseAnswerContainer()
         responseAnswerContainer.answers = list.map {
             it.answeredQuestion.options = it.selectedAnswers
@@ -431,7 +460,7 @@ class Repository : KoinComponent {
             db.pollingStationDao().deleteAll()
         }
     }
-    
+
     fun getVisitedStations() = db.pollingStationDao().getVisitedPollingStations()
 }
 
