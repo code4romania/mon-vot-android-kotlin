@@ -228,10 +228,13 @@ class Repository : KoinComponent {
 
     @SuppressLint("CheckResult")
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
-        Observable.create<Unit> {
+        Observable.fromCallable<Boolean> {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
+            true
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                Log.d(TAG, "Saving answered question: $answeredQuestion(answers: $answers)")
+            }, {
                 Log.i(TAG, it.message.orEmpty())
             })
     }
@@ -249,14 +252,20 @@ class Repository : KoinComponent {
     fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
         db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
             .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
-                syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                Observable.create<Unit> {
-                    db.formDetailsDao()
-                        .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+            .subscribeOn(Schedulers.io()).flatMap(
+                {
+                    Log.d(TAG, "Syncing answers: ${it.size} answers to sync")
+                    syncAnswers(it)
+                },
+                { answersList, response -> Pair(answersList, response) }
+            ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                if (it.first.isNotEmpty()) {
+                    Observable.fromCallable {
+                        db.formDetailsDao()
+                            .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()
+                }
             }, {
                 Log.i(TAG, it.message ?: "Error on synchronizing data")
             })
@@ -431,7 +440,7 @@ class Repository : KoinComponent {
             db.pollingStationDao().deleteAll()
         }
     }
-    
+
     fun getVisitedStations() = db.pollingStationDao().getVisitedPollingStations()
 }
 
