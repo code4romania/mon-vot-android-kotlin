@@ -77,5 +77,5 @@ class PollingStationSelectionViewModel : BaseViewModel() {
     }
 
     fun hasSelectedStation() =
-        sharedPreferences.getBoolean(Constants.HAS_SELECTED_STATIONS, false)
+        sharedPreferences.getHasSelectedStations()
 }

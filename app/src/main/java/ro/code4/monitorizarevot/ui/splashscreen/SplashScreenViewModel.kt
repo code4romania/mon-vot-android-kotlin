@@ -21,7 +21,6 @@ class SplashScreenViewModel : BaseViewModel() {
 
     init {
         remoteConfiguration()
-        checkLogin()
     }
 
     private fun remoteConfiguration() {
@@ -37,11 +36,14 @@ class SplashScreenViewModel : BaseViewModel() {
                 fetchAndActivate()
                     .addOnCompleteListener {
                         checkResetDB()
+                        checkLogin()
                     }
             }
         }
 
-
+        if (remoteConfig == null) {
+            checkLogin()
+        }
     }
 
     private fun checkLogin() {
@@ -68,6 +70,7 @@ class SplashScreenViewModel : BaseViewModel() {
         } catch (e: Exception) {
             0L
         }
+
         val lastDbReset = sharedPreferences.getLastDbResetTimestamp()
 
         val currentTimestamp = System.currentTimeMillis()/1000
