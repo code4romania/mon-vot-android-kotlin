@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.util.Log
 import io.reactivex.subjects.PublishSubject
 import org.reactivestreams.Publisher
+import io.reactivex.Observable
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.MultiChoiceListItem
 import ro.code4.monitorizarevot.adapters.helper.QuestionDetailsListItem
 import ro.code4.monitorizarevot.adapters.helper.SingleChoiceListItem
 import ro.code4.monitorizarevot.data.model.Answer
+import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
@@ -89,5 +91,10 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
 
     fun syncData() {
         repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+    }
+
+    override fun provideNoteSource(): Observable<List<Note>> {
+        return repository.getNotesAsObservable(countyCode, pollingStationNumber, null)
+            .onErrorReturnItem(emptyList())
     }
 }

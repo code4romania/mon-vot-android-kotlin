@@ -314,6 +314,18 @@ class Repository : KoinComponent {
         }
     }
 
+    fun getNotesAsObservable(
+        countyCode: String,
+        pollingStationNumber: Int,
+        selectedQuestion: Question?
+    ): Observable<List<Note>> {
+        return if (selectedQuestion == null) {
+            db.noteDao().getNotesAsObservable(countyCode, pollingStationNumber)
+        } else {
+            db.noteDao().getNotesForQuestionAsObservable(countyCode, pollingStationNumber, selectedQuestion.id)
+        }
+    }
+
     fun getNotSyncedNotes(): LiveData<Int> = db.noteDao().getCountOfNotSyncedNotes()
 
     @SuppressLint("CheckResult")

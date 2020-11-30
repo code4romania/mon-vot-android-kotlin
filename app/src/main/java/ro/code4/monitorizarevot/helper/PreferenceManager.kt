@@ -10,7 +10,7 @@ const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
 const val PREFS_LANGUAGE_CODE = "PREFS_LANGUAGE_CODE"
 const val PREFS_LAST_DB_RESET_TIMESTAMP = "PREFS_LAST_DB_RESET_TIMESTAMP"
-
+const val HAS_SELECTED_STATIONS = "HAS_SELECTED_STATIONS"
 
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
@@ -69,9 +69,13 @@ fun SharedPreferences.setLocaleCode(code: String) = putString(PREFS_LANGUAGE_COD
 fun SharedPreferences.getLastDbResetTimestamp() = getLong(PREFS_LAST_DB_RESET_TIMESTAMP)
 fun SharedPreferences.setLastDbResetTimestamp(value: Long) = putLong(PREFS_LAST_DB_RESET_TIMESTAMP, value)
 
+fun SharedPreferences.getHasSelectedStations() = getBoolean(HAS_SELECTED_STATIONS, false)
+fun SharedPreferences.setHasSelectedStations(value: Boolean) = putBoolean(HAS_SELECTED_STATIONS, value)
+
 fun SharedPreferences.clearUserPrefs() = run {
     completedPollingStationConfig(false)
     removeCurrentLocationPrefs()
+    setHasSelectedStations(false)
     deleteToken()
 }
 
