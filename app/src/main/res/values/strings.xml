@@ -48,6 +48,7 @@
     <string name="menu_change_polling_station">Change the polling station</string>
     <string name="menu_guide">Observer\'s guide</string>
     <string name="menu_safety">Voting safety</string>
+    <string name="menu_obs_feedback">Observers feedback</string>
     <string name="menu_call">Call the Hotline</string>
     <string name="menu_about">About</string>
     <string name="menu_logout">Logout</string>

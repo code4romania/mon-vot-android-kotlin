@@ -59,6 +59,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         navView.setCheckedItem(R.id.nav_forms)
         navView.menu.findItem(R.id.nav_safety).isVisible = viewModel.isSafetyItemVisible
+        navView.menu.findItem(R.id.nav_obs_feedback).isVisible = viewModel.isObserverFeedbackItemVisible
 
         selectedItem = navView.checkedItem
         selectedItem!!.title = getStyledSpannableString(selectedItem!!.title.toString(), BOLD)
@@ -92,6 +93,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         val result = browse(viewModel.safetyUrl, true)
                         if (!result) {
                             logW("No app to view ${viewModel.safetyUrl}")
+                        }
+                        true
+                    }
+                    R.id.nav_obs_feedback -> {
+                        val result = browse(viewModel.observerFeedbackUrl, true)
+                        if (!result) {
+                            logW("No app to view ${viewModel.observerFeedbackUrl}")
                         }
                         true
                     }

@@ -57,6 +57,7 @@ android {
             variant.buildConfigField "String", "API_URL", "\"" + getKey(variant.buildType.name, "apiUrl") + "\""
             variant.buildConfigField "String", "GUIDE_URL", "\"" + getKey(variant.buildType.name, "guideUrl") + "\""
             variant.buildConfigField "String", "SAFETY_URL", "\"" + getKey(variant.buildType.name, "safetyUrl") + "\""
+            variant.buildConfigField "String", "OBSERVER_FEEDBACK_URL", "\"" + getKey(variant.buildType.name, "observerFeedbackUrl") + "\""
             variant.buildConfigField "String", "ORGANISATION_WEB_URL", "\"" + getKey(variant.buildType.name, "organisationWebUrl") + "\""
             variant.buildConfigField "String", "SERVICE_CENTER_PHONE_NUMBER", "\"" + getKey(variant.buildType.name, "serviceCenterPhoneNumber") + "\""
             variant.buildConfigField "String", "PREFERRED_LOCALE", "\"" + getKey(variant.buildType.name, "preferredLocale") + "\""
