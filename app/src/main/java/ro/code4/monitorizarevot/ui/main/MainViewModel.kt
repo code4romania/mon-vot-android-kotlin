@@ -20,7 +20,14 @@ class MainViewModel : BaseViewModel() {
             BuildConfig.SAFETY_URL
         )
     }
+    internal val observerFeedbackUrl by lazy {
+        remoteConfig.getStringOrDefault(
+            Constants.REMOTE_CONFIG_OBSERVER_FEEDBACK_URL,
+            BuildConfig.OBSERVER_FEEDBACK_URL
+        )
+    }
     internal val isSafetyItemVisible = safetyUrl.isNotBlank()
+    internal val isObserverFeedbackItemVisible = observerFeedbackUrl.isNotBlank()
     private val onLogoutLiveData = SingleLiveEvent<Void>()
 
     fun onLogoutLiveData(): SingleLiveEvent<Void> = onLogoutLiveData
