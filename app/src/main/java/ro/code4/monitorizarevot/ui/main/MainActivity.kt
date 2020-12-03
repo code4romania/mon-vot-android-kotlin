@@ -107,13 +107,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         showVisitedPollingStations()
                         true
                     }
+                    R.id.nav_logout -> {
+                        viewModel.logout()
+                        true
+                    }
                     else -> false
                 }
             }
-        }
-
-        navLogout.setOnClickListener {
-            viewModel.logout()
         }
 
         viewModel.onLogoutLiveData().observe(this, Observer {
