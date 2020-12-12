@@ -41,28 +41,32 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = getSharedViewModel(from = { parentFragment!! })
+        viewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.forms().observe(this, Observer {
+        viewModel.forms().observe(viewLifecycleOwner, Observer {
             formAdapter.items = it
+            updateSyncSuccessfulNotice()
         })
-        viewModel.syncVisibility().observe(this, Observer {
-            syncGroup.visibility = it
+        viewModel.unSyncedDataCount().observe(viewLifecycleOwner, Observer {
+            syncGroup.visibility = if (it > 0) View.VISIBLE else View.GONE
+            updateSyncSuccessfulNotice()
         })
 
         viewModel.setTitle(getString(R.string.title_forms_list))
 
         syncButton.setOnClickListener {
-            // TODO send number of unsynced items
-            logAnalyticsEvent(Event.MANUAL_SYNC, Param(ParamKey.NUMBER_NOT_SYNCED, 0))
+            val unSyncedCount = viewModel.unSyncedDataCount().value ?: 0
+            logAnalyticsEvent(Event.MANUAL_SYNC, Param(ParamKey.NUMBER_NOT_SYNCED, unSyncedCount))
 
             if (!mContext.isOnline()) {
-                Snackbar.make(syncButton, getString(R.string.form_sync_no_internet), Snackbar.LENGTH_SHORT)
-                    .show()
-
+                Snackbar.make(
+                    syncButton,
+                    getString(R.string.form_sync_no_internet),
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -76,6 +80,24 @@ class FormsListFragment : ViewModelFragment<FormsViewModel>() {
                     .color(Color.TRANSPARENT)
                     .sizeResId(R.dimen.small_margin).build()
             )
+        }
+    }
+
+    /**
+     * Update the visibility of a successful sync indicator based on the values of the LiveDatas for forms
+     * and the sync Button. If we only use the syncVisibility() LiveData then we could get into a situation
+     * when the syncVisibility LiveData will trigger before the forms LiveData and we will have an empty
+     * screen which shows that everything is synchronized(and the info views will also jump around after the
+     * forms will be loaded).
+     */
+    private fun updateSyncSuccessfulNotice() {
+        val areFormsVisible = viewModel.forms().value?.let { true } ?: false
+        viewModel.unSyncedDataCount().value?.let { unSyncedCount ->
+            when (if (unSyncedCount > 0) View.VISIBLE else View.GONE) {
+                View.VISIBLE -> syncSuccessGroup.visibility = View.GONE
+                View.GONE -> syncSuccessGroup.visibility =
+                    if (areFormsVisible) View.VISIBLE else View.GONE
+            }
         }
     }
 }

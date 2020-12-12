@@ -5,6 +5,7 @@ import ro.code4.monitorizarevot.data.model.Note
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.QuestionWithAnswers
+import ro.code4.monitorizarevot.ui.notes.NoteFormQuestionCodes
 
 sealed class ListItem
 class QuestionListItem(val question: Question) : ListItem()

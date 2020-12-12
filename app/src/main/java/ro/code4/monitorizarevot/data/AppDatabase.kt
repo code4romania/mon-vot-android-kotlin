@@ -16,7 +16,7 @@ import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 @Database(
     entities = [County::class, PollingStation::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class, Note::class],
-    version = 3
+    version = 5
 )
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {

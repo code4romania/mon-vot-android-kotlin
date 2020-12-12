@@ -5,6 +5,7 @@ import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import ro.code4.monitorizarevot.data.model.Answer
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
@@ -14,7 +15,7 @@ import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
 import ro.code4.monitorizarevot.data.pojo.FormWithSections
 import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
-import java.util.*
+
 
 @Dao
 interface FormsDao {
@@ -64,21 +65,21 @@ interface FormsDao {
     fun getAnswersFor(
         countyCode: String,
         pollingStationNumber: Int
-    ): LiveData<List<AnsweredQuestionPOJO>>
+    ): Observable<List<AnsweredQuestionPOJO>>
 
 
     @Query("SELECT * FROM form_details ORDER BY `order`")
-    fun getFormsWithSections(): LiveData<List<FormWithSections>>
+    fun getFormsWithSections(): Observable<List<FormWithSections>>
 
-    @Query("SELECT * FROM section where formId=:formId")
-    fun getSectionsWithQuestions(formId: Int): LiveData<List<SectionWithQuestions>>
+    @Query("SELECT * FROM section where formId=:formId ORDER BY orderNumber")
+    fun getSectionsWithQuestions(formId: Int): Observable<List<SectionWithQuestions>>
 
     @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
     fun getAnswersForForm(
         countyCode: String?,
         pollingStationNumber: Int,
         formId: Int
-    ): LiveData<List<AnsweredQuestionPOJO>>
+    ): Observable<List<AnsweredQuestionPOJO>>
 
     @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId AND synced=:synced")
     fun getNotSyncedQuestionsForForm(
@@ -125,4 +126,12 @@ interface FormsDao {
     @Query("SELECT COUNT(*) FROM answered_question WHERE  synced=:synced")
     fun getCountOfNotSyncedQuestions(synced: Boolean = false): LiveData<Int>
 
+    @Query("DELETE FROM answered_question")
+    fun deleteAllAnswers()
+    @Query("DELETE FROM question")
+    fun deleteAllQuestions()
+    @Query("DELETE FROM section")
+    fun deleteAllSections()
+    @Query("DELETE FROM form_details")
+    fun deleteAllForms()
 }

@@ -144,6 +144,11 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="Text.Label.Date">
+        <item name="android:textStyle">bold</item>
+        <item name="android:alpha">0.2</item>
+    </style>
+
     <style name="Text.Section">
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">sans-serif-bold</item>

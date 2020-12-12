@@ -14,6 +14,9 @@ import android.provider.Settings
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
@@ -28,12 +31,12 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.parceler.Parcels
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.adapters.NoteDelegationAdapter
+import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
@@ -47,18 +50,23 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
     companion object {
         val TAG = NoteFragment::class.java.simpleName
     }
+
     override val viewModel: NoteViewModel by viewModel()
     private lateinit var baseViewModel: FormsViewModel
-    private val noteAdapter: NoteDelegationAdapter by lazy { NoteDelegationAdapter() }
+    private var fqCodes: NoteFormQuestionCodes? = null
+    private val noteAdapter: NoteDelegationAdapter by lazy {
+        NoteDelegationAdapter { note -> baseViewModel.selectNote(note) }
+    }
     private lateinit var permissionManager: PermissionManager
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        permissionManager = PermissionManager(activity!!, this)
-        baseViewModel = getSharedViewModel(from = { parentFragment!! })
+        permissionManager = PermissionManager(requireActivity(), this)
+        baseViewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val noteFileContainer = view.findViewById<LinearLayout>(R.id.noteFilesContainer)
         notesList.layoutManager = LinearLayoutManager(mContext)
         notesList.adapter = noteAdapter
         notesList.addItemDecoration(
@@ -66,18 +74,38 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 .color(Color.TRANSPARENT)
                 .sizeResId(R.dimen.small_margin).build()
         )
-        viewModel.title().observe(this, Observer {
+        viewModel.title().observe(viewLifecycleOwner, Observer {
             baseViewModel.setTitle(it)
         })
 
-        viewModel.setData(Parcels.unwrap<Question>(arguments?.getParcelable((Constants.QUESTION))))
-        viewModel.notes().observe(this, Observer {
+        val selectedForm: FormDetails? = baseViewModel.selectedForm().value
+        val selectedQuestion: Question? = arguments?.let {
+            Parcels.unwrap<Question>(it.getParcelable(Constants.QUESTION))
+        }
+        fqCodes = if (selectedForm != null && selectedQuestion != null) {
+            NoteFormQuestionCodes(selectedForm.code, selectedQuestion.code)
+        } else {
+            null
+        }
+        viewModel.setData(selectedQuestion, fqCodes)
+
+        viewModel.notes().observe(viewLifecycleOwner, Observer {
             noteAdapter.items = it
         })
-        viewModel.fileName().observe(this, Observer {
-            filenameText.text = it
-            filenameText.visibility = View.VISIBLE
-            addMediaButton.visibility = View.GONE
+        viewModel.filesNames().observe(viewLifecycleOwner, Observer {
+            noteFileContainer.visibility = View.VISIBLE
+            noteFileContainer.removeAllViews()
+            it.forEachIndexed { index, filename ->
+                val attachmentView = requireActivity().layoutInflater.inflate(
+                    R.layout.include_note_filename, noteFileContainer, false
+                ).also { view ->
+                    view.findViewById<TextView>(R.id.filenameText).text = filename
+                    view.findViewById<ImageButton>(R.id.deleteFile).setOnClickListener {
+                        viewModel.deleteFile(filename, index)
+                    }
+                }
+                noteFileContainer.addView(attachmentView)
+            }
         })
         viewModel.submitCompleted().observe(this, Observer {
             activity?.onBackPressed()
@@ -122,11 +150,11 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 R.id.note_gallery -> openGallery()
                 R.id.note_photo -> {
                     val file = takePicture()
-                    viewModel.addFile(file)
+                    viewModel.addUserGeneratedFile(file)
                 }
                 R.id.note_video -> {
                     val file = takeVideo()
-                    viewModel.addFile(file)
+                    viewModel.addUserGeneratedFile(file)
                 }
             }
             true
@@ -144,7 +172,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                     viewModel.addMediaToGallery()
                 }
                 REQUEST_CODE_GALLERY -> {
-                    viewModel.getMediaFromGallery(data?.data)
+                    viewModel.addMediaFromGallery(data?.clipData, data?.data)
                 }
             }
         }

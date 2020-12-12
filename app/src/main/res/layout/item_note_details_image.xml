@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/small_margin">
+
+    <ImageView
+        android:id="@+id/noteImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:minHeight="@dimen/small_icon_size"
+        tools:src="@drawable/bg_menu" />
+
+    <FrameLayout
+        android:id="@+id/noteVideoNoticeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/thin_border_rectangle"
+        android:padding="@dimen/small_margin"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/noteDetailsVideoPlaceholder"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:text="@string/note_video_preview_notice"
+            tools:text="Unable to preview the selected video. Tap here to see the video in an external player!" />
+    </FrameLayout>
+</FrameLayout>
+

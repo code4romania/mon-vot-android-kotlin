@@ -9,7 +9,7 @@ apply plugin: 'org.sonarqube'
 static def getKey(String env, String key) {
     Properties props = new Properties()
     props.load(new FileInputStream(new File(env.concat('.properties'))))
-    return props[key]
+    return props[key] ?: ""
 }
 
 androidExtensions {
@@ -24,8 +24,8 @@ android {
         applicationId "ro.code4.monitorizarevot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 35
-        versionName "2.0.7"
+        versionCode 42
+        versionName "2.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -57,6 +57,7 @@ android {
             variant.buildConfigField "String", "API_URL", "\"" + getKey(variant.buildType.name, "apiUrl") + "\""
             variant.buildConfigField "String", "GUIDE_URL", "\"" + getKey(variant.buildType.name, "guideUrl") + "\""
             variant.buildConfigField "String", "SAFETY_URL", "\"" + getKey(variant.buildType.name, "safetyUrl") + "\""
+            variant.buildConfigField "String", "OBSERVER_FEEDBACK_URL", "\"" + getKey(variant.buildType.name, "observerFeedbackUrl") + "\""
             variant.buildConfigField "String", "ORGANISATION_WEB_URL", "\"" + getKey(variant.buildType.name, "organisationWebUrl") + "\""
             variant.buildConfigField "String", "SERVICE_CENTER_PHONE_NUMBER", "\"" + getKey(variant.buildType.name, "serviceCenterPhoneNumber") + "\""
             variant.buildConfigField "String", "PREFERRED_LOCALE", "\"" + getKey(variant.buildType.name, "preferredLocale") + "\""
@@ -154,6 +155,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Unit tests
     testImplementation 'junit:junit:4.13'

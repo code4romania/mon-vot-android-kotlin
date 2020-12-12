@@ -9,10 +9,12 @@ const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
 const val PREFS_LANGUAGE_CODE = "PREFS_LANGUAGE_CODE"
-
+const val PREFS_LAST_DB_RESET_TIMESTAMP = "PREFS_LAST_DB_RESET_TIMESTAMP"
+const val HAS_SELECTED_STATIONS = "HAS_SELECTED_STATIONS"
 
 fun SharedPreferences.getString(key: String): String? = getString(key, null)
 fun SharedPreferences.getInt(key: String): Int = getInt(key, 0)
+fun SharedPreferences.getLong(key: String): Long = getLong(key, 0)
 
 fun SharedPreferences.putString(key: String, value: String?) {
     val editor = edit()
@@ -23,6 +25,12 @@ fun SharedPreferences.putString(key: String, value: String?) {
 fun SharedPreferences.putInt(key: String, value: Int) {
     val editor = edit()
     editor.putInt(key, value)
+    editor.apply()
+}
+
+fun SharedPreferences.putLong(key: String, value: Long) {
+    val editor = edit()
+    editor.putLong(key, value)
     editor.apply()
 }
 
@@ -57,3 +65,23 @@ fun SharedPreferences.completedOnboarding() = putBoolean(ONBOARDING_COMPLETED)
 fun SharedPreferences.getLocaleCode(): String =
     getString(PREFS_LANGUAGE_CODE, BuildConfig.PREFERRED_LOCALE) ?: BuildConfig.PREFERRED_LOCALE
 fun SharedPreferences.setLocaleCode(code: String) = putString(PREFS_LANGUAGE_CODE, code)
+
+fun SharedPreferences.getLastDbResetTimestamp() = getLong(PREFS_LAST_DB_RESET_TIMESTAMP)
+fun SharedPreferences.setLastDbResetTimestamp(value: Long) = putLong(PREFS_LAST_DB_RESET_TIMESTAMP, value)
+
+fun SharedPreferences.getHasSelectedStations() = getBoolean(HAS_SELECTED_STATIONS, false)
+fun SharedPreferences.setHasSelectedStations(value: Boolean) = putBoolean(HAS_SELECTED_STATIONS, value)
+
+fun SharedPreferences.clearUserPrefs() = run {
+    completedPollingStationConfig(false)
+    removeCurrentLocationPrefs()
+    setHasSelectedStations(false)
+    deleteToken()
+}
+
+private fun SharedPreferences.removeCurrentLocationPrefs() {
+    val editor = edit()
+    editor.remove(PREFS_COUNTY_CODE)
+    editor.remove(PREFS_POLLING_STATION_NUMBER)
+    editor.apply()
+}

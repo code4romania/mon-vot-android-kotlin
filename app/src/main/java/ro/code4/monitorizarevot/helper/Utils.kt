@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -15,8 +16,10 @@ import android.provider.MediaStore
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -26,6 +29,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -34,10 +38,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.interfaces.ExcludeFromCodeCoverage
 import ro.code4.monitorizarevot.ui.section.PollingStationActivity
+import ro.code4.monitorizarevot.ui.section.VisitedPollingStationsActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -78,8 +84,17 @@ fun FragmentManager.replaceFragment(
     ft.commit()
 }
 
-fun AppCompatActivity.changePollingStation() {
-    startActivity(Intent(this, PollingStationActivity::class.java))
+fun AppCompatActivity.changePollingStation(county: County? = null, pollingStationId: Int = -1) {
+    val intent = Intent(this, PollingStationActivity::class.java)
+    if (county != null && pollingStationId > 0) {
+        intent.putExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, pollingStationId)
+        intent.putExtra(PollingStationActivity.EXTRA_COUNTY_NAME, county.name)
+    }
+    startActivity(intent)
+}
+
+fun AppCompatActivity.showVisitedPollingStations() {
+    startActivity(Intent(this, VisitedPollingStationsActivity::class.java))
 }
 
 fun Calendar.updateTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
@@ -110,6 +125,11 @@ fun Date.formatDate(): String {
 
 fun Date.formatDateTime(): String {
     val formatter = SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.getDefault())
+    return formatter.format(this)
+}
+
+fun Date.formatNoteDateTime(): String {
+    val formatter = SimpleDateFormat(Constants.DATA_NOTE_FORMAT, Locale.getDefault())
     return formatter.format(this)
 }
 
@@ -309,6 +329,7 @@ fun Fragment.openGallery() {
     intent.type = "image/*"
     val extraMime = arrayOf("image/*", "video/*")
     intent.putExtra(Intent.EXTRA_MIME_TYPES, extraMime)
+    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
     intent.addCategory(Intent.CATEGORY_OPENABLE)
     intent.resolveActivity(activity!!.packageManager)?.also {
         startActivityForResult(
@@ -440,5 +461,42 @@ fun Context.browse(url: String, newTask: Boolean = false): Boolean {
         return true
     } catch (e: ActivityNotFoundException) {
         return false
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE")
+internal inline fun FirebaseRemoteConfig?.getStringOrDefault(key: String, defaultValue: String) =
+    this?.getString(key).takeUnless {
+        it == FirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING
+    } ?: defaultValue
+
+/*
+ *  Hide software keyboard if user taps outside the EditText
+ *  use inside override fun dispatchTouchEvent()
+ */
+fun collapseKeyboardIfFocusOutsideEditText(
+        motionEvent: MotionEvent,
+        oldFocusedView: View,
+        newFocusedView: View
+) {
+    if (motionEvent.action == MotionEvent.ACTION_UP) {
+        if (newFocusedView == oldFocusedView) {
+
+            val srcCoordinates = IntArray(2)
+            oldFocusedView.getLocationOnScreen(srcCoordinates)
+
+            val rect = Rect(srcCoordinates[0], srcCoordinates[1], srcCoordinates[0] +
+                    oldFocusedView.width, srcCoordinates[1] + oldFocusedView.height)
+
+            if (rect.contains(motionEvent.x.toInt(), motionEvent.y.toInt()))
+                return
+        } else if (newFocusedView is EditText) {
+            //  If new focus is other EditText then will not collapse
+            return
+        }
+
+        // Collapse the keyboard from activity
+        ContextCompat.getSystemService(newFocusedView.context, InputMethodManager::class.java)
+                ?.hideSoftInputFromWindow(newFocusedView.windowToken, 0)
     }
 }

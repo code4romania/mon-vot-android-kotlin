@@ -1,6 +1,8 @@
 package ro.code4.monitorizarevot.ui.section.selection
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -10,9 +12,11 @@ import kotlinx.android.synthetic.main.fragment_polling_station_selection.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.ui.base.BaseAnalyticsFragment
+import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
+import ro.code4.monitorizarevot.ui.section.PollingStationActivity
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
+import ro.code4.monitorizarevot.ui.section.VisitedPollingStationsActivity
 import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
@@ -24,10 +28,6 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         }
     }
 
-    companion object {
-        val TAG = PollingStationSelectionFragment::class.java.simpleName
-    }
-
     override val layout: Int
         get() = R.layout.fragment_polling_station_selection
     override val screenName: Int
@@ -36,8 +36,9 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override val viewModel: PollingStationSelectionViewModel by viewModel()
 
     lateinit var parentViewModel: PollingStationViewModel
-
     private lateinit var countySpinnerAdapter: ArrayAdapter<String>
+    private var countyCode: String? = null
+    private var pollingStationId = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,14 +48,17 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         countySpinnerAdapter =
-            ArrayAdapter(activity!!, R.layout.item_spinner, mutableListOf())
+            ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        countyCode = arguments?.getString(PollingStationActivity.EXTRA_COUNTY_NAME)
+        pollingStationId =
+            arguments?.getInt(PollingStationActivity.EXTRA_POLLING_STATION_ID, -1) ?: -1
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        viewModel.counties().observe(viewLifecycleOwner, Observer {
+        val countiesSource = viewModel.counties()
+        countiesSource.observe(viewLifecycleOwner, Observer {
             it.handle(
                 onSuccess = { counties ->
                     progressDialog.dismiss()
@@ -77,12 +81,32 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             pollingStationNumber.setText(it.second.toString())
             pollingStationNumber.setSelection(it.second.toString().length)
             pollingStationNumber.isEnabled = true
+
+            if (countyCode != null && pollingStationId > 0) {
+                val counties = countiesSource.value?.let { countiesResult ->
+                    if (countiesResult is Result.Success) {
+                        countiesResult.data
+                    } else null
+                }
+                val targetIndex =
+                    counties?.indexOfFirst { countyName -> countyName == countyCode } ?: -1
+                if (targetIndex >= 0) {
+                    updateSelectionDisplay(targetIndex)
+                }
+            }
         })
     }
 
     override fun onDestroyView() {
         if (progressDialog.isResumed) progressDialog.dismissAllowingStateLoss()
         super.onDestroyView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        kotlin.runCatching {
+            visitedStationsButton.visibility = if (viewModel.hasSelectedStation()) View.VISIBLE else View.GONE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,7 +128,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-        setContinueButton()
+        setupActionButtons()
         viewModel.getCounties()
     }
 
@@ -114,10 +138,41 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         countySpinnerAdapter.notifyDataSetChanged()
     }
 
-
-    private fun setContinueButton() {
+    private fun setupActionButtons() {
         continueButton.setOnClickListener {
             parentViewModel.validPollingStationInput(pollingStationNumber.text)
         }
+        visitedStationsButton.setOnClickListener {
+            val intent = Intent(requireContext(), VisitedPollingStationsActivity::class.java)
+            startActivityForResult(intent, CHOOSE_SECTION_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_SECTION_CODE) {
+            val newCountyCode = data?.getStringExtra(PollingStationActivity.EXTRA_COUNTY_NAME)
+            val newPollingStationNr =
+                data?.getIntExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, -1) ?: -1
+            if (newCountyCode != null && newPollingStationNr > 0) {
+                countyCode = newCountyCode
+                pollingStationId = newPollingStationNr
+                for (i in 0 until countySpinnerAdapter.count) {
+                    if (countySpinnerAdapter.getItem(i) == newCountyCode) {
+                        updateSelectionDisplay(i)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateSelectionDisplay(position: Int) {
+        countySpinner.setSelection(position)
+        pollingStationNumber.setText(pollingStationId.toString())
+    }
+
+    companion object {
+        val TAG = PollingStationSelectionFragment::class.java.simpleName
+        const val CHOOSE_SECTION_CODE = 1000
     }
 }

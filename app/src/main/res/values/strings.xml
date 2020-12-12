@@ -35,6 +35,7 @@
     <!-- Fragment titles -->
     <string name="title_polling_station_selection">Choose your polling station</string>
     <string name="title_polling_station">Polling station details</string>
+    <string name="title_visited_stations">Visited polling stations</string>
     <string name="title_forms_list">Forms</string>
     <string name="title_note">Notes</string>
     <string name="title_guide">Guide</string>
@@ -47,9 +48,11 @@
     <string name="menu_change_polling_station">Change the polling station</string>
     <string name="menu_guide">Observer\'s guide</string>
     <string name="menu_safety">Voting safety</string>
+    <string name="menu_obs_feedback">Observers feedback</string>
     <string name="menu_call">Call the Hotline</string>
     <string name="menu_about">About</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_visited_stations">My visited stations</string>
     <string name="menu_settings">About</string>
 
     <!-- Polling Station selection -->
@@ -59,6 +62,7 @@
     <string name="polling_station_spinner_choose">Choose</string>
     <string name="polling_station_number_hint">Fill in your polling station number</string>
     <string name="button_continue">Continue</string>
+    <string name="button_select_visited">Select from visited stations</string>
 
     <string name="invalid_polling_station_county">Choose the county/district</string>
     <string name="invalid_polling_station_number">Fill in the polling station number</string>
@@ -84,11 +88,14 @@
     <string name="invalid_polling_station_gender">Choose man or woman</string>
     <string name="invalid_polling_station_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
+    <string name="polling_station_visited">Polling station %1$d %2$s</string>
+    <string name="polling_station_visited_label">This is the list of stations you already visited. Tap one to view or edit its submitted answers.</string>
 
     <!-- Forms list -->
     <string name="form_notes">Add a message</string>
 
     <string name="sync_info">It appears that some of the questions have not been synchronised. Tap the button below to send the answers again</string>
+    <string name="sync_info_success">All the answers and notes were synchronized successfully</string>
     <string name="sync_manual">Synchronize data manually</string>
 
     <string name="form_sync_no_internet">You need to be connected to the internet to be able to sync the data!</string>
@@ -113,15 +120,19 @@
     <string name="note_description_hint">Type here</string>
     <string name="note_media">Add photo or video</string>
     <string name="invalid_note">Add a description or choose a file</string>
-    <string name="error_permission_external_storage">We need your permission to select a resource</string>
+    <string name="error_note_file_copy_single">Unable to attach the file. Check the app permissions and the storage space available</string>
+    <string name="error_note_file_copy_multiple">Unable to attach some of the files. Check the app permissions and the storage space available</string>
     <string name="note_gallery">Load from gallery</string>
     <string name="note_photo">Take photo</string>
     <string name="note_video">Record video</string>
     <string name="select_photo">Select Photo</string>
     <string name="file_manager_missing">Please install a file manager.</string>
     <string name="note_submit">Submit</string>
-
+    <string name="note_video_preview_notice">The attached video doesn\'t have a preview to show. Tap here to see it in an external player!</string>
+    <string name="note_video_previewer_missing">There aren\'t any apps capable of showing the video!</string>
+    <string name="note_details_missing_internet">You need to be connected to the internet to be able to see the attached files of a synchronized note!</string>
     <string name="notes_history">Notes history</string>
+    <string name="note_details_codes">Form %1$s - Question %2$s</string>
 
     <!-- Images -->
     <string name="content_icon_building">Building icon</string>

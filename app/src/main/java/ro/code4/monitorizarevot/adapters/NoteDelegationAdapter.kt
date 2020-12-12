@@ -7,12 +7,15 @@ import ro.code4.monitorizarevot.adapters.delegates.SectionDelegate
 import ro.code4.monitorizarevot.adapters.helper.ListItem
 import ro.code4.monitorizarevot.adapters.helper.NoteListItem
 import ro.code4.monitorizarevot.adapters.helper.SectionListItem
+import ro.code4.monitorizarevot.data.model.Note
 
-class NoteDelegationAdapter : AsyncListDifferDelegationAdapter<ListItem>(DIFF_CALLBACK) {
+class NoteDelegationAdapter(
+    private val noteListener: (Note) -> Unit
+) : AsyncListDifferDelegationAdapter<ListItem>(DIFF_CALLBACK) {
     init {
         delegatesManager
             .addDelegate(SectionDelegate())
-            .addDelegate(NoteDelegate())
+            .addDelegate(NoteDelegate(noteListener))
     }
 
     companion object {

@@ -35,6 +35,9 @@ class Section {
 
     var formId: Int = -1
 
+    @Expose
+    var orderNumber = 0
+
     override fun equals(other: Any?): Boolean {
         if (other !is Section) {
             return false

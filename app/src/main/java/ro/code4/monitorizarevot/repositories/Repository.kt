@@ -1,8 +1,11 @@
 package ro.code4.monitorizarevot.repositories
 
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,12 +22,12 @@ import ro.code4.monitorizarevot.data.AppDatabase
 import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
+import ro.code4.monitorizarevot.data.model.response.ErrorVersionResponse
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
+import ro.code4.monitorizarevot.data.model.response.PostNoteResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
-import ro.code4.monitorizarevot.data.pojo.AnsweredQuestionPOJO
-import ro.code4.monitorizarevot.data.pojo.FormWithSections
-import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
-import ro.code4.monitorizarevot.data.pojo.SectionWithQuestions
+import ro.code4.monitorizarevot.data.pojo.*
+import ro.code4.monitorizarevot.helper.Constants
 import ro.code4.monitorizarevot.helper.createMultipart
 import ro.code4.monitorizarevot.services.ApiInterface
 import ro.code4.monitorizarevot.services.LoginInterface
@@ -48,11 +51,10 @@ class Repository : KoinComponent {
         retrofit.create(ApiInterface::class.java)
     }
 
+    private val postTypeToken = object : TypeToken<PostNoteResponse>() {}.type
+
     private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
-
-    fun registerForNotification(token: String): Observable<ResponseBody> =
-        loginInterface.registerForNotification(token)
 
     fun getCounties(): Single<List<County>> {
         val observableApi = apiInterface.getCounties()
@@ -62,7 +64,9 @@ class Repository : KoinComponent {
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
-                apiCounties.forEach { it.name = it.name.toLowerCase(Locale.getDefault()).capitalize() }
+                apiCounties.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
+                }
                 return@BiFunction when {
                     apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
                         db.countyDao().deleteAll()
@@ -113,27 +117,23 @@ class Repository : KoinComponent {
     fun getAnswers(
         countyCode: String,
         pollingStationNumber: Int
-    ): LiveData<List<AnsweredQuestionPOJO>> =
+    ): Observable<List<AnsweredQuestionPOJO>> =
         db.formDetailsDao().getAnswersFor(countyCode, pollingStationNumber)
 
-    fun getFormsWithQuestions(): LiveData<List<FormWithSections>> =
+    fun getFormsWithQuestions(): Observable<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
 
-    fun getSectionsWithQuestions(formId: Int): LiveData<List<SectionWithQuestions>> =
+    fun getSectionsWithQuestions(formId: Int): Observable<List<SectionWithQuestions>> =
         db.formDetailsDao().getSectionsWithQuestions(formId)
 
     fun getForms(): Observable<Unit> {
-
-        val observableDb = db.formDetailsDao().getAllForms().toObservable()
-
+        val observableDb = db.formDetailsDao().getFormsWithSections()
         val observableApi = apiInterface.getForms()
-
         return Observable.zip(
-            observableDb.onErrorReturn { null },
-            observableApi.onErrorReturn { null },
-            BiFunction<List<FormDetails>?, VersionResponse?, Unit> { dbFormDetails, response ->
+            observableDb.onErrorReturn { listOf(ErrorFormWithSections(it)) },
+            observableApi.onErrorReturn { ErrorVersionResponse(it) },
+            BiFunction<List<FormWithSections>, VersionResponse, Unit> { dbFormDetails, response ->
                 processFormDetailsData(dbFormDetails, response)
-
             })
     }
 
@@ -164,29 +164,32 @@ class Repository : KoinComponent {
     }
 
     private fun processFormDetailsData(
-        dbFormDetails: List<FormDetails>?,
-        response: VersionResponse?
+        dbFormDetails: List<FormWithSections>,
+        response: VersionResponse
     ) {
-        if (response == null) {
+        if (response is ErrorVersionResponse) {
             return
         }
         val apiFormDetails = response.formVersions
-        if (dbFormDetails == null || dbFormDetails.isEmpty()) {
+        if ((dbFormDetails.size == 1 && dbFormDetails[0] is ErrorFormWithSections)
+            || dbFormDetails.isEmpty()
+        ) {
             saveFormDetails(apiFormDetails)
             return
         }
         if (apiFormDetails.size < dbFormDetails.size) {
-            dbFormDetails.minus(apiFormDetails).also { diff ->
+            dbFormDetails.map { it.form }.minus(apiFormDetails).also { diff ->
                 if (diff.isNotEmpty()) {
                     deleteFormDetails(*diff.map { it }.toTypedArray())
                 }
             }
         }
         apiFormDetails.forEach { apiForm ->
-            val dbForm = dbFormDetails.find { it.id == apiForm.id }
-            if (dbForm != null && (apiForm.formVersion != dbForm.formVersion ||
-                        apiForm.order != dbForm.order)) {
-                deleteFormDetails(dbForm)
+            val dbForm = dbFormDetails.find { it.form.id == apiForm.id }
+            if (dbForm != null && (apiForm.formVersion != dbForm.form.formVersion ||
+                        apiForm.order != dbForm.form.order)
+            ) {
+                deleteFormDetails(dbForm.form)
                 saveFormDetails(apiForm)
             }
             if (dbForm == null) {
@@ -219,16 +222,19 @@ class Repository : KoinComponent {
         countyCode: String?,
         pollingStationNumber: Int,
         formId: Int
-    ): LiveData<List<AnsweredQuestionPOJO>> {
+    ): Observable<List<AnsweredQuestionPOJO>> {
         return db.formDetailsDao().getAnswersForForm(countyCode, pollingStationNumber, formId)
     }
 
     @SuppressLint("CheckResult")
     fun saveAnsweredQuestion(answeredQuestion: AnsweredQuestion, answers: List<SelectedAnswer>) {
-        Observable.create<Unit> {
+        Observable.fromCallable<Boolean> {
             db.formDetailsDao().insertAnsweredQuestion(answeredQuestion, answers)
+            true
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                Log.d(TAG, "Saving answered question: $answeredQuestion(answers: $answers)")
+            }, {
                 Log.i(TAG, it.message.orEmpty())
             })
     }
@@ -246,14 +252,20 @@ class Repository : KoinComponent {
     fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
         db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
             .toObservable()
-            .subscribeOn(Schedulers.io()).flatMap {
-                syncAnswers(it)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribe({
-                Observable.create<Unit> {
-                    db.formDetailsDao()
-                        .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
-                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+            .subscribeOn(Schedulers.io()).flatMap(
+                {
+                    Log.d(TAG, "Syncing answers: ${it.size} answers to sync")
+                    syncAnswers(it)
+                },
+                { answersList, response -> Pair(answersList, response) }
+            ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                if (it.first.isNotEmpty()) {
+                    Observable.fromCallable {
+                        db.formDetailsDao()
+                            .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()
+                }
             }, {
                 Log.i(TAG, it.message ?: "Error on synchronizing data")
             })
@@ -282,6 +294,18 @@ class Repository : KoinComponent {
         }
     }
 
+    fun getNotesAsObservable(
+        countyCode: String,
+        pollingStationNumber: Int,
+        selectedQuestion: Question?
+    ): Observable<List<Note>> {
+        return if (selectedQuestion == null) {
+            db.noteDao().getNotesAsObservable(countyCode, pollingStationNumber)
+        } else {
+            db.noteDao().getNotesForQuestionAsObservable(countyCode, pollingStationNumber, selectedQuestion.id)
+        }
+    }
+
     fun getNotSyncedNotes(): LiveData<Int> = db.noteDao().getCountOfNotSyncedNotes()
 
     @SuppressLint("CheckResult")
@@ -295,34 +319,53 @@ class Repository : KoinComponent {
     }
 
     fun saveNote(note: Note): Observable<ResponseBody> =
-        Single.fromCallable { db.noteDao().save(note) }.toObservable().flatMap {
-            note.id = it[0].toInt()
+        Single.fromCallable {
+            db.noteDao().save(note).first()
+        }.flatMapObservable {
+            note.id = it.toInt()
             postNote(note)
         }
 
     private fun postNote(note: Note): Observable<ResponseBody> {
-        var body: MultipartBody.Part? = null
-        var questionId = 0
-        note.uriPath?.let {
-            val file = File(it)
-            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
-        }
-        note.questionId?.let {
-            questionId = 0
-        }
+        val noteFiles = note.uriPath?.let {
+            if (it.isEmpty()) return@let null
+            val filePaths = it.split(Constants.FILES_PATHS_SEPARATOR)
+            if (filePaths.isEmpty()) null else filePaths.map { path -> File(path) }
+        }?.filter { it.exists() }
+        Log.d(TAG, "Files to be uploaded with note: ${noteFiles?.map { it.absolutePath }}")
+        val body: Array<MultipartBody.Part>? = noteFiles?.let { paths ->
+            mutableListOf<MultipartBody.Part>().apply {
+                paths.forEach { file ->
+                    this.add(
+                        MultipartBody.Part.createFormData(
+                            "files",
+                            file.name,
+                            file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                        )
+                    )
+                }
+            }
+        }?.toTypedArray()
+        val questionId = note.questionId ?: 0
 
         return apiInterface.postNote(
-            body, note.countyCode.createMultipart("CountyCode"),
+            body,
+            note.countyCode.createMultipart("CountyCode"),
             note.pollingStationNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")
         ).doOnNext {
             note.synced = true
+            note.uriPath = combineApiFilesUrls(it)
             db.noteDao().updateNote(note)
+            noteFiles?.forEach { uploadedFile -> uploadedFile.delete() }
         }
     }
+
+    private fun combineApiFilesUrls(response: ResponseBody): String? = kotlin.runCatching {
+        val parsedResponse = Gson().fromJson<PostNoteResponse>(response.charStream(), postTypeToken)
+        parsedResponse.filesAddress.joinToString(separator = Constants.FILES_PATHS_SEPARATOR)
+    }.getOrNull()
 
     @SuppressLint("CheckResult")
     fun syncData() {
@@ -384,5 +427,20 @@ class Repository : KoinComponent {
             .flatMap { postPollingStationDetails(it) }
             .subscribeOn(Schedulers.io())
     }
+
+    fun clearDBData() {
+        AsyncTask.execute {
+            db.noteDao().deleteAll()
+
+            db.formDetailsDao().deleteAllAnswers()
+            db.formDetailsDao().deleteAllQuestions()
+            db.formDetailsDao().deleteAllSections()
+            db.formDetailsDao().deleteAllForms()
+
+            db.pollingStationDao().deleteAll()
+        }
+    }
+
+    fun getVisitedStations() = db.pollingStationDao().getVisitedPollingStations()
 }
 

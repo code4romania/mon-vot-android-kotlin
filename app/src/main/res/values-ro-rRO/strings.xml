@@ -35,6 +35,7 @@
     <!-- Fragment titles -->
     <string name="title_polling_station_selection">Alege secția</string>
     <string name="title_polling_station">Detalii secție</string>
+    <string name="title_visited_stations">Secții de vot vizitate</string>
     <string name="title_forms_list">Formulare</string>
     <string name="title_note">Adaugă notă</string>
     <string name="title_guide">Ghid</string>
@@ -47,10 +48,12 @@
     <string name="menu_change_polling_station">Schimbă secţia</string>
     <string name="menu_guide">Ghidul observatorului</string>
     <string name="menu_safety">Siguranța la vot</string>
+    <string name="menu_obs_feedback">Feedback observatori</string>
     <string name="menu_call">Apelează TelVerde</string>
     <string name="menu_about">Despre</string>
     <string name="menu_logout">Delogare</string>
     <string name="menu_settings">Despre</string>
+    <string name="menu_visited_stations">Secții de vot vizitate</string>
 
     <!-- Polling Station selection -->
     <string name="polling_station_title">Alege secția în care te afli</string>
@@ -59,6 +62,7 @@
     <string name="polling_station_spinner_choose">Alege</string>
     <string name="polling_station_number_hint">Introduceți numărul secției</string>
     <string name="button_continue">Continuă</string>
+    <string name="button_select_visited">Alege din secțiile vizitate</string>
 
     <string name="invalid_polling_station_county">Alege județul</string>
     <string name="invalid_polling_station_number">Introdu numărul secției</string>
@@ -84,11 +88,14 @@
     <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
+    <string name="polling_station_visited">Secţia de votare %1$d %2$s</string>
+    <string name="polling_station_visited_label">Aici găsești secțiile pe care le-ai vizitat deja. Apasă pe o secție să verifici sau să editezi răspunsuri.</string>
 
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>
 
-    <string name="sync_info">Unele întrebări nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
+    <string name="sync_info">Unele răspunsuri sau note nu au fost sincronizate. Apasă butonul pentru a trimite răspunsurile din nou.</string>
+    <string name="sync_info_success">Toate răspunsurile și notele au fost sincronizate cu succes</string>
     <string name="sync_manual">Sincronizează datele manual</string>
 
     <string name="form_sync_no_internet">Ai nevoie de o conexiune la internet pentru a sincroniza datele!</string>
@@ -113,15 +120,19 @@
     <string name="note_description_hint">Scrie aici</string>
     <string name="note_media">Adaugă foto/video</string>
     <string name="invalid_note">Introdu o descriere sau alege un fişier</string>
-    <string name="error_permission_external_storage">Permisiunea este necesară pentru a putea selecta o resursă</string>
+    <string name="error_note_file_copy_single">Fișierul nu a putut fi atașat. Verificați permisiunile aplicației și spațiul de stocare disponibil</string>
+    <string name="error_note_file_copy_multiple">Unele fișiere nu au putut fi atașate. Verificați permisiunile aplicației și spațiul de stocare disponibil</string>
     <string name="note_gallery">Încarcă din galerie</string>
     <string name="note_photo">Fotografiază</string>
     <string name="note_video">Înregistrează video</string>
     <string name="select_photo">Selectează fotografia</string>
     <string name="file_manager_missing">Te rugăm să instalezi un manager de fișiere.</string>
     <string name="note_submit">Trimite</string>
-
     <string name="notes_history">Istoricul notelor</string>
+    <string name="note_video_preview_notice">Videoclipul atașat nu are un preview. Apăsați aici pentru a îl vizualiza într-un player extern!</string>
+    <string name="note_video_previewer_missing">Nu există aplicații capabile să afișeze acest videoclip!</string>
+    <string name="note_details_missing_internet">Ai nevoie de o conexiune la internet pentru a vedea fișierele atașate ale unei note sincronizate!</string>
+    <string name="note_details_codes">Formular %1$s - Întrebare %2$s</string>
 
     <!-- Images -->
     <string name="content_icon_building">Simbol clădire</string>
@@ -150,4 +161,4 @@
     <string name="about_privacy_policy">Politică de confidențialitate</string>
     <string name="about_send_mail_via">Trimiteți email prin</string>
     <string name="about_app_version">v%1$S build %2$d aplicație dezvoltată de</string>
- </resources>
+</resources>

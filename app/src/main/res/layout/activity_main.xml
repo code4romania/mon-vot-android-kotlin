@@ -23,18 +23,6 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/main_menu">
 
-        <TextView
-            android:id="@+id/navLogout"
-            style="@style/NavigationMenuItem"
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:drawableStart="@drawable/ic_menu_logout"
-            android:drawablePadding="@dimen/margin"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="@string/menu_logout" />
-
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

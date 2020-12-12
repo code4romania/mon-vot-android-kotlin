@@ -10,6 +10,11 @@
             android:checkable="false"
             android:icon="@drawable/ic_menu_polling_station"
             android:title="@string/menu_change_polling_station" />
+
+        <item
+            android:id="@+id/nav_visited_stations"
+            android:icon="@drawable/ic_menu_visited_stations"
+            android:title="@string/menu_visited_stations" />
         <item
             android:checkable="false"
             android:enabled="false"
@@ -37,6 +42,21 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_menu_about"
             android:title="@string/menu_settings" />
+
+        <item
+            android:id="@+id/nav_obs_feedback"
+            android:icon="@drawable/ic_menu_guide"
+            android:title="@string/menu_obs_feedback" />
+
+        <item
+            android:checkable="false"
+            android:enabled="false"
+            android:title="" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="@string/menu_logout" />
 
     </group>
 </menu>
