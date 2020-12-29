@@ -37,7 +37,9 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.pollingStation().observe(viewLifecycleOwner, Observer {
-            pollingStationBarText.text = it
+            pollingStationBarText.text = getString(
+                R.string.polling_station, it.first, it.second
+            )
         })
         viewModel.setTitle(getString(R.string.title_polling_station))
         viewModel.getPollingStationBarText()

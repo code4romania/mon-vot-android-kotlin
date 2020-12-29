@@ -21,7 +21,7 @@ class PollingStationViewModel : BaseViewModel() {
     private val nextLiveData = SingleLiveEvent<Void>()
     private val nextToMainLiveData = SingleLiveEvent<Void>()
     private val titleLiveData = MutableLiveData<String>()
-    private val pollingStationLiveData = MutableLiveData<String>()
+    private val pollingStationLiveData = MutableLiveData<Pair<Int, String>>()
     private val arrivalTimeLiveData = MutableLiveData<String>()
     private val departureTimeLiveData = MutableLiveData<String>()
     private val selectedPollingStationLiveData = MutableLiveData<Pair<Int?, Int?>>()
@@ -43,15 +43,11 @@ class PollingStationViewModel : BaseViewModel() {
     fun departureTime(): LiveData<String> = departureTimeLiveData
     fun selectedPollingStation(): LiveData<Pair<Int?, Int?>> = selectedPollingStationLiveData
 
-    fun pollingStation(): LiveData<String> = pollingStationLiveData
+    fun pollingStation(): LiveData<Pair<Int, String>> = pollingStationLiveData
 
     fun getPollingStationBarText() {
         pollingStationLiveData.postValue(
-            app.getString(
-                R.string.polling_station,
-                selectedPollingStationNumber,
-                selectedCounty.name
-            )
+            Pair(selectedPollingStationNumber, selectedCounty.name)
         )
         getSelectedPollingStation()
     }
