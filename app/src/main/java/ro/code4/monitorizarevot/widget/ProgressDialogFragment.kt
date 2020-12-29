@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import ro.code4.monitorizarevot.R
 
 /**
@@ -17,6 +16,7 @@ class ProgressDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        isCancelable = false
         return inflater.inflate(R.layout.fragment_progress_dialog, container, false)
     }
 

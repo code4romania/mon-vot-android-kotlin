@@ -16,12 +16,21 @@
         android:id="@+id/nav_guide"
         android:name="ro.code4.monitorizarevot.ui.guide.GuideFragment"
         android:label="@string/menu_guide"
-        tools:layout="@layout/fragment_guide" />
+        tools:layout="@layout/fragment_guide" >
+        <action
+            android:id="@+id/openProgressDialog"
+            app:destination="@id/progressDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_about"
         android:name="ro.code4.monitorizarevot.ui.settings.AboutFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_about" />
+
+    <dialog
+        android:id="@+id/progressDialog"
+        android:name="ro.code4.monitorizarevot.widget.ProgressDialogFragment"
+        tools:layout="@layout/fragment_progress_dialog"/>
 
 </navigation>

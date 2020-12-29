@@ -10,7 +10,9 @@ import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.net.URLEncoder
 
 class GuideViewModel : BaseViewModel() {
+
     private val remoteConfig = runCatching { FirebaseRemoteConfig.getInstance() }.getOrNull()
+
     private val guideUrl by lazy {
         URLEncoder.encode(
             remoteConfig.getStringOrDefault(
@@ -20,9 +22,11 @@ class GuideViewModel : BaseViewModel() {
             "UTF-8"
         )
     }
+
     private val urlLiveData = MutableLiveData<String>(
         "https://docs.google.com/gview?embedded=true&url=$guideUrl"
     )
 
     fun url(): LiveData<String> = urlLiveData
+
 }
