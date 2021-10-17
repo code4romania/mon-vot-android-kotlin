@@ -40,7 +40,7 @@ The app is localized, meaning it's easier for any interested party to fork the p
 
 More info on redeploying and reusing the app can be found in the wiki: [Redeploy steps](https://github.com/code4romania/mon-vot-android-kotlin/wiki/Steps-for-redeploying---reusing-the-app) & [Google Play Deploy Steps](https://github.com/code4romania/mon-vot-android-kotlin/wiki/Google-Play-Deploy-Steps)
 
-Swagger docs for the API are available [here](https://app-vmon-api-dev.azurewebsites.net/swagger/index.html).
+Swagger docs for the API are available [here](https://app-vmon-api-dev.azurewebsites.net/swagger/index.html). To authenticate please login using the test credentials via the `POST/api/v2/access/authorize` endpoint. Add the received auth token to authorize calls in Swagger, in the format: `Bearer AUTH_CODE_HERE`.
 
 ## Repos and projects
 
