@@ -9,13 +9,12 @@ import org.parceler.Parcel
 
 @Entity(
     tableName = "polling_station",
-    indices = [Index(value = ["countyCode", "idPollingStation"], unique = true)],
+    indices = [Index(value = ["countyCode", "communityCode", "pollingStationNumber"], unique = true)],
     foreignKeys = [ForeignKey(
-        entity = County::class,
+        entity = Community::class,
         parentColumns = ["code"],
-        childColumns = ["countyCode"],
+        childColumns = ["communityCode"],
         onDelete = ForeignKey.CASCADE
-
     )]
 )
 @Parcel(Parcel.Serialization.FIELD)
@@ -28,10 +27,10 @@ class PollingStation() {
     lateinit var countyCode: String
 
     @Expose
-    var idPollingStation: Int = 0
+    lateinit var communityCode: String
 
     @Expose
-    var urbanArea: Boolean = false
+    var pollingStationNumber: Int = 0
 
     @Expose
     var isPollingStationPresidentFemale: Boolean = false
@@ -45,21 +44,21 @@ class PollingStation() {
     var synced: Boolean = false
 
 
-    constructor(countyCode: String, pollingStationNumber: Int) : this() {
+    constructor(countyCode: String, communityCode: String, pollingStationNumber: Int) : this() {
         this.countyCode = countyCode
-        this.idPollingStation = pollingStationNumber
-        this.id = "$countyCode$pollingStationNumber"
+        this.communityCode = communityCode
+        this.pollingStationNumber = pollingStationNumber
+        this.id = "$countyCode$communityCode$pollingStationNumber"
     }
 
     constructor(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int,
-        isUrban: Boolean,
         isFemale: Boolean,
         arrivalTime: String?,
         departureTime: String?
-    ) : this(countyCode, pollingStationNumber) {
-        this.urbanArea = isUrban
+    ) : this(countyCode, communityCode, pollingStationNumber) {
         this.isPollingStationPresidentFemale = isFemale
         this.observerArrivalTime = arrivalTime
         this.observerLeaveTime = departureTime
@@ -72,9 +71,8 @@ class PollingStation() {
         other as PollingStation
 
         if (id != other.id) return false
-        if (countyCode != other.countyCode) return false
-        if (idPollingStation != other.idPollingStation) return false
-        if (urbanArea != other.urbanArea) return false
+        if (communityCode != other.communityCode) return false
+        if (pollingStationNumber != other.pollingStationNumber) return false
         if (isPollingStationPresidentFemale != other.isPollingStationPresidentFemale) return false
         if (observerArrivalTime != other.observerArrivalTime) return false
         if (observerLeaveTime != other.observerLeaveTime) return false
@@ -85,9 +83,8 @@ class PollingStation() {
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + countyCode.hashCode()
-        result = 31 * result + idPollingStation
-        result = 31 * result + urbanArea.hashCode()
+        result = 31 * result + communityCode.hashCode()
+        result = 31 * result + pollingStationNumber
         result = 31 * result + isPollingStationPresidentFemale.hashCode()
         result = 31 * result + (observerArrivalTime?.hashCode() ?: 0)
         result = 31 * result + (observerLeaveTime?.hashCode() ?: 0)

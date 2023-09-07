@@ -52,7 +52,7 @@ class FormsViewModel : BaseFormViewModel() {
         unSyncedDataCountLiveData.addSource(notSyncedPollingStationsCount) { update() }
 
         disposables.add(Observable.combineLatest(
-            repository.getAnswers(countyCode, pollingStationNumber),
+            repository.getAnswers(countyCode, communityCode, pollingStationNumber),
             repository.getFormsWithQuestions(),
             BiFunction<List<AnsweredQuestionPOJO>, List<FormWithSections>, Pair<List<AnsweredQuestionPOJO>, List<FormWithSections>>> { t1, t2 ->
                 Pair(t1, t2)
@@ -74,6 +74,7 @@ class FormsViewModel : BaseFormViewModel() {
         disposables.add(
             repository.getPollingStationInfo(
                 countyCode,
+                communityCode,
                 pollingStationNumber
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

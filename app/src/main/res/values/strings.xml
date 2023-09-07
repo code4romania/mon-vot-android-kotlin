@@ -41,7 +41,7 @@
     <string name="title_guide">Guide</string>
 
     <!-- Section details header -->
-    <string name="polling_station">Polling station %1$d %2$s</string>
+    <string name="polling_station">Polling station %1$d %2$s %3$s</string>
 
     <!-- Menu -->
     <string name="menu_forms">Forms</string>
@@ -58,6 +58,7 @@
     <!-- Polling Station selection -->
     <string name="polling_station_title">Choose the polling station you are in</string>
     <string name="polling_station_county">County/District</string>
+    <string name="polling_station_community">Community</string>
     <string name="polling_station_number">Polling station number</string>
     <string name="polling_station_spinner_choose">Choose</string>
     <string name="polling_station_number_hint">Fill in your polling station number</string>
@@ -65,9 +66,10 @@
     <string name="button_select_visited">Select from visited stations</string>
 
     <string name="invalid_polling_station_county">Choose the county/district</string>
+    <string name="invalid_polling_station_community">Choose the community</string>
     <string name="invalid_polling_station_number">Fill in the polling station number</string>
     <string name="invalid_polling_station_number_minus">The number of the station must be positive</string>
-    <string name="invalid_polling_station_number_max">The maximum number for %1$s county is %2$d</string>
+    <string name="invalid_polling_station_number_max">The maximum number for %1$s county, %2$s community is %3$d</string>
 
     <string name="polling_station_change">Change</string>
     <string name="polling_station_question_environment">Choose the area of the station</string>
@@ -88,7 +90,7 @@
     <string name="invalid_polling_station_gender">Choose man or woman</string>
     <string name="invalid_polling_station_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
-    <string name="polling_station_visited">Polling station %1$d %2$s</string>
+    <string name="polling_station_visited">Polling station %1$d %2$s %3$s</string>
     <string name="polling_station_visited_label">This is the list of stations you already visited. Tap one to view or edit its submitted answers.</string>
 
     <!-- Forms list -->

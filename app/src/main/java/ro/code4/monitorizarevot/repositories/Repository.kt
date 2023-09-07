@@ -59,11 +59,14 @@ class Repository : KoinComponent {
     fun getCounties(): Single<List<County>> {
         val observableApi = apiInterface.getCounties()
         val observableDb = db.countyDao().getAll().take(1).single(emptyList())
+
         return Single.zip(
             observableDb,
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
-                val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
+                val areAllApiCountiesInDb = apiCounties.size == dbCounties.size
+                        && apiCounties.all(dbCounties::contains)
+
                 apiCounties.forEach {
                     it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
                 }
@@ -79,19 +82,47 @@ class Repository : KoinComponent {
             }
         )
     }
+    fun getCommunities(countyCode: String): Single<List<Community>> {
+        val observableApi = apiInterface.getCommunities(countyCode)
+        val observableDb = db.communityDao().getAll(countyCode).take(1).single(emptyList())
+
+        return Single.zip(
+            observableDb,
+            observableApi.onErrorReturnItem(emptyList()),
+            BiFunction<List<Community>, List<Community>, List<Community>> { dbCommunities, apiCommunities ->
+                val areAllApiCommunitiesInDb =  apiCommunities.size == dbCommunities.size
+                        && apiCommunities.all(dbCommunities::contains)
+
+                apiCommunities.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
+                }
+                return@BiFunction when {
+                    apiCommunities.isNotEmpty() && !areAllApiCommunitiesInDb -> {
+                        db.communityDao().deleteAll(countyCode)
+                        db.communityDao().save(*apiCommunities.map { it }.toTypedArray())
+                        apiCommunities
+                    }
+                    apiCommunities.isNotEmpty() && areAllApiCommunitiesInDb -> apiCommunities
+                    else -> dbCommunities
+                }
+            }
+        )
+    }
 
     fun getPollingStationDetails(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int
     ): Observable<PollingStation> {
-        return db.pollingStationDao().get(countyCode, pollingStationNumber).toObservable()
+        return db.pollingStationDao().get(countyCode, communityCode, pollingStationNumber).toObservable()
     }
 
     fun getPollingStationInfo(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int
     ): Observable<PollingStationInfo> {
-        return db.pollingStationDao().getPollingStationInfo(countyCode, pollingStationNumber)
+        return db.pollingStationDao().getPollingStationInfo(countyCode,communityCode, pollingStationNumber)
             .toObservable()
     }
 
@@ -116,9 +147,10 @@ class Repository : KoinComponent {
 
     fun getAnswers(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int
     ): Observable<List<AnsweredQuestionPOJO>> =
-        db.formDetailsDao().getAnswersFor(countyCode, pollingStationNumber)
+        db.formDetailsDao().getAnswersFor(countyCode, communityCode, pollingStationNumber)
 
     fun getFormsWithQuestions(): Observable<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
@@ -142,7 +174,7 @@ class Repository : KoinComponent {
         db.formDetailsDao().deleteForms(*formDetails)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, it.message.orEmpty())
+                Log.w(TAG, it.message.orEmpty(), it)
             })
     }
 
@@ -213,17 +245,18 @@ class Repository : KoinComponent {
             db.formDetailsDao().save(*list.map { it }.toTypedArray())
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, it.message.orEmpty())
+                Log.w(TAG, it.message.orEmpty(), it)
             })
 
     }
 
     fun getAnswersForForm(
         countyCode: String?,
+        communityCode: String?,
         pollingStationNumber: Int,
         formId: Int
     ): Observable<List<AnsweredQuestionPOJO>> {
-        return db.formDetailsDao().getAnswersForForm(countyCode, pollingStationNumber, formId)
+        return db.formDetailsDao().getAnswersForForm(countyCode, communityCode, pollingStationNumber, formId)
     }
 
     @SuppressLint("CheckResult")
@@ -235,7 +268,7 @@ class Repository : KoinComponent {
             .observeOn(AndroidSchedulers.mainThread()).subscribe({
                 Log.d(TAG, "Saving answered question: $answeredQuestion(answers: $answers)")
             }, {
-                Log.i(TAG, it.message.orEmpty())
+                Log.w(TAG, it.message.orEmpty(), it)
             })
     }
 
@@ -243,14 +276,14 @@ class Repository : KoinComponent {
     fun deleteAnsweredQuestion(answeredQuestion: AnsweredQuestion) {
         db.formDetailsDao().deleteAnsweredQuestion(answeredQuestion.id).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({}, {
-                Log.i(TAG, it.message.orEmpty())
+                Log.w(TAG, it.message.orEmpty(), it)
             })
     }
 
 
     @SuppressLint("CheckResult")
-    fun syncAnswers(countyCode: String, pollingStationNumber: Int, formId: Int) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, pollingStationNumber, formId)
+    fun syncAnswers(countyCode: String, communityCode: String, pollingStationNumber: Int, formId: Int) {
+        db.formDetailsDao().getNotSyncedQuestionsForForm(communityCode, countyCode, pollingStationNumber, formId)
             .toObservable()
             .subscribeOn(Schedulers.io()).flatMap(
                 {
@@ -262,12 +295,12 @@ class Repository : KoinComponent {
                 if (it.first.isNotEmpty()) {
                     Observable.fromCallable {
                         db.formDetailsDao()
-                            .updateAnsweredQuestions(countyCode, pollingStationNumber, formId)
+                            .updateAnsweredQuestions(countyCode,communityCode, pollingStationNumber, formId)
                     }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
                 }
             }, {
-                Log.i(TAG, it.message ?: "Error on synchronizing data")
+                Log.w(TAG, it.message ?: "Error on synchronizing data", it)
             })
     }
 
@@ -284,25 +317,27 @@ class Repository : KoinComponent {
 
     fun getNotes(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int,
         selectedQuestion: Question?
     ): LiveData<List<Note>> {
         return if (selectedQuestion == null) {
-            db.noteDao().getNotes(countyCode, pollingStationNumber)
+            db.noteDao().getNotes(countyCode, communityCode, pollingStationNumber)
         } else {
-            db.noteDao().getNotesForQuestion(countyCode, pollingStationNumber, selectedQuestion.id)
+            db.noteDao().getNotesForQuestion(countyCode, communityCode, pollingStationNumber, selectedQuestion.id)
         }
     }
 
     fun getNotesAsObservable(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int,
         selectedQuestion: Question?
     ): Observable<List<Note>> {
         return if (selectedQuestion == null) {
-            db.noteDao().getNotesAsObservable(countyCode, pollingStationNumber)
+            db.noteDao().getNotesAsObservable(countyCode,communityCode, pollingStationNumber)
         } else {
-            db.noteDao().getNotesForQuestionAsObservable(countyCode, pollingStationNumber, selectedQuestion.id)
+            db.noteDao().getNotesForQuestionAsObservable(countyCode, communityCode,pollingStationNumber, selectedQuestion.id)
         }
     }
 
@@ -314,7 +349,7 @@ class Repository : KoinComponent {
             db.formDetailsDao().updateQuestionWithNotes(questionId)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, {
-                Log.i(TAG, it.message.orEmpty())
+                Log.w(TAG, it.message.orEmpty(), it)
             })
     }
 
@@ -351,6 +386,7 @@ class Repository : KoinComponent {
         return apiInterface.postNote(
             body,
             note.countyCode.createMultipart("CountyCode"),
+            note.communityCode.createMultipart("CommunityCode"),
             note.pollingStationNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")
@@ -383,7 +419,7 @@ class Repository : KoinComponent {
                 }
                 .subscribe({
                 }, {
-                    Log.i(TAG, it.localizedMessage.orEmpty())
+                    Log.w(TAG, it.localizedMessage.orEmpty(), it)
                 })
         }
     }

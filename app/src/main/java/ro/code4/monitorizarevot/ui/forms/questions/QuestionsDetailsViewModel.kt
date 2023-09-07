@@ -62,6 +62,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
             val answeredQuestion = AnsweredQuestion(
                 question.id,
                 countyCode,
+                communityCode,
                 pollingStationNumber,
                 selectedFormId
             )
@@ -71,6 +72,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         SelectedAnswer(
                             answer.idOption,
                             countyCode,
+                            communityCode,
                             pollingStationNumber,
                             answeredQuestion.id,
                             if (answer.isFreeText) answer.value else null
@@ -85,11 +87,11 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
     }
 
     fun syncData() {
-        repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+        repository.syncAnswers(countyCode, communityCode, pollingStationNumber, selectedFormId)
     }
 
     override fun provideNoteSource(): Observable<List<Note>> {
-        return repository.getNotesAsObservable(countyCode, pollingStationNumber, null)
+        return repository.getNotesAsObservable(countyCode, communityCode, pollingStationNumber, null)
             .onErrorReturnItem(emptyList())
     }
 }

@@ -15,47 +15,6 @@
             layout="@layout/widget_change_polling_station_bar" />
 
         <TextView
-            android:id="@+id/environmentLabel"
-            style="@style/Text.InputAppearance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginTop="@dimen/xbig_margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:text="@string/polling_station_question_environment"
-            app:layout_constraintTop_toBottomOf="@id/changePollingStationBar" />
-
-        <RadioGroup
-            android:id="@+id/environmentRadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/environmentLabel">
-
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/urbanEnvironment"
-                style="@style/RadioButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_weight="1"
-                android:text="@string/polling_station_answer_urban" />
-
-
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/ruralEnvironment"
-                style="@style/RadioButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/polling_station_answer_rural" />
-        </RadioGroup>
-
-
-        <TextView
             android:id="@+id/genderLabel"
             style="@style/Text.InputAppearance"
             android:layout_width="match_parent"
@@ -64,7 +23,7 @@
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
             android:text="@string/polling_station_question_gender"
-            app:layout_constraintTop_toBottomOf="@id/environmentRadioGroup" />
+            app:layout_constraintTop_toBottomOf="@id/changePollingStationBar" />
 
         <RadioGroup
             android:id="@+id/genderRadioGroup"

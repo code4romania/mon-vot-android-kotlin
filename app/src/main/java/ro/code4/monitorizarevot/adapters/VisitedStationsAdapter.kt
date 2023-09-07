@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.data.pojo.CountyAndPollingStation
+import ro.code4.monitorizarevot.data.pojo.CountyCommunityAndPollingStation
 
 class VisitedStationsAdapter(
     private val context: Context,
-    private val itemSelected: (CountyAndPollingStation) -> Unit
-) : ListAdapter<CountyAndPollingStation, VisitedStationsAdapter.VisitedStationViewHolder>(
+    private val itemSelected: (CountyCommunityAndPollingStation) -> Unit
+) : ListAdapter<CountyCommunityAndPollingStation, VisitedStationsAdapter.VisitedStationViewHolder>(
     DIFF_CALLBACK
 ) {
 
@@ -44,27 +44,29 @@ class VisitedStationsAdapter(
         val textView: TextView = rowView.findViewById(R.id.visitedStation)
     }
 
-    private val CountyAndPollingStation.displayName: String
-        get() = countyOrNull()?.let {
-            context.getString(R.string.polling_station_visited, idPollingStation, it.name)
+    private val CountyCommunityAndPollingStation.displayName: String
+        get() = countyOrNull()?.let { county ->
+            communityOrNull()?.let {community ->
+                context.getString(R.string.polling_station_visited, pollingStationNumber, county.name, community.name)
+            }
         } ?: "Not Available" // TODO extract string?
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CountyAndPollingStation>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CountyCommunityAndPollingStation>() {
             override fun areItemsTheSame(
-                oldItem: CountyAndPollingStation,
-                newItem: CountyAndPollingStation
+                oldItem: CountyCommunityAndPollingStation,
+                newItem: CountyCommunityAndPollingStation
             ): Boolean =
                 oldItem == newItem
 
             override fun areContentsTheSame(
-                oldItem: CountyAndPollingStation,
-                newItem: CountyAndPollingStation
+                oldItem: CountyCommunityAndPollingStation,
+                newItem: CountyCommunityAndPollingStation
             ): Boolean =
-                oldItem.idPollingStation == newItem.idPollingStation &&
+                oldItem.pollingStationNumber == newItem.pollingStationNumber &&
                         oldItem.observerArrivalTime == newItem.observerArrivalTime &&
-                        oldItem.countyCode == newItem.countyCode &&
-                        oldItem.county == newItem.county
+                        oldItem.communityCode == newItem.communityCode &&
+                        oldItem.community == newItem.community
 
         }
     }

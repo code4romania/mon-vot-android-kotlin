@@ -5,6 +5,8 @@ import ro.code4.monitorizarevot.BuildConfig
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
+const val PREFS_COMMUNITY_CODE = "PREFS_COMMUNITY_CODE"
+
 const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
@@ -48,6 +50,11 @@ fun SharedPreferences.saveCountyCode(countyCode: String?) =
     putString(PREFS_COUNTY_CODE, countyCode.orEmpty())
 
 fun SharedPreferences.getCountyCode(): String? = getString(PREFS_COUNTY_CODE)
+
+fun SharedPreferences.saveCommunityCode(communityCode: String?) =
+    putString(PREFS_COMMUNITY_CODE, communityCode.orEmpty())
+fun SharedPreferences.getCommunityCode(): String? = getString(PREFS_COMMUNITY_CODE)
+
 fun SharedPreferences.savePollingStationNumber(pollingStationNumber: Int) =
     putInt(PREFS_POLLING_STATION_NUMBER, pollingStationNumber)
 

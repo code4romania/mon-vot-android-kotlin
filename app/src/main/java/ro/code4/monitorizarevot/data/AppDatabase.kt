@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import ro.code4.monitorizarevot.data.dao.CommunityDao
 import ro.code4.monitorizarevot.data.dao.CountyDao
 import ro.code4.monitorizarevot.data.dao.FormsDao
 import ro.code4.monitorizarevot.data.dao.NoteDao
@@ -15,12 +16,13 @@ import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 @Database(
-    entities = [County::class, PollingStation::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class, Note::class],
+    entities = [County::class, Community::class, PollingStation::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class, Note::class],
     version = 5
 )
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun countyDao(): CountyDao
+    abstract fun communityDao(): CommunityDao
     abstract fun pollingStationDao(): PollingStationDao
     abstract fun formDetailsDao(): FormsDao
     abstract fun noteDao(): NoteDao

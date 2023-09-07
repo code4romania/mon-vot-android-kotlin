@@ -61,9 +61,10 @@ interface FormsDao {
     @Query("DELETE FROM answered_question WHERE id=:id")
     fun deleteAnsweredQuestion(id: String): Completable
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber ")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND communityCode=:communityCode AND pollingStationNumber=:pollingStationNumber ")
     fun getAnswersFor(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int
     ): Observable<List<AnsweredQuestionPOJO>>
 
@@ -74,16 +75,18 @@ interface FormsDao {
     @Query("SELECT * FROM section where formId=:formId ORDER BY orderNumber")
     fun getSectionsWithQuestions(formId: Int): Observable<List<SectionWithQuestions>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND communityCode=:communityCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
     fun getAnswersForForm(
         countyCode: String?,
+        communityCode: String?,
         pollingStationNumber: Int,
         formId: Int
     ): Observable<List<AnsweredQuestionPOJO>>
 
-    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId AND synced=:synced")
+    @Query("SELECT * FROM answered_question WHERE countyCode=:countyCode AND communityCode=:communityCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId AND synced=:synced")
     fun getNotSyncedQuestionsForForm(
         countyCode: String?,
+        communityCode: String?,
         pollingStationNumber: Int,
         formId: Int,
         synced: Boolean = false
@@ -109,9 +112,10 @@ interface FormsDao {
     @Insert(onConflict = REPLACE)
     fun insertAnswers(vararg answers: SelectedAnswer)
 
-    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
+    @Query("UPDATE answered_question SET synced=:synced WHERE countyCode=:countyCode AND communityCode=:communityCode AND pollingStationNumber=:pollingStationNumber AND formId=:formId")
     fun updateAnsweredQuestions(
         countyCode: String,
+        communityCode: String,
         pollingStationNumber: Int,
         formId: Int,
         synced: Boolean = true

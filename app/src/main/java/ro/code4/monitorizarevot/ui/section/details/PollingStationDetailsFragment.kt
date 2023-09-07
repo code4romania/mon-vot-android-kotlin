@@ -89,12 +89,10 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
         setContinueButton()
     }
 
-    private fun setSelection(pair: Pair<Int?, Int?>) {
-        environmentRadioGroup.clearCheck()
+    private fun setSelection(selectedGender: Int?) {
         genderRadioGroup.clearCheck()
 
-        pair.first?.let { environmentRadioGroup.check(it) }
-        pair.second?.let { genderRadioGroup.check(it) }
+        selectedGender?.let {genderRadioGroup.check(it)}
     }
 
     private fun showDatePicker(dateTitleId: Int, timeTitleId: Int, listener: DateTimeListener) {
@@ -130,7 +128,6 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
     private fun setContinueButton() {
         continueButton.setOnClickListener {
             viewModel.validateInputDetails(
-                environmentRadioGroup.checkedRadioButtonId,
                 genderRadioGroup.checkedRadioButtonId
             )
 

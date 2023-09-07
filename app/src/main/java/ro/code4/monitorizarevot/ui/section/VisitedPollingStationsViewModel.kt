@@ -1,12 +1,11 @@
 package ro.code4.monitorizarevot.ui.section
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ro.code4.monitorizarevot.data.pojo.CountyAndPollingStation
+import ro.code4.monitorizarevot.data.pojo.CountyCommunityAndPollingStation
 import ro.code4.monitorizarevot.helper.Result
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
@@ -15,14 +14,14 @@ class VisitedPollingStationsViewModel(
     private val repository: Repository
 ) : BaseViewModel() {
     private val _hasUnsentData = MediatorLiveData<Result<Boolean>>()
-    private val _visitedStations = MutableLiveData<Result<List<CountyAndPollingStation>>>()
-    val visitedStations: LiveData<Result<List<CountyAndPollingStation>>> = _visitedStations
+    private val _visitedStations = MutableLiveData<Result<List<CountyCommunityAndPollingStation>>>()
+    val visitedStations: LiveData<Result<List<CountyCommunityAndPollingStation>>> = _visitedStations
     val hasUnsentData: LiveData<Result<Boolean>> = _hasUnsentData
 
     init {
         val subscription = repository.getVisitedStations()
             .subscribeOn(Schedulers.io())
-            .map { dbData -> Result.Success(dbData) as Result<List<CountyAndPollingStation>> }
+            .map { dbData -> Result.Success(dbData) as Result<List<CountyCommunityAndPollingStation>> }
             .startWith(Result.Loading)
             .map {
                 if (it is Result.Success) {

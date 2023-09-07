@@ -38,6 +38,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ro.code4.monitorizarevot.BuildConfig
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.data.model.Community
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
@@ -84,11 +85,12 @@ fun FragmentManager.replaceFragment(
     ft.commit()
 }
 
-fun AppCompatActivity.changePollingStation(county: County? = null, pollingStationId: Int = -1) {
+fun AppCompatActivity.changePollingStation(county: County? = null, community: Community? = null, pollingStationNumber: Int = -1) {
     val intent = Intent(this, PollingStationActivity::class.java)
-    if (county != null && pollingStationId > 0) {
-        intent.putExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, pollingStationId)
+    if (county != null && community != null && pollingStationNumber > 0) {
+        intent.putExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, pollingStationNumber)
         intent.putExtra(PollingStationActivity.EXTRA_COUNTY_NAME, county.name)
+        intent.putExtra(PollingStationActivity.EXTRA_COMMUNITY_NAME, community.name)
     }
     startActivity(intent)
 }

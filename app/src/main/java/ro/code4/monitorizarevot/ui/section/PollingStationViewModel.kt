@@ -9,27 +9,31 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.data.model.Community
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.data.model.PollingStation
 import ro.code4.monitorizarevot.helper.*
+import ro.code4.monitorizarevot.helper.Constants.DATE_ISO_8601_FORMAT
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 
 
-class PollingStationViewModel : BaseViewModel() {
+class PollingStationViewModel() : BaseViewModel() {
     private val nextLiveData = SingleLiveEvent<Void>()
     private val nextToMainLiveData = SingleLiveEvent<Void>()
     private val titleLiveData = MutableLiveData<String>()
     private val pollingStationLiveData = MutableLiveData<String>()
     private val arrivalTimeLiveData = MutableLiveData<String>()
     private val departureTimeLiveData = MutableLiveData<String>()
-    private val selectedPollingStationLiveData = MutableLiveData<Pair<Int?, Int?>>()
+    private val selectedPollingStationLiveData = MutableLiveData<Int?>()
 
     private val preferences: SharedPreferences by inject()
     private val app: Application by inject()
     private val repository: Repository by inject()
     private lateinit var selectedCounty: County
+    private var selectedCommunity: Community? = null
     private var selectedPollingStationNumber: Int = -1
     private lateinit var arrival: Calendar
     private var departure: Calendar? = null
@@ -41,40 +45,41 @@ class PollingStationViewModel : BaseViewModel() {
 
     fun arrivalTime(): LiveData<String> = arrivalTimeLiveData
     fun departureTime(): LiveData<String> = departureTimeLiveData
-    fun selectedPollingStation(): LiveData<Pair<Int?, Int?>> = selectedPollingStationLiveData
+    fun selectedPollingStation(): LiveData<Int?> = selectedPollingStationLiveData
 
     fun pollingStation(): LiveData<String> = pollingStationLiveData
 
     fun getPollingStationBarText() {
-        pollingStationLiveData.postValue(
-            app.getString(
-                R.string.polling_station,
-                selectedPollingStationNumber,
-                selectedCounty.name
+        if (validCounty() && validCommunity()) {
+            pollingStationLiveData.postValue(
+                app.getString(
+                    R.string.polling_station,
+                    selectedPollingStationNumber,
+                    selectedCounty.name,
+                    selectedCommunity!!.name
+                )
             )
-        )
-        getSelectedPollingStation()
+
+            getSelectedPollingStation()
+        }
     }
 
     @SuppressLint("CheckResult")
     private fun getSelectedPollingStation() {
-
-        var pair: Pair<Int?, Int?> = Pair(null, null)
+        var pollingStationPresidentGender: Int? = null
         var arrivalTime: String? = null
         var departureTime: String? = null
-        repository.getPollingStationDetails(selectedCounty.code, selectedPollingStationNumber)
+
+        repository.getPollingStationDetails(selectedCounty.code, selectedCommunity!!.code, selectedPollingStationNumber)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
-                selectedPollingStationLiveData.postValue(pair)
+                selectedPollingStationLiveData.postValue(pollingStationPresidentGender)
                 setArrivalTime(arrivalTime)
                 setDepartureTime(departureTime)
             }
             .subscribe({
-                pair = Pair(
-                    if (it.urbanArea) R.id.urbanEnvironment else R.id.ruralEnvironment,
-                    if (it.isPollingStationPresidentFemale) R.id.femaleGender else R.id.maleGender
-                )
+                pollingStationPresidentGender = if (it.isPollingStationPresidentFemale) R.id.femaleGender else R.id.maleGender
                 arrivalTime = it.observerArrivalTime
                 departureTime = it.observerLeaveTime
             }, {
@@ -83,32 +88,33 @@ class PollingStationViewModel : BaseViewModel() {
     }
 
     fun validateInputDetails(
-        environmentId: Int,
         genderId: Int
     ) {
         when {
-            environmentId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_environment))
             genderId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_gender))
             !::arrival.isInitialized -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_time_in))
             !checkTime() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_time_input))
             else -> {
-                persistSelection(environmentId, genderId)
+                persistSelection(genderId)
                 nextToMainLiveData.call()
             }
         }
     }
 
-    private fun persistSelection(environmentId: Int, genderId: Int) {
-        val pollingStation = PollingStation(
-            selectedCounty.code,
-            selectedPollingStationNumber,
-            environmentId == R.id.urbanEnvironment,
-            genderId == R.id.femaleGender,
-            arrival.getDateText(),
-            departure.getDateText()
-        )
-        preferences.completedPollingStationConfig()
-        repository.savePollingStationDetails(pollingStation)
+    @SuppressLint("SimpleDateFormat")
+    private fun persistSelection(genderId: Int) {
+        if(validCounty() && validCommunity()) {
+            val pollingStation = PollingStation(
+                selectedCounty.code,
+                selectedCommunity!!.code,
+                selectedPollingStationNumber,
+                genderId == R.id.femaleGender,
+                SimpleDateFormat(DATE_ISO_8601_FORMAT).format(arrival.time),
+                if (departure?.time != null) SimpleDateFormat(DATE_ISO_8601_FORMAT).format(departure!!.time) else ""
+            )
+            preferences.completedPollingStationConfig()
+            repository.savePollingStationDetails(pollingStation)
+        }
     }
 
     private fun checkTime(): Boolean {
@@ -120,29 +126,43 @@ class PollingStationViewModel : BaseViewModel() {
             selectedCounty = it
         }
     }
+    fun selectCommunity(community: Community?) {
+       selectedCommunity = community
+    }
 
     private fun validCounty(): Boolean = ::selectedCounty.isInitialized
-    fun validPollingStationInput(pollingStationNumberText: CharSequence) {
+    private fun validCommunity(): Boolean {
+        return selectedCommunity != null
+    }
+    fun validPollingStationNumber(pollingStationNumberText: CharSequence) {
         if (!validCounty()) {
             messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_county))
             return
         }
+
+        if (!validCommunity()) {
+            messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_community))
+            return
+        }
+
         val pollingStationNumber = getPollingStationNumber(pollingStationNumberText)
         when {
             pollingStationNumberText.isEmpty() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_number))
             pollingStationNumber <= 0 -> messageIdToastLiveData.postValue(
                 app.getString(R.string.invalid_polling_station_number_minus)
             )
-            pollingStationNumber > selectedCounty.limit -> messageIdToastLiveData.postValue(
+            validCommunity() && pollingStationNumber > selectedCommunity!!.limit -> messageIdToastLiveData.postValue(
                 app.getString(
                     R.string.invalid_polling_station_number_max,
                     selectedCounty.name,
-                    selectedCounty.limit
+                    selectedCommunity!!.name,
+                    selectedCommunity!!.limit
                 )
             )
             else -> {
                 selectedPollingStationNumber = pollingStationNumber
                 preferences.saveCountyCode(selectedCounty.code)
+                preferences.saveCommunityCode(selectedCommunity?.code)
                 preferences.savePollingStationNumber(selectedPollingStationNumber)
                 nextLiveData.call()
             }

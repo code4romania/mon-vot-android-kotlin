@@ -41,14 +41,18 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
                         station.countyOrNull()?.name
                     )
                     putExtra(
+                        PollingStationActivity.EXTRA_COMMUNITY_NAME,
+                        station.communityOrNull()?.name
+                    )
+                    putExtra(
                         PollingStationActivity.EXTRA_POLLING_STATION_ID,
-                        station.idPollingStation
+                        station.pollingStationNumber
                     )
                 }
                 setResult(RESULT_OK, data)
                 finish()
             } else {
-                changePollingStation(station.countyOrNull(), station.idPollingStation)
+                changePollingStation(station.countyOrNull(), station.communityOrNull(), station.pollingStationNumber)
             }
         }
         visitedStations.apply {
