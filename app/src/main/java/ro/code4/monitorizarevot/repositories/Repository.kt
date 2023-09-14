@@ -67,9 +67,6 @@ class Repository : KoinComponent {
                 val areAllApiCountiesInDb = apiCounties.size == dbCounties.size
                         && apiCounties.all(dbCounties::contains)
 
-                apiCounties.forEach {
-                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                }
                 return@BiFunction when {
                     apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
                         db.countyDao().deleteAll()
@@ -82,28 +79,25 @@ class Repository : KoinComponent {
             }
         )
     }
-    fun getCommunities(countyCode: String): Single<List<Community>> {
-        val observableApi = apiInterface.getCommunities(countyCode)
-        val observableDb = db.communityDao().getAll(countyCode).take(1).single(emptyList())
+    fun getMunicipalities(countyCode: String): Single<List<Municipality>> {
+        val observableApi = apiInterface.getMunicipalities(countyCode)
+        val observableDb = db.municipalityDao().getAll(countyCode).take(1).single(emptyList())
 
         return Single.zip(
             observableDb,
             observableApi.onErrorReturnItem(emptyList()),
-            BiFunction<List<Community>, List<Community>, List<Community>> { dbCommunities, apiCommunities ->
-                val areAllApiCommunitiesInDb =  apiCommunities.size == dbCommunities.size
-                        && apiCommunities.all(dbCommunities::contains)
+            BiFunction<List<Municipality>, List<Municipality>, List<Municipality>> { dbMunicipalities, apiMunicipalities ->
+                val areAllApiMunicipalitiesInDb =  apiMunicipalities.size == dbMunicipalities.size
+                        && apiMunicipalities.all(dbMunicipalities::contains)
 
-                apiCommunities.forEach {
-                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                }
                 return@BiFunction when {
-                    apiCommunities.isNotEmpty() && !areAllApiCommunitiesInDb -> {
-                        db.communityDao().deleteAll(countyCode)
-                        db.communityDao().save(*apiCommunities.map { it }.toTypedArray())
-                        apiCommunities
+                    apiMunicipalities.isNotEmpty() && !areAllApiMunicipalitiesInDb -> {
+                        db.municipalityDao().deleteAll(countyCode)
+                        db.municipalityDao().save(*apiMunicipalities.map { it }.toTypedArray())
+                        apiMunicipalities
                     }
-                    apiCommunities.isNotEmpty() && areAllApiCommunitiesInDb -> apiCommunities
-                    else -> dbCommunities
+                    apiMunicipalities.isNotEmpty() && areAllApiMunicipalitiesInDb -> apiMunicipalities
+                    else -> dbMunicipalities
                 }
             }
         )
@@ -111,18 +105,18 @@ class Repository : KoinComponent {
 
     fun getPollingStationDetails(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int
     ): Observable<PollingStation> {
-        return db.pollingStationDao().get(countyCode, communityCode, pollingStationNumber).toObservable()
+        return db.pollingStationDao().get(countyCode, municipalityCode, pollingStationNumber).toObservable()
     }
 
     fun getPollingStationInfo(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int
     ): Observable<PollingStationInfo> {
-        return db.pollingStationDao().getPollingStationInfo(countyCode,communityCode, pollingStationNumber)
+        return db.pollingStationDao().getPollingStationInfo(countyCode,municipalityCode, pollingStationNumber)
             .toObservable()
     }
 
@@ -147,10 +141,10 @@ class Repository : KoinComponent {
 
     fun getAnswers(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int
     ): Observable<List<AnsweredQuestionPOJO>> =
-        db.formDetailsDao().getAnswersFor(countyCode, communityCode, pollingStationNumber)
+        db.formDetailsDao().getAnswersFor(countyCode, municipalityCode, pollingStationNumber)
 
     fun getFormsWithQuestions(): Observable<List<FormWithSections>> =
         db.formDetailsDao().getFormsWithSections()
@@ -252,11 +246,11 @@ class Repository : KoinComponent {
 
     fun getAnswersForForm(
         countyCode: String?,
-        communityCode: String?,
+        municipalityCode: String?,
         pollingStationNumber: Int,
         formId: Int
     ): Observable<List<AnsweredQuestionPOJO>> {
-        return db.formDetailsDao().getAnswersForForm(countyCode, communityCode, pollingStationNumber, formId)
+        return db.formDetailsDao().getAnswersForForm(countyCode, municipalityCode, pollingStationNumber, formId)
     }
 
     @SuppressLint("CheckResult")
@@ -282,8 +276,8 @@ class Repository : KoinComponent {
 
 
     @SuppressLint("CheckResult")
-    fun syncAnswers(countyCode: String, communityCode: String, pollingStationNumber: Int, formId: Int) {
-        db.formDetailsDao().getNotSyncedQuestionsForForm(communityCode, countyCode, pollingStationNumber, formId)
+    fun syncAnswers(countyCode: String, municipalityCode: String, pollingStationNumber: Int, formId: Int) {
+        db.formDetailsDao().getNotSyncedQuestionsForForm(countyCode, municipalityCode, pollingStationNumber, formId)
             .toObservable()
             .subscribeOn(Schedulers.io()).flatMap(
                 {
@@ -295,7 +289,7 @@ class Repository : KoinComponent {
                 if (it.first.isNotEmpty()) {
                     Observable.fromCallable {
                         db.formDetailsDao()
-                            .updateAnsweredQuestions(countyCode,communityCode, pollingStationNumber, formId)
+                            .updateAnsweredQuestions(countyCode, municipalityCode, pollingStationNumber, formId)
                     }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
                 }
@@ -317,27 +311,27 @@ class Repository : KoinComponent {
 
     fun getNotes(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int,
         selectedQuestion: Question?
     ): LiveData<List<Note>> {
         return if (selectedQuestion == null) {
-            db.noteDao().getNotes(countyCode, communityCode, pollingStationNumber)
+            db.noteDao().getNotes(countyCode, municipalityCode, pollingStationNumber)
         } else {
-            db.noteDao().getNotesForQuestion(countyCode, communityCode, pollingStationNumber, selectedQuestion.id)
+            db.noteDao().getNotesForQuestion(countyCode, municipalityCode, pollingStationNumber, selectedQuestion.id)
         }
     }
 
     fun getNotesAsObservable(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int,
         selectedQuestion: Question?
     ): Observable<List<Note>> {
         return if (selectedQuestion == null) {
-            db.noteDao().getNotesAsObservable(countyCode,communityCode, pollingStationNumber)
+            db.noteDao().getNotesAsObservable(countyCode,municipalityCode, pollingStationNumber)
         } else {
-            db.noteDao().getNotesForQuestionAsObservable(countyCode, communityCode,pollingStationNumber, selectedQuestion.id)
+            db.noteDao().getNotesForQuestionAsObservable(countyCode, municipalityCode,pollingStationNumber, selectedQuestion.id)
         }
     }
 
@@ -386,7 +380,7 @@ class Repository : KoinComponent {
         return apiInterface.postNote(
             body,
             note.countyCode.createMultipart("CountyCode"),
-            note.communityCode.createMultipart("CommunityCode"),
+            note.municipalityCode.createMultipart("MunicipalityCode"),
             note.pollingStationNumber.toString().createMultipart("PollingStationNumber"),
             questionId.toString().createMultipart("QuestionId"),
             note.description.createMultipart("Text")

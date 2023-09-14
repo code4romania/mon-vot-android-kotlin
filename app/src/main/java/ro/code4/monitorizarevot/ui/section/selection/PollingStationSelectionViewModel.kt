@@ -8,7 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.R
-import ro.code4.monitorizarevot.data.model.Community
+import ro.code4.monitorizarevot.data.model.Municipality
 import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
@@ -20,31 +20,31 @@ class PollingStationSelectionViewModel : BaseViewModel() {
     private val repository: Repository by inject()
     private val sharedPreferences: SharedPreferences by inject()
     private val countiesLiveData = MutableLiveData<Result<List<String>>>()
-    private val communitiesLiveData = MutableLiveData<Result<List<String>>>()
+    private val municipalitiesLiveData = MutableLiveData<Result<List<String>>>()
 
     private val selectionLiveData = SingleLiveEvent<Triple<Int, Int, Int>>()
 
     fun counties(): LiveData<Result<List<String>>> = countiesLiveData
-    fun communities(): LiveData<Result<List<String>>> = communitiesLiveData
+    fun municipalities(): LiveData<Result<List<String>>> = municipalitiesLiveData
     fun selection(): LiveData<Triple<Int, Int, Int>> = selectionLiveData
 
     private val counties: MutableList<County> = mutableListOf()
-    private val communities: MutableMap<String, List<Community>> = mutableMapOf()
+    private val municipalities: MutableMap<String, List<Municipality>> = mutableMapOf()
     private var selectedCounty: County? = null
-    private var selectedCommunity: Community? = null
+    private var selectedMunicipality: Municipality? = null
 
     private fun hadSelectedCounty(): Boolean {
         return selectedCounty != null
     }
-    private fun hadSelectedCommunity(): Boolean {
-        return selectedCommunity != null
+    private fun hadSelectedMunicipality(): Boolean {
+        return selectedMunicipality != null
     }
 
     fun getCounties() {
         countiesLiveData.postValue(Result.Loading)
         if (counties.isNotEmpty()) {
             updateCounties()
-            updateCommunities()
+            updateMunicipalities()
             return
         }
 
@@ -54,31 +54,31 @@ class PollingStationSelectionViewModel : BaseViewModel() {
                 counties.addAll(it)
                 counties.sortBy { c -> c.order }
 
-                communities.clear()
+                municipalities.clear()
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 updateCounties()
-                updateCommunities()
+                updateMunicipalities()
             }, {
                 onError(it)
             })
     }
 
-    private fun getCommunities(countyCode: String) {
-        communitiesLiveData.postValue(Result.Loading)
-        if (communities.containsKey(countyCode)) {
-            updateCommunities()
+    private fun getMunicipalities(countyCode: String) {
+        municipalitiesLiveData.postValue(Result.Loading)
+        if (municipalities.containsKey(countyCode)) {
+            updateMunicipalities()
             return
         }
 
-        disposables += repository.getCommunities(countyCode).subscribeOn(Schedulers.io())
+        disposables += repository.getMunicipalities(countyCode).subscribeOn(Schedulers.io())
             .doOnSuccess {
-                communities[countyCode] = it.sortedBy { c -> c.order }
+                municipalities[countyCode] = it.sortedBy { c -> c.order }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                updateCommunities()
+                updateMunicipalities()
             }, {
                 onError(it)
             })
@@ -89,42 +89,42 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         val countyNames = counties.sortedBy { county -> county.order }.map { it.name }
 
         if (hadSelectedCounty()) {
-            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames.toList()))
-        } else {
             countiesLiveData.postValue(Result.Success(countyNames.toList()))
-
-            handleDataChanged()
+        } else {
+            countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames.toList()))
         }
+
+        handleDataChanged()
     }
 
-    private fun updateCommunities() {
-        var communityNames = emptyList<String>()
+    private fun updateMunicipalities() {
+        var municipalityNames = emptyList<String>()
         if(selectedCounty?.code != null){
-           if(communities.isEmpty()){
-               getCommunities(selectedCounty!!.code)
+           if(municipalities.isEmpty()){
+               getMunicipalities(selectedCounty!!.code)
                return
            }
 
-            communityNames = communities[selectedCounty!!.code]?.map { it.name } ?: emptyList()
+            municipalityNames = municipalities[selectedCounty!!.code]?.map { it.name } ?: emptyList()
         }
 
-        communitiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + communityNames.toList()))
+        municipalitiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + municipalityNames.toList()))
         handleDataChanged()
     }
 
     private fun handleDataChanged() {
         val pollingStationNumber = sharedPreferences.getPollingStationNumber()
         val countyCode = sharedPreferences.getCountyCode()
-        val communityCode = sharedPreferences.getCommunityCode()
+        val newMunicipalityCode = sharedPreferences.getMunicipalityCode()
 
         val selectedCountyIndex = counties.indexOfFirst { it.code == countyCode }
-        val selectedCommunityIndex = communities[countyCode]?.indexOfFirst { it.code == communityCode }
+        val selectedMunicipalityIndex = municipalities[countyCode]?.indexOfFirst { it.code == newMunicipalityCode }
 
-        if (selectedCountyIndex >= 0 &&selectedCommunityIndex !=null && selectedCommunityIndex>=0 ) {
+        if (selectedCountyIndex >= 0 && selectedMunicipalityIndex !=null && selectedMunicipalityIndex>=0 ) {
             selectionLiveData.postValue(
                 Triple(
                     selectedCountyIndex,
-                    selectedCommunityIndex,
+                    selectedMunicipalityIndex,
                     pollingStationNumber
                 )
             )
@@ -135,26 +135,25 @@ class PollingStationSelectionViewModel : BaseViewModel() {
         selectedCounty = counties.getOrNull(if (hadSelectedCounty()) position else position - 1)
 
         if(hadSelectedCounty()){
-            getCommunities(selectedCounty!!.code)
+            getMunicipalities(selectedCounty!!.code)
         }
 
         return selectedCounty
     }
 
-    fun selectCommunityAt(position: Int): Community? {
-        val countyCommunities = when(selectedCounty?.code){
+    fun selectMunicipalityAt(position: Int): Municipality? {
+        val countyMunicipalities = when(selectedCounty?.code){
             null, "", app.getString(R.string.polling_station_spinner_choose) -> emptyList()
-            else ->  communities[selectedCounty!!.code]?: emptyList()
+            else ->  municipalities[selectedCounty!!.code]?: emptyList()
         }
 
-        selectedCommunity = if(countyCommunities.isEmpty()){
+        selectedMunicipality = if(countyMunicipalities.isEmpty()){
             null
         }else{
-            countyCommunities?.getOrNull(if (hadSelectedCommunity()) position else position - 1)
-
+            countyMunicipalities?.getOrNull(if (hadSelectedMunicipality()) position else position - 1)
         }
 
-        return selectedCommunity
+        return selectedMunicipality
     }
 
     override fun onError(throwable: Throwable) {

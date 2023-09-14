@@ -5,7 +5,7 @@ import androidx.room.*
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import ro.code4.monitorizarevot.data.model.PollingStation
-import ro.code4.monitorizarevot.data.pojo.CountyCommunityAndPollingStation
+import ro.code4.monitorizarevot.data.pojo.CountyMunicipalityAndPollingStation
 import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 
 @Dao
@@ -16,16 +16,16 @@ interface PollingStationDao {
     @Update
     fun updatePollingStationDetails(pollingStation: PollingStation)
 
-    @Query("SELECT * FROM polling_station WHERE countyCode=:countyCode AND communityCode=:communityCode AND pollingStationNumber=:pollingStationNumber")
-    fun get(countyCode:String, communityCode: String, pollingStationNumber: Int): Maybe<PollingStation>
+    @Query("SELECT * FROM polling_station WHERE countyCode=:countyCode AND municipalityCode=:municipalityCode AND pollingStationNumber=:pollingStationNumber")
+    fun get(countyCode:String, municipalityCode: String, pollingStationNumber: Int): Maybe<PollingStation>
 
-    @Query("SELECT county.name AS countyName, community.name AS communityName, polling_station.pollingStationNumber as pollingStationNumber FROM polling_station" +
+    @Query("SELECT county.name AS countyName, municipality.name AS municipalityName, polling_station.pollingStationNumber as pollingStationNumber FROM polling_station" +
             " INNER JOIN county on county.code=polling_station.countyCode " +
-            " INNER JOIN community on community.code=polling_station.communityCode " +
-            "WHERE county.code=:countyCode AND communityCode=:communityCode AND pollingStationNumber=:pollingStationNumber")
+            " INNER JOIN municipality on municipality.code=polling_station.municipalityCode" +
+            " WHERE county.code=:countyCode AND municipalityCode=:municipalityCode AND pollingStationNumber=:pollingStationNumber")
     fun getPollingStationInfo(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int
     ): Maybe<PollingStationInfo>
 
@@ -39,5 +39,5 @@ interface PollingStationDao {
     fun deleteAll()
     
     @Query("SELECT * FROM polling_station WHERE observerArrivalTime NOT NULL")
-    fun getVisitedPollingStations(): Observable<List<CountyCommunityAndPollingStation>>
+    fun getVisitedPollingStations(): Observable<List<CountyMunicipalityAndPollingStation>>
 }

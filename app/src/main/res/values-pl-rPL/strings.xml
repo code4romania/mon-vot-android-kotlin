@@ -58,7 +58,7 @@
     <!-- Polling Station selection -->
     <string name="polling_station_title">Wybierz, w którym lokalu wyborczym jesteś</string>
     <string name="polling_station_county">Gmina</string>
-    <string name="polling_station_community">Powiat</string>
+    <string name="polling_station_municipality">Powiat</string>
 
     <string name="polling_station_number">Numer obwodu</string>
     <string name="polling_station_spinner_choose">Wybierz</string>
@@ -67,7 +67,7 @@
     <string name="button_select_visited">Wybierz z odwiedzonych lokali</string>
 
     <string name="invalid_polling_station_county">Wybierz gminę</string>
-    <string name="invalid_polling_station_community">Wybierz powiat</string>
+    <string name="invalid_polling_station_municipality">Wybierz powiat</string>
     <string name="invalid_polling_station_number">Wypełnij numer obwodu</string>
     <string name="invalid_polling_station_number_minus">Numer stacji musi być liczbą dodatnią</string>
     <string name="invalid_polling_station_number_max">Maksymalny numer dla gminy %1$s, powiat %2$s wynosi %3$d</string>

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "1c423d5547916391abce008256d497d6",
+    "identityHash": "bde9f437b7ab2aa2aad1baa862dfea5e",
     "entities": [
       {
         "tableName": "county",
@@ -58,7 +58,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "community",
+        "tableName": "municipality",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `code` TEXT NOT NULL, `countyCode` TEXT NOT NULL, `name` TEXT NOT NULL, `limit` INTEGER NOT NULL, `order` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`countyCode`) REFERENCES `county`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
@@ -106,20 +106,20 @@
         },
         "indices": [
           {
-            "name": "index_community_code",
+            "name": "index_municipality_code",
             "unique": true,
             "columnNames": [
               "code"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_community_code` ON `${TABLE_NAME}` (`code`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_municipality_code` ON `${TABLE_NAME}` (`code`)"
           },
           {
-            "name": "index_community_countyCode",
+            "name": "index_municipality_countyCode",
             "unique": false,
             "columnNames": [
               "countyCode"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_community_countyCode` ON `${TABLE_NAME}` (`countyCode`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_municipality_countyCode` ON `${TABLE_NAME}` (`countyCode`)"
           }
         ],
         "foreignKeys": [
@@ -138,7 +138,7 @@
       },
       {
         "tableName": "polling_station",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `countyCode` TEXT NOT NULL, `communityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `isPollingStationPresidentFemale` INTEGER NOT NULL, `observerArrivalTime` TEXT, `observerLeaveTime` TEXT, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`communityCode`) REFERENCES `community`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `countyCode` TEXT NOT NULL, `municipalityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `isPollingStationPresidentFemale` INTEGER NOT NULL, `observerArrivalTime` TEXT, `observerLeaveTime` TEXT, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`municipalityCode`) REFERENCES `municipality`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -153,8 +153,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "communityCode",
-            "columnName": "communityCode",
+            "fieldPath": "municipalityCode",
+            "columnName": "municipalityCode",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -197,23 +197,23 @@
         },
         "indices": [
           {
-            "name": "index_polling_station_countyCode_communityCode_pollingStationNumber",
+            "name": "index_polling_station_countyCode_municipalityCode_pollingStationNumber",
             "unique": true,
             "columnNames": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_polling_station_countyCode_communityCode_pollingStationNumber` ON `${TABLE_NAME}` (`countyCode`, `communityCode`, `pollingStationNumber`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_polling_station_countyCode_municipalityCode_pollingStationNumber` ON `${TABLE_NAME}` (`countyCode`, `municipalityCode`, `pollingStationNumber`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "community",
+            "table": "municipality",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "communityCode"
+              "municipalityCode"
             ],
             "referencedColumns": [
               "code"
@@ -453,7 +453,7 @@
       },
       {
         "tableName": "answered_question",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formId` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `communityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `communityCode`, `pollingStationNumber`) REFERENCES `polling_station`(`countyCode`, `communityCode`, `pollingStationNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `formId` INTEGER NOT NULL, `questionId` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `municipalityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `savedLocally` INTEGER NOT NULL, `synced` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `form_details`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `municipalityCode`, `pollingStationNumber`) REFERENCES `polling_station`(`countyCode`, `municipalityCode`, `pollingStationNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -480,8 +480,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "communityCode",
-            "columnName": "communityCode",
+            "fieldPath": "municipalityCode",
+            "columnName": "municipalityCode",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -512,15 +512,15 @@
         },
         "indices": [
           {
-            "name": "index_answered_question_countyCode_communityCode_pollingStationNumber_id",
+            "name": "index_answered_question_countyCode_municipalityCode_pollingStationNumber_id",
             "unique": true,
             "columnNames": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber",
               "id"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_answered_question_countyCode_communityCode_pollingStationNumber_id` ON `${TABLE_NAME}` (`countyCode`, `communityCode`, `pollingStationNumber`, `id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_answered_question_countyCode_municipalityCode_pollingStationNumber_id` ON `${TABLE_NAME}` (`countyCode`, `municipalityCode`, `pollingStationNumber`, `id`)"
           }
         ],
         "foreignKeys": [
@@ -552,12 +552,12 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber"
             ],
             "referencedColumns": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber"
             ]
           }
@@ -565,7 +565,7 @@
       },
       {
         "tableName": "selected_answer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `communityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `communityCode`, `pollingStationNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `communityCode`, `pollingStationNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `communityCode`, `pollingStationNumber`, `id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`optionId` INTEGER NOT NULL, `value` TEXT, `countyCode` TEXT NOT NULL, `municipalityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `questionId` TEXT NOT NULL, PRIMARY KEY(`optionId`, `countyCode`, `municipalityCode`, `pollingStationNumber`), FOREIGN KEY(`optionId`) REFERENCES `answer`(`idOption`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `municipalityCode`, `pollingStationNumber`, `questionId`) REFERENCES `answered_question`(`countyCode`, `municipalityCode`, `pollingStationNumber`, `id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "optionId",
@@ -586,8 +586,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "communityCode",
-            "columnName": "communityCode",
+            "fieldPath": "municipalityCode",
+            "columnName": "municipalityCode",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -608,7 +608,7 @@
           "columnNames": [
             "optionId",
             "countyCode",
-            "communityCode",
+            "municipalityCode",
             "pollingStationNumber"
           ],
           "autoGenerate": false
@@ -632,13 +632,13 @@
             "onUpdate": "CASCADE",
             "columns": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber",
               "questionId"
             ],
             "referencedColumns": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber",
               "id"
             ]
@@ -647,7 +647,7 @@
       },
       {
         "tableName": "note",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uriPath` TEXT, `description` TEXT NOT NULL, `questionId` INTEGER, `date` INTEGER NOT NULL, `communityCode` TEXT NOT NULL, `countyCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `formCode` TEXT, `questionCode` TEXT, FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `communityCode`, `pollingStationNumber`) REFERENCES `polling_station`(`countyCode`, `communityCode`, `pollingStationNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uriPath` TEXT, `description` TEXT NOT NULL, `questionId` INTEGER, `date` INTEGER NOT NULL, `countyCode` TEXT NOT NULL, `municipalityCode` TEXT NOT NULL, `pollingStationNumber` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `formCode` TEXT, `questionCode` TEXT, FOREIGN KEY(`questionId`) REFERENCES `question`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`countyCode`, `municipalityCode`, `pollingStationNumber`) REFERENCES `polling_station`(`countyCode`, `municipalityCode`, `pollingStationNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -680,14 +680,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "communityCode",
-            "columnName": "communityCode",
+            "fieldPath": "countyCode",
+            "columnName": "countyCode",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "countyCode",
-            "columnName": "countyCode",
+            "fieldPath": "municipalityCode",
+            "columnName": "municipalityCode",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -724,15 +724,15 @@
         },
         "indices": [
           {
-            "name": "index_note_countyCode_communityCode_pollingStationNumber_questionId",
+            "name": "index_note_countyCode_municipalityCode_pollingStationNumber_questionId",
             "unique": false,
             "columnNames": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber",
               "questionId"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_note_countyCode_communityCode_pollingStationNumber_questionId` ON `${TABLE_NAME}` (`countyCode`, `communityCode`, `pollingStationNumber`, `questionId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_note_countyCode_municipalityCode_pollingStationNumber_questionId` ON `${TABLE_NAME}` (`countyCode`, `municipalityCode`, `pollingStationNumber`, `questionId`)"
           }
         ],
         "foreignKeys": [
@@ -753,12 +753,12 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber"
             ],
             "referencedColumns": [
               "countyCode",
-              "communityCode",
+              "municipalityCode",
               "pollingStationNumber"
             ]
           }
@@ -768,7 +768,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c423d5547916391abce008256d497d6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bde9f437b7ab2aa2aad1baa862dfea5e')"
     ]
   }
 }

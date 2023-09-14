@@ -9,11 +9,11 @@ import org.parceler.Parcel
 
 @Entity(
     tableName = "polling_station",
-    indices = [Index(value = ["countyCode", "communityCode", "pollingStationNumber"], unique = true)],
+    indices = [Index(value = ["countyCode", "municipalityCode", "pollingStationNumber"], unique = true)],
     foreignKeys = [ForeignKey(
-        entity = Community::class,
+        entity = Municipality::class,
         parentColumns = ["code"],
-        childColumns = ["communityCode"],
+        childColumns = ["municipalityCode"],
         onDelete = ForeignKey.CASCADE
     )]
 )
@@ -27,7 +27,7 @@ class PollingStation() {
     lateinit var countyCode: String
 
     @Expose
-    lateinit var communityCode: String
+    lateinit var municipalityCode: String
 
     @Expose
     var pollingStationNumber: Int = 0
@@ -44,21 +44,21 @@ class PollingStation() {
     var synced: Boolean = false
 
 
-    constructor(countyCode: String, communityCode: String, pollingStationNumber: Int) : this() {
+    constructor(countyCode: String, municipalityCode: String, pollingStationNumber: Int) : this() {
         this.countyCode = countyCode
-        this.communityCode = communityCode
+        this.municipalityCode = municipalityCode
         this.pollingStationNumber = pollingStationNumber
-        this.id = "$countyCode$communityCode$pollingStationNumber"
+        this.id = "$countyCode$municipalityCode$pollingStationNumber"
     }
 
     constructor(
         countyCode: String,
-        communityCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int,
         isFemale: Boolean,
         arrivalTime: String?,
         departureTime: String?
-    ) : this(countyCode, communityCode, pollingStationNumber) {
+    ) : this(countyCode, municipalityCode, pollingStationNumber) {
         this.isPollingStationPresidentFemale = isFemale
         this.observerArrivalTime = arrivalTime
         this.observerLeaveTime = departureTime
@@ -71,7 +71,7 @@ class PollingStation() {
         other as PollingStation
 
         if (id != other.id) return false
-        if (communityCode != other.communityCode) return false
+        if (municipalityCode != other.municipalityCode) return false
         if (pollingStationNumber != other.pollingStationNumber) return false
         if (isPollingStationPresidentFemale != other.isPollingStationPresidentFemale) return false
         if (observerArrivalTime != other.observerArrivalTime) return false
@@ -83,7 +83,7 @@ class PollingStation() {
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + communityCode.hashCode()
+        result = 31 * result + municipalityCode.hashCode()
         result = 31 * result + pollingStationNumber
         result = 31 * result + isPollingStationPresidentFemale.hashCode()
         result = 31 * result + (observerArrivalTime?.hashCode() ?: 0)

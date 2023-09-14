@@ -41,7 +41,7 @@ class FormsFragment : ViewModelFragment<FormsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.pollingStation().observe(viewLifecycleOwner, Observer {
             pollingStationBarText.text =
-                getString(R.string.polling_station, it.pollingStationNumber, it.countyName, it.communityName)
+                getString(R.string.polling_station, it.pollingStationNumber, it.countyName, it.municipalityName)
         })
 
         viewModel.title().observe(viewLifecycleOwner, Observer {

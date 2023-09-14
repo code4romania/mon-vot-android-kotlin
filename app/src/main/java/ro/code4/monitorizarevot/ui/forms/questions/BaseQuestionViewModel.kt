@@ -25,7 +25,7 @@ abstract class BaseQuestionViewModel : BaseFormViewModel() {
         val baseSource = if (noteSource != null) {
             Observable.combineLatest(
                 repository.getSectionsWithQuestions(formId),
-                repository.getAnswersForForm(countyCode, communityCode, pollingStationNumber, formId),
+                repository.getAnswersForForm(countyCode, municipalityCode, pollingStationNumber, formId),
                 noteSource,
                 Function3 { t1, t2, t3 ->
                     t1.forEach {
@@ -38,7 +38,7 @@ abstract class BaseQuestionViewModel : BaseFormViewModel() {
             )
         } else {
             Observable.combineLatest(repository.getSectionsWithQuestions(formId),
-                repository.getAnswersForForm(countyCode, communityCode, pollingStationNumber, formId),
+                repository.getAnswersForForm(countyCode, municipalityCode, pollingStationNumber, formId),
                 BiFunction<List<SectionWithQuestions>, List<AnsweredQuestionPOJO>, Pair<List<SectionWithQuestions>, List<AnsweredQuestionPOJO>>> { t1, t2 ->
                     Pair(t1, t2)
                 })

@@ -3,7 +3,6 @@ package ro.code4.monitorizarevot.ui.section
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -41,8 +40,8 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
                         station.countyOrNull()?.name
                     )
                     putExtra(
-                        PollingStationActivity.EXTRA_COMMUNITY_NAME,
-                        station.communityOrNull()?.name
+                        PollingStationActivity.EXTRA_MUNICIPALITY_NAME,
+                        station.municipalityOrNull()?.name
                     )
                     putExtra(
                         PollingStationActivity.EXTRA_POLLING_STATION_ID,
@@ -52,7 +51,7 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
                 setResult(RESULT_OK, data)
                 finish()
             } else {
-                changePollingStation(station.countyOrNull(), station.communityOrNull(), station.pollingStationNumber)
+                changePollingStation(station.countyOrNull(), station.municipalityOrNull(), station.pollingStationNumber)
             }
         }
         visitedStations.apply {

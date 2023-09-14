@@ -21,7 +21,6 @@ import ro.code4.monitorizarevot.data.pojo.PollingStationInfo
 import ro.code4.monitorizarevot.helper.Constants.REMOTE_CONFIG_FILTER_DIASPORA_FORMS
 import ro.code4.monitorizarevot.helper.completedPollingStationConfig
 import ro.code4.monitorizarevot.ui.base.BaseFormViewModel
-import ro.code4.monitorizarevot.ui.notes.NoteFormQuestionCodes
 
 class FormsViewModel : BaseFormViewModel() {
     private val formsLiveData = MutableLiveData<ArrayList<ListItem>>()
@@ -52,7 +51,7 @@ class FormsViewModel : BaseFormViewModel() {
         unSyncedDataCountLiveData.addSource(notSyncedPollingStationsCount) { update() }
 
         disposables.add(Observable.combineLatest(
-            repository.getAnswers(countyCode, communityCode, pollingStationNumber),
+            repository.getAnswers(countyCode, municipalityCode, pollingStationNumber),
             repository.getFormsWithQuestions(),
             BiFunction<List<AnsweredQuestionPOJO>, List<FormWithSections>, Pair<List<AnsweredQuestionPOJO>, List<FormWithSections>>> { t1, t2 ->
                 Pair(t1, t2)
@@ -74,7 +73,7 @@ class FormsViewModel : BaseFormViewModel() {
         disposables.add(
             repository.getPollingStationInfo(
                 countyCode,
-                communityCode,
+                municipalityCode,
                 pollingStationNumber
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

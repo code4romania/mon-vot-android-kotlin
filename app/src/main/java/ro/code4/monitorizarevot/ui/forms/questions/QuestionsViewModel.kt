@@ -37,7 +37,7 @@ class QuestionsViewModel : BaseQuestionViewModel() {
     }
 
     override fun provideNoteSource(): Observable<List<Note>> {
-        return repository.getNotesAsObservable(countyCode, communityCode, pollingStationNumber, null)
+        return repository.getNotesAsObservable(countyCode, municipalityCode, pollingStationNumber, null)
             .onErrorReturnItem(emptyList())
     }
 }

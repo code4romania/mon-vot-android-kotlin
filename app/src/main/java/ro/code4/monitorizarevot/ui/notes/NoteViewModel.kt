@@ -53,7 +53,7 @@ class NoteViewModel : BaseFormViewModel() {
     fun setData(question: Question?, codes: NoteFormQuestionCodes?) {
         selectedQuestion = question
         fqCodes = codes
-        repository.getNotes(countyCode, communityCode, pollingStationNumber, selectedQuestion)
+        repository.getNotes(countyCode, municipalityCode, pollingStationNumber, selectedQuestion)
             .observeOnce(listObserver)
     }
 
@@ -71,7 +71,7 @@ class NoteViewModel : BaseFormViewModel() {
         val note = Note()
         note.questionId = selectedQuestion?.id
         note.pollingStationNumber = pollingStationNumber
-        note.communityCode = communityCode
+        note.municipalityCode = municipalityCode
         note.description = text
         note.uriPath = concatFilePathsOrNull()
         fqCodes?.let {

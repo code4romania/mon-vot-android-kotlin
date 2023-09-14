@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-@Entity(tableName = "community",
+@Entity(tableName = "municipality",
     indices = [Index(value = ["code"], unique = true), Index(value = ["countyCode"])],
     foreignKeys = [androidx.room.ForeignKey(
         entity = County::class,
@@ -18,7 +18,7 @@ import org.parceler.Parcel
     )]
 )
 @Parcel(Parcel.Serialization.FIELD)
-class Community {
+class Municipality {
 
     @PrimaryKey
     @Expose
@@ -45,7 +45,7 @@ class Community {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as Community
+        other as Municipality
         if (code != other.code) return false
         if (countyCode != other.countyCode) return false
         if (limit != other.limit) return false
