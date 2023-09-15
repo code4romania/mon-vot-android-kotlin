@@ -59,6 +59,25 @@
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
+            android:id="@+id/municipalityLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@string/polling_station_municipality"
+            app:layout_constraintTop_toBottomOf="@id/countySpinner"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Spinner
+            android:id="@+id/municipalitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:background="@drawable/background_spinner"
+            app:layout_constraintTop_toBottomOf="@id/municipalityLabel"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
             android:id="@+id/pollingStationNumberLabel"
             style="@style/Text"
             android:layout_width="match_parent"
@@ -66,7 +85,7 @@
             android:layout_marginTop="@dimen/big_margin"
             android:labelFor="@+id/pollingStationNumber"
             android:text="@string/polling_station_number"
-            app:layout_constraintTop_toBottomOf="@id/countySpinner"
+            app:layout_constraintTop_toBottomOf="@id/municipalitySpinner"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <EditText

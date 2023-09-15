@@ -84,10 +84,10 @@ fun FragmentManager.replaceFragment(
     ft.commit()
 }
 
-fun AppCompatActivity.changePollingStation(county: County? = null, pollingStationId: Int = -1) {
+fun AppCompatActivity.changePollingStation(county: County? = null, pollingStationNumber: Int = -1) {
     val intent = Intent(this, PollingStationActivity::class.java)
-    if (county != null && pollingStationId > 0) {
-        intent.putExtra(PollingStationActivity.EXTRA_POLLING_STATION_ID, pollingStationId)
+    if (county != null && pollingStationNumber > 0) {
+        intent.putExtra(PollingStationActivity.EXTRA_POLLING_STATION_NUMBER, pollingStationNumber)
         intent.putExtra(PollingStationActivity.EXTRA_COUNTY_NAME, county.name)
     }
     startActivity(intent)
@@ -110,6 +110,13 @@ fun Calendar?.getDateText(): String? {
         return null
     }
     val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault())
+    return formatter.format(time)
+}
+fun Calendar?.getDateISO8601Text(): String? {
+    if (this == null) {
+        return null
+    }
+    val formatter = SimpleDateFormat(Constants.DATE_ISO_8601_FORMAT, Locale.getDefault())
     return formatter.format(time)
 }
 

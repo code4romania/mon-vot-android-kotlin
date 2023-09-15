@@ -53,7 +53,7 @@ class NoteViewModel : BaseFormViewModel() {
     fun setData(question: Question?, codes: NoteFormQuestionCodes?) {
         selectedQuestion = question
         fqCodes = codes
-        repository.getNotes(countyCode, pollingStationNumber, selectedQuestion)
+        repository.getNotes(countyCode, municipalityCode, pollingStationNumber, selectedQuestion)
             .observeOnce(listObserver)
     }
 

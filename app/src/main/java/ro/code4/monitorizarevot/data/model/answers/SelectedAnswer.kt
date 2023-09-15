@@ -13,12 +13,12 @@ import ro.code4.monitorizarevot.data.model.Answer
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = AnsweredQuestion::class,
-        parentColumns = ["countyCode", "pollingStationNumber", "id"],
-        childColumns = ["countyCode", "pollingStationNumber", "questionId"],
+        parentColumns = ["countyCode", "municipalityCode", "pollingStationNumber", "id"],
+        childColumns = ["countyCode", "municipalityCode", "pollingStationNumber", "questionId"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
     )],
-    primaryKeys = ["optionId", "countyCode", "pollingStationNumber"]
+    primaryKeys = ["optionId", "countyCode", "municipalityCode", "pollingStationNumber"]
 )
 class SelectedAnswer() {
 
@@ -29,6 +29,7 @@ class SelectedAnswer() {
     var value: String? = null
 
     lateinit var countyCode: String
+    lateinit var municipalityCode: String
 
     var pollingStationNumber: Int = 0
 
@@ -37,12 +38,14 @@ class SelectedAnswer() {
     constructor(
         optionId: Int,
         countyCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int,
         questionId: String,
         value: String? = null
     ) : this() {
         this.optionId = optionId
         this.countyCode = countyCode
+        this.municipalityCode = municipalityCode
         this.pollingStationNumber = pollingStationNumber
         this.value = value
         this.questionId = questionId

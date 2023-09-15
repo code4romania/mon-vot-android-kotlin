@@ -9,14 +9,15 @@ import ro.code4.monitorizarevot.data.model.County
 import ro.code4.monitorizarevot.data.model.PollingStation
 import ro.code4.monitorizarevot.data.model.ResponseAnswerContainer
 import ro.code4.monitorizarevot.data.model.Section
+import ro.code4.monitorizarevot.data.model.response.MunicipalityResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 
 interface ApiInterface {
     @GET("/api/v1/form")
     fun getForms(@Query("diaspora") diaspora: Boolean? = null): Observable<VersionResponse>
 
-    @GET("/api/v1/county")
-    fun getCounties(): Single<List<County>>
+    @GET("/api/v1/municipality/all")
+    fun getAllMunicipalities(): Single<List<MunicipalityResponse>>
 
     @GET("/api/v1/form/{formId}")
     fun getForm(@Path("formId") formId: Int): Observable<List<Section>>
@@ -32,6 +33,7 @@ interface ApiInterface {
     fun postNote(
         @Part files: Array<MultipartBody.Part>?,
         @Part countyCode: MultipartBody.Part,
+        @Part municipalityCode: MultipartBody.Part,
         @Part pollingStationNumber: MultipartBody.Part,
         @Part questionId: MultipartBody.Part,
         @Part description: MultipartBody.Part

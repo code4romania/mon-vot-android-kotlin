@@ -22,9 +22,9 @@ import ro.code4.monitorizarevot.data.model.Question
         ),
         ForeignKey(
             entity = PollingStation::class,
-            parentColumns = ["countyCode", "idPollingStation"],
-            childColumns = ["countyCode", "pollingStationNumber"]
-        )], indices = [Index(value = ["countyCode", "pollingStationNumber", "id"], unique = true)]
+            parentColumns = ["countyCode", "municipalityCode", "pollingStationNumber"],
+            childColumns = ["countyCode", "municipalityCode", "pollingStationNumber"]
+        )], indices = [Index(value = ["countyCode", "municipalityCode", "pollingStationNumber", "id"], unique = true)]
 )
 class AnsweredQuestion() {
     @PrimaryKey
@@ -40,6 +40,9 @@ class AnsweredQuestion() {
     lateinit var countyCode: String
 
     @Expose
+    lateinit var municipalityCode: String
+
+    @Expose
     var pollingStationNumber: Int = -1
 
     @Ignore
@@ -52,12 +55,14 @@ class AnsweredQuestion() {
     constructor(
         questionId: Int,
         countyCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int,
         formId: Int
     ) : this() {
-        this.id = "${countyCode}_${pollingStationNumber}_${formId}_$questionId"
+        this.id = "${countyCode}_${municipalityCode}_${pollingStationNumber}_${formId}_$questionId"
         this.questionId = questionId
         this.countyCode = countyCode
+        this.municipalityCode = municipalityCode
         this.pollingStationNumber = pollingStationNumber
         this.formId = formId
     }

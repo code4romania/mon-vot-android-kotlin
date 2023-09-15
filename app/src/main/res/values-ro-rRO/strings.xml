@@ -41,7 +41,7 @@
     <string name="title_guide">Ghid</string>
 
     <!-- Section details header -->
-    <string name="polling_station">Secția %1$d %2$s</string>
+    <string name="polling_station">Secția %1$d %2$s %3$s</string>
 
     <!-- Menu -->
     <string name="menu_forms">Formulare</string>
@@ -58,6 +58,7 @@
     <!-- Polling Station selection -->
     <string name="polling_station_title">Alege secția în care te afli</string>
     <string name="polling_station_county">Județ</string>
+    <string name="polling_station_municipality">Municipalitate</string>
     <string name="polling_station_number">Număr secție</string>
     <string name="polling_station_spinner_choose">Alege</string>
     <string name="polling_station_number_hint">Introduceți numărul secției</string>
@@ -65,9 +66,10 @@
     <string name="button_select_visited">Alege din secțiile vizitate</string>
 
     <string name="invalid_polling_station_county">Alege județul</string>
+    <string name="invalid_polling_station_municipality">Alege municipalitatea</string>
     <string name="invalid_polling_station_number">Introdu numărul secției</string>
     <string name="invalid_polling_station_number_minus">Numărul secției trebuie să fie pozitiv</string>
-    <string name="invalid_polling_station_number_max">Numărul maxim pentru județul %1$s este %2$d</string>
+    <string name="invalid_polling_station_number_max">Numărul maxim pentru județul %1$s, municipalitatea %2$s este %3$d</string>
 
     <string name="polling_station_change">Schimbă</string>
     <string name="polling_station_question_environment">În ce mediu se află secția?</string>

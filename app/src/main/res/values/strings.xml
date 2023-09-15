@@ -26,7 +26,7 @@
     <string name="onboarding_to_app">Go to app</string>
     <string name="onboarding_title_choose_language">Choose your language</string>
     <string name="onboarding_title_1">Pick your voting station</string>
-    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Define the polling station you are in, choosing the county and its number.<br/><br/><b>STEP 2:</b><br/>Add some details about the polling station you are in (urban/rural area, details about the head of the polling commitee, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>STEP 1:</b><br/>Define the polling station you are in, choosing the county and its number.<br/><br/><b>STEP 2:</b><br/>Add some details about the polling station you are in (urban/rural area, details about the head of the polling committee, your arrival time). Don’t worry, you can edit the information later.</html>]]></string>
     <string name="onboarding_title_2">Fill in the forms</string>
     <string name="onboarding_description_2"><![CDATA[<html>In order to help you detect problems, we provide some forms with the standard rules for a polling station.<br/>On each form you can mark whether certain procedures have been followed or not.</html>]]></string>
     <string name="onboarding_title_3">Add notes</string>
@@ -41,7 +41,7 @@
     <string name="title_guide">Guide</string>
 
     <!-- Section details header -->
-    <string name="polling_station">Polling station %1$d %2$s</string>
+    <string name="polling_station">Polling station %1$d %2$s %3$s</string>
 
     <!-- Menu -->
     <string name="menu_forms">Forms</string>
@@ -58,6 +58,7 @@
     <!-- Polling Station selection -->
     <string name="polling_station_title">Choose the polling station you are in</string>
     <string name="polling_station_county">County/District</string>
+    <string name="polling_station_municipality">Municipality</string>
     <string name="polling_station_number">Polling station number</string>
     <string name="polling_station_spinner_choose">Choose</string>
     <string name="polling_station_number_hint">Fill in your polling station number</string>
@@ -65,9 +66,10 @@
     <string name="button_select_visited">Select from visited stations</string>
 
     <string name="invalid_polling_station_county">Choose the county/district</string>
+    <string name="invalid_polling_station_municipality">Choose the municipality</string>
     <string name="invalid_polling_station_number">Fill in the polling station number</string>
     <string name="invalid_polling_station_number_minus">The number of the station must be positive</string>
-    <string name="invalid_polling_station_number_max">The maximum number for %1$s county is %2$d</string>
+    <string name="invalid_polling_station_number_max">The maximum number for %1$s county %2$s municipality is %3$d</string>
 
     <string name="polling_station_change">Change</string>
     <string name="polling_station_question_environment">Choose the area of the station</string>

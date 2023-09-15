@@ -8,3 +8,4 @@ class LoginResponse {
     @SerializedName("access_token")
     lateinit var accessToken: String
 }
+

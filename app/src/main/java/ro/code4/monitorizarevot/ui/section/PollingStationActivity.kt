@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_polling_station.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ro.code4.monitorizarevot.R
+import ro.code4.monitorizarevot.data.model.Municipality
 import ro.code4.monitorizarevot.helper.hideKeyboard
 import ro.code4.monitorizarevot.helper.replaceFragment
 import ro.code4.monitorizarevot.helper.startActivityWithoutTrace
@@ -21,13 +22,15 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
     override val viewModel: PollingStationViewModel by viewModel()
 
     private var countyName: String? = null
-    private var pollingStationId = -1
+    private var municipalityName: String? = null
+    private var pollingStationNumber = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
         countyName = intent.getStringExtra(EXTRA_COUNTY_NAME)
-        pollingStationId = intent.getIntExtra(EXTRA_POLLING_STATION_ID, -1)
+        municipalityName = intent.getStringExtra(EXTRA_MUNICIPALITY_NAME)
+        pollingStationNumber = intent.getIntExtra(EXTRA_POLLING_STATION_NUMBER, -1)
 
         viewModel.title().observe(this, Observer {
             title = it
@@ -45,10 +48,11 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
             )
         })
         replaceFragment(R.id.container, PollingStationSelectionFragment().apply {
-            if (countyName != null && pollingStationId > 0) {
+            if (countyName != null && municipalityName != null && pollingStationNumber > 0) {
                 arguments = bundleOf(
                     EXTRA_COUNTY_NAME to countyName,
-                    EXTRA_POLLING_STATION_ID to pollingStationId
+                    EXTRA_MUNICIPALITY_NAME to municipalityName,
+                    EXTRA_POLLING_STATION_NUMBER to pollingStationNumber
                 )
             }
         })
@@ -56,7 +60,8 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
 
     companion object {
         const val EXTRA_COUNTY_NAME = "extra_county_name"
-        const val EXTRA_POLLING_STATION_ID = "extra_polling_station_id"
+        const val EXTRA_MUNICIPALITY_NAME = "extra_municipality_name"
+        const val EXTRA_POLLING_STATION_NUMBER = "extra_polling_station_NUMBER"
     }
 
 }

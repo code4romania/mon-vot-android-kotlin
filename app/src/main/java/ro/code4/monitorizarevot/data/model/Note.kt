@@ -15,10 +15,10 @@ import java.util.*
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = PollingStation::class,
-        parentColumns = ["countyCode", "idPollingStation"],
-        childColumns = ["countyCode", "pollingStationNumber"]
+        parentColumns = ["countyCode", "municipalityCode", "pollingStationNumber"],
+        childColumns = ["countyCode", "municipalityCode", "pollingStationNumber"]
     )],
-    indices = [Index(value = ["countyCode", "pollingStationNumber", "questionId"], unique = false)]
+    indices = [Index(value = ["countyCode", "municipalityCode", "pollingStationNumber", "questionId"], unique = false)]
 )
 @Parcel(Parcel.Serialization.FIELD)
 class Note {
@@ -34,6 +34,7 @@ class Note {
     var date: Date = Date()
 
     lateinit var countyCode: String
+    lateinit var municipalityCode: String
 
     var pollingStationNumber = 0
 
