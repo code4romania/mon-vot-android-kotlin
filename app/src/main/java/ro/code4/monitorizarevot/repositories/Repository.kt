@@ -10,7 +10,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -58,39 +57,50 @@ class Repository : KoinComponent {
     private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
 
-    fun getData(): Single<Pair<List<County>, Map<String,List<Municipality>>>> {
-        val apiMunicipalities = apiInterface.getAllMunicipalities()
-        val countiesInDb = db.countyDao().getAll().take(1).single(emptyList())
-        val municipalitiesInDb = db.municipalityDao().getAll().take(1).single(emptyList())
+    fun getCounties(): Single<List<County>> {
+        val observableApi = apiInterface.getCounties()
+        val observableDb = db.countyDao().getAll().take(1).single(emptyList())
         return Single.zip(
-            countiesInDb,
-            municipalitiesInDb,
-            apiMunicipalities.onErrorReturnItem(emptyList()),
-            Function3<List<County>,List<Municipality>, List<MunicipalityResponse>, Pair<List<County>, Map<String,List<Municipality>>>>() { dbCounties, dbMunicipalities, apiData ->
-                val counties = apiData.map{County(it.countyId, it.countyCode, it.countyName, it.diaspora, it.countyOrder)}.distinctBy { it.id }
-                val municipalities = apiData.map { Municipality(it.id, it.code, it.countyCode, it.name, it.numberOfPollingStations, it.order) }
-
-                val areAllApiCountiesInDb = dbCounties.count() == counties.count() && counties.all(dbCounties::contains)
-                val areAllApiMunicipalitiesInDb = dbMunicipalities.count() == municipalities.count() && municipalities.all(dbMunicipalities::contains)
-
-                if(counties.isNotEmpty() && !areAllApiCountiesInDb) {
-                    db.countyDao().deleteAll()
-                    db.countyDao().save(*counties.map { it }.toTypedArray())
+            observableDb,
+            observableApi.onErrorReturnItem(emptyList()),
+            BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
+                val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
+                apiCounties.forEach {
+                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
                 }
-
-                if(municipalities.isNotEmpty() && !areAllApiMunicipalitiesInDb) {
-                    db.municipalityDao().deleteAll()
-                    db.municipalityDao().save(*municipalities.map { it }.toTypedArray())
+                return@BiFunction when {
+                    apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
+                        db.countyDao().deleteAll()
+                        db.countyDao().save(*apiCounties.map { it }.toTypedArray())
+                        apiCounties
+                    }
+                    apiCounties.isNotEmpty() && areAllApiCountiesInDb -> apiCounties
+                    else -> dbCounties
                 }
+            }
+        )
+    }
 
-                if(municipalities.isNotEmpty() && !areAllApiMunicipalitiesInDb) {
-                    db.municipalityDao().deleteAll()
-                    db.municipalityDao().save(*municipalities.map { it }.toTypedArray())
+    fun getMunicipalities(countyCode: String): Single<List<Municipality>> {
+        val observableApi = apiInterface.getMunicipalities(countyCode)
+        val observableDb = db.municipalityDao().getByCounty(countyCode).take(1).single(emptyList())
+        return Single.zip(
+            observableDb,
+            observableApi.onErrorReturnItem(emptyList()),
+            BiFunction<List<Municipality>, List<Municipality>, List<Municipality>>() { dbMunicipalities, apiMunicipalities ->
+                val areAllApiMunicipalitiesInDb = apiMunicipalities.all(dbMunicipalities::contains)
+
+                return@BiFunction when {
+                    apiMunicipalities.isNotEmpty() && !areAllApiMunicipalitiesInDb -> {
+                        db.municipalityDao().deleteAll()
+                        db.municipalityDao().save(*apiMunicipalities.map { it }.toTypedArray())
+                        apiMunicipalities
+                    }
+                    apiMunicipalities.isNotEmpty() && areAllApiMunicipalitiesInDb -> apiMunicipalities
+                    else -> dbMunicipalities
                 }
-                val municipalitiesMap =  municipalities.ifEmpty { dbMunicipalities }.groupBy { it.countyCode }.toMap()
-
-                return@Function3 Pair(counties.ifEmpty { dbCounties }, municipalitiesMap)
-            });
+            }
+        )
     }
 
     fun getPollingStationDetails(

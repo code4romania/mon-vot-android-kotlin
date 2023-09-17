@@ -40,7 +40,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     private lateinit var municipalitySpinnerAdapter: ArrayAdapter<String>
     private var countyCode: String? = null
     private var municipalityCode: String? = null
-    private var _pollingStationNumber = -1
+    private var pollingStationId = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,28 +49,26 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        countySpinnerAdapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
+        countySpinnerAdapter =
+            ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         countySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-
-        municipalitySpinnerAdapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
-        municipalitySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-
         countyCode = arguments?.getString(PollingStationActivity.EXTRA_COUNTY_NAME)
+        municipalitySpinnerAdapter =
+            ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
+        municipalitySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         municipalityCode = arguments?.getString(PollingStationActivity.EXTRA_MUNICIPALITY_NAME)
-
-        _pollingStationNumber = arguments?.getInt(PollingStationActivity.EXTRA_POLLING_STATION_NUMBER, -1) ?: -1
+        pollingStationId =
+            arguments?.getInt(PollingStationActivity.EXTRA_POLLING_STATION_NUMBER, -1) ?: -1
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val locationsSource = viewModel.locations()
-        locationsSource.observe(viewLifecycleOwner, Observer {
+        val countiesSource = viewModel.counties()
+        countiesSource.observe(viewLifecycleOwner, Observer {
             it.handle(
-                onSuccess = { locations ->
+                onSuccess = { counties ->
                     progressDialog.dismiss()
-                    locations?.first?.run(::setCountiesDropdown)
-                    locations?.second?.run(::setMunicipalitiesDropdown)
+                    counties?.run(::setCountiesDropdown)
                 },
                 onFailure = {
                     progressDialog.dismiss()
@@ -84,33 +82,52 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             )
         })
 
+        val municipalitiesSource = viewModel.municipalities()
+        municipalitiesSource.observe(viewLifecycleOwner, Observer {
+            it.handle(
+                onSuccess = { municipalities ->
+                    progressDialog.dismiss()
+                    municipalities?.run(::setMunicipalitiesDropdown)
+                },
+                onFailure = {
+                    progressDialog.dismiss()
+                    // TODO: Show some message for the user know what happened
+                },
+                onLoading = {
+                    activity?.run {
+                       progressDialog.showNow(supportFragmentManager, ProgressDialogFragment.TAG)
+                    }
+                }
+            )
+        })
+
         viewModel.selection().observe(viewLifecycleOwner, Observer {
             countySpinner.setSelection(it.first)
             municipalitySpinner.setSelection(it.second)
             pollingStationNumber.setText(it.third.toString())
             pollingStationNumber.setSelection(it.third.toString().length)
+            municipalitySpinner.isEnabled = true
             pollingStationNumber.isEnabled = true
 
-            if (countyCode != null && municipalityCode != null && _pollingStationNumber > 0) {
-                val counties = locationsSource.value?.let { locationResult ->
-                    if (locationResult is Result.Success) {
-                        locationResult.data?.first
+            if (countyCode != null && municipalityCode != null && pollingStationId > 0) {
+                val counties = countiesSource.value?.let { countiesResult ->
+                    if (countiesResult is Result.Success) {
+                        countiesResult.data
                     } else null
                 }
+                val targetCountyIndex =
+                    counties?.indexOfFirst { countyName -> countyName == countyCode } ?: -1
 
-                val municipalities = locationsSource.value?.let { locationResult ->
-                    if (locationResult is Result.Success) {
-                        locationResult.data?.second
+                val municipalities = municipalitiesSource.value?.let { municipalitiesResult ->
+                    if (municipalitiesResult is Result.Success) {
+                        municipalitiesResult.data
                     } else null
                 }
-                val countyTargetIndex = counties?.indexOfFirst { countyName -> countyName == countyCode } ?: -1
-                val municipalityTargetIndex = municipalities?.indexOfFirst { municipalityName -> municipalityName == municipalityCode } ?: -1
+                val targetMunicipalitiesIndex =
+                    municipalities?.indexOfFirst { municipality -> municipality == municipalityCode } ?: -1
 
-                if (countyTargetIndex >= 0) {
-                    updateCountyDisplay(countyTargetIndex + 1)
-                }
-                if (municipalityTargetIndex >= 0) {
-                    updateMunicipalityDisplay(countyTargetIndex + 1)
+                if (targetCountyIndex >= 0 && targetMunicipalitiesIndex > 0) {
+                    updateSelectionDisplay(targetCountyIndex, targetMunicipalitiesIndex)
                 }
             }
         })
@@ -131,6 +148,8 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        municipalitySpinner.isEnabled = false
+
         parentViewModel.setTitle(getString(R.string.title_polling_station_selection))
         countySpinner.adapter = countySpinnerAdapter
         countySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -141,18 +160,18 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
                 id: Long
             ) {
                 val county = viewModel.getSelectedCounty(position)
-                val municipalities = viewModel.getMunicipalitiesForCounty(position)
-                setMunicipalitiesDropdown(municipalities)
-
                 parentViewModel.selectCounty(county)
-                parentViewModel.selectMunicipality(null)
-                municipalitySpinner.setSelection(0)
-                pollingStationNumber.isEnabled = false
+                parentViewModel.deselectMunicipality()
+                if (county != null) {
+                    municipalitySpinner.isEnabled = true
+                    viewModel.getMunicipalities(county.code)
+                    municipalitySpinner.setSelection(0)
+                }
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
         municipalitySpinner.adapter = municipalitySpinnerAdapter
         municipalitySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -161,16 +180,17 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
                 position: Int,
                 id: Long
             ) {
-                val municipality = viewModel.getSelectedMunicipality(parentViewModel.getSelectCounty()?.code, position)
-                parentViewModel.selectMunicipality(municipality)
-                pollingStationNumber.isEnabled = municipality != null
+                val municipality = viewModel.getSelectedMunicipality(position)
+                if (municipality != null) {
+                    parentViewModel.selectMunicipality(municipality)
+                    pollingStationNumber.isEnabled = true
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
         setupActionButtons()
-        viewModel.getData()
+        viewModel.getCounties()
     }
 
     private fun setCountiesDropdown(counties: List<String>) {
@@ -200,35 +220,35 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_SECTION_CODE) {
             val newCountyCode = data?.getStringExtra(PollingStationActivity.EXTRA_COUNTY_NAME)
             val newMunicipalityCode = data?.getStringExtra(PollingStationActivity.EXTRA_MUNICIPALITY_NAME)
-            val newPollingStationNr = data?.getIntExtra(PollingStationActivity.EXTRA_POLLING_STATION_NUMBER, -1) ?: -1
-          
-            if (newMunicipalityCode != null &&  newCountyCode != null && newPollingStationNr > 0 ) {
+            val newPollingStationNr =
+                data?.getIntExtra(PollingStationActivity.EXTRA_POLLING_STATION_NUMBER, -1) ?: -1
+            if (newCountyCode != null && newMunicipalityCode != null && newPollingStationNr > 0) {
                 countyCode = newCountyCode
                 municipalityCode = newMunicipalityCode
-                _pollingStationNumber = newPollingStationNr
+                pollingStationId = newPollingStationNr
 
+                var countyPosition = -1
+                var municipalityPosition = -1
                 for (i in 0 until countySpinnerAdapter.count) {
                     if (countySpinnerAdapter.getItem(i) == newCountyCode) {
-                        updateCountyDisplay(i)
+                        countyPosition = i
+                    }
+                }
+                for (i in 0 until municipalitySpinnerAdapter.count) {
+                    if (municipalitySpinnerAdapter.getItem(i) == newMunicipalityCode) {
+                        municipalityPosition = i
                     }
                 }
 
-                for (i in 0 until municipalitySpinnerAdapter.count) {
-                    if (municipalitySpinnerAdapter.getItem(i) == municipalityCode) {
-                        updateMunicipalityDisplay(i)
-                    }
-                }
+                updateSelectionDisplay(countyPosition, municipalityPosition)
             }
         }
     }
 
-    private fun updateCountyDisplay(position: Int) {
-        countySpinner.setSelection(position)
-        pollingStationNumber.setText(pollingStationNumber.toString())
-    }
-    private fun updateMunicipalityDisplay(position: Int) {
-        municipalitySpinner.setSelection(position)
-        pollingStationNumber.setText(pollingStationNumber.toString())
+    private fun updateSelectionDisplay(countyPosition: Int, municipalityPosition: Int) {
+        countySpinner.setSelection(countyPosition)
+        municipalitySpinner.setSelection(municipalityPosition)
+        pollingStationNumber.setText(pollingStationId.toString())
     }
 
     companion object {

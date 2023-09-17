@@ -53,7 +53,7 @@ class PollingStationViewModel : BaseViewModel() {
                 R.string.polling_station,
                 selectedPollingStationNumber,
                 selectedCounty.name,
-                selectedMunicipality?.name
+                selectedMunicipality!!.name
             )
         )
         getSelectedPollingStation()
@@ -119,37 +119,23 @@ class PollingStationViewModel : BaseViewModel() {
         }
     }
 
-    fun getSelectCounty(): County? {
-        if(::selectedCounty.isInitialized){
-            return selectedCounty
-        }
-
-        return null
+    fun deselectMunicipality() {
+        selectedMunicipality = null
     }
-
 
     fun selectMunicipality(municipality: Municipality?) {
-        selectedMunicipality = municipality
-    }
-    fun getMunicipality(): Municipality?{
-       return selectedMunicipality
+        municipality?.let {
+            selectedMunicipality = it
+        }
     }
 
     private fun validCounty(): Boolean = ::selectedCounty.isInitialized
-    private fun validMunicipality(): Boolean{
-       return selectedMunicipality != null
-    }
+
     fun validPollingStationInput(pollingStationNumberText: CharSequence) {
         if (!validCounty()) {
             messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_county))
             return
         }
-
-        if (!validMunicipality()) {
-            messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_municipality))
-            return
-        }
-
         val pollingStationNumber = getPollingStationNumber(pollingStationNumberText)
         when {
             pollingStationNumberText.isEmpty() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_number))
@@ -182,7 +168,6 @@ class PollingStationViewModel : BaseViewModel() {
         }
 
     }
-
 
     fun setArrivalTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
         arrival = Calendar.getInstance()
