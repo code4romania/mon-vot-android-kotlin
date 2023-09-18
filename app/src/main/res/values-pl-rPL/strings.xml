@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Vote Monitor</string>
+
+    <!-- General -->
+    <string name="loading_label">Ładowanie…</string>
+    <string name="hint_time">gg:mm</string>
+    <string name="empty" />
+    <string name="error_empty_credentials">Podaj numer telefonu i otrzymany kod.</string>
+    <string name="error_no_connection">Brak internetu. Połącz się i spróbuj ponownie.</string>
+    <string name="error_server">Napotkano błąd serwera</string>
+    <string name="error_unknown">Napotkano nieznany błąd</string>
+    <string name="error_permission">Brak uprawnień %1$S</string>
+
+    <!-- Login -->
+    <string name="app_version">v%1$S aplikacja stworzona przez</string>
+    <string name="login_phone">Numer telefony</string>
+    <string name="login_password">Kod</string>
+    <string name="login">Login</string>
+    <string name="login_no_internet">Musisz być połaczony z internetem, by móc się zalogować!</string>
+
+    <!--Onboarding-->
+    <string name="onboarding_next">Nastepny</string>
+    <string name="onboarding_back">Poprzedni</string>
+    <string name="onboarding_to_app">Przejdź do aplikacji</string>
+    <string name="onboarding_title_choose_language">Wybierz język</string>
+    <string name="onboarding_title_1">Wybierz lokal wyborczy</string>
+    <string name="onboarding_description_1"><![CDATA[<html><b>KROK 1:</b><br/>Określ lokal, w którym się zanjdujesz, wybierając gminę i numer obwodu.<br/><br/><b>KROK 2:</b><br/>Dodaj podstawowe dane o obwodzie (miejski/wiejski, dane przewodniczącego), Nie musisz się martwić, dane można edytować później.</html>]]></string>
+    <string name="onboarding_title_2">Wypełnij formularze</string>
+    <string name="onboarding_description_2"><![CDATA[<html>W celu wykrycia problemów, przygotowaliśmy formularze ze ustandaryzowanymi zasadami obowiązującymi w lokalu. <br/>W każdym formularzu pojawią się pytania czy poszczególne procedury zostały wypełnione, czy też nie.</html>]]></string>
+    <string name="onboarding_title_3">Dodaj notatki</string>
+    <string name="onboarding_description_3"><![CDATA[<html>Did you notice any problem that does not appear in the form? Use the ‘<b>Add note</b>’ button, write a message and/or attach a picture.</html>]]></string>
+
+    <!-- Fragment titles -->
+    <string name="title_polling_station_selection">Wybierz obwód</string>
+    <string name="title_polling_station">Szczegóły lokalu</string>
+    <string name="title_visited_stations">Odwiedzone lokale</string>
+    <string name="title_forms_list">Formularze</string>
+    <string name="title_note">Notatki</string>
+    <string name="title_guide">Przewodnik</string>
+
+    <!-- Section details header -->
+    <string name="polling_station">Lokal wyborczy %1$d %2$s %3$s</string>
+
+    <!-- Menu -->
+    <string name="menu_forms">Formularze</string>
+    <string name="menu_change_polling_station">Zmień lokal wyborczy</string>
+    <string name="menu_guide">Przewodnik obserwatora</string>
+    <string name="menu_safety">Bezpeiczeństwo</string>
+    <string name="menu_obs_feedback">Uwagi</string>
+    <string name="menu_call">Infolinia</string>
+    <string name="menu_about">O aplikacji</string>
+    <string name="menu_logout">Wyloguj</string>
+    <string name="menu_visited_stations">Moje odwiedzone lokale</string>
+    <string name="menu_settings">Szczegóły</string>
+
+    <!-- Polling Station selection -->
+    <string name="polling_station_title">Wybierz, w którym lokalu wyborczym jesteś</string>
+    <string name="polling_station_county">Gmina</string>
+    <string name="polling_station_municipality">Powiat</string>
+
+    <string name="polling_station_number">Numer obwodu</string>
+    <string name="polling_station_spinner_choose">Wybierz</string>
+    <string name="polling_station_number_hint">Wypełnij numer obwodu</string>
+    <string name="button_continue">Kontynuuj</string>
+    <string name="button_select_visited">Wybierz z odwiedzonych lokali</string>
+
+    <string name="invalid_polling_station_county">Wybierz gminę</string>
+    <string name="invalid_polling_station_municipality">Wybierz powiat</string>
+    <string name="invalid_polling_station_number">Wypełnij numer obwodu</string>
+    <string name="invalid_polling_station_number_minus">Numer stacji musi być liczbą dodatnią</string>
+    <string name="invalid_polling_station_number_max">Maksymalny numer dla gminy %1$s, powiat %2$s wynosi %3$d</string>
+
+    <string name="polling_station_change">Zmień</string>
+
+    <string name="polling_station_question_gender">Przewodniczący komisji wyborczej jest:</string>
+    <string name="polling_station_answer_man">Mężczyzną</string>
+    <string name="polling_station_answer_woman">AKobietą</string>
+    <string name="polling_station_question_enter">Czas przybycia do lokalu</string>
+    <string name="polling_station_question_leave">Czas opuszczenia lokalu</string>
+    <string name="polling_station_choose_date_enter">Wybierz datę przybycia do lokalu</string>
+    <string name="polling_station_choose_time_enter">Wybierz godzinę przybycia do lokalu</string>
+    <string name="polling_station_choose_date_leave">Wybierz czas opuszczenia lokalu</string>
+    <string name="polling_station_choose_time_leave">Wybierz czas opuszczenia lokalu</string>
+    <string name="button_continue_to_forms">Kontynuuj do formularzy</string>
+
+    <string name="invalid_polling_station_environment">Wybierz wiejski lub miejski</string>
+    <string name="invalid_polling_station_gender">Wybierz kobitea lub mężczyzna</string>
+    <string name="invalid_polling_station_time_in">Wybierz czas przybycia</string>
+    <string name="invalid_time_input">Przybycie musi być wcześniej niż opuszczenie</string>
+    <string name="polling_station_visited">Lokal %1$d %2$s %3$s</string>
+    <string name="polling_station_visited_label">To lista lokali jakie odwiedziłeś. Wybierz jeden by zobaczyć lub zedytować odpowiedzi.</string>
+
+    <!-- Forms list -->
+    <string name="form_notes">Dodaj wiadomość</string>
+
+    <string name="sync_info">Wygląda na to, że część pytań nie udało się zsynchronizować.naciśnij przycisk niżej, by wysłać wiadomości ponownie</string>
+    <string name="sync_info_success">Wszystkie odpowiedzi i notatki zostały zsynchronizowane</string>
+    <string name="sync_manual">Wymuś cję</string>
+
+    <string name="form_sync_no_internet">Musisz mieć połączenie z internetem, żeby móc zsynchronizować dane!</string>
+
+    <string name="error_no_form_data">Brak danych dla tego formularza.</string>
+    <string name="forms_sync_failed_description">Nie udało się zsynchronizować formularza</string>
+    <string name="forms_sync_failed_retry">Ponów</string>
+
+    <!-- Questions list -->
+    <string name="section_title">Sekcja %1$d - %2$s</string>
+
+    <!-- Question details -->
+    <string name="question_next">Następne</string>
+    <string name="question_previous">Poprzednie</string>
+    <string name="question_finish">Wyślij</string>
+    <string name="sync_locally_saved">zapisane lokalnie</string>
+    <string name="add_note_to_question">Dodaj notatkę do pytania</string>
+    <string name="view_add_note_to_question">Zobacz lub dodaj notatki do tego pytania</string>
+
+    <!-- Notes -->
+    <string name="add_note">Dodaj notatkę</string>
+    <string name="note_description_hint">Wpisz tutaj</string>
+    <string name="note_media">Dodaj zdjęcie albo wideo</string>
+    <string name="invalid_note">Dodaj opis lub wybierz plik</string>
+    <string name="error_note_file_copy_single">Nie można dodać pliku. Sprawdź uprawnienia aplikacji i dostępną ilość wolnego miejsca</string>
+    <string name="error_note_file_copy_multiple">Nie można dodać niektórych plików. Sprawdź uprawnienia aplikacji i dostępną ilość wolnego miejsca</string>
+    <string name="note_gallery">Załaduj z galerii</string>
+    <string name="note_photo">Zrób zdjęcie</string>
+    <string name="note_video">Nagraj wideo</string>
+    <string name="select_photo">Wybierz zdjęcie</string>
+    <string name="file_manager_missing">Zainstaluj menedżer plików.</string>
+    <string name="note_submit">Wyślij</string>
+    <string name="note_video_preview_notice">Załączone wideo nie ma podglądu. Naciśnij tutaj, aby otworzyć zewnętrzny odtwarzacz!</string>
+    <string name="note_video_previewer_missing">Nie ma aplikacji pozwalających odtworzyć wideo!</string>
+    <string name="note_details_missing_internet">Musisz być podłaczony do internetu, żeby zobaczyć załączone pliki lub zsynchronizowane notatki!</string>
+    <string name="notes_history">Historia notatek</string>
+    <string name="note_details_codes">Formularz %1$s - Pytanie %2$s</string>
+
+    <!-- Images -->
+    <string name="content_icon_building">Ikona tworzenia</string>
+
+    <!-- Format helpers -->
+    <string name="form_suffix" translatable="false">&#160;(%1$s)</string>
+    <string name="no_answered_questions" translatable="false">%1$d/%2$d</string>
+
+    <!--    Permissions-->
+    <string name="permission_permanently_denied_title">Potrzebne uprawnienia</string>
+    <string name="permission_permanently_denied_msg">By użyć tej opcji musisz zmienić uprawnienia aplikacji. Otwórz ustawienia i nadaj wymagane uprawnienia.</string>
+    <string name="permission_permanently_denied_settings_button">Ustawienia</string>
+
+    <string name="permission_denied_title">Potrzebne uprawnienia</string>
+    <string name="permission_denied_msg">Żeby użyć tej opcji potrzebujesz uprawnień dostępu do przechowanych danych.</string>
+    <string name="permission_denied_ok_button">OK</string>
+    <string name="permission_denied_cancel_button">Anuluj</string>
+
+    <!-- Notifications -->
+    <string name="default_notification_channel_id" translatable="false">Firebase</string>
+    <string name="push_notification_ok">OK</string>
+
+    <!-- Errors -->
+    <string name="error_generic">Coś poszło nie tak!</string>
+
+    <!--About-->
+    <string name="about_mission">O aplikacji</string>
+    <string name="about_content"><![CDATA[<html>Vote Monitor to aplikacja utworzona przez Code For Romania.<br>To jedna z niewielu aplikacji służących obserwacji wyborów na świecie. Została wykorzystana w obserwacji wyborów prezydenckich w Rumunii w 2016 i podczas pierwszej społecznej obserwacji w Polsce w 2018.<br><br>Kod źródłowy aplikacji jest otwarty. Sprawdź go na GitHubie! <a href="https://github.com/code4romania/mon-vot-android-kotlin">Kotlin]</a> lub <a href="https://github.com/code4romania/monitorizare-vot-ios">iOS</a>).<br><br>Code for Romania jest niezależnym NGO tworzącym aplikacje pro-bono w celu rozwiązywania problemów społecznych. Jeśli chcesz wesprzeć nasze działania, odwiedź <a href="https://code4.ro/ro/">naszą stronę</a>, zgłoś się jako wolontariusz lub wpłać datek.</html>]]></string>
+    <string name="about_change_language">Zmień język</string>
+    <string name="about_contact">Skontaktuj się z nami</string>
+    <string name="about_privacy_policy">Polityka prywatności</string>
+    <string name="about_send_mail_via">Prześlij email przez</string>
+    <string name="about_app_version">v%1$S build %2$d aplikacja stworzona przez</string>
+</resources>

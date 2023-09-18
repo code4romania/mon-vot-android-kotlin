@@ -57,12 +57,6 @@ class PollingStationSelectionViewModel : BaseViewModel() {
     }
 
     fun getMunicipalities(countyCode: String) {
-        //municipalitiesLiveData.postValue(Result.Loading)
-        /*if (municipalities.isNotEmpty()) {
-            updateMunicipalities(county.code)
-            return
-        }*/
-
         disposables += repository.getMunicipalities(countyCode).subscribeOn(Schedulers.io())
             .doOnSuccess {
                 municipalities.clear()
@@ -84,7 +78,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
 
         if (countyCode.isNullOrBlank()) {
             countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames.toList()))
-            municipalitiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose_county))))
+            municipalitiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose_municipality))))
             municipalities.clear()
             hadSelectedMunicipality = false
         } else {

@@ -144,7 +144,7 @@ fun String?.getDate(): Long? {
     if (this == null) {
         return null
     }
-    val formatter = SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault())
+    val formatter = SimpleDateFormat(Constants.DATE_ISO_8601_FORMAT, Locale.getDefault())
 
     return formatter.parse(this)?.time
 

@@ -21,7 +21,6 @@ import ro.code4.monitorizarevot.widget.ProgressDialogFragment
 
 
 class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectionViewModel>() {
-
     private val progressDialog: ProgressDialogFragment by lazy {
         ProgressDialogFragment().also {
             it.isCancelable = false
@@ -40,7 +39,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     private lateinit var municipalitySpinnerAdapter: ArrayAdapter<String>
     private var countyCode: String? = null
     private var municipalityCode: String? = null
-    private var pollingStationId = -1
+    private var pollingStationNumber = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,7 +56,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             ArrayAdapter(requireActivity(), R.layout.item_spinner, mutableListOf())
         municipalitySpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         municipalityCode = arguments?.getString(PollingStationActivity.EXTRA_MUNICIPALITY_NAME)
-        pollingStationId =
+        pollingStationNumber =
             arguments?.getInt(PollingStationActivity.EXTRA_POLLING_STATION_NUMBER, -1) ?: -1
     }
 
@@ -104,12 +103,12 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
         viewModel.selection().observe(viewLifecycleOwner, Observer {
             countySpinner.setSelection(it.first)
             municipalitySpinner.setSelection(it.second)
-            pollingStationNumber.setText(it.third.toString())
-            pollingStationNumber.setSelection(it.third.toString().length)
+            pollingStationNumberInput.setText(it.third.toString())
+            pollingStationNumberInput.setSelection(it.third.toString().length)
             municipalitySpinner.isEnabled = true
-            pollingStationNumber.isEnabled = true
+            pollingStationNumberInput.isEnabled = true
 
-            if (countyCode != null && municipalityCode != null && pollingStationId > 0) {
+            if (countyCode != null && municipalityCode != null && pollingStationNumber > 0) {
                 val counties = countiesSource.value?.let { countiesResult ->
                     if (countiesResult is Result.Success) {
                         countiesResult.data
@@ -183,7 +182,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
                 val municipality = viewModel.getSelectedMunicipality(position)
                 if (municipality != null) {
                     parentViewModel.selectMunicipality(municipality)
-                    pollingStationNumber.isEnabled = true
+                    pollingStationNumberInput.isEnabled = true
                 }
             }
 
@@ -207,7 +206,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
 
     private fun setupActionButtons() {
         continueButton.setOnClickListener {
-            parentViewModel.validPollingStationInput(pollingStationNumber.text)
+            parentViewModel.validPollingStationInput(pollingStationNumberInput.text)
         }
         visitedStationsButton.setOnClickListener {
             val intent = Intent(requireContext(), VisitedPollingStationsActivity::class.java)
@@ -225,7 +224,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
             if (newCountyCode != null && newMunicipalityCode != null && newPollingStationNr > 0) {
                 countyCode = newCountyCode
                 municipalityCode = newMunicipalityCode
-                pollingStationId = newPollingStationNr
+                pollingStationNumber = newPollingStationNr
 
                 var countyPosition = -1
                 var municipalityPosition = -1
@@ -248,7 +247,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     private fun updateSelectionDisplay(countyPosition: Int, municipalityPosition: Int) {
         countySpinner.setSelection(countyPosition)
         municipalitySpinner.setSelection(municipalityPosition)
-        pollingStationNumber.setText(pollingStationId.toString())
+        pollingStationNumberInput.setText(pollingStationNumber.toString())
     }
 
     companion object {

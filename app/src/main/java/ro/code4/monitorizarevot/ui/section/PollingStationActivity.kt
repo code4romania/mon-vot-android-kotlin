@@ -22,14 +22,14 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
 
     private var countyName: String? = null
     private var municipalityName: String? = null
-    private var pollingStationId = -1
+    private var pollingStationNumber = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
         countyName = intent.getStringExtra(EXTRA_COUNTY_NAME)
         municipalityName = intent.getStringExtra(EXTRA_MUNICIPALITY_NAME)
-        pollingStationId = intent.getIntExtra(EXTRA_POLLING_STATION_NUMBER, -1)
+        pollingStationNumber = intent.getIntExtra(EXTRA_POLLING_STATION_NUMBER, -1)
 
         viewModel.title().observe(this, Observer {
             title = it
@@ -47,11 +47,11 @@ class PollingStationActivity : BaseActivity<PollingStationViewModel>() {
             )
         })
         replaceFragment(R.id.container, PollingStationSelectionFragment().apply {
-            if (countyName != null && municipalityName != null && pollingStationId > 0) {
+            if (countyName != null && municipalityName != null && pollingStationNumber > 0) {
                 arguments = bundleOf(
                     EXTRA_COUNTY_NAME to countyName,
                     EXTRA_MUNICIPALITY_NAME to municipalityName,
-                    EXTRA_POLLING_STATION_NUMBER to pollingStationId
+                    EXTRA_POLLING_STATION_NUMBER to pollingStationNumber
                 )
             }
         })

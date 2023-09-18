@@ -71,6 +71,7 @@ class NoteViewModel : BaseFormViewModel() {
         val note = Note()
         note.questionId = selectedQuestion?.id
         note.pollingStationNumber = pollingStationNumber
+        note.municipalityCode = municipalityCode
         note.countyCode = countyCode
         note.description = text
         note.uriPath = concatFilePathsOrNull()
