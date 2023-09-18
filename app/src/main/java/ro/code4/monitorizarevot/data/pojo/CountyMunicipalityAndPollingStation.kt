@@ -19,6 +19,9 @@ class CountyMunicipalityAndPollingStation {
     fun countyOrNull(): County? =
         if (::municipality.isInitialized && municipality.isNotEmpty()) county[0] else null
 
+    fun countyAndMunicipalityAsTextOrNull(): Pair<String, String>? =
+        if (::county.isInitialized && county.isNotEmpty() && ::municipality.isInitialized && municipality.isNotEmpty()) Pair(county[0].name, municipality[0].name) else null
+
     fun municipalityOrNull(): Municipality? =
         if (::municipality.isInitialized && municipality.isNotEmpty()) municipality[0] else null
 

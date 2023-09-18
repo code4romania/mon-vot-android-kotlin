@@ -19,6 +19,9 @@ interface MunicipalityDao {
     @Query("SELECT * FROM municipality where code=:municipalityCode")
     fun get(municipalityCode: String): Maybe<Municipality>
 
+    @Query("SELECT * FROM municipality where countyCode = :countyCode")
+    fun getByCounty(countyCode: String): Observable<List<Municipality>>
+
     @Query("DELETE FROM municipality")
     fun deleteAll()
 }

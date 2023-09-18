@@ -61,6 +61,7 @@
     <string name="polling_station_municipality">Municipalitate</string>
     <string name="polling_station_number">Număr secție</string>
     <string name="polling_station_spinner_choose">Alege</string>
+    <string name="polling_station_spinner_choose_county">Alege județul</string>
     <string name="polling_station_number_hint">Introduceți numărul secției</string>
     <string name="button_continue">Continuă</string>
     <string name="button_select_visited">Alege din secțiile vizitate</string>
@@ -90,7 +91,7 @@
     <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
-    <string name="polling_station_visited">Secţia de votare %1$d %2$s</string>
+    <string name="polling_station_visited">Secţia de votare %1$d din %2$s -  %3$s</string>
     <string name="polling_station_visited_label">Aici găsești secțiile pe care le-ai vizitat deja. Apasă pe o secție să verifici sau să editezi răspunsuri.</string>
 
     <!-- Forms list -->
