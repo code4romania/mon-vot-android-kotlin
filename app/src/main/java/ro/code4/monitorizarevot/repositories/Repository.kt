@@ -65,9 +65,6 @@ class Repository : KoinComponent {
             observableApi.onErrorReturnItem(emptyList()),
             BiFunction<List<County>, List<County>, List<County>> { dbCounties, apiCounties ->
                 val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
-                apiCounties.forEach {
-                    it.name = it.name.toLowerCase(Locale.getDefault()).capitalize()
-                }
                 return@BiFunction when {
                     apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
                         db.countyDao().deleteAll()
