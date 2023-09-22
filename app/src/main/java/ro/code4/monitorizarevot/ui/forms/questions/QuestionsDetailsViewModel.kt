@@ -29,7 +29,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }
                     answeredQuestion?.also { savedQuestion ->
                         val selectedAnswer =
-                            savedQuestion.selectedAnswers.find { it.optionId == answer.idOption }
+                            savedQuestion.selectedAnswers.find { it.optionId == answer.optionId }
                         questionWithAnswers.question.savedLocally =
                             savedQuestion.answeredQuestion.savedLocally
                         questionWithAnswers.question.synced = savedQuestion.answeredQuestion.synced
@@ -70,7 +70,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                 if (it.isNotEmpty()) {
                     val list = it.map { answer ->
                         SelectedAnswer(
-                            answer.idOption,
+                            answer.optionId,
                             countyCode,
                             municipalityCode,
                             pollingStationNumber,

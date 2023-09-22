@@ -19,7 +19,7 @@ import org.parceler.Parcel
 class Answer {
     @PrimaryKey
     @Expose
-    var idOption: Int = -1
+    var optionId: Int = -1
 
     @Expose
     lateinit var text: String
@@ -39,12 +39,12 @@ class Answer {
     var orderNumber = 0
 
     override fun equals(other: Any?): Boolean =
-        other is Answer && idOption == other.idOption && text == other.text &&
+        other is Answer && optionId == other.optionId && text == other.text &&
                 isFreeText == other.isFreeText && questionId == other.questionId &&
                 selected == other.selected && value == other.value
 
     override fun hashCode(): Int {
-        var result = idOption
+        var result = optionId
         result = 31 * result + text.hashCode()
         result = 31 * result + isFreeText.hashCode()
         result = 31 * result + questionId

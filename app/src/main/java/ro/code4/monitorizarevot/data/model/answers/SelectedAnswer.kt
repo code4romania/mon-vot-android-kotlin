@@ -8,7 +8,7 @@ import ro.code4.monitorizarevot.data.model.Answer
 @Entity(
     tableName = "selected_answer", foreignKeys = [ForeignKey(
         entity = Answer::class,
-        parentColumns = ["idOption"],
+        parentColumns = ["optionId"],
         childColumns = ["optionId"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(

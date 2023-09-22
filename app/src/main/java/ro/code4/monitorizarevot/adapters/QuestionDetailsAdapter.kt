@@ -172,7 +172,7 @@ class QuestionDetailsAdapter constructor(
 
             }
             (view as Checkable).isChecked = it.selected
-            view.tag = it.idOption
+            view.tag = it.optionId
             holder.itemView.findViewById<AnswerRadioGroup>(R.id.answersRadioGroup)
                 .addView(view, params)
         }
@@ -209,7 +209,7 @@ class QuestionDetailsAdapter constructor(
                 }
             }
             (view as Checkable).isChecked = it.selected
-            view.tag = it.idOption
+            view.tag = it.optionId
             holder.itemView.answersLayout.addView(view, params)
 
         }
