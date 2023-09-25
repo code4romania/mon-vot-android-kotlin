@@ -41,7 +41,7 @@
     <string name="title_guide">Ghid</string>
 
     <!-- Section details header -->
-    <string name="polling_station">Secția %1$d %2$s %3$s</string>
+    <string name="polling_station">Secția %1$d %2$s %3$s %4$s</string>
 
     <!-- Menu -->
     <string name="menu_forms">Formulare</string>
@@ -58,24 +58,38 @@
     <!-- Polling Station selection -->
     <string name="polling_station_title">Alege secția în care te afli</string>
     <string name="polling_station_county">Județ</string>
+    <string name="polling_station_province">Province</string>
+
     <string name="polling_station_municipality">Municipalitate</string>
     <string name="polling_station_number">Număr secție</string>
     <string name="polling_station_spinner_choose">Alege</string>
+    <string name="polling_station_spinner_choose_county">Alege judetul</string>
     <string name="polling_station_spinner_choose_municipality">Alege municipalitatea</string>
     <string name="polling_station_number_hint">Introduceți numărul secției</string>
     <string name="button_continue">Continuă</string>
     <string name="button_select_visited">Alege din secțiile vizitate</string>
 
+    <string name="number_hint">Numar</string>
+
+    <string name="invalid_polling_station_province">Alege regiunea</string>
     <string name="invalid_polling_station_county">Alege județul</string>
     <string name="invalid_polling_station_municipality">Alege municipalitatea</string>
     <string name="invalid_polling_station_number">Introdu numărul secției</string>
     <string name="invalid_polling_station_number_minus">Numărul secției trebuie să fie pozitiv</string>
-    <string name="invalid_polling_station_number_max">Numărul maxim pentru județul %1$s, municipalitatea %2$s este %3$d</string>
+    <string name="invalid_polling_station_number_max">Numărul maxim pentru provincia %1$s județul %2$s, municipalitatea %3$s este %4$d</string>
 
     <string name="polling_station_change">Schimbă</string>
-    <string name="polling_station_question_gender">Preşedintele secţiei este</string>
-    <string name="polling_station_answer_man">Bărbat</string>
-    <string name="polling_station_answer_woman">Femeie</string>
+
+    <string name="polling_station_question_number_of_voters_on_list">Numărul de alegători în lista electorală într-o anumită comisie</string>
+    <string name="polling_station_question_number_of_commission_members">Numărul de membri ai comitetului</string>
+    <string name="polling_station_question_number_of_female_members">Numărul de femei din comitet</string>
+    <string name="polling_station_question_minimum_present_members">Cel mai mic număr de membri ai comisiei prezenți (la momentul observării)</string>
+    <string name="polling_station_question_chairman_presence">Președintele sau vicepreședintele comisiei a fost întotdeauna prezent?</string>
+    <string name="polling_station_question_single_polling_station_or_commission">Există o singură secție de votare (comisie electorală) în sală?</string>
+    <string name="polling_station_question_adequate_polling_station_size">Dimensiunea secției de votare a fost adecvată nevoilor zilei de votare?</string>
+    <string name="polling_station_answer_yes">Da</string>
+    <string name="polling_station_answer_no">Nu</string>
+
     <string name="polling_station_question_enter">Data și ora sosirii</string>
     <string name="polling_station_question_leave">Data și ora plecării</string>
     <string name="polling_station_choose_date_enter">Alege data sosirii</string>
@@ -85,11 +99,19 @@
     <string name="button_continue_to_forms">Continuă către formulare</string>
 
     <string name="invalid_polling_station_environment">Alege urban sau rural</string>
-    <string name="invalid_polling_station_gender">Alege bărbat sau femeie</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
     <string name="polling_station_visited">Secţia de votare %1$d din %2$s -  %3$s</string>
     <string name="polling_station_visited_label">Aici găsești secțiile pe care le-ai vizitat deja. Apasă pe o secție să verifici sau să editezi răspunsuri.</string>
+
+    <string name="invalid_polling_station_number_of_voters_on_the_list">[RO] Fill in the voters on the list</string>
+    <string name="invalid_polling_station_number_of_commission_members">[RO] Fill in the value for commission members</string>
+    <string name="invalid_polling_station_number_of_female_members">[RO] Fill in the value for number of female members in commission</string>
+    <string name="invalid_polling_station_min_present_members">[RO] Fill in the value of minimum number of members</string>
+    <string name="invalid_polling_station_chairman_presence">[RO] Select chairman presence</string>
+    <string name="invalid_polling_station_single_commission">[RO] Select single commission</string>
+    <string name="invalid_polling_station_adequate_size">[RO] Select polling station is adequate size</string>
+
 
     <!-- Forms list -->
     <string name="form_notes">Adaugă notă</string>

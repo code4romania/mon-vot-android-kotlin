@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import ro.code4.monitorizarevot.BuildConfig
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
+const val PREFS_PROVINCE_CODE = "PREFS_PROVINCE_CODE"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
 const val PREFS_MUNICIPALITY_CODE = "PREFS_MUNICIPALITY_CODE"
 const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
@@ -44,6 +45,11 @@ fun SharedPreferences.putBoolean(key: String, value: Boolean = true) {
 fun SharedPreferences.getToken(): String? = getString(PREFS_TOKEN)
 fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
 fun SharedPreferences.deleteToken() = putString(PREFS_TOKEN, null)
+
+fun SharedPreferences.saveProvinceCode(regionCode: String?) =
+    putString(PREFS_PROVINCE_CODE, regionCode.orEmpty())
+
+fun SharedPreferences.getProvinceCode(): String? = getString(PREFS_PROVINCE_CODE)
 
 fun SharedPreferences.saveCountyCode(countyCode: String?) =
     putString(PREFS_COUNTY_CODE, countyCode.orEmpty())

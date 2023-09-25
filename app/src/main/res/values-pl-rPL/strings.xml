@@ -41,7 +41,7 @@
     <string name="title_guide">Przewodnik</string>
 
     <!-- Section details header -->
-    <string name="polling_station">Lokal wyborczy %1$d %2$s %3$s</string>
+    <string name="polling_station">Lokal wyborczy %1$d %2$s %3$s %4$s</string>
 
     <!-- Menu -->
     <string name="menu_forms">Formularze</string>
@@ -59,24 +59,45 @@
     <string name="polling_station_title">Wybierz, w którym lokalu wyborczym jesteś</string>
     <string name="polling_station_county">Gmina</string>
     <string name="polling_station_municipality">Powiat</string>
+    <string name="polling_station_province">Województwo</string>
 
     <string name="polling_station_number">Numer obwodu</string>
     <string name="polling_station_spinner_choose">Wybierz</string>
+    <string name="polling_station_spinner_choose_county">Wybierz gminu</string>
+    <string name="polling_station_spinner_choose_municipality">Wybierz powiat</string>
     <string name="polling_station_number_hint">Wypełnij numer obwodu</string>
+
     <string name="button_continue">Kontynuuj</string>
     <string name="button_select_visited">Wybierz z odwiedzonych lokali</string>
 
+    <string name="number_hint">Numer</string>
+    <string name="invalid_polling_station_province">Wybierz vojvodstvo</string>
     <string name="invalid_polling_station_county">Wybierz gminę</string>
     <string name="invalid_polling_station_municipality">Wybierz powiat</string>
     <string name="invalid_polling_station_number">Wypełnij numer obwodu</string>
     <string name="invalid_polling_station_number_minus">Numer stacji musi być liczbą dodatnią</string>
-    <string name="invalid_polling_station_number_max">Maksymalny numer dla gminy %1$s, powiat %2$s wynosi %3$d</string>
+    <string name="invalid_polling_station_number_max">Maksymalny numer dla województwo %1$s gminy %2$s, powiat %3$s wynosi %4$d</string>
+
+    <string name="invalid_polling_station_number_of_voters_on_the_list">[PL] Fill in the voters on the list</string>
+    <string name="invalid_polling_station_number_of_commission_members">[PL] Fill in the value for commission members</string>
+    <string name="invalid_polling_station_number_of_female_members">[PL] Fill in the value for number of female members in commission</string>
+    <string name="invalid_polling_station_min_present_members">[PL] Fill in the value of minimum number of members</string>
+    <string name="invalid_polling_station_chairman_presence">[PL] Select chairman presence</string>
+    <string name="invalid_polling_station_single_commission">[PL] Select single commission</string>
+    <string name="invalid_polling_station_adequate_size">[PL] Select polling station is adequate size</string>
 
     <string name="polling_station_change">Zmień</string>
 
-    <string name="polling_station_question_gender">Przewodniczący komisji wyborczej jest:</string>
-    <string name="polling_station_answer_man">Mężczyzną</string>
-    <string name="polling_station_answer_woman">AKobietą</string>
+    <string name="polling_station_question_number_of_voters_on_list">Liczba wyborców w spisie wyborców w danej komisji</string>
+    <string name="polling_station_question_number_of_commission_members">Liczba członków komisji</string>
+    <string name="polling_station_question_number_of_female_members">Liczba kobiet w składzie komisji</string>
+    <string name="polling_station_question_minimum_present_members">Najmniejsza liczba obecnych członków komisji (w czasie obserwacji)</string>
+    <string name="polling_station_question_chairman_presence">Czy zawsze obecny był Przewodniczący/ca lub Z-ca Przewodniczącego/ej komisji?</string>
+    <string name="polling_station_question_single_polling_station_or_commission">Czy w pomieszczeniu jest tylko jeden lokal wyborczy (komisja wyborcza)?</string>
+    <string name="polling_station_question_adequate_polling_station_size">Czy wielkość lokalu wyborczego była adekwatna do potrzeb dnia glosowania?</string>
+    <string name="polling_station_answer_yes">Tak</string>
+    <string name="polling_station_answer_no">Nie</string>
+
     <string name="polling_station_question_enter">Czas przybycia do lokalu</string>
     <string name="polling_station_question_leave">Czas opuszczenia lokalu</string>
     <string name="polling_station_choose_date_enter">Wybierz datę przybycia do lokalu</string>
@@ -86,7 +107,6 @@
     <string name="button_continue_to_forms">Kontynuuj do formularzy</string>
 
     <string name="invalid_polling_station_environment">Wybierz wiejski lub miejski</string>
-    <string name="invalid_polling_station_gender">Wybierz kobitea lub mężczyzna</string>
     <string name="invalid_polling_station_time_in">Wybierz czas przybycia</string>
     <string name="invalid_time_input">Przybycie musi być wcześniej niż opuszczenie</string>
     <string name="polling_station_visited">Lokal %1$d %2$s %3$s</string>

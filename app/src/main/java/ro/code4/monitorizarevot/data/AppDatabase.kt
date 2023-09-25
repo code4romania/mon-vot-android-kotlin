@@ -10,17 +10,19 @@ import ro.code4.monitorizarevot.data.dao.FormsDao
 import ro.code4.monitorizarevot.data.dao.MunicipalityDao
 import ro.code4.monitorizarevot.data.dao.NoteDao
 import ro.code4.monitorizarevot.data.dao.PollingStationDao
+import ro.code4.monitorizarevot.data.dao.ProvinceDao
 import ro.code4.monitorizarevot.data.helper.DateConverter
 import ro.code4.monitorizarevot.data.model.*
 import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 
 @Database(
-    entities = [County::class, Municipality::class, PollingStation::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class, Note::class],
+    entities = [Province::class, County::class, Municipality::class, PollingStation::class, FormDetails::class, Section::class, Question::class, Answer::class, AnsweredQuestion::class, SelectedAnswer::class, Note::class],
     version = 5
 )
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
+    abstract fun provinceDao(): ProvinceDao
     abstract fun countyDao(): CountyDao
     abstract fun municipalityDao(): MunicipalityDao
     abstract fun pollingStationDao(): PollingStationDao

@@ -41,7 +41,7 @@
     <string name="title_guide">Guide</string>
 
     <!-- Section details header -->
-    <string name="polling_station">Polling station %1$d %2$s %3$s</string>
+    <string name="polling_station">Polling station %1$d %2$s %3$s %4$s</string>
 
     <!-- Menu -->
     <string name="menu_forms">Forms</string>
@@ -57,25 +57,49 @@
 
     <!-- Polling Station selection -->
     <string name="polling_station_title">Choose the polling station you are in</string>
+    <string name="polling_station_province">Voivodeship</string>
     <string name="polling_station_county">County/District</string>
     <string name="polling_station_municipality">Municipality</string>
     <string name="polling_station_number">Polling station number</string>
     <string name="polling_station_spinner_choose">Choose</string>
+    <string name="polling_station_spinner_choose_county">Choose county</string>
     <string name="polling_station_spinner_choose_municipality">Choose municipality</string>
     <string name="polling_station_number_hint">Fill in your polling station number</string>
     <string name="button_continue">Continue</string>
     <string name="button_select_visited">Select from visited stations</string>
 
+    <string name="number_hint">Number</string>
+
+    <string name="invalid_polling_station_province">Choose the province</string>
     <string name="invalid_polling_station_county">Choose the county/district</string>
     <string name="invalid_polling_station_municipality">Choose the municipality</string>
     <string name="invalid_polling_station_number">Fill in the polling station number</string>
     <string name="invalid_polling_station_number_minus">The number of the station must be positive</string>
-    <string name="invalid_polling_station_number_max">The maximum number for %1$s county %2$s municipality is %3$d</string>
+    <string name="invalid_polling_station_number_max">The maximum number for %1$s province %2$s county %3$s municipality is %4$d</string>
+
+
+    <string name="invalid_polling_station_number_of_voters_on_the_list">Fill in the voters on the list</string>
+    <string name="invalid_polling_station_number_of_commission_members">Fill in the value for commission members</string>
+    <string name="invalid_polling_station_number_of_female_members">Fill in the value for number of female members in commission</string>
+    <string name="invalid_polling_station_min_present_members">Fill in the value of minimum number of members</string>
+    <string name="invalid_polling_station_chairman_presence">Select chairman presence</string>
+    <string name="invalid_polling_station_single_commission">Select single commission</string>
+    <string name="invalid_polling_station_adequate_size">Select polling station is adequate size</string>
+
+
 
     <string name="polling_station_change">Change</string>
-    <string name="polling_station_question_gender">The president of the polling station is:</string>
-    <string name="polling_station_answer_man">A man</string>
-    <string name="polling_station_answer_woman">A woman</string>
+
+    <string name="polling_station_question_number_of_voters_on_list">The number of voters in the electoral roll in a given commission</string>
+    <string name="polling_station_question_number_of_commission_members">Number of committee members</string>
+    <string name="polling_station_question_number_of_female_members">Number of women on the committee</string>
+    <string name="polling_station_question_minimum_present_members">Lowest number of committee members present (at time of observation)</string>
+    <string name="polling_station_question_chairman_presence">Was the Chairman or Deputy Chairman of the committee always present?</string>
+    <string name="polling_station_question_single_polling_station_or_commission">Is there only one polling station (electoral commission) in the room?</string>
+    <string name="polling_station_question_adequate_polling_station_size">Was the size of the polling station adequate to the needs of the voting day?</string>
+    <string name="polling_station_answer_yes">Yes</string>
+    <string name="polling_station_answer_no">No</string>
+
     <string name="polling_station_question_enter">Arrival date &amp; time</string>
     <string name="polling_station_question_leave">Departure date &amp; time</string>
     <string name="polling_station_choose_date_enter">Choose the date of your arrival</string>
@@ -85,7 +109,6 @@
     <string name="button_continue_to_forms">Continue to forms</string>
 
     <string name="invalid_polling_station_environment">Choose urban or rural</string>
-    <string name="invalid_polling_station_gender">Choose man or woman</string>
     <string name="invalid_polling_station_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
     <string name="polling_station_visited">Polling station %1$d from %2$s - %3$s</string>

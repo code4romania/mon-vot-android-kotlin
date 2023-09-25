@@ -84,15 +84,19 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
                 })
         }
         viewModel.selectedPollingStation().observe(viewLifecycleOwner, Observer {
-            setSelection(it)
+            setSelections(it.chairmanPresence, it.singlePollingStationOrCommission, it.adequatePollingStationSize)
         })
         setContinueButton()
     }
 
-    private fun setSelection(selectedPollingStationPresidentGender: Int?) {
-        genderRadioGroup.clearCheck()
+    private fun setSelections(chairmanPresence: Int?,singlePollingStationOrCommission: Int?, adequatePollingStationSize: Int?) {
+        chairmanPresenceGroup.clearCheck()
+        singlePollingStationOrCommissionGroup.clearCheck()
+        adequatePollingStationSizeGroup.clearCheck()
 
-        selectedPollingStationPresidentGender?.let { genderRadioGroup.check(it) }
+        chairmanPresence?.let { chairmanPresenceGroup.check(it) }
+        singlePollingStationOrCommission?.let { singlePollingStationOrCommissionGroup.check(it) }
+        adequatePollingStationSize?.let { adequatePollingStationSizeGroup.check(it) }
     }
 
     private fun showDatePicker(dateTitleId: Int, timeTitleId: Int, listener: DateTimeListener) {
@@ -128,7 +132,14 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
     private fun setContinueButton() {
         continueButton.setOnClickListener {
             viewModel.validateInputDetails(
-                genderRadioGroup.checkedRadioButtonId
+                numberOfVotersOnTheListInput.text,
+                numberOfCommissionMembersInput.text,
+                numberOfFemaleMembersInput.text,
+                minPresentMembersInput.text,
+
+                chairmanPresenceGroup.checkedRadioButtonId,
+                singlePollingStationOrCommissionGroup.checkedRadioButtonId,
+                adequatePollingStationSizeGroup.checkedRadioButtonId
             )
 
         }

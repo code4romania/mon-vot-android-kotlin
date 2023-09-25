@@ -33,13 +33,33 @@ class PollingStation() {
     var pollingStationNumber: Int = 0
 
     @Expose
-    var isPollingStationPresidentFemale: Boolean = false
-
-    @Expose
     var observerArrivalTime: String? = null
 
     @Expose
     var observerLeaveTime: String? = null
+
+    @Expose
+    var numberOfVotersOnTheList: Int = 0
+
+    @Expose
+    var numberOfCommissionMembers: Int = 0
+
+    @Expose
+    var numberOfFemaleMembers: Int = 0
+
+    @Expose
+    var minPresentMembers: Int = 0
+
+    @Expose
+    var chairmanPresence: Boolean = false
+
+    @Expose
+    var singlePollingStationOrCommission: Boolean = false
+
+    @Expose
+    var adequatePollingStationSize: Boolean = false
+
+
 
     var synced: Boolean = false
 
@@ -55,13 +75,26 @@ class PollingStation() {
         countyCode: String,
         municipalityCode: String,
         pollingStationNumber: Int,
-        isFemale: Boolean,
         arrivalTime: String?,
-        departureTime: String?
+        leaveTime: String?,
+        numberOfVotersOnTheList: Int,
+        numberOfCommissionMembers: Int,
+        numberOfFemaleMembers: Int,
+        minPresentMembers: Int,
+        chairmanPresence: Boolean,
+        singlePollingStationOrCommission: Boolean,
+        adequatePollingStationSize: Boolean
     ) : this(countyCode, municipalityCode, pollingStationNumber) {
-        this.isPollingStationPresidentFemale = isFemale
         this.observerArrivalTime = arrivalTime
-        this.observerLeaveTime = departureTime
+        this.observerLeaveTime = leaveTime
+
+        this.numberOfVotersOnTheList = numberOfVotersOnTheList
+        this.numberOfCommissionMembers=numberOfCommissionMembers
+        this.numberOfFemaleMembers=numberOfFemaleMembers
+        this.minPresentMembers=minPresentMembers
+        this.chairmanPresence=chairmanPresence
+        this.singlePollingStationOrCommission=singlePollingStationOrCommission
+        this.adequatePollingStationSize=adequatePollingStationSize
     }
 
     override fun equals(other: Any?): Boolean {
@@ -73,9 +106,16 @@ class PollingStation() {
         if (id != other.id) return false
         if (municipalityCode != other.municipalityCode) return false
         if (pollingStationNumber != other.pollingStationNumber) return false
-        if (isPollingStationPresidentFemale != other.isPollingStationPresidentFemale) return false
         if (observerArrivalTime != other.observerArrivalTime) return false
         if (observerLeaveTime != other.observerLeaveTime) return false
+        if (numberOfVotersOnTheList!=other.numberOfVotersOnTheList) return false
+        if (numberOfCommissionMembers!=other.numberOfCommissionMembers) return false
+        if (numberOfFemaleMembers!=other.numberOfFemaleMembers) return false
+        if (minPresentMembers!=other.minPresentMembers) return false
+        if (chairmanPresence!=other.chairmanPresence) return false
+        if (singlePollingStationOrCommission!=other.singlePollingStationOrCommission) return false
+        if (adequatePollingStationSize!=other.adequatePollingStationSize) return false
+
         if (synced != other.synced) return false
 
         return true
@@ -85,9 +125,15 @@ class PollingStation() {
         var result = id.hashCode()
         result = 31 * result + municipalityCode.hashCode()
         result = 31 * result + pollingStationNumber
-        result = 31 * result + isPollingStationPresidentFemale.hashCode()
         result = 31 * result + (observerArrivalTime?.hashCode() ?: 0)
         result = 31 * result + (observerLeaveTime?.hashCode() ?: 0)
+        result = 31 * result + numberOfVotersOnTheList
+        result = 31 * result + numberOfCommissionMembers
+        result = 31 * result + numberOfFemaleMembers
+        result = 31 * result + minPresentMembers
+        result = 31 * result + chairmanPresence.hashCode()
+        result = 31 * result + singlePollingStationOrCommission.hashCode()
+        result = 31 * result + adequatePollingStationSize.hashCode()
         result = 31 * result + synced.hashCode()
         return result
     }

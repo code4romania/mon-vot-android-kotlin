@@ -24,7 +24,6 @@ import ro.code4.monitorizarevot.data.model.answers.AnsweredQuestion
 import ro.code4.monitorizarevot.data.model.answers.SelectedAnswer
 import ro.code4.monitorizarevot.data.model.response.ErrorVersionResponse
 import ro.code4.monitorizarevot.data.model.response.LoginResponse
-import ro.code4.monitorizarevot.data.model.response.MunicipalityResponse
 import ro.code4.monitorizarevot.data.model.response.PostNoteResponse
 import ro.code4.monitorizarevot.data.model.response.VersionResponse
 import ro.code4.monitorizarevot.data.pojo.*
@@ -57,9 +56,30 @@ class Repository : KoinComponent {
     private var syncInProgress = false
     fun login(user: User): Observable<LoginResponse> = loginInterface.login(user)
 
-    fun getCounties(): Single<List<County>> {
-        val observableApi = apiInterface.getCounties()
-        val observableDb = db.countyDao().getAll().take(1).single(emptyList())
+    fun getProvinces(): Single<List<Province>> {
+        val observableApi = apiInterface.getProvinces()
+        val observableDb = db.provinceDao().getAll().take(1).single(emptyList())
+        return Single.zip(
+            observableDb,
+            observableApi.onErrorReturnItem(emptyList()),
+            BiFunction<List<Province>, List<Province>, List<Province>> { dbProvinces, apiProvinces ->
+                val areAllProvincesInDb = apiProvinces.all(dbProvinces::contains)
+                return@BiFunction when {
+                    apiProvinces.isNotEmpty() && !areAllProvincesInDb -> {
+                        db.provinceDao().deleteAll()
+                        db.provinceDao().save(*apiProvinces.map { it }.toTypedArray())
+                        apiProvinces
+                    }
+                    apiProvinces.isNotEmpty() && areAllProvincesInDb -> apiProvinces
+                    else -> dbProvinces
+                }
+            }
+        )
+    }
+
+    fun getCounties(provinceCode: String): Single<List<County>> {
+        val observableApi = apiInterface.getCounties(provinceCode)
+        val observableDb = db.countyDao().getByProvinceCode(provinceCode).take(1).single(emptyList())
         return Single.zip(
             observableDb,
             observableApi.onErrorReturnItem(emptyList()),

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,45 +16,237 @@
             layout="@layout/widget_change_polling_station_bar" />
 
         <TextView
-            android:id="@+id/genderLabel"
+            android:id="@+id/numberOfVotersOnTheListLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:labelFor="@+id/numberOfVotersOnTheListInput"
+            android:text="@string/polling_station_question_number_of_voters_on_list"
+            app:layout_constraintTop_toBottomOf="@id/changePollingStationBar"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/numberOfVotersOnTheListInput"
+            style="@style/Input"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:hint="@string/number_hint"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/numberOfVotersOnTheListLabel"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="LabelFor" />
+
+
+        <TextView
+            android:id="@+id/numberOfCommissionMembersLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:labelFor="@+id/numberOfCommissionMembersInput"
+            android:text="@string/polling_station_question_number_of_voters_on_list"
+            app:layout_constraintTop_toBottomOf="@id/numberOfVotersOnTheListInput"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/numberOfCommissionMembersInput"
+            style="@style/Input"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:hint="@string/number_hint"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/numberOfCommissionMembersLabel"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/numberOfFemaleMembersLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:labelFor="@+id/numberOfFemaleMembersInput"
+            android:text="@string/polling_station_question_number_of_voters_on_list"
+            app:layout_constraintTop_toBottomOf="@id/numberOfCommissionMembersInput"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/numberOfFemaleMembersInput"
+            style="@style/Input"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:hint="@string/number_hint"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/numberOfFemaleMembersLabel"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="LabelFor" />
+
+
+        <TextView
+            android:id="@+id/minPresentMembersLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:labelFor="@+id/numberOfCommissionMembersInput"
+            android:text="@string/polling_station_question_number_of_voters_on_list"
+            app:layout_constraintTop_toBottomOf="@id/numberOfFemaleMembersInput"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/minPresentMembersInput"
+            style="@style/Input"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:hint="@string/number_hint"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/minPresentMembersLabel"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/chairmanPresenceLabel"
             style="@style/Text.InputAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
-            android:text="@string/polling_station_question_gender"
-            app:layout_constraintTop_toBottomOf="@id/changePollingStationBar" />
+            android:text="@string/polling_station_question_chairman_presence"
+            app:layout_constraintTop_toBottomOf="@id/minPresentMembersInput" />
 
         <RadioGroup
-            android:id="@+id/genderRadioGroup"
+            android:id="@+id/chairmanPresenceGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/genderLabel">
+            app:layout_constraintTop_toBottomOf="@id/chairmanPresenceLabel">
 
             <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/maleGender"
+                android:id="@+id/chairmanPresenceYes"
                 style="@style/RadioButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin"
                 android:layout_weight="1"
-                android:text="@string/polling_station_answer_man" />
+                android:text="@string/polling_station_answer_yes" />
 
 
             <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/femaleGender"
+                android:id="@+id/chairmanPresenceNo"
                 style="@style/RadioButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/polling_station_answer_woman" />
+                android:text="@string/polling_station_answer_no" />
         </RadioGroup>
 
+       <TextView
+            android:id="@+id/singlePollingStationOrCommissionLabel"
+            style="@style/Text.InputAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:text="@string/polling_station_question_single_polling_station_or_commission"
+            app:layout_constraintTop_toBottomOf="@id/chairmanPresenceGroup" />
+
+        <RadioGroup
+            android:id="@+id/singlePollingStationOrCommissionGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/singlePollingStationOrCommissionLabel">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/singlePollingStationOrCommissionYes"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin"
+                android:layout_weight="1"
+                android:text="@string/polling_station_answer_yes" />
+
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/singlePollingStationOrCommissionNo"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/polling_station_answer_no" />
+        </RadioGroup>
+
+       <TextView
+            android:id="@+id/adequatePollingStationSizeLabel"
+            style="@style/Text.InputAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:text="@string/polling_station_question_adequate_polling_station_size"
+            app:layout_constraintTop_toBottomOf="@id/singlePollingStationOrCommissionGroup" />
+
+        <RadioGroup
+            android:id="@+id/adequatePollingStationSizeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/adequatePollingStationSizeLabel">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/adequatePollingStationSizeYes"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin"
+                android:layout_weight="1"
+                android:text="@string/polling_station_answer_yes" />
+
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/adequatePollingStationSizeNo"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/polling_station_answer_no" />
+        </RadioGroup>
 
         <TextView
             android:id="@+id/arrivalTimeLabel"
@@ -66,7 +259,7 @@
             android:text="@string/polling_station_question_enter"
             app:layout_constraintEnd_toStartOf="@id/departureTimeLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/genderRadioGroup" />
+            app:layout_constraintTop_toBottomOf="@id/adequatePollingStationSizeGroup" />
 
 
         <TextView
@@ -110,6 +303,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/arrivalTime"
             app:layout_constraintTop_toTopOf="@id/arrivalTime" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
