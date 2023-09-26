@@ -180,6 +180,7 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        countySpinner.isEnabled = false
         municipalitySpinner.isEnabled = false
 
         parentViewModel.setTitle(getString(R.string.title_polling_station_selection))
@@ -191,15 +192,16 @@ class PollingStationSelectionFragment : ViewModelFragment<PollingStationSelectio
                 position: Int,
                 id: Long
             ) {
-                val province = viewModel.getSelectedProvince(provinceSpinner.selectedItemPosition)
+                val province = viewModel.getSelectedProvince(position)
                 parentViewModel.selectProvince(province)
                 parentViewModel.deselectCounty()
                 parentViewModel.deselectMunicipality()
+                countySpinner.setSelection(0)
+                municipalitySpinner.setSelection(0)
 
                 if (province != null) {
                     countySpinner.isEnabled = true
                     viewModel.getCounties(province.code)
-                    municipalitySpinner.setSelection(0)
                 }
 
             }

@@ -45,8 +45,8 @@ class VisitedStationsAdapter(
     }
 
     private val CountyMunicipalityAndPollingStation.displayName: String
-        get() = countyAndMunicipalityAsTextOrNull()?.let {
-            context.getString(R.string.polling_station_visited, pollingStationNumber, it.first, it.second)
+        get() = provinceCountyAndMunicipalityAsTextOrNull()?.let {
+            context.getString(R.string.polling_station_visited, pollingStationNumber, it.first, it.second, it.third)
         } ?: "Not Available" // TODO extract string?
 
     companion object {
@@ -63,7 +63,9 @@ class VisitedStationsAdapter(
             ): Boolean =
                 oldItem.pollingStationNumber == newItem.pollingStationNumber &&
                         oldItem.observerArrivalTime == newItem.observerArrivalTime &&
+                        oldItem.provinceCode == newItem.provinceCode &&
                         oldItem.countyCode == newItem.countyCode &&
+                        oldItem.municipalityCode == newItem.municipalityCode &&
                         oldItem.county == newItem.county
 
         }

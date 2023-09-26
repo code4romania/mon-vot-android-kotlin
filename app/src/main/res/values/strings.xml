@@ -111,7 +111,7 @@
     <string name="invalid_polling_station_environment">Choose urban or rural</string>
     <string name="invalid_polling_station_time_in">Select the time of arrival</string>
     <string name="invalid_time_input">Arrival needs to be before departure</string>
-    <string name="polling_station_visited">Polling station %1$d from %2$s - %3$s</string>
+    <string name="polling_station_visited">Polling station %1$d from %2$s %3$s - %4$s</string>
     <string name="polling_station_visited_label">This is the list of stations you already visited. Tap one to view or edit its submitted answers.</string>
 
     <!-- Forms list -->

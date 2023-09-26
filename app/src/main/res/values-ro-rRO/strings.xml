@@ -101,7 +101,7 @@
     <string name="invalid_polling_station_environment">Alege urban sau rural</string>
     <string name="invalid_polling_station_time_in">Alege ora sosirii</string>
     <string name="invalid_time_input">Ora plecării nu poate fi mai mică decât ora sosirii</string>
-    <string name="polling_station_visited">Secţia de votare %1$d din %2$s -  %3$s</string>
+    <string name="polling_station_visited">Secţia de votare %1$d din %2$s %3$s -  %4$s</string>
     <string name="polling_station_visited_label">Aici găsești secțiile pe care le-ai vizitat deja. Apasă pe o secție să verifici sau să editezi răspunsuri.</string>
 
     <string name="invalid_polling_station_number_of_voters_on_the_list">[RO] Fill in the voters on the list</string>

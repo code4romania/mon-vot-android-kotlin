@@ -140,7 +140,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
             hadSelectedMunicipality = false
         } else {
             hadSelectedProvince = true
-            countiesLiveData.postValue(Result.Success(provinceNames.toList()))
+            provincesLiveData.postValue(Result.Success(provinceNames.toList()))
 
             getCounties(provinceCode)
         }

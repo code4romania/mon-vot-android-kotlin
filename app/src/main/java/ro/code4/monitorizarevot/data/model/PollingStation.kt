@@ -9,7 +9,7 @@ import org.parceler.Parcel
 
 @Entity(
     tableName = "polling_station",
-    indices = [Index(value = ["countyCode", "municipalityCode", "pollingStationNumber"], unique = true)],
+    indices = [Index(value = ["provinceCode", "countyCode", "municipalityCode", "pollingStationNumber"], unique = true)],
     foreignKeys = [ForeignKey(
         entity = Municipality::class,
         parentColumns = ["code"],
@@ -22,6 +22,9 @@ class PollingStation() {
 
     @PrimaryKey
     lateinit var id: String
+
+    @Expose
+    lateinit var provinceCode: String
 
     @Expose
     lateinit var countyCode: String
@@ -64,14 +67,16 @@ class PollingStation() {
     var synced: Boolean = false
 
 
-    constructor(countyCode: String, municipalityCode: String, pollingStationNumber: Int) : this() {
+    constructor(provinceCode: String, countyCode: String, municipalityCode: String, pollingStationNumber: Int) : this() {
+        this.provinceCode = provinceCode
         this.countyCode = countyCode
         this.municipalityCode = municipalityCode
         this.pollingStationNumber = pollingStationNumber
-        this.id = "$countyCode$municipalityCode$pollingStationNumber"
+        this.id = "$provinceCode$countyCode$municipalityCode$pollingStationNumber"
     }
 
     constructor(
+        provinceCode: String,
         countyCode: String,
         municipalityCode: String,
         pollingStationNumber: Int,
@@ -84,7 +89,7 @@ class PollingStation() {
         chairmanPresence: Boolean,
         singlePollingStationOrCommission: Boolean,
         adequatePollingStationSize: Boolean
-    ) : this(countyCode, municipalityCode, pollingStationNumber) {
+    ) : this(provinceCode, countyCode, municipalityCode, pollingStationNumber) {
         this.observerArrivalTime = arrivalTime
         this.observerLeaveTime = leaveTime
 

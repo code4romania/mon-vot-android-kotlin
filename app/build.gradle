@@ -17,16 +17,17 @@ androidExtensions {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion = '29.0.3'
+    compileSdkVersion 33
+    buildToolsVersion = '30.0.3'
 
     defaultConfig {
         applicationId "ro.code4.monitorizarevot"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 42
         versionName "2.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -89,12 +90,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -103,7 +104,7 @@ ext {
     navigationVersion = "2.2.2"
     koinVersion = '2.0.1'
     parcelerVersion = "1.1.13"
-    roomVersion = '2.2.5'
+    roomVersion = '2.4.3'
     firebaseAnalyticsVersion = '17.4.3'
     firebaseCrashlyticsVersion = '17.1.0'
     firebaseMessagingVersion = "20.2.0"

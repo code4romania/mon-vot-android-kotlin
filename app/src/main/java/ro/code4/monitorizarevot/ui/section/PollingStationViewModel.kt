@@ -142,6 +142,7 @@ class PollingStationViewModel : BaseViewModel() {
         singlePollingStationOrCommissionId: Int,
         adequatePollingStationSizeId: Int) {
         val pollingStation = PollingStation(
+            selectedProvince!!.code,
             selectedCounty!!.code,
             selectedMunicipality!!.code,
             selectedPollingStationNumber,

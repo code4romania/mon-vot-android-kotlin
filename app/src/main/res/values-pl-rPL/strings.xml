@@ -109,7 +109,7 @@
     <string name="invalid_polling_station_environment">Wybierz wiejski lub miejski</string>
     <string name="invalid_polling_station_time_in">Wybierz czas przybycia</string>
     <string name="invalid_time_input">Przybycie musi być wcześniej niż opuszczenie</string>
-    <string name="polling_station_visited">Lokal %1$d %2$s %3$s</string>
+    <string name="polling_station_visited">Lokal %1$d %2$s %3$s %4$s</string>
     <string name="polling_station_visited_label">To lista lokali jakie odwiedziłeś. Wybierz jeden by zobaczyć lub zedytować odpowiedzi.</string>
 
     <!-- Forms list -->

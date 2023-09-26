@@ -61,6 +61,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
             }
             val answeredQuestion = AnsweredQuestion(
                 question.id,
+                provinceCode,
                 countyCode,
                 municipalityCode,
                 pollingStationNumber,
@@ -71,6 +72,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                     val list = it.map { answer ->
                         SelectedAnswer(
                             answer.optionId,
+                            provinceCode,
                             countyCode,
                             municipalityCode,
                             pollingStationNumber,

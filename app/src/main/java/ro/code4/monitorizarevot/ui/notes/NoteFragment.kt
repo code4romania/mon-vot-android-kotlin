@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextWatcher
@@ -127,9 +128,17 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 submitButton.isEnabled = !p0.isNullOrEmpty()
             }
         })
-        addMediaButton.setOnClickListener {
-            checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        if(Build.VERSION.SDK_INT < 31){
+            addMediaButton.setOnClickListener {
+                checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }else{
+            addMediaButton.setOnClickListener {
+                showPopupMenu()
+            }
         }
+
         submitButton.setOnClickListener {
             viewModel.submit(noteInput.text.toString())
 

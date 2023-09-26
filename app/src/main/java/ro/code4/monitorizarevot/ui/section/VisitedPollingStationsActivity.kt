@@ -36,8 +36,16 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
             if (callingActivity?.className == PollingStationActivity::class.java.name) {
                 val data = Intent().apply {
                     putExtra(
+                        PollingStationActivity.EXTRA_PROVINCE_NAME,
+                        station.provinceOrNull()?.name
+                    )
+                    putExtra(
                         PollingStationActivity.EXTRA_COUNTY_NAME,
                         station.countyOrNull()?.name
+                    )
+                    putExtra(
+                        PollingStationActivity.EXTRA_MUNICIPALITY_NAME,
+                        station.municipalityOrNull()?.name
                     )
                     putExtra(
                         PollingStationActivity.EXTRA_POLLING_STATION_NUMBER,
@@ -47,7 +55,7 @@ class VisitedPollingStationsActivity : BaseActivity<VisitedPollingStationsViewMo
                 setResult(RESULT_OK, data)
                 finish()
             } else {
-                changePollingStation(station.countyOrNull(), station.pollingStationNumber)
+                changePollingStation(station.provinceOrNull(),station.countyOrNull(), station.municipalityOrNull(), station.pollingStationNumber)
             }
         }
         visitedStations.apply {

@@ -46,8 +46,8 @@ fun SharedPreferences.getToken(): String? = getString(PREFS_TOKEN)
 fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
 fun SharedPreferences.deleteToken() = putString(PREFS_TOKEN, null)
 
-fun SharedPreferences.saveProvinceCode(regionCode: String?) =
-    putString(PREFS_PROVINCE_CODE, regionCode.orEmpty())
+fun SharedPreferences.saveProvinceCode(provinceCode: String?) =
+    putString(PREFS_PROVINCE_CODE, provinceCode.orEmpty())
 
 fun SharedPreferences.getProvinceCode(): String? = getString(PREFS_PROVINCE_CODE)
 

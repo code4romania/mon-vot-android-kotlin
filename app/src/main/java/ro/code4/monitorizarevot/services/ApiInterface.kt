@@ -34,6 +34,7 @@ interface ApiInterface {
     @POST("/api/v2/note")
     fun postNote(
         @Part files: Array<MultipartBody.Part>?,
+        @Part provinceCode: MultipartBody.Part,
         @Part countyCode: MultipartBody.Part,
         @Part municipalityCode: MultipartBody.Part,
         @Part pollingStationNumber: MultipartBody.Part,
