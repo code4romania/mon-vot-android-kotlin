@@ -19,8 +19,9 @@ interface PollingStationDao {
     @Query("SELECT * FROM polling_station WHERE countyCode=:countyCode AND municipalityCode=:municipalityCode AND pollingStationNumber=:pollingStationNumber")
     fun get(countyCode:String, municipalityCode: String, pollingStationNumber: Int): Maybe<PollingStation>
 
-    @Query("SELECT county.name AS countyName, municipality.name AS municipalityName, polling_station.pollingStationNumber as pollingStationNumber FROM polling_station" +
+    @Query("SELECT province.name AS provinceName, county.name AS countyName, municipality.name AS municipalityName, polling_station.pollingStationNumber as pollingStationNumber FROM polling_station" +
             " INNER JOIN county on county.code=polling_station.countyCode " +
+            " INNER JOIN province on province.code=county.provinceCode " +
             " INNER JOIN municipality on municipality.code=polling_station.municipalityCode" +
             " WHERE county.code=:countyCode AND municipalityCode=:municipalityCode AND pollingStationNumber=:pollingStationNumber")
     fun getPollingStationInfo(
