@@ -71,6 +71,7 @@ class NoteViewModel : BaseFormViewModel() {
         val note = Note()
         note.questionId = selectedQuestion?.id
         note.pollingStationNumber = pollingStationNumber
+        note.provinceCode = provinceCode
         note.municipalityCode = municipalityCode
         note.countyCode = countyCode
         note.description = text
@@ -108,34 +109,16 @@ class NoteViewModel : BaseFormViewModel() {
      * @param clipData non null if the user selects multiple files
      * @param uri non null if the user selects a single file
      */
-    fun addMediaFromGallery(clipData: ClipData?, uri: Uri?) {
-        if (clipData != null) {
-            if (clipData.itemCount == 0) return
-            // flag which will indicate if there was a problem with processing any of the files, so we can
-            // show an error to the user at the end
-            var hasFailedFiles = false
-            for (cdItemPosition in 0 until clipData.itemCount) {
-                val fileSaveStatus = runCatching {
-                    FileUtils.copyFileToCache(app, clipData.getItemAt(cdItemPosition).uri)
-                }
-                if (fileSaveStatus.exceptionOrNull() != null) {
-                    hasFailedFiles = true
-                }
-                fileSaveStatus.getOrNull()?.let { noteFiles.add(it) }
-            }
-            filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
-            if (hasFailedFiles) {
-                messageIdToastLiveData.postValue(
-                    app.getString(R.string.error_note_file_copy_multiple)
+    fun addMediaFromGallery(vararg  uris: Uri?) {
+        for(uri in uris){
+            uri?.let {
+                runCatching { FileUtils.copyFileToCache(app, uri) }.getOrNull()?.let {
+                    noteFiles.add(it)
+                    filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
+                } ?: messageIdToastLiveData.postValue(
+                    app.getString(R.string.error_note_file_copy_single)
                 )
             }
-        } else if (uri != null) {
-            runCatching { FileUtils.copyFileToCache(app, uri) }.getOrNull()?.let {
-                noteFiles.add(it)
-                filesNamesLiveData.postValue(noteFiles.map { file -> file.name }.toList())
-            } ?: messageIdToastLiveData.postValue(
-                app.getString(R.string.error_note_file_copy_single)
-            )
         }
     }
 

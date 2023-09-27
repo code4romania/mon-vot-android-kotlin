@@ -53,7 +53,7 @@
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
             android:labelFor="@+id/numberOfCommissionMembersInput"
-            android:text="@string/polling_station_question_number_of_voters_on_list"
+            android:text="@string/polling_station_question_number_of_commission_members"
             app:layout_constraintTop_toBottomOf="@id/numberOfVotersOnTheListInput"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -81,7 +81,7 @@
             android:layout_marginTop="@dimen/xbig_margin"
             android:layout_marginEnd="@dimen/margin"
             android:labelFor="@+id/numberOfFemaleMembersInput"
-            android:text="@string/polling_station_question_number_of_voters_on_list"
+            android:text="@string/polling_station_question_number_of_female_members"
             app:layout_constraintTop_toBottomOf="@id/numberOfCommissionMembersInput"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -106,9 +106,11 @@
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/xbig_margin"
+            android:layout_marginEnd="@dimen/margin"
             android:labelFor="@+id/numberOfCommissionMembersInput"
-            android:text="@string/polling_station_question_number_of_voters_on_list"
+            android:text="@string/polling_station_question_minimum_present_members"
             app:layout_constraintTop_toBottomOf="@id/numberOfFemaleMembersInput"
             app:layout_constraintVertical_chainStyle="packed"
             tools:layout_editor_absoluteX="16dp" />

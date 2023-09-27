@@ -78,6 +78,9 @@ class Repository : KoinComponent {
     }
 
     fun getCounties(provinceCode: String): Single<List<County>> {
+        var provinces = db.provinceDao().getAll().subscribe { p ->
+            val a = 0
+        }
         val observableApi = apiInterface.getCounties(provinceCode)
         val observableDb = db.countyDao().getByProvinceCode(provinceCode).take(1).single(emptyList())
         return Single.zip(
@@ -87,7 +90,7 @@ class Repository : KoinComponent {
                 val areAllApiCountiesInDb = apiCounties.all(dbCounties::contains)
                 return@BiFunction when {
                     apiCounties.isNotEmpty() && !areAllApiCountiesInDb -> {
-                        db.countyDao().deleteAll()
+                        db.countyDao().deleteAll(provinceCode)
                         db.countyDao().save(*apiCounties.map { it }.toTypedArray())
                         apiCounties
                     }
@@ -109,7 +112,7 @@ class Repository : KoinComponent {
 
                 return@BiFunction when {
                     apiMunicipalities.isNotEmpty() && !areAllApiMunicipalitiesInDb -> {
-                        db.municipalityDao().deleteAll()
+                        db.municipalityDao().deleteAll(countyCode)
                         db.municipalityDao().save(*apiMunicipalities.map { it }.toTypedArray())
                         apiMunicipalities
                     }

@@ -1,5 +1,6 @@
 package ro.code4.monitorizarevot.ui.settings
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -18,6 +19,7 @@ import ro.code4.monitorizarevot.adapters.LanguageAdapter
 import ro.code4.monitorizarevot.adapters.OnboardingAdapter
 import ro.code4.monitorizarevot.helper.getLocale
 import ro.code4.monitorizarevot.helper.getLocaleCode
+import ro.code4.monitorizarevot.helper.setLocale
 import ro.code4.monitorizarevot.helper.setLocaleCode
 import ro.code4.monitorizarevot.ui.onboarding.encode
 import ro.code4.monitorizarevot.ui.onboarding.getLocales
@@ -29,6 +31,8 @@ class AboutLanguageSelectorFragment : BottomSheetDialogFragment(), KoinComponent
     companion object {
         val TAG = AboutLanguageSelectorFragment::class.java.simpleName
     }
+
+    private val app: Application by inject()
 
     private val preferences: SharedPreferences by inject()
 
@@ -73,6 +77,7 @@ class AboutLanguageSelectorFragment : BottomSheetDialogFragment(), KoinComponent
 
     override fun onLanguageChanged(locale: Locale) {
         dismiss()
+        app.setLocale(locale)
         preferences.setLocaleCode(locale.encode())
         requireActivity().recreate()
     }

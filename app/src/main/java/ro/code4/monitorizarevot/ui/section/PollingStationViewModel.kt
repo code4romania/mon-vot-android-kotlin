@@ -19,6 +19,10 @@ import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.util.*
 
 data class PollingStationData(
+    val numberOfVotersOnTheList: Int? ,
+    val numberOfCommissionMembers: Int? ,
+    val numberOfFemaleMembers: Int? ,
+    val minPresentMembers: Int? ,
     val chairmanPresence: Int?,
     val singlePollingStationOrCommission: Int?,
     val adequatePollingStationSize: Int?)
@@ -67,7 +71,10 @@ class PollingStationViewModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     private fun getSelectedPollingStation() {
-
+        var numberOfVotersOnTheList: Int? = null
+        var numberOfCommissionMembers: Int? = null
+        var numberOfFemaleMembers: Int? = null
+        var minPresentMembers: Int? = null
         var chairmanPresence: Int? = null
         var singlePollingStationOrCommission: Int? = null
         var adequatePollingStationSize: Int? = null
@@ -78,7 +85,12 @@ class PollingStationViewModel : BaseViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
-                val data = PollingStationData(chairmanPresence,
+                val data = PollingStationData(
+                    numberOfVotersOnTheList,
+                    numberOfCommissionMembers,
+                    numberOfFemaleMembers,
+                    minPresentMembers,
+                    chairmanPresence,
                     singlePollingStationOrCommission,
                     adequatePollingStationSize)
 
@@ -89,7 +101,10 @@ class PollingStationViewModel : BaseViewModel() {
             .subscribe({
                 arrivalTime = it.observerArrivalTime
                 departureTime = it.observerLeaveTime
-
+                numberOfVotersOnTheList = it.numberOfVotersOnTheList
+                numberOfCommissionMembers = it.numberOfCommissionMembers
+                numberOfFemaleMembers = it.numberOfFemaleMembers
+                minPresentMembers = it.minPresentMembers
                 chairmanPresence = if (it.chairmanPresence) R.id.chairmanPresenceYes else R.id.chairmanPresenceNo
                 singlePollingStationOrCommission = if (it.singlePollingStationOrCommission) R.id.singlePollingStationOrCommissionYes else R.id.singlePollingStationOrCommissionNo
                 adequatePollingStationSize = if (it.adequatePollingStationSize) R.id.adequatePollingStationSizeYes else R.id.adequatePollingStationSizeNo

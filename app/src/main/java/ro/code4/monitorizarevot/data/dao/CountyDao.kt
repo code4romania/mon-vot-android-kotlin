@@ -19,6 +19,6 @@ interface CountyDao {
     @Query("SELECT * FROM county where code=:countyCode")
     fun get(countyCode: String): Maybe<County>
 
-    @Query("DELETE FROM county")
-    fun deleteAll()
+    @Query("DELETE FROM county where provinceCode=:provinceCode")
+    fun deleteAll(provinceCode: String)
 }

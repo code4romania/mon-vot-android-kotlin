@@ -149,9 +149,10 @@ class PollingStationSelectionViewModel : BaseViewModel() {
     private fun updateCounties(provinceCode: String) {
         val countyCode = sharedPreferences.getCountyCode()
 
+        val county = counties.firstOrNull() { county -> county.code == countyCode && county.provinceCode == provinceCode}
         val countyNames = counties.sortedBy { county -> county.order }.map { it.name }
 
-        if (countyCode.isNullOrBlank()) {
+        if (county == null) {
             countiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + countyNames.toList()))
             municipalitiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose_municipality))))
             municipalities.clear()
@@ -160,7 +161,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
             hadSelectedCounty = true
             countiesLiveData.postValue(Result.Success(countyNames.toList()))
 
-            getMunicipalities(provinceCode, countyCode)
+            getMunicipalities(provinceCode, county.code)
         }
     }
 
@@ -170,8 +171,10 @@ class PollingStationSelectionViewModel : BaseViewModel() {
 
         val municipalityNamesOfSelectedCounty =
             municipalities.sortedBy { municipality -> municipality.order }.map { it.name }
+           val municipality =  municipalities.firstOrNull() { municipality -> municipality.code == municipalityCode
+                   && municipality.countyCode == countyCode}
 
-        if (municipalityCode.isNullOrBlank()) {
+        if (municipality == null) {
             municipalitiesLiveData.postValue(Result.Success(listOf(app.getString(R.string.polling_station_spinner_choose)) + municipalityNamesOfSelectedCounty.toList()))
             hadSelectedMunicipality = false
         } else {
@@ -185,7 +188,7 @@ class PollingStationSelectionViewModel : BaseViewModel() {
             val selectedMunicipalityIndex = municipalities.indexOfFirst { it.code == municipalityCode }
             municipalitiesLiveData.postValue(Result.Success(municipalityNamesOfSelectedCounty.toList()))
 
-            if (selectedCountyIndex >= 0 && selectedMunicipalityIndex >= 0) {
+            if (selectedProvinceIndex >= 0 && selectedCountyIndex >= 0 && selectedMunicipalityIndex >= 0) {
                 selectionLiveData.postValue(Quadruple(selectedProvinceIndex, selectedCountyIndex, selectedMunicipalityIndex, pollingStationNumber))
             }
         }
