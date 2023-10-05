@@ -229,15 +229,6 @@ class PollingStationViewModel : BaseViewModel() {
             pollingStationNumber <= 0 -> messageIdToastLiveData.postValue(
                 app.getString(R.string.invalid_polling_station_number_minus)
             )
-            pollingStationNumber > selectedMunicipality!!.limit -> messageIdToastLiveData.postValue(
-                app.getString(
-                    R.string.invalid_polling_station_number_max,
-                    selectedProvince.name,
-                    selectedCounty!!.name,
-                    selectedMunicipality!!.name,
-                    selectedMunicipality!!.limit
-                )
-            )
             else -> {
                 selectedPollingStationNumber = pollingStationNumber
                 preferences.saveProvinceCode(selectedProvince.code)

@@ -58,7 +58,7 @@
     <!-- Polling Station selection -->
     <string name="polling_station_title">Alege secția în care te afli</string>
     <string name="polling_station_county">Județ</string>
-    <string name="polling_station_province">Province</string>
+    <string name="polling_station_province">Provincia</string>
 
     <string name="polling_station_municipality">Municipalitate</string>
     <string name="polling_station_number">Număr secție</string>

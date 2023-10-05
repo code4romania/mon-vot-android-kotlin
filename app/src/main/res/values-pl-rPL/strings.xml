@@ -57,8 +57,8 @@
 
     <!-- Polling Station selection -->
     <string name="polling_station_title">Wybierz, w którym lokalu wyborczym jesteś</string>
-    <string name="polling_station_county">Gmina</string>
-    <string name="polling_station_municipality">Powiat</string>
+    <string name="polling_station_county">Powiat</string>
+    <string name="polling_station_municipality">Gmina</string>
     <string name="polling_station_province">Województwo</string>
 
     <string name="polling_station_number">Numer obwodu</string>
