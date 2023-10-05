@@ -1,12 +1,10 @@
 package ro.code4.monitorizarevot.ui.notes
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -17,12 +15,20 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fondesa.kpermissions.PermissionStatus
+import com.fondesa.kpermissions.allGranted
+import com.fondesa.kpermissions.anyPermanentlyDenied
+import com.fondesa.kpermissions.anyShouldShowRationale
+import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.request.PermissionRequest
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_note.*
 import kotlinx.android.synthetic.main.layout_edit_note.*
@@ -34,13 +40,12 @@ import ro.code4.monitorizarevot.adapters.NoteDelegationAdapter
 import ro.code4.monitorizarevot.data.model.FormDetails
 import ro.code4.monitorizarevot.data.model.Question
 import ro.code4.monitorizarevot.helper.*
-import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_GALLERY
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_RECORD_VIDEO
 import ro.code4.monitorizarevot.helper.Constants.REQUEST_CODE_TAKE_PHOTO
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
 import ro.code4.monitorizarevot.ui.forms.FormsViewModel
 
-class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.PermissionListener {
+class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionRequest.Listener {
 
     override val layout: Int
         get() = R.layout.fragment_note
@@ -57,15 +62,34 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
     private val noteAdapter: NoteDelegationAdapter by lazy {
         NoteDelegationAdapter { note -> baseViewModel.selectNote(note) }
     }
-    private lateinit var permissionManager: PermissionManager
+
+    private val request by lazy {
+        permissionsBuilder(
+            Manifest.permission.CAMERA
+        ).build()
+    }
+
+    private val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+        if (uris.isNotEmpty()) {
+            viewModel.addMediaFromGallery(*uris.toTypedArray())
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        permissionManager = PermissionManager(requireActivity(), this)
         baseViewModel = getSharedViewModel(from = { requireParentFragment() })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        request.addListener(this)
+        request.addListener {
+            if (it.anyPermanentlyDenied()) {
+                showPermissionRationale(true)
+            }
+        }
+
         val noteFileContainer = view.findViewById<LinearLayout>(R.id.noteFilesContainer)
         notesList.layoutManager = LinearLayoutManager(mContext)
         notesList.adapter = noteAdapter
@@ -107,7 +131,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 noteFileContainer.addView(attachmentView)
             }
         })
-        viewModel.submitCompleted().observe(this, Observer {
+        viewModel.submitCompleted().observe(viewLifecycleOwner, Observer {
             activity?.onBackPressed()
         })
 
@@ -128,17 +152,12 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             }
         })
         addMediaButton.setOnClickListener {
-            checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                 request.send()
         }
+
         submitButton.setOnClickListener {
             viewModel.submit(noteInput.text.toString())
-
         }
-    }
-
-    @Suppress("SameParameterValue")
-    private fun checkPermissions(permission: String) {
-        permissionManager.checkPermissions(permission, listener = this)
     }
 
     @SuppressLint("RestrictedApi")
@@ -147,7 +166,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
         popup.menuInflater.inflate(R.menu.menu_note_media, popup.menu)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.note_gallery -> openGallery()
+                R.id.note_gallery -> pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
                 R.id.note_photo -> {
                     val file = takePicture()
                     viewModel.addUserGeneratedFile(file)
@@ -171,49 +190,16 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 REQUEST_CODE_RECORD_VIDEO, REQUEST_CODE_TAKE_PHOTO -> {
                     viewModel.addMediaToGallery()
                 }
-                REQUEST_CODE_GALLERY -> {
-                    viewModel.addMediaFromGallery(data?.clipData, data?.data)
-                }
             }
         }
     }
 
-    @Suppress("SameParameterValue")
-    override fun onPermissionsGranted() {
-        showPopupMenu()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PermissionManager.PERMISSION_REQUEST && grantResults.isNotEmpty()) {
-            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED } && grantResults.size == permissions.size) {
-                onPermissionsGranted()
-            } else {
-                checkDeniedPermissions(permissions, grantResults)
-            }
-        }
-
-    }
-
-    private fun checkDeniedPermissions(permissions: Array<out String>, grantResults: IntArray) {
-        val permanentlyDenied = permissions.filterIndexed { index, s ->
-            grantResults[index] == PackageManager.PERMISSION_DENIED
-                    && !permissionManager.checkShouldShowRequestPermissionsRationale(s)
-        }
-
-        if (permanentlyDenied.isNotEmpty()) {
-            showPermissionRationale(true)
-        } else {
-            val denied = permissions.filterIndexed { index, s ->
-                grantResults[index] == PackageManager.PERMISSION_DENIED
-                        && permissionManager.checkShouldShowRequestPermissionsRationale(s)
-            }
-            if (denied.isNotEmpty()) {
-                showPermissionRationale()
-            }
+    override fun onPermissionsResult(result: List<PermissionStatus>) {
+        val context = requireContext()
+        when {
+            result.anyPermanentlyDenied() -> showPermissionRationale(true)
+            result.anyShouldShowRationale() -> showPermissionRationale()
+            result.allGranted() -> showPopupMenu()
         }
     }
 
@@ -236,7 +222,7 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
                 R.string.permission_denied_ok_button,
                 object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
-                        permissionManager.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        request.send()
                     }
                 })
 
@@ -253,13 +239,6 @@ class NoteFragment : ViewModelFragment<NoteViewModel>(), PermissionManager.Permi
             )
             .show()
 
-    }
-
-    override fun onPermissionDenied(
-        vararg allPermissions: String,
-        permissionsDenied: List<String>
-    ) {
-        showPermissionRationale()
     }
 
     private fun openAppSettings() {

@@ -62,6 +62,7 @@ class OnboardingViewModel : BaseViewModel() {
 
     fun getSelectedLocale(): Locale = preferences.getLocaleCode().getLocale()
     fun changeLanguage(locale: Locale) {
+        app.setLocale(locale)
         preferences.setLocaleCode(locale.encode())
         languageChangedLiveData.call()
     }

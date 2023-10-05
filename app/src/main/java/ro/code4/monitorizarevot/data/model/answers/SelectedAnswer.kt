@@ -8,17 +8,17 @@ import ro.code4.monitorizarevot.data.model.Answer
 @Entity(
     tableName = "selected_answer", foreignKeys = [ForeignKey(
         entity = Answer::class,
-        parentColumns = ["idOption"],
+        parentColumns = ["optionId"],
         childColumns = ["optionId"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = AnsweredQuestion::class,
-        parentColumns = ["countyCode", "pollingStationNumber", "id"],
-        childColumns = ["countyCode", "pollingStationNumber", "questionId"],
+        parentColumns = ["provinceCode", "countyCode", "municipalityCode", "pollingStationNumber", "id"],
+        childColumns = ["provinceCode","countyCode", "municipalityCode", "pollingStationNumber", "questionId"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
     )],
-    primaryKeys = ["optionId", "countyCode", "pollingStationNumber"]
+    primaryKeys = ["optionId","provinceCode", "countyCode", "municipalityCode", "pollingStationNumber"]
 )
 class SelectedAnswer() {
 
@@ -28,7 +28,9 @@ class SelectedAnswer() {
     @Expose
     var value: String? = null
 
+    lateinit var provinceCode: String
     lateinit var countyCode: String
+    lateinit var municipalityCode: String
 
     var pollingStationNumber: Int = 0
 
@@ -36,13 +38,17 @@ class SelectedAnswer() {
 
     constructor(
         optionId: Int,
+        provinceCode: String,
         countyCode: String,
+        municipalityCode: String,
         pollingStationNumber: Int,
         questionId: String,
         value: String? = null
     ) : this() {
         this.optionId = optionId
+        this.provinceCode = provinceCode
         this.countyCode = countyCode
+        this.municipalityCode = municipalityCode
         this.pollingStationNumber = pollingStationNumber
         this.value = value
         this.questionId = questionId

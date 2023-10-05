@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import ro.code4.monitorizarevot.BuildConfig
 
 const val PREFS_TOKEN = "PREFS_TOKEN"
+const val PREFS_PROVINCE_CODE = "PREFS_PROVINCE_CODE"
 const val PREFS_COUNTY_CODE = "PREFS_COUNTY_CODE"
+const val PREFS_MUNICIPALITY_CODE = "PREFS_MUNICIPALITY_CODE"
 const val PREFS_POLLING_STATION_NUMBER = "PREFS_POLLING_STATION_NUMBER"
 const val ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED"
 const val POLLING_STATION_CONFIG_COMPLETED = "POLLING_STATION_CONFIG_COMPLETED"
@@ -44,10 +46,20 @@ fun SharedPreferences.getToken(): String? = getString(PREFS_TOKEN)
 fun SharedPreferences.saveToken(token: String) = putString(PREFS_TOKEN, token)
 fun SharedPreferences.deleteToken() = putString(PREFS_TOKEN, null)
 
+fun SharedPreferences.saveProvinceCode(provinceCode: String?) =
+    putString(PREFS_PROVINCE_CODE, provinceCode.orEmpty())
+
+fun SharedPreferences.getProvinceCode(): String? = getString(PREFS_PROVINCE_CODE)
+
 fun SharedPreferences.saveCountyCode(countyCode: String?) =
     putString(PREFS_COUNTY_CODE, countyCode.orEmpty())
 
 fun SharedPreferences.getCountyCode(): String? = getString(PREFS_COUNTY_CODE)
+
+fun SharedPreferences.saveMunicipalityCode(getMunicipalityCode: String?) =
+    putString(PREFS_MUNICIPALITY_CODE, getMunicipalityCode.orEmpty())
+fun SharedPreferences.getMunicipalityCode(): String? = getString(PREFS_MUNICIPALITY_CODE)
+
 fun SharedPreferences.savePollingStationNumber(pollingStationNumber: Int) =
     putInt(PREFS_POLLING_STATION_NUMBER, pollingStationNumber)
 

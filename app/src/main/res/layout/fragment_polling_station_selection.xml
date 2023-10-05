@@ -40,13 +40,33 @@
 
 
         <TextView
-            android:id="@+id/countyLabel"
+            android:id="@+id/provinceLabel"
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/xbig_margin"
-            android:text="@string/polling_station_county"
+            android:text="@string/polling_station_province"
             app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Spinner
+            android:id="@+id/provinceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:background="@drawable/background_spinner"
+            app:layout_constraintTop_toBottomOf="@id/provinceLabel"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+
+        <TextView
+            android:id="@+id/countyLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@string/polling_station_county"
+            app:layout_constraintTop_toBottomOf="@id/provinceSpinner"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <Spinner
@@ -55,7 +75,28 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:background="@drawable/background_spinner"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@id/countyLabel"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/municipalityLabel"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@string/polling_station_municipality"
+            app:layout_constraintTop_toBottomOf="@id/countySpinner"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Spinner
+            android:id="@+id/municipalitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:enabled="false"
+            android:background="@drawable/background_spinner"
+            app:layout_constraintTop_toBottomOf="@id/municipalityLabel"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
@@ -64,13 +105,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
-            android:labelFor="@+id/pollingStationNumber"
+            android:labelFor="@+id/pollingStationNumberInput"
             android:text="@string/polling_station_number"
-            app:layout_constraintTop_toBottomOf="@id/countySpinner"
+            app:layout_constraintTop_toBottomOf="@id/municipalitySpinner"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <EditText
-            android:id="@+id/pollingStationNumber"
+            android:id="@+id/pollingStationNumberInput"
             style="@style/Input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

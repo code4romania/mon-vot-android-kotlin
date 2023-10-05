@@ -5,19 +5,21 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import org.parceler.Parcel
 
-@Entity(tableName = "county",
-    indices = [Index(value = ["code"], unique = true)],
+@Entity(tableName = "municipality",
+    indices = [Index(value = ["code"], unique = true), Index(value = ["countyCode"])],
     foreignKeys = [androidx.room.ForeignKey(
-        entity = Province::class,
+        entity = County::class,
         parentColumns = ["code"],
-        childColumns = ["provinceCode"],
+        childColumns = ["countyCode"],
         onDelete = ForeignKey.CASCADE
     )]
 )
 @Parcel(Parcel.Serialization.FIELD)
-class County() {
+class Municipality() {
+
     @PrimaryKey
     @Expose
     var id: Int = 0
@@ -26,42 +28,44 @@ class County() {
     lateinit var code: String
 
     @Expose
+    lateinit var countyCode: String
+
+    @Expose
     lateinit var name: String
 
     @Expose
-    lateinit var provinceCode: String
-
-    @Expose
-    var diaspora: Boolean? = null
+    @SerializedName("numberOfPollingStations")
+    var limit: Int = 0
 
     @Expose
     var order: Int = 0
 
-    constructor(id: Int, code: String, name: String, provinceCode: String, diaspora: Boolean?, order: Int): this() {
+
+    constructor(id: Int, code: String, countyCode: String, name: String, limit: Int, order: Int): this() {
         this.id = id
         this.code = code
+        this.countyCode = countyCode
         this.name = name
-        this.provinceCode = provinceCode
-        this.diaspora = diaspora
+        this.limit = limit
         this.order = order
     }
-
-
     override fun toString(): String = name
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as County
+        other as Municipality
         if (code != other.code) return false
-        if (provinceCode != other.provinceCode) return false
-        if (diaspora != other.diaspora) return false
+        if (countyCode != other.countyCode) return false
+        if (limit != other.limit) return false
         if (order != other.order) return false
         return true
     }
 
     override fun hashCode(): Int {
         var result = code.hashCode()
+        result = 31 * result + countyCode.hashCode()
+        result = 31 * result + limit
         result = 31 * result + order
         return result
     }

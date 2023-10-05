@@ -8,23 +8,23 @@ import ro.code4.monitorizarevot.ui.base.BaseActivity
 
 class ActivityCallbacks : Application.ActivityLifecycleCallbacks {
 
-    override fun onActivityPaused(activity: Activity?) = Unit
+    override fun onActivityPaused(activity: Activity) = Unit
 
-    override fun onActivityResumed(activity: Activity?) = Unit
+    override fun onActivityResumed(activity: Activity) = Unit
 
-    override fun onActivityStarted(activity: Activity?) {
+    override fun onActivityStarted(activity: Activity) {
         if (activity is BaseActivity<*>) {
             App.instance.currentActivity = activity
         }
 
     }
 
-    override fun onActivityDestroyed(activity: Activity?) = Unit
+    override fun onActivityDestroyed(activity: Activity) = Unit
 
-    override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) = Unit
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
-    override fun onActivityStopped(activity: Activity?) = Unit
+    override fun onActivityStopped(activity: Activity) = Unit
 
-    override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) = Unit
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
 
 }

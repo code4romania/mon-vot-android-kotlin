@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_polling_station_details.*
 import kotlinx.android.synthetic.main.fragment_polling_station_selection.continueButton
@@ -12,12 +13,12 @@ import kotlinx.android.synthetic.main.widget_change_polling_station_bar.*
 import org.koin.android.viewmodel.ext.android.getSharedViewModel
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.ui.base.ViewModelFragment
+import ro.code4.monitorizarevot.ui.section.PollingStationData
 import ro.code4.monitorizarevot.ui.section.PollingStationViewModel
 import java.util.*
 
 
 class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>() {
-
     companion object {
         val TAG = PollingStationDetailsFragment::class.java.simpleName
     }
@@ -84,17 +85,31 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
                 })
         }
         viewModel.selectedPollingStation().observe(viewLifecycleOwner, Observer {
-            setSelection(it)
+            setSelections(it)
         })
         setContinueButton()
     }
 
-    private fun setSelection(pair: Pair<Int?, Int?>) {
-        environmentRadioGroup.clearCheck()
-        genderRadioGroup.clearCheck()
+    private fun setSelections(pollingStationDetails: PollingStationData?) {
+        chairmanPresenceGroup.clearCheck()
+        singlePollingStationOrCommissionGroup.clearCheck()
+        adequatePollingStationSizeGroup.clearCheck()
 
-        pair.first?.let { environmentRadioGroup.check(it) }
-        pair.second?.let { genderRadioGroup.check(it) }
+        setTextToInput(numberOfVotersOnTheListInput, pollingStationDetails?.numberOfVotersOnTheList)
+        setTextToInput(numberOfCommissionMembersInput, pollingStationDetails?.numberOfCommissionMembers)
+        setTextToInput(numberOfFemaleMembersInput, pollingStationDetails?.numberOfFemaleMembers)
+        setTextToInput(minPresentMembersInput, pollingStationDetails?.minPresentMembers)
+
+        pollingStationDetails?.chairmanPresence?.let { chairmanPresenceGroup.check(it) }
+        pollingStationDetails?.singlePollingStationOrCommission?.let { singlePollingStationOrCommissionGroup.check(it) }
+        pollingStationDetails?.adequatePollingStationSize?.let { adequatePollingStationSizeGroup.check(it) }
+    }
+
+    private fun setTextToInput(input: EditText, value: Int?) {
+        value?.let{
+            input.setText(value.toString())
+            input.setSelection(value.toString().length)
+        }
     }
 
     private fun showDatePicker(dateTitleId: Int, timeTitleId: Int, listener: DateTimeListener) {
@@ -130,8 +145,14 @@ class PollingStationDetailsFragment : ViewModelFragment<PollingStationViewModel>
     private fun setContinueButton() {
         continueButton.setOnClickListener {
             viewModel.validateInputDetails(
-                environmentRadioGroup.checkedRadioButtonId,
-                genderRadioGroup.checkedRadioButtonId
+                numberOfVotersOnTheListInput.text,
+                numberOfCommissionMembersInput.text,
+                numberOfFemaleMembersInput.text,
+                minPresentMembersInput.text,
+
+                chairmanPresenceGroup.checkedRadioButtonId,
+                singlePollingStationOrCommissionGroup.checkedRadioButtonId,
+                adequatePollingStationSizeGroup.checkedRadioButtonId
             )
 
         }

@@ -10,13 +10,22 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
 import ro.code4.monitorizarevot.R
 import ro.code4.monitorizarevot.data.model.County
+import ro.code4.monitorizarevot.data.model.Municipality
 import ro.code4.monitorizarevot.data.model.PollingStation
+import ro.code4.monitorizarevot.data.model.Province
 import ro.code4.monitorizarevot.helper.*
 import ro.code4.monitorizarevot.repositories.Repository
 import ro.code4.monitorizarevot.ui.base.BaseViewModel
 import java.util.*
 
-
+data class PollingStationData(
+    val numberOfVotersOnTheList: Int? ,
+    val numberOfCommissionMembers: Int? ,
+    val numberOfFemaleMembers: Int? ,
+    val minPresentMembers: Int? ,
+    val chairmanPresence: Int?,
+    val singlePollingStationOrCommission: Int?,
+    val adequatePollingStationSize: Int?)
 class PollingStationViewModel : BaseViewModel() {
     private val nextLiveData = SingleLiveEvent<Void>()
     private val nextToMainLiveData = SingleLiveEvent<Void>()
@@ -24,12 +33,14 @@ class PollingStationViewModel : BaseViewModel() {
     private val pollingStationLiveData = MutableLiveData<String>()
     private val arrivalTimeLiveData = MutableLiveData<String>()
     private val departureTimeLiveData = MutableLiveData<String>()
-    private val selectedPollingStationLiveData = MutableLiveData<Pair<Int?, Int?>>()
+    private val selectedPollingStationLiveData = MutableLiveData<PollingStationData>()
 
     private val preferences: SharedPreferences by inject()
     private val app: Application by inject()
     private val repository: Repository by inject()
-    private lateinit var selectedCounty: County
+    private lateinit var selectedProvince: Province
+    private var selectedCounty: County? = null
+    private var selectedMunicipality: Municipality? = null
     private var selectedPollingStationNumber: Int = -1
     private lateinit var arrival: Calendar
     private var departure: Calendar? = null
@@ -41,7 +52,7 @@ class PollingStationViewModel : BaseViewModel() {
 
     fun arrivalTime(): LiveData<String> = arrivalTimeLiveData
     fun departureTime(): LiveData<String> = departureTimeLiveData
-    fun selectedPollingStation(): LiveData<Pair<Int?, Int?>> = selectedPollingStationLiveData
+    fun selectedPollingStation(): LiveData<PollingStationData> = selectedPollingStationLiveData
 
     fun pollingStation(): LiveData<String> = pollingStationLiveData
 
@@ -50,7 +61,9 @@ class PollingStationViewModel : BaseViewModel() {
             app.getString(
                 R.string.polling_station,
                 selectedPollingStationNumber,
-                selectedCounty.name
+                selectedProvince.name,
+                selectedCounty!!.name,
+                selectedMunicipality!!.name
             )
         )
         getSelectedPollingStation()
@@ -58,54 +71,105 @@ class PollingStationViewModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     private fun getSelectedPollingStation() {
+        var numberOfVotersOnTheList: Int? = null
+        var numberOfCommissionMembers: Int? = null
+        var numberOfFemaleMembers: Int? = null
+        var minPresentMembers: Int? = null
+        var chairmanPresence: Int? = null
+        var singlePollingStationOrCommission: Int? = null
+        var adequatePollingStationSize: Int? = null
 
-        var pair: Pair<Int?, Int?> = Pair(null, null)
         var arrivalTime: String? = null
         var departureTime: String? = null
-        repository.getPollingStationDetails(selectedCounty.code, selectedPollingStationNumber)
+        repository.getPollingStationDetails(selectedCounty!!.code, selectedMunicipality!!.code, selectedPollingStationNumber)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
-                selectedPollingStationLiveData.postValue(pair)
+                val data = PollingStationData(
+                    numberOfVotersOnTheList,
+                    numberOfCommissionMembers,
+                    numberOfFemaleMembers,
+                    minPresentMembers,
+                    chairmanPresence,
+                    singlePollingStationOrCommission,
+                    adequatePollingStationSize)
+
+                selectedPollingStationLiveData.postValue(data)
                 setArrivalTime(arrivalTime)
                 setDepartureTime(departureTime)
             }
             .subscribe({
-                pair = Pair(
-                    if (it.urbanArea) R.id.urbanEnvironment else R.id.ruralEnvironment,
-                    if (it.isPollingStationPresidentFemale) R.id.femaleGender else R.id.maleGender
-                )
                 arrivalTime = it.observerArrivalTime
                 departureTime = it.observerLeaveTime
+                numberOfVotersOnTheList = it.numberOfVotersOnTheList
+                numberOfCommissionMembers = it.numberOfCommissionMembers
+                numberOfFemaleMembers = it.numberOfFemaleMembers
+                minPresentMembers = it.minPresentMembers
+                chairmanPresence = if (it.chairmanPresence) R.id.chairmanPresenceYes else R.id.chairmanPresenceNo
+                singlePollingStationOrCommission = if (it.singlePollingStationOrCommission) R.id.singlePollingStationOrCommissionYes else R.id.singlePollingStationOrCommissionNo
+                adequatePollingStationSize = if (it.adequatePollingStationSize) R.id.adequatePollingStationSizeYes else R.id.adequatePollingStationSizeNo
+
             }, {
                 onError(it)
             })
     }
 
     fun validateInputDetails(
-        environmentId: Int,
-        genderId: Int
+        numberOfVotersOnTheList: CharSequence,
+        numberOfCommissionMembers: CharSequence,
+        numberOfFemaleMembers: CharSequence,
+        minPresentMembers: CharSequence,
+        chairmanPresenceId: Int,
+        singlePollingStationOrCommissionId: Int,
+        adequatePollingStationSizeId: Int
+
     ) {
         when {
-            environmentId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_environment))
-            genderId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_gender))
+            numberOfVotersOnTheList.isEmpty() || toInt(numberOfVotersOnTheList) == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_number_of_voters_on_the_list))
+            numberOfCommissionMembers.isEmpty() || toInt(numberOfCommissionMembers) == -1-> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_number_of_commission_members))
+            numberOfFemaleMembers.isEmpty()|| toInt(numberOfFemaleMembers) == -1 ->messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_number_of_female_members))
+            minPresentMembers.isEmpty()|| toInt(minPresentMembers) == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_min_present_members))
+
+            chairmanPresenceId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_chairman_presence))
+            singlePollingStationOrCommissionId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_single_commission))
+            adequatePollingStationSizeId == -1 -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_adequate_size))
             !::arrival.isInitialized -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_time_in))
             !checkTime() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_time_input))
             else -> {
-                persistSelection(environmentId, genderId)
+                persistSelection(toInt(numberOfVotersOnTheList),
+                    toInt(numberOfCommissionMembers),
+                    toInt(numberOfFemaleMembers),
+                    toInt(minPresentMembers),
+                    chairmanPresenceId,
+                    singlePollingStationOrCommissionId,
+                    adequatePollingStationSizeId)
                 nextToMainLiveData.call()
             }
         }
     }
 
-    private fun persistSelection(environmentId: Int, genderId: Int) {
+    private fun persistSelection(
+        numberOfVotersOnTheList: Int,
+        numberOfCommissionMembers: Int,
+        numberOfFemaleMembers: Int,
+        minPresentMembers: Int,
+        chairmanPresenceId: Int,
+        singlePollingStationOrCommissionId: Int,
+        adequatePollingStationSizeId: Int) {
         val pollingStation = PollingStation(
-            selectedCounty.code,
+            selectedProvince!!.code,
+            selectedCounty!!.code,
+            selectedMunicipality!!.code,
             selectedPollingStationNumber,
-            environmentId == R.id.urbanEnvironment,
-            genderId == R.id.femaleGender,
-            arrival.getDateText(),
-            departure.getDateText()
+            arrival.getDateISO8601Text(),
+            departure.getDateISO8601Text(),
+            numberOfVotersOnTheList,
+            numberOfCommissionMembers,
+            numberOfFemaleMembers,
+            minPresentMembers,
+            chairmanPresenceId== R.id.chairmanPresenceYes,
+            singlePollingStationOrCommissionId  == R.id.singlePollingStationOrCommissionYes,
+            adequatePollingStationSizeId  == R.id.adequatePollingStationSizeYes
         )
         preferences.completedPollingStationConfig()
         repository.savePollingStationDetails(pollingStation)
@@ -115,49 +179,75 @@ class PollingStationViewModel : BaseViewModel() {
         return departure == null || arrival.before(departure)
     }
 
+    fun selectProvince(province: Province?) {
+        province?.let {
+            selectedProvince = it
+        }
+    }
     fun selectCounty(county: County?) {
         county?.let {
             selectedCounty = it
         }
     }
 
-    private fun validCounty(): Boolean = ::selectedCounty.isInitialized
+    fun deselectCounty() {
+        selectedCounty = null
+    }
+    fun deselectMunicipality() {
+        selectedMunicipality = null
+    }
+
+    fun selectMunicipality(municipality: Municipality?) {
+        municipality?.let {
+            selectedMunicipality = it
+        }
+    }
+
+    private fun validProvince(): Boolean = ::selectedProvince.isInitialized
+    private fun validCounty(): Boolean  { return selectedCounty != null }
+    private fun validMunicipality(): Boolean { return selectedMunicipality != null }
+
     fun validPollingStationInput(pollingStationNumberText: CharSequence) {
+        if (!validProvince()) {
+            messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_province))
+            return
+        }
+
         if (!validCounty()) {
             messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_county))
             return
         }
-        val pollingStationNumber = getPollingStationNumber(pollingStationNumberText)
+
+        if (!validMunicipality()) {
+            messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_municipality))
+            return
+        }
+
+        val pollingStationNumber = toInt(pollingStationNumberText)
         when {
             pollingStationNumberText.isEmpty() -> messageIdToastLiveData.postValue(app.getString(R.string.invalid_polling_station_number))
             pollingStationNumber <= 0 -> messageIdToastLiveData.postValue(
                 app.getString(R.string.invalid_polling_station_number_minus)
             )
-            pollingStationNumber > selectedCounty.limit -> messageIdToastLiveData.postValue(
-                app.getString(
-                    R.string.invalid_polling_station_number_max,
-                    selectedCounty.name,
-                    selectedCounty.limit
-                )
-            )
             else -> {
                 selectedPollingStationNumber = pollingStationNumber
-                preferences.saveCountyCode(selectedCounty.code)
+                preferences.saveProvinceCode(selectedProvince.code)
+                preferences.saveCountyCode(selectedCounty!!.code)
+                preferences.saveMunicipalityCode(selectedMunicipality!!.code)
                 preferences.savePollingStationNumber(selectedPollingStationNumber)
                 nextLiveData.call()
             }
         }
     }
 
-    private fun getPollingStationNumber(pollingStationNumberText: CharSequence): Int {
+    private fun toInt(text: CharSequence, default: Int = -1): Int {
         return try {
-            Integer.parseInt(pollingStationNumberText.toString())
+            Integer.parseInt(text.toString())
         } catch (e: NumberFormatException) {
-            -1
+            default
         }
 
     }
-
 
     fun setArrivalTime(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
         arrival = Calendar.getInstance()

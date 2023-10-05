@@ -29,7 +29,7 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                         answersForForm.find { it.answeredQuestion.questionId == questionWithAnswers.question.id }
                     answeredQuestion?.also { savedQuestion ->
                         val selectedAnswer =
-                            savedQuestion.selectedAnswers.find { it.optionId == answer.idOption }
+                            savedQuestion.selectedAnswers.find { it.optionId == answer.optionId }
                         questionWithAnswers.question.savedLocally =
                             savedQuestion.answeredQuestion.savedLocally
                         questionWithAnswers.question.synced = savedQuestion.answeredQuestion.synced
@@ -61,7 +61,9 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
             }
             val answeredQuestion = AnsweredQuestion(
                 question.id,
+                provinceCode,
                 countyCode,
+                municipalityCode,
                 pollingStationNumber,
                 selectedFormId
             )
@@ -69,8 +71,10 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
                 if (it.isNotEmpty()) {
                     val list = it.map { answer ->
                         SelectedAnswer(
-                            answer.idOption,
+                            answer.optionId,
+                            provinceCode,
                             countyCode,
+                            municipalityCode,
                             pollingStationNumber,
                             answeredQuestion.id,
                             if (answer.isFreeText) answer.value else null
@@ -85,11 +89,11 @@ class QuestionsDetailsViewModel : BaseQuestionViewModel() {
     }
 
     fun syncData() {
-        repository.syncAnswers(countyCode, pollingStationNumber, selectedFormId)
+        repository.syncAnswers(countyCode, municipalityCode,pollingStationNumber, selectedFormId)
     }
 
     override fun provideNoteSource(): Observable<List<Note>> {
-        return repository.getNotesAsObservable(countyCode, pollingStationNumber, null)
+        return repository.getNotesAsObservable(countyCode, municipalityCode, pollingStationNumber, null)
             .onErrorReturnItem(emptyList())
     }
 }
