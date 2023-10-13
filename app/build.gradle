@@ -24,8 +24,8 @@ android {
         applicationId "ro.code4.monitorizarevot"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 42
-        versionName "2.1.1"
+        versionCode 47
+        versionName "2.1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -105,10 +105,10 @@ ext {
     koinVersion = '2.0.1'
     parcelerVersion = "1.1.13"
     roomVersion = '2.4.3'
-    firebaseAnalyticsVersion = '17.4.3'
-    firebaseCrashlyticsVersion = '17.1.0'
-    firebaseMessagingVersion = "20.2.0"
-    firebaseConfigVersion = "19.1.4"
+    firebaseAnalyticsVersion = '21.3.0'
+    firebaseCrashlyticsVersion = '18.4.3'
+    firebaseMessagingVersion = "23.2.1"
+    firebaseConfigVersion = "21.4.1"
     adapterDelegatesVersion = "4.2.0"
 }
 

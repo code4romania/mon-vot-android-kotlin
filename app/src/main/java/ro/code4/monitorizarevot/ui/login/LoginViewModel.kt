@@ -3,7 +3,7 @@ package ro.code4.monitorizarevot.ui.login
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.inject
@@ -46,8 +46,8 @@ class LoginViewModel : BaseViewModel() {
 
     private fun getFirebaseToken(phone: String, password: String) {
         try {
-            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-                val firebaseToken = it.result?.token
+            FirebaseMessaging.getInstance().token.addOnCompleteListener {
+                val firebaseToken = it.result
                 if (it.isSuccessful && firebaseToken != null) {
                     login(phone, password, firebaseToken)
                 } else {
