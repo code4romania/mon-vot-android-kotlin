@@ -2,6 +2,7 @@ package ro.code4.monitorizarevot
 
 import android.app.Application
 import android.content.Context
+import com.google.firebase.FirebaseApp
 import com.sylversky.fontreplacer.FontReplacer
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,6 +27,7 @@ class App : Application() {
             modules(listOf(appModule, apiModule, dbModule, viewModelsModule, analyticsModule))
         }
         replaceFonts()
+        FirebaseApp.initializeApp(this);
     }
 
     private fun replaceFonts() {
