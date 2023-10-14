@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.sonarqube'
 // TODO: Uncomment this to enable Firebase Crashlytics
-// apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.crashlytics'
 
 static def getKey(String env, String key) {
     Properties props = new Properties()
@@ -24,8 +24,8 @@ android {
         applicationId "ro.code4.monitorizarevot"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 48
-        versionName "2.1.7"
+        versionCode 49
+        versionName "2.1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -185,4 +185,4 @@ sonarqube {
 }
 
 // TODO: Uncomment this to enable FirebaseAnalytics and Crashlytics
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
