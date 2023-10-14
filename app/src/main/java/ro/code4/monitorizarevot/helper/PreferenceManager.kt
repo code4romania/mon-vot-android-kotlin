@@ -93,7 +93,9 @@ fun SharedPreferences.clearUserPrefs() = run {
 
 private fun SharedPreferences.removeCurrentLocationPrefs() {
     val editor = edit()
+    editor.remove(PREFS_PROVINCE_CODE)
     editor.remove(PREFS_COUNTY_CODE)
+    editor.remove(PREFS_MUNICIPALITY_CODE)
     editor.remove(PREFS_POLLING_STATION_NUMBER)
     editor.apply()
 }

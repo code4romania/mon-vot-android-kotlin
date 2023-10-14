@@ -22,9 +22,9 @@ abstract class BaseFormViewModel : BaseViewModel() {
     fun setTitle(title: String) = titleLiveData.postValue(title)
 
     init {
-        provinceCode = preferences.getProvinceCode()!!
-        countyCode = preferences.getCountyCode()!!
-        municipalityCode = preferences.getMunicipalityCode()!!
+        provinceCode = preferences.getProvinceCode().orEmpty()
+        countyCode = preferences.getCountyCode().orEmpty()
+        municipalityCode = preferences.getMunicipalityCode().orEmpty()
         pollingStationNumber = preferences.getPollingStationNumber()
     }
 }
